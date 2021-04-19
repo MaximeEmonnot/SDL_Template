@@ -13,10 +13,12 @@ private:
 	void CalculateFrame();
 	void RenderFrame();
 
-	//New functions
+	//User functions
 private:
 	Window& wnd;
 	Graphics gfx;
 
+	//User variables
+	SDL_Color color;
 };
 

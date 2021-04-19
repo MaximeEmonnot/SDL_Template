@@ -9,6 +9,9 @@ public:
 	void EndRender();
 
 	void RenderColorTest(Uint8 red, Uint8 green, Uint8 blue, Uint8 alpha);
+	void RenderColorTest(SDL_Color c) {
+		RenderColorTest(c.r, c.g, c.b, c.a);
+	}
 	void RenderDrawRectTest(SDL_Rect rect, SDL_Color c);
 	void RenderDrawRectTest(int x, int y, int w, int h, SDL_Color c) {
 		RenderDrawRectTest({ x, y, w, h }, c);

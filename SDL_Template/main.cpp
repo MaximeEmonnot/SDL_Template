@@ -1,10 +1,12 @@
 #include "Game.h"
+
 int main(int argc, char* argv[])
 {
 	Window wnd;
 	Game theGame(wnd);
 	
-	while (true) {
+	while (wnd.IsRunning()) {
+		wnd.EventListener();
 		theGame.Go();
 	}
 

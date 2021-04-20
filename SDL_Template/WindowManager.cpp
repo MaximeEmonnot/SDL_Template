@@ -2,12 +2,10 @@
 
 Window::Window()
 	:
-	mouse(*this),
-	kbd(*this),
 	running(true)
 {
 	SDL_Init(SDL_INIT_VIDEO);
-	window = SDL_CreateWindow("Test SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Graphics::width, Graphics::height, SDL_WINDOW_OPENGL);
+	window = SDL_CreateWindow("Template SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Graphics::width, Graphics::height, SDL_WINDOW_OPENGL);
 }
 
 Window::~Window()
@@ -26,7 +24,7 @@ void Window::EventListener()
 		case SDL_WINDOWEVENT:
 		{
 			switch (event.window.event) {
-			case SDL_WINDOWEVENT_LEAVE:
+			case SDL_WINDOWEVENT_FOCUS_LOST:
 				kbd.Flush();
 				break;
 			default:
@@ -70,7 +68,7 @@ void Window::EventListener()
 		}
 			break;
 		case SDL_MOUSEMOTION: 
-			mouse.OnMouseMove();
+			mouse.OnMouseMove((int)event.button.x, (int)event.button.y);
 			break;
 
 			// END MOUSE EVENTS

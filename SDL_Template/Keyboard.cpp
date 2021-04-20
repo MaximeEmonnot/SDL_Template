@@ -1,11 +1,4 @@
 #include "Keyboard.h"
-#include "WindowManager.h"
-
-Keyboard::Keyboard(Window& wnd)
-	:
-	event(wnd.GetEvent())
-{
-}
 
 bool Keyboard::KeyIsPressed(SDL_Keycode kCode) const
 {

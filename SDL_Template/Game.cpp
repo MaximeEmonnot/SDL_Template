@@ -22,14 +22,15 @@ void Game::Go()
 
 void Game::CalculateFrame()
 {
-	if (wnd.kbd.KeyIsPressed(SDLK_a)) {
-		color = { 255, 0, 0, 255 };
-	}
+	color = { 0, 0 ,0 ,255 };
+	if (wnd.kbd.KeyIsPressed(SDLK_a))
+		color.r = 255;
+	if (wnd.kbd.KeyIsPressed(SDLK_z))
+		color.g = 255;
+	if (wnd.kbd.KeyIsPressed(SDLK_e))
+		color.b = 255;
 
-	if (wnd.kbd.KeyIsEmpty()) {
-		color = { 255, 255, 255, 255 };
-	}
-
+	std::cout << "(" << wnd.mouse.GetMousePosX() << "," << wnd.mouse.GetMousePosY() << ")\n";
 }
 
 void Game::RenderFrame()

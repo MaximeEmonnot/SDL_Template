@@ -7,7 +7,7 @@ class Mouse
 private:
 	friend class Window;
 public:
-	enum class Type {
+	enum class EventType {
 	LPress,
 	LRelease,
 	RPress,
@@ -18,19 +18,19 @@ public:
 	None
 	};
 public:
-	Mouse(class Window& wnd);
+	Mouse() = default;
 	~Mouse() = default;
 
-	Mouse::Type Read();
+	Mouse::EventType Read();
 
-	Sint32 GetMousePosX();
-	Sint32 GetMousePosY();
-	Vec2D<Sint32> GetMousePos();
-	bool LeftIsPressed();
-	bool RightIsPressed();
+	int GetMousePosX() const;
+	int GetMousePosY() const;
+	IVec2D GetMousePos() const;
+	bool LeftIsPressed() const;
+	bool RightIsPressed() const;
 
 private:
-	void OnMouseMove();
+	void OnMouseMove(int x, int y);
 	void OnLeftPressed();
 	void OnLeftReleased();
 	void OnRightPressed();
@@ -42,9 +42,8 @@ private:
 private:
 	bool leftIsPressed = false;
 	bool rightIsPressed = false;
-	SDL_Event& event;
-
+	int x = 0;
+	int y = 0;
 	static constexpr size_t sizeBuffer = 4u;
-	std::queue<Type> buffer;
+	std::queue<EventType> buffer;
 };
-

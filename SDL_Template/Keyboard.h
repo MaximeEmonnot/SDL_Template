@@ -42,7 +42,7 @@ public:
 	};
 
 public:
-	Keyboard(class Window& wnd);
+	Keyboard() = default;
 
 	bool KeyIsPressed(SDL_Keycode kCode) const;
 	Event ReadKey();
@@ -61,7 +61,6 @@ private:
 private:
 	static constexpr unsigned int nKeys = 256u;
 	static constexpr unsigned int bufferSize = 4u;
-	SDL_Event& event;
 	std::bitset<nKeys> keystates;
 	std::queue<Event> bufferEvents;
 	std::queue<char> bufferChar;

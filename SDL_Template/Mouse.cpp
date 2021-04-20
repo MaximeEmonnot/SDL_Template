@@ -1,14 +1,6 @@
 #include "Mouse.h"
-#include "WindowManager.h"
-#include "SDL.h"
 
-Mouse::Mouse(Window& wnd)
-	:
-	event(wnd.GetEvent())
-{
-}
-
-Mouse::Type Mouse::Read()
+Mouse::EventType Mouse::Read()
 {
 	if (buffer.size() > 0u) {
 		auto e = buffer.front();
@@ -16,78 +8,79 @@ Mouse::Type Mouse::Read()
 		return e;
 	}
 	else {
-		return Type::None;
+		return EventType::None;
 	}
 }
 
-Sint32 Mouse::GetMousePosX()
+int Mouse::GetMousePosX() const
 {
-	return event.button.x;
+	return x;
 }
 
-Sint32 Mouse::GetMousePosY()
+int Mouse::GetMousePosY() const
 {
-	return event.button.y;
+	return y;
 }
 
-Vec2D<Sint32> Mouse::GetMousePos()
+IVec2D Mouse::GetMousePos() const
 {
-	return Vec2D<Sint32>(event.button.x, event.button.y);
+	return IVec2D(x, y);
 }
 
-bool Mouse::LeftIsPressed()
+bool Mouse::LeftIsPressed() const
 {
 	return leftIsPressed;
 }
 
-bool Mouse::RightIsPressed()
+bool Mouse::RightIsPressed() const
 {
 	return rightIsPressed;
 }
 
-void Mouse::OnMouseMove()
+void Mouse::OnMouseMove(int newx, int newy)
 {
-	buffer.push(Type::Move);
+	x = newx, y = newy;
+	buffer.push(EventType::Move);
 	TrimBuffer();
 }
 
 void Mouse::OnLeftPressed()
 {
 	leftIsPressed = true;
-	buffer.push(Type::LPress);
+	buffer.push(EventType::LPress);
 	TrimBuffer();
 }
 
 void Mouse::OnLeftReleased()
 {
 	leftIsPressed = false;
-	buffer.push(Type::LRelease);
+	buffer.push(EventType::LRelease);
 	TrimBuffer();
 }
 
 void Mouse::OnRightPressed()
 {
 	rightIsPressed = true;
-	buffer.push(Type::RPress);
+	buffer.push(EventType::RPress);
 	TrimBuffer();
 }
 
 void Mouse::OnRightReleased()
 {
 	rightIsPressed = false;
-	buffer.push(Type::RRelease);
+	buffer.push(EventType::RRelease);
 	TrimBuffer();
 }
 
 void Mouse::OnWheelUp()
 {
-	buffer.push(Type::WheelUp);
+	buffer.push(EventType::WheelUp);
 	TrimBuffer();
 }
 
 void Mouse::OnWheelDown()
 {
-	buffer.push(Type::WheelDown);
+	buffer.push(EventType::WheelDown);
 	TrimBuffer();
 }
 

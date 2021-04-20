@@ -2,7 +2,7 @@
 
 bool Keyboard::KeyIsPressed(SDL_Keycode kCode) const
 {
-	return keystates[kCode];
+	return keystates[SDL_GetScancodeFromKey(kCode)];
 }
 
 Keyboard::Event Keyboard::ReadKey()
@@ -32,14 +32,14 @@ bool Keyboard::KeyIsEmpty() const
 
 void Keyboard::OnKeyPressed(SDL_Keycode code)
 {
-	keystates[code] = true;
+	keystates[SDL_GetScancodeFromKey(code)] = true;
 	bufferEvents.push(Event(code, Event::Type::Pressed));
 	TrimBuffer(bufferEvents);
 }
 
 void Keyboard::OnKeyReleased(SDL_Keycode code)
 {
-	keystates[code] = false;
+	keystates[SDL_GetScancodeFromKey(code)] = false;
 	bufferEvents.push(Event(code, Event::Type::Released));
 	TrimBuffer(bufferEvents);
 }

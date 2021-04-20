@@ -47,7 +47,6 @@ public:
 	bool KeyIsPressed(SDL_Keycode kCode) const;
 	Event ReadKey();
 	char ReadChar();
-
 	bool KeyIsEmpty() const;
 
 private:
@@ -59,7 +58,7 @@ private:
 	void TrimBuffer(std::queue<T>& buffer);
 
 private:
-	static constexpr unsigned int nKeys = 256u;
+	static constexpr unsigned int nKeys = SDL_NUM_SCANCODES;
 	static constexpr unsigned int bufferSize = 4u;
 	std::bitset<nKeys> keystates;
 	std::queue<Event> bufferEvents;

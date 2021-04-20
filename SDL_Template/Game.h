@@ -9,16 +9,19 @@ public:
 	~Game();
 
 	void Go();
-private:
-	void CalculateFrame();
-	void RenderFrame();
 
-	//User functions
+private:
+	void UpdateFrame();
+	void RenderFrame();
+	// ***************** USER FUNCTIONS ******************//
+
+	// ***************** END USER FUNCTIONS ************* //
 private:
 	Window& wnd;
 	Graphics gfx;
-
-	//User variables
+	// ***************** USER VARIABLES ******************//
 	SDL_Color color;
+	SDL_Rect test;
+	// ***************** END USER VARIABLES ************* //
 };
 

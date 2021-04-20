@@ -90,3 +90,8 @@ void Mouse::TrimBuffer()
 		buffer.pop();
 	}
 }
+
+void Mouse::Flush()
+{
+	buffer = std::queue<Mouse::EventType>();
+}

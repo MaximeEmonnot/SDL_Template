@@ -38,6 +38,7 @@ private:
 	void OnWheelUp();
 	void OnWheelDown();
 	void TrimBuffer();
+	void Flush();
 
 private:
 	bool leftIsPressed = false;

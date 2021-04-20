@@ -10,6 +10,8 @@ Window::Window()
 
 Window::~Window()
 {
+	kbd.Flush();
+	mouse.Flush();
 	SDL_DestroyWindow(window);
 	SDL_Quit();
 }
@@ -32,7 +34,7 @@ void Window::EventListener()
 			}
 		}
 			break;
-			// BEGIN KEYBOARD EVENTS
+			// *************** BEGIN KEYBOARD EVENTS *************** //
 		case SDL_KEYDOWN:
 			kbd.OnKeyPressed(event.key.keysym.sym);
 			kbd.OnChar(event.key.keysym.sym);
@@ -40,9 +42,9 @@ void Window::EventListener()
 		case SDL_KEYUP:
 			kbd.OnKeyReleased(event.key.keysym.sym);
 			break;
-			// END KEYBOARD EVENTS
+			// ***************** END KEYBOARD EVENTS *************** //
 
-			// BEGIN MOUSE EVENTS
+			// ***************** BEGIN MOUSE EVENTS **************** //
 		case SDL_MOUSEBUTTONDOWN:
 		{
 			if (event.button.button == SDL_BUTTON_LEFT)
@@ -70,8 +72,8 @@ void Window::EventListener()
 		case SDL_MOUSEMOTION: 
 			mouse.OnMouseMove((int)event.button.x, (int)event.button.y);
 			break;
+			// ****************** END MOUSE EVENTS ***************** //
 
-			// END MOUSE EVENTS
 		default:
 			break;
 		}

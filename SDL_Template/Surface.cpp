@@ -30,9 +30,25 @@ Surface::Surface(const Surface& newSurface)
     this->height = newSurface.height;
 }
 
+Surface& Surface::operator=(const Surface& rhs)
+{
+    tex = rhs.tex;
+    width = rhs.width;
+    height = rhs.height;
+    return *this;
+}
+
 Surface::~Surface()
 {
     SDL_DestroyTexture(tex);
+}
+
+void Surface::InitSurface(const char* path, SDL_Renderer* renderer)
+{
+    SDL_Surface* surf = IMG_Load(path);
+    tex = SDL_CreateTextureFromSurface(renderer, surf);
+    width = surf->w, height = surf->h;
+    SDL_FreeSurface(surf);
 }
 
 SDL_Texture* Surface::GetTexture() const

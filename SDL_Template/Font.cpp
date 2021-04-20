@@ -12,7 +12,7 @@ Font::Font(const char* path, int size, Graphics& gfx, const char* text, SDL_Colo
 	TTF_Init();
 	font = TTF_OpenFont(path, size);
 	SDL_Surface* textSurf = TTF_RenderText_Solid(font, text, c);
-	sText = Surface(textSurf, gfx.GetRenderer(), textSurf->w, textSurf->h);
+	//sText = Surface(textSurf, gfx.GetRenderer(), textSurf->w, textSurf->h);
 	SDL_FreeSurface(textSurf);
 }
 

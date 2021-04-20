@@ -1,9 +1,8 @@
 #pragma once
 #include "Graphics.h"
 #include "WindowManager.h"
-#include "Surface.h"
-#include "Animation.h"
 #include "Timer.h"
+#include "Character.h"
 
 class Game
 {
@@ -23,10 +22,8 @@ private:
 	Window& wnd;
 	Graphics gfx;
 	// ***************** USER VARIABLES ******************//
-	Surface test;
-	SDL_Rect testSurface;
-	Surface megaman;
-	Animation megamanAnimation;
+	Character kirby;
+	SDL_Rect destKirby;
 	Timer t;
 	// ***************** END USER VARIABLES ************* //
 };

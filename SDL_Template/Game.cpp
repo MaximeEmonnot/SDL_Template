@@ -5,10 +5,8 @@ Game::Game(Window& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	test("Images\\black_dot.png", gfx.GetRenderer()),
-	testSurface({ 100, 100, test.GetWidth(), test.GetHeight() }),
-	megaman("Images\\megaman.png", gfx.GetRenderer()),
-	megamanAnimation({0, 0, 572, 572}, 10, megaman, 0.075f)
+	kirby("json\\kirby.json", gfx),
+	destKirby({0, 0, 64, 64})
 {
 }
 
@@ -26,29 +24,30 @@ void Game::Go()
 void Game::UpdateFrame()
 {
 	float dt = t.DeltaTime();
-	
-	megamanAnimation.Update(dt);
+	kirby.Update(dt);
 
-	if (wnd.kbd.KeyIsPressed(SDLK_z))
-		testSurface.y--;
-	if (wnd.kbd.KeyIsPressed(SDLK_q))
-		testSurface.x--;
-	if (wnd.kbd.KeyIsPressed(SDLK_s))
-		testSurface.y++;
-	if (wnd.kbd.KeyIsPressed(SDLK_d))
-		testSurface.x++;
-	if (wnd.kbd.KeyIsPressed(SDLK_a))
-		testSurface.w--, testSurface.h--;
-	if (wnd.kbd.KeyIsPressed(SDLK_e))
-		testSurface.w++, testSurface.h++;
+	destKirby.x = wnd.mouse.GetMousePosX(), destKirby.y = wnd.mouse.GetMousePosY();
 
-	std::cout << "(" << wnd.mouse.GetMousePosX() << "," << wnd.mouse.GetMousePosY() << ")\n";
+	auto e = wnd.mouse.Read();
+	switch (e) {
+	case Mouse::EventType::LPress:
+		kirby.LastAnimation();
+		break;
+	case Mouse::EventType::RPress:
+		kirby.NextAnimation();
+		break;
+	case Mouse::EventType::WheelUp:
+		destKirby.w--, destKirby.h--;
+		break;
+	case Mouse::EventType::WheelDown:
+		destKirby.w++, destKirby.h++;
+		break;
+	default:
+		break;
+	}
 }
 
 void Game::RenderFrame()
 {
-	gfx.SetBackgroundColor({ 255, 255, 255, 255 });
-	gfx.DrawFilledRect({ 250, 250, 50, 50 }, { 255, 0, 0, 255 });
-	gfx.DrawSprite(testSurface, test);
-	megamanAnimation.Draw({ wnd.mouse.GetMousePosX(), wnd.mouse.GetMousePosY(), 143, 143 }, gfx);
+	kirby.Draw(destKirby, gfx);
 }

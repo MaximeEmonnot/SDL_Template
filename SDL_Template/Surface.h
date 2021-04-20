@@ -8,7 +8,11 @@ public:
 	Surface(const char* path, SDL_Renderer* renderer);
 	Surface(SDL_Surface* surf, SDL_Renderer* renderer, int width, int height);
 	Surface(const Surface&);
+
+	Surface& operator= (const Surface& rhs);
 	~Surface();
+
+	void InitSurface(const char* path, SDL_Renderer* renderer);
 
 	SDL_Texture* GetTexture() const;
 	int GetWidth() const;

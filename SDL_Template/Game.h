@@ -2,6 +2,8 @@
 #include "Graphics.h"
 #include "WindowManager.h"
 #include "Surface.h"
+#include "Animation.h"
+#include "Timer.h"
 
 class Game
 {
@@ -23,6 +25,9 @@ private:
 	// ***************** USER VARIABLES ******************//
 	Surface test;
 	SDL_Rect testSurface;
+	Surface megaman;
+	Animation megamanAnimation;
+	Timer t;
 	// ***************** END USER VARIABLES ************* //
 };
 

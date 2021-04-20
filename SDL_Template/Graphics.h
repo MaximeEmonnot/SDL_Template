@@ -1,6 +1,7 @@
 #pragma once
 #include <SDL.h>
 #include "Surface.h"
+#include "Vec2D.h"
 
 class Graphics {
 public:
@@ -9,9 +10,12 @@ public:
 	void BeginRender();
 	void EndRender();
 
-	SDL_Renderer* GetRenderer() const;
+	SDL_Renderer* GetRenderer();
 
-	void DrawPixel(int x, int y, SDL_Color c);
+	void DrawPixel(IVec2D pos, SDL_Color c);
+	void DrawPixel(int x, int y, SDL_Color c) {
+		DrawPixel(IVec2D(x, y), c);
+	}
 	void DrawPixel(int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
 		DrawPixel(x, y, { r, g, b, a });
 	}
@@ -37,7 +41,10 @@ public:
 		DrawFilledRect(x, y, w, h, { r, g, b, a });
 	}
 
-	void DrawSprite(SDL_Rect destRect, Surface& s);
+	void DrawSprite(SDL_Rect destRect, const Surface& s) {
+		DrawSprite(destRect, { 0, 0, s.GetWidth(), s.GetHeight() }, s);
+	}
+	void DrawSprite(SDL_Rect destRect, SDL_Rect srcRect, const Surface& s);
 
 private:
 	SDL_Renderer* renderer;

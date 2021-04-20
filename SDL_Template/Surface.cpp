@@ -1,11 +1,33 @@
 #include "Surface.h"
 
+Surface::Surface()
+    :
+    tex(nullptr)
+{
+}
+
 Surface::Surface(const char* path, SDL_Renderer* renderer)
 {
     SDL_Surface* surf = IMG_Load(path);
     tex = SDL_CreateTextureFromSurface(renderer, surf);
     width = surf->w, height = surf->h;
     SDL_FreeSurface(surf);
+}
+
+Surface::Surface(SDL_Surface* surf, SDL_Renderer* renderer, int width, int height)
+    :
+    width(width),
+    height(height)
+{
+    tex = SDL_CreateTextureFromSurface(renderer, surf);
+}
+
+Surface::Surface(const Surface& newSurface)
+{
+    SDL_DestroyTexture(tex);
+    this->tex = newSurface.tex;
+    this->width = newSurface.width;
+    this->height = newSurface.height;
 }
 
 Surface::~Surface()

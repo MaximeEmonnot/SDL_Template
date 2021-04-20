@@ -4,7 +4,10 @@
 class Surface
 {
 public:
+	Surface();
 	Surface(const char* path, SDL_Renderer* renderer);
+	Surface(SDL_Surface* surf, SDL_Renderer* renderer, int width, int height);
+	Surface(const Surface&);
 	~Surface();
 
 	SDL_Texture* GetTexture() const;

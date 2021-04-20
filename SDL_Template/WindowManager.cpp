@@ -3,7 +3,7 @@
 Window::Window()
 	:
 	mouse(*this),
-	kbd(),
+	kbd(*this),
 	running(true)
 {
 	SDL_Init(SDL_INIT_VIDEO);
@@ -23,37 +23,54 @@ void Window::EventListener()
 		case SDL_QUIT:
 			running = false;
 			break;
+		case SDL_WINDOWEVENT:
+		{
+			switch (event.window.event) {
+			case SDL_WINDOWEVENT_LEAVE:
+				kbd.Flush();
+				break;
+			default:
+				break;
+			}
+		}
+			break;
+			// BEGIN KEYBOARD EVENTS
 		case SDL_KEYDOWN:
+			kbd.OnKeyPressed(event.key.keysym.sym);
+			kbd.OnChar(event.key.keysym.sym);
 			break;
 		case SDL_KEYUP:
+			kbd.OnKeyReleased(event.key.keysym.sym);
 			break;
+			// END KEYBOARD EVENTS
+
 			// BEGIN MOUSE EVENTS
 		case SDL_MOUSEBUTTONDOWN:
 		{
 			if (event.button.button == SDL_BUTTON_LEFT)
-				mouse.SetType(Mouse::Type::LPress);
+				mouse.OnLeftPressed();
 			else if (event.button.button == SDL_BUTTON_RIGHT)
-				mouse.SetType(Mouse::Type::RPress);
+				mouse.OnRightPressed();
 		}
 			break;
 		case SDL_MOUSEBUTTONUP:
 		{
 			if (event.button.button == SDL_BUTTON_LEFT)
-				mouse.SetType(Mouse::Type::LRelease);
+				mouse.OnLeftReleased();
 			else if (event.button.button == SDL_BUTTON_RIGHT)
-				mouse.SetType(Mouse::Type::RRelease);
+				mouse.OnRightReleased();
 		}
 			break;
 		case SDL_MOUSEWHEEL:
 		{
 			if (event.wheel.y > 0)
-				mouse.SetType(Mouse::Type::WheelUp);
+				mouse.OnWheelUp();
 			else if (event.wheel.y < 0)
-				mouse.SetType(Mouse::Type::WheelDown);
+				mouse.OnWheelDown();
 		}
 			break;
 		case SDL_MOUSEMOTION: 
-			mouse.SetType(Mouse::Type::Move);
+			mouse.OnMouseMove();
 			break;
 
 			// END MOUSE EVENTS

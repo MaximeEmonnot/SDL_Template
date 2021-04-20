@@ -1,4 +1,5 @@
 #include "Game.h"
+#include <iostream>
 
 Game::Game(Window& wnd)
 	:
@@ -9,8 +10,7 @@ Game::Game(Window& wnd)
 }
 
 Game::~Game()
-{
-}
+{}
 
 void Game::Go()
 {
@@ -22,38 +22,17 @@ void Game::Go()
 
 void Game::CalculateFrame()
 {
-	Mouse::Type type = wnd.mouse.Read();
-	switch (type) {
-	case Mouse::Type::LPress:
-		color = { 0, 0, 0, 0 };
-		break;
-	case Mouse::Type::LRelease:
-		color = { 0, 0, 255, 255 };
-		break;
-	case Mouse::Type::RPress:
-		color = { 0, 255, 0, 255 };
-		break;
-	case Mouse::Type::RRelease:
+	if (wnd.kbd.KeyIsPressed(SDLK_a)) {
 		color = { 255, 0, 0, 255 };
-		break;
-	case Mouse::Type::WheelUp:
-		color = { 255, 255, 0, 255 };
-		break;
-	case Mouse::Type::WheelDown:
-		color = { 255, 0, 255, 255 };
-		break;
-	case Mouse::Type::Move:
-		color = { 0, 255, 255, 255 };
-		break;
-	case Mouse::Type::None:
-		color = { 255, 255, 255, 255 };
-		break;
-	default:
-		break;
 	}
+
+	if (wnd.kbd.KeyIsEmpty()) {
+		color = { 255, 255, 255, 255 };
+	}
+
 }
 
 void Game::RenderFrame()
 {
-	gfx.RenderDrawRectTest({wnd.mouse.GetMousePosX(), wnd.mouse.GetMousePosY(), 50, 50},color);
+	gfx.RenderColorTest(color);
 }

@@ -4,14 +4,20 @@
 
 Mouse::Mouse(Window& wnd)
 	:
-	event(wnd.GetEvent()),
-	type(Type::None)
+	event(wnd.GetEvent())
 {
 }
 
 Mouse::Type Mouse::Read()
 {
-	return type;
+	if (buffer.size() > 0u) {
+		auto e = buffer.front();
+		buffer.pop();
+		return e;
+	}
+	else {
+		return Type::None;
+	}
 }
 
 Sint32 Mouse::GetMousePosX()
@@ -31,15 +37,63 @@ Vec2D<Sint32> Mouse::GetMousePos()
 
 bool Mouse::LeftIsPressed()
 {
-	return type == Type::LPress;
+	return leftIsPressed;
 }
 
 bool Mouse::RightIsPressed()
 {
-	return type == Type::RPress;
+	return rightIsPressed;
 }
 
-void Mouse::SetType(Type newType)
+void Mouse::OnMouseMove()
 {
-	type = newType;
+	buffer.push(Type::Move);
+	TrimBuffer();
+}
+
+void Mouse::OnLeftPressed()
+{
+	leftIsPressed = true;
+	buffer.push(Type::LPress);
+	TrimBuffer();
+}
+
+void Mouse::OnLeftReleased()
+{
+	leftIsPressed = false;
+	buffer.push(Type::LRelease);
+	TrimBuffer();
+}
+
+void Mouse::OnRightPressed()
+{
+	rightIsPressed = true;
+	buffer.push(Type::RPress);
+	TrimBuffer();
+}
+
+void Mouse::OnRightReleased()
+{
+	rightIsPressed = false;
+	buffer.push(Type::RRelease);
+	TrimBuffer();
+}
+
+void Mouse::OnWheelUp()
+{
+	buffer.push(Type::WheelUp);
+	TrimBuffer();
+}
+
+void Mouse::OnWheelDown()
+{
+	buffer.push(Type::WheelDown);
+	TrimBuffer();
+}
+
+void Mouse::TrimBuffer()
+{
+	if (buffer.size() > sizeBuffer) {
+		buffer.pop();
+	}
 }

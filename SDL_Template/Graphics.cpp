@@ -28,6 +28,6 @@ void Graphics::RenderColorTest(Uint8 red, Uint8 green, Uint8 blue, Uint8 alpha)
 
 void Graphics::RenderDrawRectTest(SDL_Rect rect, SDL_Color c)
 {
-	SDL_RenderDrawRect(renderer, &rect);
 	SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a);
+	SDL_RenderDrawRect(renderer, &rect);
 }

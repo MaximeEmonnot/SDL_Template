@@ -14,7 +14,6 @@ public:
 
 	SDL_Window* GetWindow();
 	SDL_Event& GetEvent();
-
 	bool IsRunning() const;
 
 public:

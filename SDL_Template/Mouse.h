@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL.h>
+#include <queue>
 #include "Vec2D.h"
 class Mouse
 {
@@ -29,10 +30,21 @@ public:
 	bool RightIsPressed();
 
 private:
-	void SetType(Type newType);
+	void OnMouseMove();
+	void OnLeftPressed();
+	void OnLeftReleased();
+	void OnRightPressed();
+	void OnRightReleased();
+	void OnWheelUp();
+	void OnWheelDown();
+	void TrimBuffer();
 
 private:
+	bool leftIsPressed = false;
+	bool rightIsPressed = false;
 	SDL_Event& event;
-	Type type;
+
+	static constexpr size_t sizeBuffer = 4u;
+	std::queue<Type> buffer;
 };
 

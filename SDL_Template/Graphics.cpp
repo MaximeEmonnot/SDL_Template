@@ -22,6 +22,11 @@ void Graphics::EndRender()
 	SDL_RenderPresent(renderer);
 }
 
+SDL_Renderer* Graphics::GetRenderer() const
+{
+	return renderer;
+}
+
 void Graphics::DrawPixel(int x, int y, SDL_Color c)
 {
 	SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a);
@@ -44,4 +49,9 @@ void Graphics::DrawFilledRect(SDL_Rect rect, SDL_Color c)
 {
 	SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a);
 	SDL_RenderFillRect(renderer, &rect);
+}
+
+void Graphics::DrawSprite(SDL_Rect destRect, Surface& s)
+{
+	SDL_RenderCopy(renderer, s.GetTexture(), NULL, &destRect);
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include "Graphics.h"
 #include "WindowManager.h"
+#include "Surface.h"
 
 class Game
 {
@@ -20,8 +21,8 @@ private:
 	Window& wnd;
 	Graphics gfx;
 	// ***************** USER VARIABLES ******************//
-	SDL_Color color;
-	SDL_Rect test;
+	Surface test;
+	SDL_Rect testSurface;
 	// ***************** END USER VARIABLES ************* //
 };
 

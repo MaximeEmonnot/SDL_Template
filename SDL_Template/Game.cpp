@@ -5,8 +5,8 @@ Game::Game(Window& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd),
-	color({255, 255, 255, 255}),
-	test({100, 100, 50, 50})
+	test("Images\\black_dot.png",gfx.GetRenderer()),
+	testSurface({100, 100, test.GetWidth(), test.GetHeight()})
 {
 }
 
@@ -23,27 +23,25 @@ void Game::Go()
 
 void Game::UpdateFrame()
 {
-	color = { 50, 50 ,50 ,255 };
-	if (wnd.kbd.KeyIsPressed(SDLK_a))
-		color.r = 255;
 	if (wnd.kbd.KeyIsPressed(SDLK_z))
-		color.g = 255;
+		testSurface.y--;
+	if (wnd.kbd.KeyIsPressed(SDLK_q))
+		testSurface.x--;
+	if (wnd.kbd.KeyIsPressed(SDLK_s))
+		testSurface.y++;
+	if (wnd.kbd.KeyIsPressed(SDLK_d))
+		testSurface.x++;
+	if (wnd.kbd.KeyIsPressed(SDLK_a))
+		testSurface.w--, testSurface.h--;
 	if (wnd.kbd.KeyIsPressed(SDLK_e))
-		color.b = 255;
+		testSurface.w++, testSurface.h++;
 
-	if (wnd.kbd.KeyIsPressed(SDLK_UP))
-		test.y--;
-	if (wnd.kbd.KeyIsPressed(SDLK_DOWN))
-		test.y++;
-	if (wnd.kbd.KeyIsPressed(SDLK_RIGHT))
-		test.x++;
-	if (wnd.kbd.KeyIsPressed(SDLK_LEFT))
-		test.x--;
 
 	std::cout << "(" << wnd.mouse.GetMousePosX() << "," << wnd.mouse.GetMousePosY() << ")\n";
 }
 
 void Game::RenderFrame()
 {
-	gfx.DrawFilledRect(test, color);
+	gfx.DrawFilledRect({ 250, 250, 50, 50 }, { 255, 0, 0, 255 });
+	gfx.DrawSprite(testSurface, test);
 }

@@ -50,7 +50,7 @@ void Game::UpdateFrame()
 
 	auto ek = wnd.kbd.ReadKey();
 	if (ek.GetCode() == SDLK_SPACE) {
-		sSystem.PlayAll(0);
+		sSystem.PlayOneEffect(0, 0);
 	}
 }
 

@@ -4,6 +4,7 @@
 #include "Timer.h"
 #include "Character.h"
 #include "Font.h"
+#include "SoundSystem.h"
 
 class Game
 {
@@ -28,6 +29,7 @@ private:
 	Timer t;
 	Font font;
 	std::string text = "";
+	SoundSystem sSystem;
 	// ***************** END USER VARIABLES ************* //
 };
 

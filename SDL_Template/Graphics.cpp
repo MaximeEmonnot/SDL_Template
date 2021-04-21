@@ -30,7 +30,7 @@ SDL_Renderer* Graphics::GetRenderer()
 void Graphics::DrawPixel(IVec2D pos, SDL_Color c)
 {
 	SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a);
-	SDL_RenderDrawPoint(renderer, pos.GetX(), pos.GetY());
+	SDL_RenderDrawPoint(renderer, pos.x, pos.y);
 }
 
 void Graphics::SetBackgroundColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)

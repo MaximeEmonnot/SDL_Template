@@ -12,14 +12,7 @@ public:
 		y(y) 
 	{}
 
-	inline T GetX() const {
-		return x;
-	}
-	inline T GetY() const {
-		return y;
-	}
-
-private:
+public:
 	T x;
 	T y;
 };

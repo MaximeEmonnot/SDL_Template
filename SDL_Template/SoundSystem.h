@@ -56,26 +56,26 @@ public:
 	SoundSystem();
 	~SoundSystem();
 
-	void PlayOneMusic(int musicIndex, int loops);
-	void PlayAllMusics(int loops);
-	void PlayOneEffect(int effectIndex, int loops);
-	void PlayAllEffects(int loops);
-	void PlayAll(int loops);
-	void StopOneMusic(int soundIndex);
-	void StopAllMusics();
-	void StopOneEffect(int effectIndex);
-	void StopAllEffects();
-	void StopAll();
+	void								PlayOneMusic(int musicIndex, int loops);
+	void								PlayAllMusics(int loops);
+	void								PlayOneEffect(int effectIndex, int loops);
+	void								PlayAllEffects(int loops);
+	void								PlayAll(int loops);
+	void								StopOneMusic(int musicIndex);
+	void								StopAllMusics();
+	void								StopOneEffect(int effectIndex);
+	void								StopAllEffects();
+	void								StopAll();
 
-	void AddSound(const char* path, bool type);
-	void FlushSounds();
-	void FlushMusics();
-	void FlushEffects();
+	void								AddSound(const char* path, bool type);
+	void								FlushSounds();
+	void								FlushMusics();
+	void								FlushEffects();
 
 private:
-	int lastMusicIndex = 0;
-	int lastEffectIndex = 0;
-	std::vector<SoundSystem::Music> musicList;
-	std::vector<SoundSystem::Effect> effectList;
+	int									lastMusicIndex = 0;
+	int									lastEffectIndex = 0;
+	std::vector<SoundSystem::Music>		musicList;
+	std::vector<SoundSystem::Effect>	effectList;
 };
 

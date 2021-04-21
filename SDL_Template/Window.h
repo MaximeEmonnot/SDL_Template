@@ -10,18 +10,17 @@ public:
 	Window();
 	~Window();
 
-	void EventListener();
+	void		EventListener();
 
 	SDL_Window* GetWindow();
-	SDL_Event& GetEvent();
-	bool IsRunning() const;
+	bool		IsRunning() const;
 
 public:
-	Mouse mouse;
-	Keyboard kbd;
+	Mouse		mouse;
+	Keyboard	kbd;
 
 private:
 	SDL_Window* window;
-	SDL_Event event;
-	bool running;
+	SDL_Event	event;
+	bool		running;
 };

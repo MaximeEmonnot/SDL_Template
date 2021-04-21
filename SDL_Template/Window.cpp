@@ -4,6 +4,7 @@ Window::Window()
 	:
 	running(true)
 {
+	event.type = SDL_FIRSTEVENT;
 	SDL_Init(SDL_INIT_VIDEO);
 	window = SDL_CreateWindow("Template SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Graphics::width, Graphics::height, SDL_WINDOW_OPENGL);
 	SDL_Surface* surf = IMG_Load("icon.png");
@@ -85,11 +86,6 @@ void Window::EventListener()
 SDL_Window* Window::GetWindow()
 {
 	return window;
-}
-
-SDL_Event& Window::GetEvent()
-{
-	return event;
 }
 
 bool Window::IsRunning() const

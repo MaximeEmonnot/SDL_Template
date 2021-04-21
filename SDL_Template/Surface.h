@@ -12,15 +12,15 @@ public:
 	Surface& operator= (const Surface& rhs);
 	~Surface();
 
-	void InitSurface(const char* path, SDL_Renderer* renderer);
+	void			InitSurface(const char* path, SDL_Renderer* renderer);
 
-	SDL_Texture* GetTexture() const;
-	int GetWidth() const;
-	int GetHeight() const;
+	SDL_Texture*	GetTexture() const;
+	int				GetWidth() const;
+	int				GetHeight() const;
 
 private:
-	SDL_Texture* tex;
-	int width = 0;
-	int height = 0;
+	SDL_Texture*	tex;
+	int				width = 0;
+	int				height = 0;
 };
 

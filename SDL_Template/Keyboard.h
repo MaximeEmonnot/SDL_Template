@@ -1,5 +1,5 @@
 #pragma once
-#include <SDL.h>
+#include <SDL_keyboard.h>
 #include <queue>
 #include <bitset>
 
@@ -37,31 +37,31 @@ public:
 			return keycode;
 		}
 	private:
-		SDL_Keycode keycode;
+		SDL_Keycode keycode = 0;
 		Type type;
 	};
 
 public:
 	Keyboard() = default;
 
-	bool KeyIsPressed(SDL_Keycode kCode) const;
-	Event ReadKey();
-	char ReadChar();
-	bool KeyIsEmpty() const;
+	bool							KeyIsPressed(SDL_Keycode kCode) const;
+	Event							ReadKey();
+	char							ReadChar();
+	bool							KeyIsEmpty() const;
 
 private:
-	void OnKeyPressed(SDL_Keycode code);
-	void OnKeyReleased(SDL_Keycode code);
-	void OnChar(SDL_Keycode code);
-	void Flush();
+	void							OnKeyPressed(SDL_Keycode code);
+	void							OnKeyReleased(SDL_Keycode code);
+	void							OnChar(SDL_Keycode code);
+	void							Flush();
 	template<typename T>
-	void TrimBuffer(std::queue<T>& buffer);
+	void							TrimBuffer(std::queue<T>& buffer);
 
 private:
-	static constexpr unsigned int nKeys = SDL_NUM_SCANCODES;
-	static constexpr unsigned int bufferSize = 4u;
-	std::bitset<nKeys> keystates;
-	std::queue<Event> bufferEvents;
-	std::queue<char> bufferChar;
+	static constexpr unsigned int	nKeys = SDL_NUM_SCANCODES;
+	static constexpr unsigned int	bufferSize = 4u;
+	std::bitset<nKeys>				keystates;
+	std::queue<Event>				bufferEvents;
+	std::queue<char>				bufferChar;
 };
 

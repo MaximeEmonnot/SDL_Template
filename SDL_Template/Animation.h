@@ -10,22 +10,22 @@ class Animation
 public:
 	Animation(SDL_Rect rect, int count, Surface& sprite, float holdTime);
 
-	void Draw(SDL_Rect rect, Graphics& gfx);
+	void					Draw(SDL_Rect rect, Graphics& gfx);
 
-	void Update(float dt);
-	void ResetAnimation();
+	void					Update(float dt);
+	void					ResetAnimation();
 
-	int GetWidth() const;
-	int GetHeight() const;
+	int						GetWidth() const;
+	int						GetHeight() const;
 private:
-	void Advance();
+	void					Advance();
 private:
-	const Surface& sprite;
-	std::vector<SDL_Rect> frames;
-	int iCurFrame = 0;
-	float holdTime;
-	float curFrameTime = 0.0f;
-	int width;
-	int height;
+	const Surface&			sprite;
+	std::vector<SDL_Rect>	frames;
+	float					curFrameTime = 0.0f;
+	float					holdTime;
+	int						iCurFrame = 0;
+	int						width;
+	int						height;
 };
 

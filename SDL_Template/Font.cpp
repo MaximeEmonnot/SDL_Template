@@ -33,7 +33,6 @@ void Font::DrawSavedText(int x, int y)
 void Font::DrawLoadedText(int x, int y, const char* text, SDL_Color c)
 {
 	assert(sText.GetTexture() == nullptr);
-
 	SDL_Surface* textSurf = TTF_RenderText_Solid(font, text, c);
 	Surface temp = Surface(textSurf, gfx.GetRenderer(), textSurf->w, textSurf->h);
 	gfx.DrawSprite({ x, y, textSurf->w, textSurf->h }, temp);

@@ -46,11 +46,23 @@ void Game::UpdateFrame()
 	default:
 		break;
 	}
+
+	char c = wnd.kbd.ReadChar();
+
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= SDLK_0 && c <= SDLK_9) || c == SDLK_SPACE) {
+		text += c;
+	}
+	else if (c == SDLK_BACKSPACE && text.size() > 0) {
+		text.pop_back();
+	}
 }
 
 void Game::RenderFrame()
 {
 	gfx.SetBackgroundColor({ 255, 255, 255, 255 });
 	kirby.Draw(destKirby, gfx);
-	font.DrawLoadedText(155, 155, "blablabla", { 0, 0, 0, 255 });
+
+	if (text.size() > 0) {
+		font.DrawLoadedText(155, 155, text.c_str(), { 0, 0, 0, 255 });
+	}
 }

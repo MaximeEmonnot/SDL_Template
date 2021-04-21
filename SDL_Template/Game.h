@@ -27,6 +27,7 @@ private:
 	SDL_Rect destKirby;
 	Timer t;
 	Font font;
+	std::string text = "";
 	// ***************** END USER VARIABLES ************* //
 };
 

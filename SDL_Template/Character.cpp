@@ -46,7 +46,7 @@ void Character::LastAnimation()
 {
 	animations[iCurSequence].ResetAnimation();
 	if (iCurSequence == 0) {
-		iCurSequence = animations.size() - 1;
+		iCurSequence = (int)animations.size() - 1;
 	}
 	else {
 		iCurSequence--;

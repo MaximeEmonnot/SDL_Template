@@ -6,6 +6,8 @@ Window::Window()
 {
 	SDL_Init(SDL_INIT_VIDEO);
 	window = SDL_CreateWindow("Template SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Graphics::width, Graphics::height, SDL_WINDOW_OPENGL);
+	SDL_Surface* surf = IMG_Load("icon.png");
+	SDL_SetWindowIcon(window, surf);
 }
 
 Window::~Window()

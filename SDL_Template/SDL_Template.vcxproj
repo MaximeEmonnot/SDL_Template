@@ -155,7 +155,7 @@
     <ClCompile Include="SoundSystem.cpp" />
     <ClCompile Include="Surface.cpp" />
     <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="WindowManager.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -169,7 +169,7 @@
     <ClInclude Include="Surface.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Vec2D.h" />
-    <ClInclude Include="WindowManager.h" />
+    <ClInclude Include="Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

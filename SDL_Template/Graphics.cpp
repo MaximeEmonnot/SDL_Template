@@ -1,5 +1,5 @@
 #include "Graphics.h"
-#include "WindowManager.h"
+#include "Window.h"
 
 Graphics::Graphics(Window& window)
 {

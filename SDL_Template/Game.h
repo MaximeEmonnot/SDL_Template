@@ -1,6 +1,6 @@
 #pragma once
 #include "Graphics.h"
-#include "WindowManager.h"
+#include "Window.h"
 #include "Timer.h"
 #include "Character.h"
 #include "Font.h"

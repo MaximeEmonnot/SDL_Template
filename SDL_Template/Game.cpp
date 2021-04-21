@@ -6,7 +6,8 @@ Game::Game(Window& wnd)
 	wnd(wnd),
 	gfx(wnd),
 	kirby("json\\kirby.json", gfx),
-	destKirby({0, 0, 64, 64})
+	destKirby({0, 0, 64, 64}),
+	font("ttf\\arcadeClassic.TTF", 25, gfx)
 {
 }
 
@@ -49,5 +50,7 @@ void Game::UpdateFrame()
 
 void Game::RenderFrame()
 {
+	gfx.SetBackgroundColor({ 255, 255, 255, 255 });
 	kirby.Draw(destKirby, gfx);
+	font.DrawLoadedText(155, 155, "blablabla", { 0, 0, 0, 255 });
 }

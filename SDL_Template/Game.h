@@ -3,6 +3,7 @@
 #include "WindowManager.h"
 #include "Timer.h"
 #include "Character.h"
+#include "Font.h"
 
 class Game
 {
@@ -25,6 +26,7 @@ private:
 	Character kirby;
 	SDL_Rect destKirby;
 	Timer t;
+	Font font;
 	// ***************** END USER VARIABLES ************* //
 };
 

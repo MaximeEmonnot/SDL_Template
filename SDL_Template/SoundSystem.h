@@ -75,7 +75,7 @@ public:
 private:
 	int lastMusicIndex = 0;
 	int lastEffectIndex = 0;
-	std::vector<Music> musicList;
-	std::vector<Effect> effectList;
+	std::vector<SoundSystem::Music> musicList;
+	std::vector<SoundSystem::Effect> effectList;
 };
 

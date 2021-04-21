@@ -7,7 +7,6 @@ SoundSystem::SoundSystem()
 
 SoundSystem::~SoundSystem()
 {
-	FlushSounds();
 	Mix_CloseAudio();
 }
 
@@ -95,11 +94,11 @@ void SoundSystem::AddSound(const char* path, bool type)
 {
 
 	if (type) {
-		effectList.push_back(Effect(path, lastEffectIndex));
+		effectList.emplace_back(path, lastEffectIndex);
 		lastEffectIndex++;
 	}
 	else {
-		musicList.push_back(Music(path, lastMusicIndex));
+		musicList.emplace_back(path, lastMusicIndex);
 		lastMusicIndex++;
 	}
 }

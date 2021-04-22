@@ -22,10 +22,9 @@ public:
 	Window();
 	~Window();
 
-	void		EventListener();
+	bool		EventListener();
 
 	SDL_Window* GetWindow();
-	bool		IsRunning() const;
 
 public:
 	Mouse		mouse;
@@ -34,5 +33,4 @@ public:
 private:
 	SDL_Window* window;
 	SDL_Event	event;
-	bool		running;
 };

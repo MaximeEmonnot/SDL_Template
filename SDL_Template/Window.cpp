@@ -1,8 +1,6 @@
 #include "Window.h"
 
 Window::Window()
-	:
-	running(true)
 {
 	event.type = SDL_FIRSTEVENT;
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -27,12 +25,12 @@ Window::~Window()
 	SDL_Quit();
 }
 
-void Window::EventListener()
+bool Window::EventListener()
 {
 	while (SDL_PollEvent(&event)) {
 		switch (event.type) {
 		case SDL_QUIT:
-			running = false;
+			return false;
 			break;
 		case SDL_WINDOWEVENT:
 		{
@@ -89,14 +87,10 @@ void Window::EventListener()
 			break;
 		}
 	}
+	return true;
 }
 
 SDL_Window* Window::GetWindow()
 {
 	return window;
-}
-
-bool Window::IsRunning() const
-{
-	return running;
 }

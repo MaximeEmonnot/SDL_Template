@@ -6,8 +6,7 @@ int main(int argc, char* argv[])
 		Window wnd;
 		try {
 			Game theGame(wnd);
-			while (wnd.IsRunning()) {
-				wnd.EventListener();
+			while (wnd.EventListener()) {
 				theGame.Go();
 			}
 		}

@@ -1,9 +1,20 @@
 #pragma once
 #include <SDL.h>
-#include "Surface.h"
+#include "Sprite.h"
 #include "Vec2D.h"
 
 class Graphics {
+private:
+	class Exception : public SDLException {
+	public:
+		Exception(const std::string& file, unsigned int line, const std::string& note)
+			:
+			SDLException(file, line, note)
+		{}
+		std::string GetType() const override {
+			return "SDL Graphics Exception caught";
+		}
+	};
 public:
 	Graphics(class Window& window);
 	~Graphics();
@@ -41,10 +52,10 @@ public:
 		DrawFilledRect(x, y, w, h, { r, g, b, a });
 	}
 
-	void						DrawSprite(SDL_Rect destRect, const Surface& s) {
+	void						DrawSprite(SDL_Rect destRect, const Sprite& s) {
 		DrawSprite(destRect, { 0, 0, s.GetWidth(), s.GetHeight() }, s);
 	}
-	void						DrawSprite(SDL_Rect destRect, SDL_Rect srcRect, const Surface& s);
+	void						DrawSprite(SDL_Rect destRect, SDL_Rect srcRect, const Sprite& s);
 
 private:
 	SDL_Renderer*				renderer;

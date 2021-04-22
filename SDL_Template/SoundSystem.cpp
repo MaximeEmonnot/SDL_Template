@@ -2,7 +2,8 @@
 
 SoundSystem::SoundSystem()
 {
-	Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096);
+	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096) < 0)
+		throw Exception(__FILE__, __LINE__, "An error has been caught during Sound System Initialisation.");
 }
 
 SoundSystem::~SoundSystem()
@@ -18,6 +19,7 @@ void SoundSystem::PlayOneMusic(int musicIndex, int loops)
 			return;
 		}
 	}
+	throw Exception(__FILE__, __LINE__, "An error has been caught during Music Playing.\nPlease check Music Index.");
 }
 
 void SoundSystem::PlayAllMusics(int loops)
@@ -35,6 +37,7 @@ void SoundSystem::PlayOneEffect(int effectIndex, int loops)
 			return;
 		}
 	}
+	throw Exception(__FILE__, __LINE__, "An error has been caught during Effect Playing.\nPlease check Effect Index.");
 }
 
 void SoundSystem::PlayAllEffects(int loops)
@@ -58,6 +61,8 @@ void SoundSystem::StopOneMusic(int musicIndex)
 			return;
 		}
 	}
+
+	throw Exception(__FILE__, __LINE__, "An error has been caught during Music Stop.\nPlease check Music Index.");
 }
 
 void SoundSystem::StopAllMusics()
@@ -75,6 +80,7 @@ void SoundSystem::StopOneEffect(int effectIndex)
 			return;
 		}
 	}
+	throw Exception(__FILE__, __LINE__, "An error has been caught during Effect Stop.\nPlease check Effect Index.");
 }
 
 void SoundSystem::StopAllEffects()

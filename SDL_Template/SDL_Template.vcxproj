@@ -153,7 +153,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="SoundSystem.cpp" />
-    <ClCompile Include="Surface.cpp" />
+    <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
@@ -165,8 +165,9 @@
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Mouse.h" />
+    <ClInclude Include="SDLException.h" />
     <ClInclude Include="SoundSystem.h" />
-    <ClInclude Include="Surface.h" />
+    <ClInclude Include="Sprite.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Vec2D.h" />
     <ClInclude Include="Window.h" />

@@ -4,6 +4,9 @@
 Graphics::Graphics(Window& window)
 {
 	renderer = SDL_CreateRenderer(window.GetWindow(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	if (renderer == NULL) {
+		throw Exception(__FILE__, __LINE__, "An error has been caught during SDL Renderer Creation.");
+	}
 }
 
 Graphics::~Graphics()
@@ -51,7 +54,7 @@ void Graphics::DrawFilledRect(SDL_Rect rect, SDL_Color c)
 	SDL_RenderFillRect(renderer, &rect);
 }
 
-void Graphics::DrawSprite(SDL_Rect destRect, SDL_Rect srcRect, const Surface& s)
+void Graphics::DrawSprite(SDL_Rect destRect, SDL_Rect srcRect, const Sprite& s)
 {
 	SDL_RenderCopy(renderer, s.GetTexture(), &srcRect, &destRect);
 }

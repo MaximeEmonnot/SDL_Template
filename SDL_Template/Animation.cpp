@@ -1,6 +1,6 @@
 #include "Animation.h"
 
-Animation::Animation(SDL_Rect rect, int count, Surface& sprite, float holdTime)
+Animation::Animation(SDL_Rect rect, int count, Sprite& sprite, float holdTime)
 	:
 	sprite(sprite),
 	holdTime(holdTime),

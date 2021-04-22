@@ -5,6 +5,17 @@
 #include "Animation.h"
 class Character
 {
+private:
+	class Exception : public SDLException {
+	public:
+		Exception(const std::string& file, unsigned int line, const std::string& note)
+			:
+			SDLException(file, line, note)
+		{}
+		std::string GetType() const override {
+			return "SDL JSON Exception caught";
+		}
+	};
 public:
 	Character(const char* path, Graphics& gfx);
 
@@ -15,7 +26,7 @@ public:
 	void					LastAnimation();
 
 private:
-	Surface					sprite;
+	Sprite					sprite;
 	std::vector<Animation>	animations;
 	int						iCurSequence = 0;
 };

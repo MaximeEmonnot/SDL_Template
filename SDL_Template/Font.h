@@ -2,8 +2,20 @@
 #include <SDL_ttf.h>
 #include "Graphics.h"
 
+
 class Font
 {
+private:
+	class Exception : public SDLException {
+	public:
+		Exception(const std::string& file, unsigned int line, const std::string& note)
+			:
+			SDLException(file, line, note)
+		{}
+		std::string GetType() const override {
+			return "SDL TTF Exception caught";
+		}
+	};
 public:
 	Font(const char* path, int size, Graphics& gfx);
 	~Font();
@@ -12,6 +24,5 @@ public:
 private:
 	Graphics&	gfx;
 	TTF_Font*	font;
-	Surface		sText;
 };
 

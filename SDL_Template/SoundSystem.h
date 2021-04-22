@@ -1,6 +1,6 @@
 #pragma once
+#include "SDLException.h"
 #include <SDL_mixer.h>
-#include <cassert>
 #include <vector>
 
 #define MUSIC 0
@@ -9,12 +9,24 @@
 class SoundSystem
 {
 private:
+	class Exception : public SDLException {
+	public:
+		Exception(const std::string& file, unsigned int line, const std::string& note)
+			:
+			SDLException(file, line, note)
+		{}
+		std::string GetType() const override {
+			return "SDL Sound System Exception caught";
+		}
+	};
+private:
 	class Music {
 	public:
 		Music(const char* path, int index) {
 			this->index = index;
 			music = Mix_LoadMUS(path);
-			assert(music != NULL);
+			if (music == NULL)
+				throw Exception(__FILE__, __LINE__, "An error has been caught during Music Initialisation.\nPlease check file path.");
 		}
 		~Music() {
 			Mix_FreeMusic(music);
@@ -35,7 +47,8 @@ private:
 		Effect(const char* path, int index) {
 			this->index = index;
 			effect = Mix_LoadWAV(path);
-			assert(effect != NULL);
+			if (effect == NULL)
+				throw Exception(__FILE__, __LINE__, "An error has been caught during SoundEffect Initialisation.\nPlease check file path.");
 		}
 		~Effect() {
 			Mix_FreeChunk(effect);
@@ -68,6 +81,8 @@ public:
 	void								StopAll();
 
 	void								AddSound(const char* path, bool type);
+
+private:
 	void								FlushSounds();
 	void								FlushMusics();
 	void								FlushEffects();

@@ -1,12 +1,14 @@
 #include "Font.h"
-#include <cassert>
 
 Font::Font(const char* path, int size, Graphics& gfx)
 	:
 	gfx(gfx)
 {
-	TTF_Init();
+	if (TTF_Init() < 0)
+		throw Exception(__FILE__, __LINE__, "An error has been caught during TTF Initialisation.");
 	font = TTF_OpenFont(path, size);
+	if (font == NULL)
+		throw Exception(__FILE__, __LINE__, "An error has been caught during TTF Font Opening.\nPlease check TTF file path.");
 }
 
 Font::~Font()
@@ -16,9 +18,8 @@ Font::~Font()
 
 void Font::DrawText(int x, int y, const char* text, SDL_Color c)
 {
-	assert(sText.GetTexture() == nullptr);
 	SDL_Surface* textSurf = TTF_RenderText_Solid(font, text, c);
-	Surface temp = Surface(textSurf, gfx.GetRenderer(), textSurf->w, textSurf->h);
-	gfx.DrawSprite({ x, y, textSurf->w, textSurf->h }, temp);
+	Sprite tSprite = Sprite(textSurf, gfx.GetRenderer(), textSurf->w, textSurf->h);
+	gfx.DrawSprite({ x, y, textSurf->w, textSurf->h }, tSprite);
 	SDL_FreeSurface(textSurf);
 }

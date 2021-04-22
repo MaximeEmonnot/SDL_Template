@@ -5,7 +5,8 @@ Character::Character(const char* path, Graphics& gfx)
 {
 	std::ifstream file;
 	file.open(path);
-	assert(file);
+	if (!file)
+		throw Exception(__FILE__, __LINE__, "An error has been caught during JSON File Opening.\nPlease check JSON file path.");
 	rapidjson::IStreamWrapper isw(file);
 	rapidjson::Document doc;
 	doc.ParseStream(isw);

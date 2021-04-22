@@ -5,6 +5,7 @@
 #include "Character.h"
 #include "Font.h"
 #include "SoundSystem.h"
+#include <memory>
 
 class Game
 {

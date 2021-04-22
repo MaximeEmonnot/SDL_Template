@@ -4,29 +4,29 @@
 class SDLException
 {
 public:
-	SDLException(const std::string& file, unsigned int line, const std::string& note)
+	SDLException(const std::string& file, unsigned int line, const std::string& note) noexcept
 		:
 		file(file),
 		note(note),
 		line(line)
 	{}
 
-	const std::string& GetFile() const {
+	inline const std::string& GetFile() const noexcept {
 		return file;
 	}
-	const std::string& GetNote() const {
+	inline const std::string& GetNote() const noexcept {
 		return note;
 	}
-	unsigned int GetLine() const {
+	inline unsigned int GetLine() const noexcept {
 		return line;
 	}
-	std::string GetLocation() const {
+	inline std::string GetLocation() const noexcept {
 		return std::string("[File]: \"") + file + std::string("\"\n[Line]: ") + std::to_string(line);
 	}
-	std::string GetMessage() const {
+	inline std::string GetMessage() const noexcept {
 		return GetNote() + "\nDetails:\n" + GetLocation();
 	}
-	virtual std::string GetType() const = 0;
+	virtual inline std::string GetType() const noexcept = 0;
 
 private:
 	std::string file;

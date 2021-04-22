@@ -3,7 +3,7 @@
 
 Graphics::Graphics(Window& window)
 {
-	renderer = SDL_CreateRenderer(window.GetWindow(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	renderer = SDL_CreateRenderer(window.window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (renderer == NULL) {
 		throw Exception(__FILE__, __LINE__, "An error has been caught during SDL Renderer Creation.");
 	}

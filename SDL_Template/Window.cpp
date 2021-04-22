@@ -25,7 +25,7 @@ Window::~Window()
 	SDL_Quit();
 }
 
-bool Window::EventListener()
+bool Window::EventListener() noexcept
 {
 	while (SDL_PollEvent(&event)) {
 		switch (event.type) {
@@ -88,9 +88,4 @@ bool Window::EventListener()
 		}
 	}
 	return true;
-}
-
-SDL_Window* Window::GetWindow()
-{
-	return window;
 }

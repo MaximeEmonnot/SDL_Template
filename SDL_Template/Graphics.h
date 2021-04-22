@@ -7,11 +7,11 @@ class Graphics {
 private:
 	class Exception : public SDLException {
 	public:
-		Exception(const std::string& file, unsigned int line, const std::string& note)
+		Exception(const std::string& file, unsigned int line, const std::string& note) noexcept
 			:
 			SDLException(file, line, note)
 		{}
-		std::string GetType() const override {
+		inline std::string GetType() const noexcept override {
 			return "SDL Graphics Exception caught";
 		}
 	};

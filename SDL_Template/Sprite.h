@@ -24,10 +24,14 @@ public:
 	Sprite& operator= (const Sprite& rhs);
 	~Sprite();
 
+	// Initializes the sprite. Needs the Graphics Renderer.
 	void			InitSurface(const char* path, SDL_Renderer* renderer);
 
+	// Returns the saved Texture.
 	SDL_Texture*	GetTexture() const;
+	// Returns the saved Texture's width.
 	int				GetWidth() const;
+	// Returns the savec Texture's height.
 	int				GetHeight() const;
 
 private:

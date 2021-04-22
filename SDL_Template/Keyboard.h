@@ -44,9 +44,13 @@ public:
 public:
 	Keyboard() = default;
 
+	// Given a keycode, returns true if the key is pressed, false otherwise.
 	bool							KeyIsPressed(SDL_Keycode kCode) const;
+	// Returns the last key pressed.
 	Event							ReadKey();
+	// Returns the last character registered.
 	char							ReadChar();
+	// Returns true if no keys are pressed, false otherwise.
 	bool							KeyIsEmpty() const;
 
 private:

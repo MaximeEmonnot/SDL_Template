@@ -5,6 +5,7 @@ class Timer
 public:
 	Timer();
 
+	//Returns elapsed time since last call. Can be used in Updates functions. 
 	float DeltaTime();
 
 private:

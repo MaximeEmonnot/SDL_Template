@@ -1,9 +1,11 @@
 #pragma once
 #include "Graphics.h"
 #include "Window.h"
-
-#include "Character.h"
 #include <memory>
+// ***** USER INCLUDES ***** //
+
+// *** END USER INCLUDES *** //
+
 
 class Game
 {
@@ -23,8 +25,7 @@ private:
 	Window& wnd;
 	Graphics gfx;
 	// ***************** USER VARIABLES ******************//
-	std::unique_ptr<Character> kirby;
-	SDL_Rect destKirby;
+	
 	// ***************** END USER VARIABLES ************* //
 };
 

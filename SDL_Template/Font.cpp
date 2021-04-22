@@ -16,10 +16,10 @@ Font::~Font()
 	TTF_CloseFont(font);
 }
 
-void Font::DrawText(int x, int y, const char* text, SDL_Color c)
+void Font::DrawText(IVec2D pos, const char* text, SDL_Color c)
 {
 	SDL_Surface* textSurf = TTF_RenderText_Solid(font, text, c);
 	Sprite tSprite = Sprite(textSurf, gfx.GetRenderer(), textSurf->w, textSurf->h);
-	gfx.DrawSprite({ x, y, textSurf->w, textSurf->h }, tSprite);
+	gfx.DrawSprite({ pos.x, pos.y, textSurf->w, textSurf->h }, tSprite);
 	SDL_FreeSurface(textSurf);
 }

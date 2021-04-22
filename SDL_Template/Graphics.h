@@ -23,6 +23,7 @@ public:
 
 	SDL_Renderer*				GetRenderer();
 
+	// Draws a colored pixel at a given position. 
 	void						DrawPixel(IVec2D pos, SDL_Color c);
 	void						DrawPixel(int x, int y, SDL_Color c) {
 		DrawPixel(IVec2D(x, y), c);
@@ -31,11 +32,13 @@ public:
 		DrawPixel(x, y, { r, g, b, a });
 	}
 
+	// Changes Background Color
 	void						SetBackgroundColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 	void						SetBackgroundColor(SDL_Color c) {
 		SetBackgroundColor(c.r, c.g, c.b, c.a);
 	}
 
+	// Draws the border of a colored rectangle at a given position.
 	void						DrawRect(SDL_Rect rect, SDL_Color c);
 	void						DrawRect(int x, int y, int w, int h, SDL_Color c) {
 		DrawRect({ x, y, w, h }, c);
@@ -44,6 +47,7 @@ public:
 		DrawRect(x, y, w, h, { r, g, b, a });
 	}
 
+	// Draws a full colored rectangle at a given position.
 	void						DrawFilledRect(SDL_Rect rect, SDL_Color c);
 	void						DrawFilledRect(int x, int y, int w, int h, SDL_Color c) {
 		DrawFilledRect({ x, y, w, h }, c);
@@ -52,6 +56,7 @@ public:
 		DrawFilledRect(x, y, w, h, { r, g, b, a });
 	}
 
+	// Draws a given sprite at a given position.
 	void						DrawSprite(SDL_Rect destRect, const Sprite& s) {
 		DrawSprite(destRect, { 0, 0, s.GetWidth(), s.GetHeight() }, s);
 	}

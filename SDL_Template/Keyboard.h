@@ -1,7 +1,7 @@
 #pragma once
 #include <SDL_keyboard.h>
-#include <queue>
 #include <bitset>
+#include <queue>
 
 class Keyboard
 {

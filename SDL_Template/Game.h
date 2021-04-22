@@ -1,10 +1,8 @@
 #pragma once
 #include "Graphics.h"
 #include "Window.h"
-#include "Timer.h"
+
 #include "Character.h"
-#include "Font.h"
-#include "SoundSystem.h"
 #include <memory>
 
 class Game
@@ -25,12 +23,8 @@ private:
 	Window& wnd;
 	Graphics gfx;
 	// ***************** USER VARIABLES ******************//
-	Character kirby;
+	std::unique_ptr<Character> kirby;
 	SDL_Rect destKirby;
-	Timer t;
-	Font font;
-	std::string text = "";
-	SoundSystem sSystem;
 	// ***************** END USER VARIABLES ************* //
 };
 

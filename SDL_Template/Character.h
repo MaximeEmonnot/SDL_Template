@@ -1,6 +1,6 @@
 #pragma once
-#include <rapidjson/document.h>
 #include <rapidjson/istreamwrapper.h>
+#include <rapidjson/document.h>
 #include <fstream>
 #include "Animation.h"
 class Character
@@ -17,15 +17,21 @@ private:
 		}
 	};
 public:
-	Character(const char* path, Graphics& gfx);
+	Character(const char* path, Graphics& gfx, SDL_Rect rect);
 
-	void					Draw(SDL_Rect rect, Graphics& gfx);
+	void					Draw(Graphics& gfx);
 	void					Update(float dt);
 
+	void                    SetPos(const IVec2D pos);
 	void					NextAnimation();
 	void					LastAnimation();
+	void					ZoomIn();
+	void					ZoomOut();
+
+	SDL_Rect				GetRect() const;
 
 private:
+	SDL_Rect				rect;
 	Sprite					sprite;
 	std::vector<Animation>	animations;
 	int						iCurSequence = 0;

@@ -1,7 +1,7 @@
 #pragma once
-#include "SDLException.h"
 #include <SDL_mixer.h>
 #include <vector>
+#include "SDLException.h"
 
 #define MUSIC 0
 #define EFFECT 1

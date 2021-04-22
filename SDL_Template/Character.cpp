@@ -1,7 +1,9 @@
 #include "Character.h"
 #include <cassert>
 
-Character::Character(const char* path, Graphics& gfx)
+Character::Character(const char* path, Graphics& gfx, SDL_Rect rect)
+	:
+	rect(rect)
 {
 	std::ifstream file;
 	file.open(path);
@@ -22,7 +24,7 @@ Character::Character(const char* path, Graphics& gfx)
 	int test = 0;
 }
 
-void Character::Draw(SDL_Rect rect, Graphics& gfx)
+void Character::Draw(Graphics& gfx)
 {
 	animations[iCurSequence].Draw(rect, gfx);
 }
@@ -30,6 +32,12 @@ void Character::Draw(SDL_Rect rect, Graphics& gfx)
 void Character::Update(float dt)
 {
 	animations[iCurSequence].Update(dt);
+}
+
+void Character::SetPos(const IVec2D pos)
+{
+	rect.x = pos.x - rect.w / 2;
+	rect.y = pos.y - rect.h / 2;
 }
 
 void Character::NextAnimation()
@@ -52,4 +60,21 @@ void Character::LastAnimation()
 	else {
 		iCurSequence--;
 	}
+}
+
+void Character::ZoomIn()
+{
+	rect.w *= 2;
+	rect.h *= 2;
+}
+
+void Character::ZoomOut()
+{
+	rect.w /= 2;
+	rect.h /= 2;
+}
+
+SDL_Rect Character::GetRect() const
+{
+	return rect;
 }

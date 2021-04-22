@@ -4,12 +4,10 @@
 Game::Game(Window& wnd)
 	:
 	wnd(wnd),
-	gfx(wnd),
-	kirby("json\\kirby.json", gfx),
-	destKirby({0, 0, 64, 64}),
-	font("ttf\\arcadeClassic.TTF", 25, gfx)
+	gfx(wnd)
 {
-	sSystem.AddSound("music\\test_laser.wav", EFFECT);
+	kirby = std::make_unique<Character>("json\\kirby.json", gfx, SDL_Rect{ 0, 0, 64, 64 });
+	wnd.sSystem.AddSound("music\\test_laser.wav", EFFECT);
 }
 
 Game::~Game()
@@ -25,24 +23,23 @@ void Game::Go()
 
 void Game::UpdateFrame()
 {
-	float dt = t.DeltaTime();
-	kirby.Update(dt);
-
-	destKirby.x = wnd.mouse.GetMousePosX(), destKirby.y = wnd.mouse.GetMousePosY();
+	float dt = wnd.t.DeltaTime();
+	kirby->Update(dt);
+	kirby->SetPos(wnd.mouse.GetMousePos());
 
 	auto e = wnd.mouse.Read();
 	switch (e) {
 	case Mouse::EventType::LPress:
-		kirby.LastAnimation();
+		kirby->LastAnimation();
 		break;
 	case Mouse::EventType::RPress:
-		kirby.NextAnimation();
+		kirby->NextAnimation();
 		break;
 	case Mouse::EventType::WheelUp:
-		destKirby.w--, destKirby.h--;
+		kirby->ZoomOut();
 		break;
 	case Mouse::EventType::WheelDown:
-		destKirby.w++, destKirby.h++;
+		kirby->ZoomIn();
 		break;
 	default:
 		break;
@@ -50,12 +47,12 @@ void Game::UpdateFrame()
 
 	auto ek = wnd.kbd.ReadKey();
 	if (ek.GetCode() == SDLK_SPACE) {
-		sSystem.PlayOneEffect(0, 0);
+		wnd.sSystem.PlayOneEffect(0, 0);
 	}
 }
 
 void Game::RenderFrame()
 {
 	gfx.SetBackgroundColor({ 255, 255, 255, 255 });
-	kirby.Draw(destKirby, gfx);
+	kirby->Draw(gfx);
 }

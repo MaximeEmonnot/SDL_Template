@@ -1,8 +1,8 @@
 #pragma once
 #include <SDL.h>
 #include <vector>
-#include "Sprite.h"
 #include "Graphics.h"
+#include "Sprite.h"
 #include "Vec2D.h"
 
 class Animation

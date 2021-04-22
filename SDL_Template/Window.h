@@ -1,7 +1,9 @@
 #pragma once
-#include "Graphics.h"
+#include "Timer.h"
 #include "Mouse.h"
 #include "Keyboard.h"
+#include "Graphics.h"
+#include "SoundSystem.h"
 #include "SDLException.h"
 
 class Window {
@@ -25,8 +27,10 @@ public:
 	bool		EventListener() noexcept;
 
 public:
+	Timer       t;
 	Mouse		mouse;
 	Keyboard	kbd;
+	SoundSystem sSystem;
 
 private:
 	SDL_Window* window;

@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL.h>
+#include "Colors.h"
 #include "Sprite.h"
 #include "Vec2D.h"
 
@@ -43,12 +44,18 @@ public:
 	void						DrawRect(int x, int y, int w, int h, SDL_Color c) {
 		DrawRect({ x, y, w, h }, c);
 	}
+	void						DrawRect(IVec2D pos, int w, int h, SDL_Color c) {
+		DrawRect(VecToRect(pos, w, h), c);
+	}
 	void						DrawRect(int x, int y, int w, int h, Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
 		DrawRect(x, y, w, h, { r, g, b, a });
 	}
 
 	// Draws a full colored rectangle at a given position.
 	void						DrawFilledRect(SDL_Rect rect, SDL_Color c);
+	void						DrawFilledRect(IVec2D pos, int w, int h, SDL_Color c) {
+		DrawFilledRect(VecToRect(pos, w, h), c);
+	}
 	void						DrawFilledRect(int x, int y, int w, int h, SDL_Color c) {
 		DrawFilledRect({ x, y, w, h }, c);
 	}

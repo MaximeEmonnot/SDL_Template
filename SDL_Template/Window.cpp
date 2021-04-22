@@ -14,8 +14,8 @@ Window::Window()
 	if (surf == nullptr) {
 		throw Exception(__FILE__, __LINE__, "An error has been caught during Icon loading.\nPlease check filename (MUST be \"icon.png\").");
 	}
-	SDL_ShowCursor(0);
 	SDL_SetWindowIcon(window, surf);
+	SDL_ShowCursor(1);
 }
 
 Window::~Window()

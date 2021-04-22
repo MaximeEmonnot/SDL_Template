@@ -3,7 +3,7 @@
 #include "Window.h"
 #include <memory>
 // ***** USER INCLUDES ***** //
-
+#include "Character.h"
 // *** END USER INCLUDES *** //
 
 
@@ -25,7 +25,7 @@ private:
 	Window& wnd;
 	Graphics gfx;
 	// ***************** USER VARIABLES ******************//
-	
+	std::unique_ptr<Character> kirby;
 	// ***************** END USER VARIABLES ************* //
 };
 

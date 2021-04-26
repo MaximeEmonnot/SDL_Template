@@ -10,3 +10,9 @@
 #define WHITE SDL_Color({255, 255, 255, 255})
 #define GRAY SDL_Color({128, 128, 128, 255})
 #define LIGHTGRAY SDL_Color({185, 185, 185, 255})
+
+template <typename T>
+SDL_Color BlendColor(const SDL_Color& c0, const SDL_Color& c1, T percentage) {
+	SDL_Color output = { (c1.r - c0.r) * percentage + c0.r, (c1.g - c0.g) * percentage + c0.g, (c1.b - c0.b) * percentage + c0.b, (c1.a - c0.a) * percentage + c0.a };
+	return output;
+}

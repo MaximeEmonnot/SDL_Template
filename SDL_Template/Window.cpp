@@ -46,11 +46,11 @@ bool Window::EventListener() noexcept
 			break;
 			// *************** BEGIN KEYBOARD EVENTS *************** //
 		case SDL_KEYDOWN:
-			kbd.OnKeyPressed(event.key.keysym.sym);
+			kbd.OnKeyPressed(event.key.keysym.scancode);
 			kbd.OnChar(event.key.keysym.sym);
 			break;
 		case SDL_KEYUP:
-			kbd.OnKeyReleased(event.key.keysym.sym);
+			kbd.OnKeyReleased(event.key.keysym.scancode);
 			break;
 			// ***************** END KEYBOARD EVENTS *************** //
 

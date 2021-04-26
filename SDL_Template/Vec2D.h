@@ -109,3 +109,13 @@ template<typename T>
 SDL_Rect VecToRect(const Vec2D<T>& topLeft, int width, int height) {
 	return { topLeft.x, topLeft.y, width, height };
 }
+
+template<typename T>
+bool RectContainsVec(const SDL_Rect& rect, Vec2D<T>& pos) {
+	return rect.x <= pos.x && (rect.x + rect.w) >= pos.x && rect.y <= pos.y && (rect.y + rect.h) >= pos.y;
+}
+
+template<typename T>
+Vec2D<T> GetMiddle(const SDL_Rect& rect) {
+	return Vec2D<T>(rect.x + rect.w / 2, rect.y + rect.h / 2);
+}

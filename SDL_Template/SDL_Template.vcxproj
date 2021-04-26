@@ -118,13 +118,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\includes\RapidJSON\;..\includes\SDL2\SDL2_base\include\;..\includes\SDL2\SDL2_image\include\;..\includes\SDL2\SDL2_mixer\include\;..\includes\SDL2\SDL2_ttf\include\;..\includes\SDL2\SDL2_net\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\includes\RapidJSON\;..\includes\SDL2\SDL2_base\include\;..\includes\SDL2\SDL2_image\include\;..\includes\SDL2\SDL2_mixer\include\;..\includes\SDL2\SDL2_ttf\include\;..\includes\SDL2\SDL2_net\include\;..\includes\ICUE\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\includes\SDL2\SDL2_base\lib\x64\;..\includes\SDL2\SDL2_image\lib\x64\;..\includes\SDL2\SDL2_mixer\lib\x64\;..\includes\SDL2\SDL2_ttf\lib\x64\;..\includes\SDL2\SDL2_net\lib\x64\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;SDL2_net.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\includes\SDL2\SDL2_base\lib\x64\;..\includes\SDL2\SDL2_image\lib\x64\;..\includes\SDL2\SDL2_mixer\lib\x64\;..\includes\SDL2\SDL2_ttf\lib\x64\;..\includes\SDL2\SDL2_net\lib\x64\;..\includes\ICUE\lib\x64\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;SDL2_net.lib;CUESDK.x64_2017.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

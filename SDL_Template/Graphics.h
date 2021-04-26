@@ -70,6 +70,7 @@ public:
 	void						DrawSprite(SDL_Rect destRect, SDL_Rect srcRect, const Sprite& s);
 
 private:
+
 	SDL_Renderer*				renderer;
 
 public:

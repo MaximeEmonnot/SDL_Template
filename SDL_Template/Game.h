@@ -25,7 +25,8 @@ private:
 	Window& wnd;
 	Graphics gfx;
 	// ***************** USER VARIABLES ******************//
-	
+	static constexpr SDL_Color colors[10] = { BLACK, RED, GREEN, BLUE, MAGENTA, CYAN, YELLOW, WHITE, GRAY, LIGHTGRAY};
+	int currentIndex = 0;
 	// ***************** END USER VARIABLES ************* //
 };
 

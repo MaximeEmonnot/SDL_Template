@@ -81,6 +81,23 @@ void Keyboard::SetKeyColorByPosition(IVec2D pos, SDL_Color c)
 	}
 }
 
+void Keyboard::SetKeyColorByRect(SDL_Rect rect, SDL_Color c)
+{
+	auto itr = ledPositions.find(rect);
+	auto ledColor = CorsairLedColor{ itr->second, c.r, c.g, c.b };
+	CorsairSetLedsColors(1, &ledColor);
+}
+
+void Keyboard::FadeKeyColorTo(SDL_Rect rect, SDL_Color c, float alpha)
+{
+	auto itr = ledPositions.find(rect);
+	auto currentLedColor = CorsairLedColor{ itr->second, 0, 0, 0 };
+	CorsairGetLedsColors(1, &currentLedColor);
+	SDL_Color newColor = BlendColor(SDL_Color({ (Uint8)currentLedColor.r, (Uint8)currentLedColor.g, (Uint8)currentLedColor.b, 255 }), c, alpha);
+	auto newLedColor = CorsairLedColor{ itr->second, newColor.r, newColor.g, newColor.b };
+	CorsairSetLedsColors(1, &newLedColor);
+}
+
 SDL_Color Keyboard::GetKeyColorByPosition(SDL_Rect rect)
 {
 	auto itr = ledPositions.find(rect);
@@ -91,6 +108,12 @@ SDL_Color Keyboard::GetKeyColorByPosition(SDL_Rect rect)
 	output.g = ledColor.g;
 	output.b = ledColor.b;
 	return output;
+}
+
+SDL_Rect Keyboard::GetKeyRect(SDL_Scancode kCode)
+{
+	auto itr = std::find_if(ledPositions.begin(), ledPositions.end(), [&](const auto& pair) { return pair.second == SDLKeyToCorsairId(kCode); });
+	return itr->first;
 }
 
 std::vector<SDL_Rect> Keyboard::GetKeyboardRect() const

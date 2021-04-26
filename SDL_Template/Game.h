@@ -3,7 +3,7 @@
 #include "Window.h"
 #include <memory>
 // ***** USER INCLUDES ***** //
-
+#include "Circle.h"
 // *** END USER INCLUDES *** //
 
 
@@ -25,7 +25,8 @@ private:
 	Window& wnd;
 	Graphics gfx;
 	// ***************** USER VARIABLES ******************//
-	static constexpr SDL_Color colors[10] = { BLACK, RED, GREEN, BLUE, MAGENTA, CYAN, YELLOW, WHITE, GRAY, LIGHTGRAY};
+	std::vector<FCircle> circles;
+	static constexpr SDL_Color colors[9] = { RED, GREEN, BLUE, MAGENTA, CYAN, YELLOW, WHITE, GRAY, LIGHTGRAY};
 	int currentIndex = 0;
 	// ***************** END USER VARIABLES ************* //
 };

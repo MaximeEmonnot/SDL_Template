@@ -79,8 +79,11 @@ public:
 	void                            FlushKeyColors();
 	void							SetKeyColor(SDL_Scancode kCode, SDL_Color c);
 	void                            SetKeyColorByPosition(IVec2D pos, SDL_Color c);
+	void                            SetKeyColorByRect(SDL_Rect rect, SDL_Color c);
+	void                            FadeKeyColorTo(SDL_Rect rect, SDL_Color c, float alpha = .5f);
 
 	SDL_Color                       GetKeyColorByPosition(SDL_Rect rect);
+	SDL_Rect                        GetKeyRect(SDL_Scancode kCode);
 	std::vector<SDL_Rect>           GetKeyboardRect() const;
 
 private:

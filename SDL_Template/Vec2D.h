@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL_rect.h>
+#include <cmath>
 template <typename T>
 class Vec2D {
 public:
@@ -9,6 +10,12 @@ public:
 		x(x), 
 		y(y) 
 	{}
+	Vec2D(Vec2D pos0, Vec2D pos1)
+		:
+		x(pos1.x - pos0.x),
+		y(pos1.y - pos0.y)
+	{
+	}
 	Vec2D& operator= (const Vec2D& rhs) {
 		x = rhs.x;
 		y = rhs.y;
@@ -66,6 +73,10 @@ public:
 		return !(*this == rhs);
 	}
 
+	float GetLength() const {
+		return sqrtf(x * x + y * y);
+	}
+
 public:
 	T x = (T)0;
 	T y = (T)0;
@@ -118,4 +129,10 @@ bool RectContainsVec(const SDL_Rect& rect, Vec2D<T>& pos) {
 template<typename T>
 Vec2D<T> GetMiddle(const SDL_Rect& rect) {
 	return Vec2D<T>(rect.x + rect.w / 2, rect.y + rect.h / 2);
+}
+
+template<typename T>
+float Distance(const Vec2D<T>& lhs, const Vec2D<T>& rhs) {
+	Vec2D<T> v(lhs, rhs);
+	return v.GetLength();
 }

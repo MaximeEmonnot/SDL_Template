@@ -11,7 +11,7 @@ Window::Window()
 	if (window == NULL) {
 		throw Exception(__FILE__, __LINE__, "An error has been caught during Window Creation.");
 	}
-	SDL_Surface* surf = IMG_Load("icon.png");
+	SDL_Surface* surf = IMG_Load("Images\\icon.png");
 	if (surf == nullptr) {
 		throw Exception(__FILE__, __LINE__, "An error has been caught during Icon loading.\nPlease check filename (MUST be \"icon.png\").");
 	}

@@ -26,9 +26,12 @@ private:
 	Window& wnd;
 	Graphics gfx;
 	// ***************** USER VARIABLES ******************//
-	std::vector<FCircle> circles;
-	static constexpr SDL_Color colors[9] = { RED, GREEN, BLUE, MAGENTA, CYAN, YELLOW, WHITE, GRAY, LIGHTGRAY};
-	int currentIndex = 0;
+	int kbdWidth;
+	int kbdHeight;
+	SDL_Rect squarePlayer;
+	SDL_Rect squareEnemy;
+	float impulsionForce = 10.0f;
+	bool lost = false;
 	// ***************** END USER VARIABLES ************* //
 };
 

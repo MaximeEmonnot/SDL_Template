@@ -74,7 +74,7 @@ private:
 	SDL_Renderer*				renderer;
 
 public:
-	static constexpr int		width = 800;
-	static constexpr int		height = 600;
+	static constexpr int		width = 100;
+	static constexpr int		height = 25;
 	static constexpr SDL_Rect	screenRect = { 0, 0, width, height };
 };

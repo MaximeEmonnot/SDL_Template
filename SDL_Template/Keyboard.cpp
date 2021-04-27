@@ -20,6 +20,7 @@ Keyboard::Keyboard()
 		rectKeys.push_back(rTemp);
 		ledPositions.insert(std::pair<SDL_Rect,CorsairLedId>(rTemp, pTemp.ledId));
 	}
+	keyboardWidth = maxX, keyboardHeight = maxY;
 }
 
 Keyboard::~Keyboard()
@@ -28,9 +29,9 @@ Keyboard::~Keyboard()
 	Flush();
 }
 
-bool Keyboard::KeyIsPressed(SDL_Keycode kCode) const
+bool Keyboard::KeyIsPressed(SDL_Scancode kCode) const
 {
-	return keystates[SDL_GetScancodeFromKey(kCode)];
+	return keystates[kCode];
 }
 
 Keyboard::Event Keyboard::ReadKey()
@@ -66,13 +67,18 @@ void Keyboard::FlushKeyColors()
 	}
 }
 
+void Keyboard::SetKeyboardColor(SDL_Color c)
+{
+	for (auto& led : ledPositions) {
+		auto ledColor = CorsairLedColor{ led.second, c.r, c.g, c.b };
+		CorsairSetLedsColors(1, &ledColor);
+	}
+}
+
 void Keyboard::SetKeyColor(SDL_Scancode kCode, SDL_Color c)
 {
-	auto changeColor = [&]() { 	auto ledColor = CorsairLedColor{ SDLKeyToCorsairId(kCode), c.r, c.g, c.b };
+	auto ledColor = CorsairLedColor{ SDLKeyToCorsairId(kCode), c.r, c.g, c.b };
 	CorsairSetLedsColors(1, &ledColor);
-	};
-	std::thread t1(changeColor);
-	t1.join();
 }
 
 void Keyboard::SetKeyColorByPosition(IVec2D pos, SDL_Color c)
@@ -124,14 +130,29 @@ std::vector<SDL_Rect> Keyboard::GetKeyboardRect() const
 	return rectKeys;
 }
 
+CorsairLedId Keyboard::GetLedIdFrom(SDL_Rect rect) const
+{
+	return ledPositions.find(rect)->second;
+}
+
 bool Keyboard::IsCorsairKeyboard() const
 {
 	return isCorsairKeyboard;
 }
 
+int Keyboard::GetKeyboardWidth() const
+{
+	return keyboardWidth;
+}
+
+int Keyboard::GetKeyboardHeight() const
+{
+	return keyboardHeight;
+}
+
 void Keyboard::OnKeyPressed(SDL_Scancode code)
 {
-	keystates[SDL_GetScancodeFromKey(code)] = true;
+	keystates[code] = true;
 	bufferEvents.push(Event(code, Event::Type::Pressed));
 	TrimBuffer(bufferEvents);
 }

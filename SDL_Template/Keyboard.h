@@ -69,7 +69,7 @@ public:
 	~Keyboard();
 
 	// Given a keycode, returns true if the key is pressed, false otherwise.
-	bool							KeyIsPressed(SDL_Keycode kCode) const;
+	bool							KeyIsPressed(SDL_Scancode kCode) const;
 	// Returns the last key pressed.
 	Event							ReadKey();
 	// Returns the last character registered.
@@ -78,6 +78,7 @@ public:
 	bool							KeyIsEmpty() const;
 
 	void                            FlushKeyColors();
+	void                            SetKeyboardColor(SDL_Color c);
 	void							SetKeyColor(SDL_Scancode kCode, SDL_Color c);
 	void                            SetKeyColorByPosition(IVec2D pos, SDL_Color c);
 	void                            SetKeyColorByRect(SDL_Rect rect, SDL_Color c);
@@ -86,8 +87,11 @@ public:
 	SDL_Color                       GetKeyColorByPosition(SDL_Rect rect);
 	SDL_Rect                        GetKeyRect(SDL_Scancode kCode);
 	std::vector<SDL_Rect>           GetKeyboardRect() const;
+	CorsairLedId                    GetLedIdFrom(SDL_Rect rect) const;
 
 	bool                            IsCorsairKeyboard() const;
+	int								GetKeyboardWidth() const;
+	int								GetKeyboardHeight() const;
 
 private:
 	void							OnKeyPressed(SDL_Scancode code);
@@ -108,5 +112,7 @@ private:
 	std::unordered_map<SDL_Rect, CorsairLedId> ledPositions;
 	std::vector<SDL_Rect>           rectKeys;
 	bool                            isCorsairKeyboard;
+	int								keyboardWidth;
+	int								keyboardHeight;
 };
 

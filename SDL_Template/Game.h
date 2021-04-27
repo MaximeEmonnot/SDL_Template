@@ -14,6 +14,7 @@ public:
 	~Game();
 
 	void Go();
+	void ComputeCorsairColors();
 
 private:
 	void UpdateFrame();

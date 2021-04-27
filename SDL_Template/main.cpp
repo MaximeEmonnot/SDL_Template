@@ -4,6 +4,7 @@
 #include <crtdbg.h>
 #endif
 
+#include <thread>
 #include "Game.h"
 
 int main(int argc, char* argv[])
@@ -12,9 +13,12 @@ int main(int argc, char* argv[])
 		Window wnd;
 		try {
 			Game theGame(wnd);
+			auto gameCCC = [&]() { while (wnd.EventListener()) { theGame.ComputeCorsairColors(); } };
+			std::thread	t(gameCCC);
 			while (wnd.EventListener()) {
 				theGame.Go();
 			}
+			t.join();
 		}
 		catch (const SDLException& e) {
 			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, e.GetType().c_str(), e.GetMessage().c_str(), NULL);

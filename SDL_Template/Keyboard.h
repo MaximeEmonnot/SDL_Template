@@ -66,6 +66,7 @@ public:
 
 public:
 	Keyboard();
+	~Keyboard();
 
 	// Given a keycode, returns true if the key is pressed, false otherwise.
 	bool							KeyIsPressed(SDL_Keycode kCode) const;
@@ -86,6 +87,8 @@ public:
 	SDL_Rect                        GetKeyRect(SDL_Scancode kCode);
 	std::vector<SDL_Rect>           GetKeyboardRect() const;
 
+	bool                            IsCorsairKeyboard() const;
+
 private:
 	void							OnKeyPressed(SDL_Scancode code);
 	void							OnKeyReleased(SDL_Scancode code);
@@ -104,7 +107,6 @@ private:
 	std::queue<char>				bufferChar;
 	std::unordered_map<SDL_Rect, CorsairLedId> ledPositions;
 	std::vector<SDL_Rect>           rectKeys;
-	double                          xFactor;
-	double                          yFactor;
+	bool                            isCorsairKeyboard;
 };
 

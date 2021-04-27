@@ -35,4 +35,5 @@ public:
 private:
 	SDL_Window* window;
 	SDL_Event	event;
+	bool        running;
 };

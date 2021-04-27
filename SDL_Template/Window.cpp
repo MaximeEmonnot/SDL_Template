@@ -3,6 +3,7 @@
 Window::Window()
 {
 	event.type = SDL_FIRSTEVENT;
+	running = true;
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		throw Exception(__FILE__, __LINE__, "An error has been caught during SDL Initialisation.");
 	}
@@ -31,7 +32,7 @@ bool Window::EventListener() noexcept
 	while (SDL_PollEvent(&event)) {
 		switch (event.type) {
 		case SDL_QUIT:
-			return false;
+			running = false;
 			break;
 		case SDL_WINDOWEVENT:
 		{
@@ -88,5 +89,5 @@ bool Window::EventListener() noexcept
 			break;
 		}
 	}
-	return true;
+	return running;
 }

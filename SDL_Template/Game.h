@@ -26,12 +26,7 @@ private:
 	Window& wnd;
 	Graphics gfx;
 	// ***************** USER VARIABLES ******************//
-	int kbdWidth;
-	int kbdHeight;
-	SDL_Rect squarePlayer;
-	SDL_Rect squareEnemy;
-	float impulsionForce = 10.0f;
-	bool lost = false;
+
 	// ***************** END USER VARIABLES ************* //
 };
 

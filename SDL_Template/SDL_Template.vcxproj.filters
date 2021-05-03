@@ -30,9 +30,6 @@
     <ClCompile Include="Engine\GraphicsManager\Animation.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GraphicsManager\Character.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\GraphicsManager\Font.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
@@ -40,9 +37,6 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GraphicsManager\Sprite.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\CoreSystem\Game.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="Engine\CoreSystem\Timer.cpp">
@@ -55,6 +49,12 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="Engine\SoundManager\Effect.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\MainGame\Character.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\MainGame\Game.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>

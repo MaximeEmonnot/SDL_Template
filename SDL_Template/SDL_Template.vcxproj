@@ -19,17 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Engine\CoreSystem\Game.cpp" />
     <ClCompile Include="Engine\CoreSystem\Timer.cpp" />
     <ClCompile Include="Engine\CoreSystem\Window.cpp" />
     <ClCompile Include="Engine\GraphicsManager\Animation.cpp" />
-    <ClCompile Include="Engine\GraphicsManager\Character.cpp" />
     <ClCompile Include="Engine\GraphicsManager\Font.cpp" />
     <ClCompile Include="Engine\GraphicsManager\Graphics.cpp" />
     <ClCompile Include="Engine\GraphicsManager\Sprite.cpp" />
     <ClCompile Include="Engine\InputManager\Keyboard.cpp" />
     <ClCompile Include="Engine\InputManager\Mouse.cpp" />
     <ClCompile Include="Engine\main.cpp" />
+    <ClCompile Include="Engine\MainGame\Character.cpp" />
+    <ClCompile Include="Engine\MainGame\Game.cpp" />
     <ClCompile Include="Engine\SoundManager\Effect.cpp" />
     <ClCompile Include="Engine\SoundManager\Music.cpp" />
     <ClCompile Include="Engine\SoundManager\SoundSystem.cpp" />

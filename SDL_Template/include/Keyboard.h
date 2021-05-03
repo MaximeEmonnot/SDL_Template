@@ -31,35 +31,12 @@ class Keyboard
 private:
 	friend class Window;
 public:
-	class Event {
-	public:
+	struct Event {
 		enum class Type {
 			Pressed,
 			Released,
 			None
 		};
-	public:
-		Event() 
-			:
-			type(Type::None)
-		{
-		}
-		Event(SDL_Scancode kCode, Type type)
-			:
-			keycode(kCode),
-			type(type) 
-		{
-		}
-		bool IsPressed() const {
-			return type == Type::Pressed;
-		}
-		bool IsReleased() const {
-			return type == Type::Released;
-		}
-		SDL_Scancode GetCode() const {
-			return keycode;
-		}
-	private:
 		SDL_Scancode keycode = SDL_SCANCODE_UNKNOWN;
 		Type type;
 	};

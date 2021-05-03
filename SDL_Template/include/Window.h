@@ -9,17 +9,6 @@
 class Window {
 private:
 	friend Graphics::Graphics(Window&);
-private:
-	class Exception : public SDLException {
-	public:
-		Exception(const std::string& file, unsigned int line, const std::string& note) noexcept
-			:
-			SDLException(file, line, note)
-		{}
-		inline std::string GetType() const noexcept override {
-			return "SDL Window Exception caught";
-		}
-	};
 public:
 	Window();
 	~Window();

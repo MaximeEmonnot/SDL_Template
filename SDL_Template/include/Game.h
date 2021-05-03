@@ -3,7 +3,7 @@
 #include "Window.h"
 #include <memory>
 // ***** USER INCLUDES ***** //
-#include "Circle.h"
+
 // *** END USER INCLUDES *** //
 
 

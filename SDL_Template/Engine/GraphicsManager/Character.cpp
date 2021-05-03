@@ -1,14 +1,14 @@
 #include "Character.h"
 #include <cassert>
 
-Character::Character(const char* path, Graphics& gfx, SDL_Rect rect)
+Character::Character(Graphics& gfx, SDL_Rect rect)
 	:
 	rect(rect)
 {
 	std::ifstream file;
-	file.open(path);
+	file.open("json\\kirby.json");
 	if (!file)
-		throw Exception(__FILE__, __LINE__, "An error has been caught during JSON File Opening.\nPlease check JSON file path.");
+		throw SDLException("SDL JSON Exception caught", __FILE__, __LINE__, "An error has been caught during JSON File Opening.\nPlease check JSON file path.");
 	rapidjson::IStreamWrapper isw(file);
 	rapidjson::Document doc;
 	doc.ParseStream(isw);

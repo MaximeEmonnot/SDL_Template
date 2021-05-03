@@ -2,69 +2,14 @@
 #include <SDL_mixer.h>
 #include <vector>
 #include "SDLException.h"
+#include "Effect.h"
+#include "Music.h"
 
 #define MUSIC 0
 #define EFFECT 1
 
 class SoundSystem
 {
-private:
-	class Exception : public SDLException {
-	public:
-		Exception(const std::string& file, unsigned int line, const std::string& note) noexcept
-			:
-			SDLException(file, line, note)
-		{}
-		inline std::string GetType() const noexcept override {
-			return "SDL Sound System Exception caught";
-		}
-	};
-private:
-	class Music {
-	public:
-		Music(const char* path, int index) {
-			this->index = index;
-			music = Mix_LoadMUS(path);
-			if (music == NULL)
-				throw Exception(__FILE__, __LINE__, "An error has been caught during Music Initialisation.\nPlease check file path.");
-		}
-		~Music() {
-			Mix_FreeMusic(music);
-		}
-		void Play(int loops) {
-			Mix_PlayMusic(music, loops);
-		}
-		void Stop() {
-			Mix_PauseMusic();
-		}
-		inline int GetIndex() const { return index; }
-	private:
-		int index = 0;
-		Mix_Music* music;
-	};
-	class Effect {
-	public:
-		Effect(const char* path, int index) {
-			this->index = index;
-			effect = Mix_LoadWAV(path);
-			if (effect == NULL)
-				throw Exception(__FILE__, __LINE__, "An error has been caught during SoundEffect Initialisation.\nPlease check file path.");
-		}
-		~Effect() {
-			Mix_FreeChunk(effect);
-		}
-		void Play(int loops) {
-			Mix_PlayChannel(-1, effect, loops);
-		}
-		void Stop() {
-			Mix_Pause(-1);
-		}
-		inline int GetIndex() const { return index; }
-	private:
-		int index = 0;
-		Mix_Chunk* effect;
-	};
-
 public:
 	SoundSystem();
 	~SoundSystem();
@@ -101,7 +46,7 @@ private:
 private:
 	int									lastMusicIndex = 0;
 	int									lastEffectIndex = 0;
-	std::vector<SoundSystem::Music>		musicList;
-	std::vector<SoundSystem::Effect>	effectList;
+	std::vector<Music>					musicList;
+	std::vector<Effect>					effectList;
 };
 

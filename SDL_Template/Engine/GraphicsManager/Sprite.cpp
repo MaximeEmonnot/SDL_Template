@@ -10,7 +10,7 @@ Sprite::Sprite(const char* path, SDL_Renderer* renderer)
 {
     SDL_Surface* surf = IMG_Load(path);
     if (surf == nullptr)
-        throw Exception(__FILE__, __LINE__, "An error has been caught during SDL Surface initialisation.\nPlease check sprite path.");
+        throw SDLException("SDL Sprite Exception", __FILE__, __LINE__, "An error has been caught during SDL Surface initialisation.\nPlease check sprite path.");
     tex = SDL_CreateTextureFromSurface(renderer, surf);
     width = surf->w, height = surf->h;
     SDL_FreeSurface(surf);
@@ -22,7 +22,7 @@ Sprite::Sprite(SDL_Surface* surf, SDL_Renderer* renderer, int width, int height)
     height(height)
 {
     if (surf == nullptr)
-        throw Exception(__FILE__, __LINE__, "An error has been caught during SDL Surface initialisation.\nPlease check sprite path.");
+        throw SDLException("SDL Sprite Exception", __FILE__, __LINE__, "An error has been caught during SDL Surface initialisation.\nPlease check sprite path.");
     tex = SDL_CreateTextureFromSurface(renderer, surf);
 }
 
@@ -51,7 +51,7 @@ void Sprite::InitSurface(const char* path, SDL_Renderer* renderer)
 {
     SDL_Surface* surf = IMG_Load(path);
     if (surf == nullptr)
-        throw Exception(__FILE__, __LINE__, "An error has been caught during SDL Surface initialisation.\nPlease check sprite path.");
+        throw SDLException("SDL Sprite Exception", __FILE__, __LINE__, "An error has been caught during SDL Surface initialisation.\nPlease check sprite path.");
     tex = SDL_CreateTextureFromSurface(renderer, surf);
     width = surf->w, height = surf->h;
     SDL_FreeSurface(surf);

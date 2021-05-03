@@ -2,20 +2,8 @@
 #include <SDL_ttf.h>
 #include "Graphics.h"
 
-
 class Font
 {
-private:
-	class Exception : public SDLException {
-	public:
-		Exception(const std::string& file, unsigned int line, const std::string& note) noexcept
-			:
-			SDLException(file, line, note)
-		{}
-		inline std::string GetType() const noexcept override {
-			return "SDL TTF Exception caught";
-		}
-	};
 public:
 	Font(const char* path, int size, Graphics& gfx);
 	~Font();

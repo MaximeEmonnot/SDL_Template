@@ -5,10 +5,10 @@ Font::Font(const char* path, int size, Graphics& gfx)
 	gfx(gfx)
 {
 	if (TTF_Init() < 0)
-		throw Exception(__FILE__, __LINE__, "An error has been caught during TTF Initialisation.");
+		throw SDLException("SDL TTF Exception caught", __FILE__, __LINE__, "An error has been caught during TTF Initialisation.");
 	font = TTF_OpenFont(path, size);
 	if (font == NULL)
-		throw Exception(__FILE__, __LINE__, "An error has been caught during TTF Font Opening.\nPlease check TTF file path.");
+		throw SDLException("SDL TTF Exception caught", __FILE__, __LINE__, "An error has been caught during TTF Font Opening.\nPlease check TTF file path.");
 }
 
 Font::~Font()

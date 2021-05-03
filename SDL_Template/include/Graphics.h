@@ -1,21 +1,10 @@
 #pragma once
 #include <SDL.h>
-#include "Colors.h"
+#include "DColors.h"
 #include "Sprite.h"
 #include "Vec2D.h"
 
 class Graphics {
-private:
-	class Exception : public SDLException {
-	public:
-		Exception(const std::string& file, unsigned int line, const std::string& note) noexcept
-			:
-			SDLException(file, line, note)
-		{}
-		inline std::string GetType() const noexcept override {
-			return "SDL Graphics Exception caught";
-		}
-	};
 public:
 	Graphics(class Window& window);
 	~Graphics();

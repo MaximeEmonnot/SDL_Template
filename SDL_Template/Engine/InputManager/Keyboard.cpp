@@ -153,14 +153,14 @@ int Keyboard::GetKeyboardHeight() const
 void Keyboard::OnKeyPressed(SDL_Scancode code)
 {
 	keystates[code] = true;
-	bufferEvents.push(Event(code, Event::Type::Pressed));
+	bufferEvents.push({ code, Event::Type::Pressed });
 	TrimBuffer(bufferEvents);
 }
 
 void Keyboard::OnKeyReleased(SDL_Scancode code)
 {
 	keystates[code] = false;
-	bufferEvents.push(Event(code, Event::Type::Released));
+	bufferEvents.push({ code, Event::Type::Released });
 	TrimBuffer(bufferEvents);
 }
 

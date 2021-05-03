@@ -18,6 +18,41 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Engine\CoreSystem\Game.cpp" />
+    <ClCompile Include="Engine\CoreSystem\Timer.cpp" />
+    <ClCompile Include="Engine\CoreSystem\Window.cpp" />
+    <ClCompile Include="Engine\GraphicsManager\Animation.cpp" />
+    <ClCompile Include="Engine\GraphicsManager\Character.cpp" />
+    <ClCompile Include="Engine\GraphicsManager\Font.cpp" />
+    <ClCompile Include="Engine\GraphicsManager\Graphics.cpp" />
+    <ClCompile Include="Engine\GraphicsManager\Sprite.cpp" />
+    <ClCompile Include="Engine\InputManager\Keyboard.cpp" />
+    <ClCompile Include="Engine\InputManager\Mouse.cpp" />
+    <ClCompile Include="Engine\main.cpp" />
+    <ClCompile Include="Engine\SoundManager\Effect.cpp" />
+    <ClCompile Include="Engine\SoundManager\Music.cpp" />
+    <ClCompile Include="Engine\SoundManager\SoundSystem.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Animation.h" />
+    <ClInclude Include="include\Character.h" />
+    <ClInclude Include="include\Circle.h" />
+    <ClInclude Include="include\DColors.h" />
+    <ClInclude Include="include\Effect.h" />
+    <ClInclude Include="include\Font.h" />
+    <ClInclude Include="include\Game.h" />
+    <ClInclude Include="include\Graphics.h" />
+    <ClInclude Include="include\Keyboard.h" />
+    <ClInclude Include="include\Mouse.h" />
+    <ClInclude Include="include\Music.h" />
+    <ClInclude Include="include\SDLException.h" />
+    <ClInclude Include="include\SoundSystem.h" />
+    <ClInclude Include="include\Sprite.h" />
+    <ClInclude Include="include\Timer.h" />
+    <ClInclude Include="include\Vec2D.h" />
+    <ClInclude Include="include\Window.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -118,7 +153,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\includes\RapidJSON\;..\includes\SDL2\SDL2_base\include\;..\includes\SDL2\SDL2_image\include\;..\includes\SDL2\SDL2_mixer\include\;..\includes\SDL2\SDL2_ttf\include\;..\includes\SDL2\SDL2_net\include\;..\includes\ICUE\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\includes\RapidJSON\;..\includes\SDL2\SDL2_base\include\;..\includes\SDL2\SDL2_image\include\;..\includes\SDL2\SDL2_mixer\include\;..\includes\SDL2\SDL2_ttf\include\;..\includes\SDL2\SDL2_net\include\;..\includes\ICUE\include\;.\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -142,43 +177,12 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\includes\SDL2\SDL2_base\lib\x64\;..\includes\SDL2\SDL2_image\lib\x64\;..\includes\SDL2\SDL2_mixer\lib\x64\;..\includes\SDL2\SDL2_ttf\lib\x64\;..\includes\SDL2\SDL2_net\lib\x64\;..\includes\ICUE\lib\x64\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\includes\SDL2\SDL2_base\lib\x64\;..\includes\SDL2\SDL2_image\lib\x64\;..\includes\SDL2\SDL2_mixer\lib\x64\;..\includes\SDL2\SDL2_ttf\lib\x64\;..\includes\SDL2\SDL2_net\lib\x64\;..\includes\ICUE\lib\x64\;..\SDL_Template\include\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;SDL2_net.lib;CUESDK.x64_2017.lib;%(AdditionalDependencies)kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>
       </DelayLoadDLLs>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Animation.cpp" />
-    <ClCompile Include="Character.cpp" />
-    <ClCompile Include="Font.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Graphics.cpp" />
-    <ClCompile Include="Keyboard.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Mouse.cpp" />
-    <ClCompile Include="SoundSystem.cpp" />
-    <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="Window.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Animation.h" />
-    <ClInclude Include="Character.h" />
-    <ClInclude Include="Circle.h" />
-    <ClInclude Include="Colors.h" />
-    <ClInclude Include="Font.h" />
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="Graphics.h" />
-    <ClInclude Include="Keyboard.h" />
-    <ClInclude Include="Mouse.h" />
-    <ClInclude Include="SDLException.h" />
-    <ClInclude Include="SoundSystem.h" />
-    <ClInclude Include="Sprite.h" />
-    <ClInclude Include="Timer.h" />
-    <ClInclude Include="Vec2D.h" />
-    <ClInclude Include="Window.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

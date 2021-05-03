@@ -5,15 +5,15 @@ Window::Window()
 	event.type = SDL_FIRSTEVENT;
 	running = true;
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-		throw Exception(__FILE__, __LINE__, "An error has been caught during SDL Initialisation.");
+		throw SDLException("SDL Window Exception caught", __FILE__, __LINE__, "An error has been caught during SDL Initialisation.");
 	}
 	window = SDL_CreateWindow("Template SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Graphics::width, Graphics::height, SDL_WINDOW_OPENGL);
 	if (window == NULL) {
-		throw Exception(__FILE__, __LINE__, "An error has been caught during Window Creation.");
+		throw SDLException("SDL Window Exception caught", __FILE__, __LINE__, "An error has been caught during Window Creation.");
 	}
 	SDL_Surface* surf = IMG_Load("Images\\icon.png");
 	if (surf == nullptr) {
-		throw Exception(__FILE__, __LINE__, "An error has been caught during Icon loading.\nPlease check filename (MUST be \"icon.png\").");
+		throw SDLException("SDL Window Exception caught", __FILE__, __LINE__, "An error has been caught during Icon loading.\nPlease check filename (MUST be \"icon.png\").");
 	}
 	SDL_SetWindowIcon(window, surf);
 	SDL_ShowCursor(1);

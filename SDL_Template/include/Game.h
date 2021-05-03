@@ -10,7 +10,7 @@
 class Game
 {
 public:
-	Game(Window& wnd);
+	Game(CoreSystem::Window& wnd);
 	~Game();
 
 	void Go();
@@ -23,7 +23,7 @@ private:
 
 	// ***************** END USER FUNCTIONS ************* //
 private:
-	Window& wnd;
+	CoreSystem::Window& wnd;
 	GraphicsEngine::Graphics gfx;
 	// ***************** USER VARIABLES ******************//
 

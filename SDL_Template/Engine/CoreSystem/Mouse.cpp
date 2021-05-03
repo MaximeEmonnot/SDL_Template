@@ -1,6 +1,6 @@
 #include "Mouse.h"
 
-Mouse::EventType Mouse::Read()
+CoreSystem::Mouse::EventType CoreSystem::Mouse::Read()
 {
 	if (buffer.size() > 0u) {
 		auto e = buffer.front();
@@ -12,86 +12,86 @@ Mouse::EventType Mouse::Read()
 	}
 }
 
-int Mouse::GetMousePosX() const
+int CoreSystem::Mouse::GetMousePosX() const
 {
 	return x;
 }
 
-int Mouse::GetMousePosY() const
+int CoreSystem::Mouse::GetMousePosY() const
 {
 	return y;
 }
 
-IVec2D Mouse::GetMousePos() const
+IVec2D CoreSystem::Mouse::GetMousePos() const
 {
 	return IVec2D(x, y);
 }
 
-bool Mouse::LeftIsPressed() const
+bool CoreSystem::Mouse::LeftIsPressed() const
 {
 	return leftIsPressed;
 }
 
-bool Mouse::RightIsPressed() const
+bool CoreSystem::Mouse::RightIsPressed() const
 {
 	return rightIsPressed;
 }
 
-void Mouse::OnMouseMove(int newx, int newy)
+void CoreSystem::Mouse::OnMouseMove(int newx, int newy)
 {
 	x = newx, y = newy;
 	buffer.push(EventType::Move);
 	TrimBuffer();
 }
 
-void Mouse::OnLeftPressed()
+void CoreSystem::Mouse::OnLeftPressed()
 {
 	leftIsPressed = true;
 	buffer.push(EventType::LPress);
 	TrimBuffer();
 }
 
-void Mouse::OnLeftReleased()
+void CoreSystem::Mouse::OnLeftReleased()
 {
 	leftIsPressed = false;
 	buffer.push(EventType::LRelease);
 	TrimBuffer();
 }
 
-void Mouse::OnRightPressed()
+void CoreSystem::Mouse::OnRightPressed()
 {
 	rightIsPressed = true;
 	buffer.push(EventType::RPress);
 	TrimBuffer();
 }
 
-void Mouse::OnRightReleased()
+void CoreSystem::Mouse::OnRightReleased()
 {
 	rightIsPressed = false;
 	buffer.push(EventType::RRelease);
 	TrimBuffer();
 }
 
-void Mouse::OnWheelUp()
+void CoreSystem::Mouse::OnWheelUp()
 {
 	buffer.push(EventType::WheelUp);
 	TrimBuffer();
 }
 
-void Mouse::OnWheelDown()
+void CoreSystem::Mouse::OnWheelDown()
 {
 	buffer.push(EventType::WheelDown);
 	TrimBuffer();
 }
 
-void Mouse::TrimBuffer()
+void CoreSystem::Mouse::TrimBuffer()
 {
 	if (buffer.size() > sizeBuffer) {
 		buffer.pop();
 	}
 }
 
-void Mouse::Flush()
+void CoreSystem::Mouse::Flush()
 {
 	buffer = std::queue<Mouse::EventType>();
 }

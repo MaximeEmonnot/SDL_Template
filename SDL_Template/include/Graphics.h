@@ -7,7 +7,7 @@
 namespace GraphicsEngine {
 	class Graphics {
 	public:
-		Graphics(Window& window);
+		Graphics(CoreSystem::Window& window);
 		~Graphics();
 		void						BeginRender();
 		void						EndRender();

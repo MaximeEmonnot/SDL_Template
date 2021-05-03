@@ -1,7 +1,7 @@
 #include "Game.h"
 #include <random>
 
-Game::Game(Window& wnd)
+Game::Game(CoreSystem::Window& wnd)
 	:
 	wnd(wnd),
 	gfx(wnd)

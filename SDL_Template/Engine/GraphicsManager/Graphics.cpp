@@ -1,6 +1,6 @@
 #include "Graphics.h"
 
-GraphicsEngine::Graphics::Graphics(Window& window)
+GraphicsEngine::Graphics::Graphics(CoreSystem::Window& window)
 	:
 	screenRect(window.GetScreenRect())
 {

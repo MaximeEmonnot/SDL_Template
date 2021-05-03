@@ -1,14 +1,16 @@
 #pragma once
 #include <chrono>
-class Timer
-{
-public:
-	Timer();
 
-	//Returns elapsed time since last call. Can be used in Updates functions. 
-	float DeltaTime();
+namespace CoreSystem {
+	class Timer
+	{
+	public:
+		Timer();
 
-private:
-	std::chrono::steady_clock::time_point last;
-};
+		//Returns elapsed time since last call. Can be used in Updates functions. 
+		float DeltaTime();
 
+	private:
+		std::chrono::steady_clock::time_point last;
+	};
+}

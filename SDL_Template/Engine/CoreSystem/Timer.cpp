@@ -1,11 +1,11 @@
 #include "Timer.h"
 
-Timer::Timer()
+CoreSystem::Timer::Timer()
 {
 	last = std::chrono::steady_clock::now();
 }
 
-float Timer::DeltaTime()
+float CoreSystem::Timer::DeltaTime()
 {
 	const auto old = last;
 	last = std::chrono::steady_clock::now();

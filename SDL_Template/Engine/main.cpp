@@ -10,7 +10,7 @@
 int main(int argc, char* argv[])
 {
 	try {
-		Window wnd;
+		CoreSystem::Window wnd;
 		try {
 			Game theGame(wnd);
 			auto gameCCC = [&]() { while (wnd.EventListener()) { theGame.ComputeCorsairColors(); } };

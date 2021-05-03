@@ -1,7 +1,7 @@
 #include "Window.h"
 #include "Graphics.h"
 
-Window::Window()
+CoreSystem::Window::Window()
 {
 	event.type = SDL_FIRSTEVENT;
 	running = true;
@@ -20,7 +20,7 @@ Window::Window()
 	SDL_ShowCursor(1);
 }
 
-Window::~Window()
+CoreSystem::Window::~Window()
 {
 	kbd.Flush();
 	mouse.Flush();
@@ -28,7 +28,7 @@ Window::~Window()
 	SDL_Quit();
 }
 
-bool Window::EventListener() noexcept
+bool CoreSystem::Window::EventListener() noexcept
 {
 	while (SDL_PollEvent(&event)) {
 		switch (event.type) {
@@ -93,22 +93,22 @@ bool Window::EventListener() noexcept
 	return running;
 }
 
-SDL_Window* Window::GetWindow()
+SDL_Window* CoreSystem::Window::GetWindow()
 {
 	return window;
 }
 
-const int Window::GetWidth() const
+const int CoreSystem::Window::GetWidth() const
 {
 	return width;
 }
 
-const int Window::GetHeight() const
+const int CoreSystem::Window::GetHeight() const
 {
 	return height;
 }
 
-const SDL_Rect Window::GetScreenRect() const
+const SDL_Rect CoreSystem::Window::GetScreenRect() const
 {
 	return screenRect;
 }

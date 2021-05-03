@@ -19,7 +19,7 @@ public:
 	Timer       t;
 	Mouse		mouse;
 	Keyboard	kbd;
-	SoundSystem sSystem;
+	SoundEngine::SoundSystem sSystem;
 
 private:
 	SDL_Window* window;

@@ -1,7 +1,6 @@
 #include "Effect.h"
 
-
-Effect::Effect(const char* path, int index)
+SoundEngine::Effect::Effect(const char* path, int index)
 {
 	this->index = index;
 	effect = Mix_LoadWAV(path);
@@ -9,22 +8,22 @@ Effect::Effect(const char* path, int index)
 		throw SDLException("SDL Sound System Exception caught", __FILE__, __LINE__, "An error has been caught during SoundEffect Initialisation.\nPlease check file path.");
 }
 
-Effect::~Effect()
+SoundEngine::Effect::~Effect()
 {
 	Mix_FreeChunk(effect);
 }
 
-void Effect::Play(int loops)
+void SoundEngine::Effect::Play(int loops)
 {
 	Mix_PlayChannel(-1, effect, loops);
 }
 
-void Effect::Stop()
+void SoundEngine::Effect::Stop()
 {
 	Mix_Pause(-1);
 }
 
-int Effect::GetIndex() const
+int SoundEngine::Effect::GetIndex() const
 {
 	return index;
 }

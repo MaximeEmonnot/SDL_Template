@@ -1,4 +1,5 @@
 #include "Window.h"
+#include "Graphics.h"
 
 Window::Window()
 {
@@ -7,7 +8,7 @@ Window::Window()
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		throw SDLException("SDL Window Exception caught", __FILE__, __LINE__, "An error has been caught during SDL Initialisation.");
 	}
-	window = SDL_CreateWindow("Template SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Graphics::width, Graphics::height, SDL_WINDOW_OPENGL);
+	window = SDL_CreateWindow("Template SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL);
 	if (window == NULL) {
 		throw SDLException("SDL Window Exception caught", __FILE__, __LINE__, "An error has been caught during Window Creation.");
 	}
@@ -90,4 +91,24 @@ bool Window::EventListener() noexcept
 		}
 	}
 	return running;
+}
+
+SDL_Window* Window::GetWindow()
+{
+	return window;
+}
+
+const int Window::GetWidth() const
+{
+	return width;
+}
+
+const int Window::GetHeight() const
+{
+	return height;
+}
+
+const SDL_Rect Window::GetScreenRect() const
+{
+	return screenRect;
 }

@@ -1,12 +1,12 @@
 #pragma once
-#include <SDL.h>
+#include "Window.h"
 #include "DColors.h"
 #include "Sprite.h"
 #include "Vec2D.h"
 
 class Graphics {
 public:
-	Graphics(class Window& window);
+	Graphics(Window& window);
 	~Graphics();
 	void						BeginRender();
 	void						EndRender();
@@ -59,11 +59,6 @@ public:
 	void						DrawSprite(SDL_Rect destRect, SDL_Rect srcRect, const Sprite& s);
 
 private:
-
 	SDL_Renderer*				renderer;
-
-public:
-	static constexpr int		width = 100;
-	static constexpr int		height = 25;
-	static constexpr SDL_Rect	screenRect = { 0, 0, width, height };
+	const SDL_Rect              screenRect;
 };

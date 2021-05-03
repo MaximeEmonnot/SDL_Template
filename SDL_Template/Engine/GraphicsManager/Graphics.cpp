@@ -31,7 +31,7 @@ SDL_Renderer* GraphicsEngine::Graphics::GetRenderer()
 	return renderer;
 }
 
-void GraphicsEngine::Graphics::DrawPixel(IVec2D pos, SDL_Color c)
+void GraphicsEngine::Graphics::DrawPixel(Maths::IVec2D pos, SDL_Color c)
 {
 	SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a);
 	SDL_RenderDrawPoint(renderer, pos.x, pos.y);

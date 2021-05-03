@@ -58,7 +58,7 @@ namespace CoreSystem {
 		void                            FlushKeyColors();
 		void                            SetKeyboardColor(SDL_Color c);
 		void							SetKeyColor(SDL_Scancode kCode, SDL_Color c);
-		void                            SetKeyColorByPosition(IVec2D pos, SDL_Color c);
+		void                            SetKeyColorByPosition(Maths::IVec2D pos, SDL_Color c);
 		void                            SetKeyColorByRect(SDL_Rect rect, SDL_Color c);
 		void                            FadeKeyColorTo(SDL_Rect rect, SDL_Color c, float alpha = .5f);
 

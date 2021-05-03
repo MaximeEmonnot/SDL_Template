@@ -11,7 +11,7 @@ public:
 	void					Draw(GraphicsEngine::Graphics& gfx);
 	void					Update(float dt);
 
-	void                    SetPos(const IVec2D pos);
+	void                    SetPos(const Maths::IVec2D pos);
 	void					NextAnimation();
 	void					LastAnimation();
 	void					ZoomIn();

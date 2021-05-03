@@ -22,9 +22,9 @@ int CoreSystem::Mouse::GetMousePosY() const
 	return y;
 }
 
-IVec2D CoreSystem::Mouse::GetMousePos() const
+Maths::IVec2D CoreSystem::Mouse::GetMousePos() const
 {
-	return IVec2D(x, y);
+	return Maths::IVec2D(x, y);
 }
 
 bool CoreSystem::Mouse::LeftIsPressed() const

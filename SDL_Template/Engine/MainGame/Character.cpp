@@ -34,7 +34,7 @@ void Character::Update(float dt)
 	animations[iCurSequence].Update(dt);
 }
 
-void Character::SetPos(const IVec2D pos)
+void Character::SetPos(const Maths::IVec2D pos)
 {
 	rect.x = pos.x - rect.w / 2;
 	rect.y = pos.y - rect.h / 2;

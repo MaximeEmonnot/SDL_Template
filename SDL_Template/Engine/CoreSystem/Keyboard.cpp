@@ -81,7 +81,7 @@ void CoreSystem::Keyboard::SetKeyColor(SDL_Scancode kCode, SDL_Color c)
 	CorsairSetLedsColors(1, &ledColor);
 }
 
-void CoreSystem::Keyboard::SetKeyColorByPosition(IVec2D pos, SDL_Color c)
+void CoreSystem::Keyboard::SetKeyColorByPosition(Maths::IVec2D pos, SDL_Color c)
 {
 	auto itr = std::find_if(ledPositions.begin(), ledPositions.end(), [&](const auto& pair) { return RectContainsVec(pair.first, pos); });
 	if (itr != ledPositions.end()) {

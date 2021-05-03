@@ -30,7 +30,7 @@ namespace CoreSystem {
 		// Returns mouse position on the Y axis.
 		int							GetMousePosY() const;
 		// Returns mouse coordonates. Can be used with Vec2D.
-		IVec2D						GetMousePos() const;
+		Maths::IVec2D						GetMousePos() const;
 		// Returns true if Left Mouse Button is currently pressed, false otherwise.
 		bool						LeftIsPressed() const;
 		// Returns true if Right Mouse Button is currently pressed, false otherwise.

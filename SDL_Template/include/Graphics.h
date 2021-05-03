@@ -15,9 +15,9 @@ namespace GraphicsEngine {
 		SDL_Renderer* GetRenderer();
 
 		// Draws a colored pixel at a given position. 
-		void						DrawPixel(IVec2D pos, SDL_Color c);
+		void						DrawPixel(Maths::IVec2D pos, SDL_Color c);
 		void						DrawPixel(int x, int y, SDL_Color c) {
-			DrawPixel(IVec2D(x, y), c);
+			DrawPixel(Maths::IVec2D(x, y), c);
 		}
 		void						DrawPixel(int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
 			DrawPixel(x, y, { r, g, b, a });
@@ -34,8 +34,8 @@ namespace GraphicsEngine {
 		void						DrawRect(int x, int y, int w, int h, SDL_Color c) {
 			DrawRect({ x, y, w, h }, c);
 		}
-		void						DrawRect(IVec2D pos, int w, int h, SDL_Color c) {
-			DrawRect(VecToRect(pos, w, h), c);
+		void						DrawRect(Maths::IVec2D pos, int w, int h, SDL_Color c) {
+			DrawRect(Maths::VecToRect(pos, w, h), c);
 		}
 		void						DrawRect(int x, int y, int w, int h, Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
 			DrawRect(x, y, w, h, { r, g, b, a });
@@ -43,8 +43,8 @@ namespace GraphicsEngine {
 
 		// Draws a full colored rectangle at a given position.
 		void						DrawFilledRect(SDL_Rect rect, SDL_Color c);
-		void						DrawFilledRect(IVec2D pos, int w, int h, SDL_Color c) {
-			DrawFilledRect(VecToRect(pos, w, h), c);
+		void						DrawFilledRect(Maths::IVec2D pos, int w, int h, SDL_Color c) {
+			DrawFilledRect(Maths::VecToRect(pos, w, h), c);
 		}
 		void						DrawFilledRect(int x, int y, int w, int h, SDL_Color c) {
 			DrawFilledRect({ x, y, w, h }, c);

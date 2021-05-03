@@ -13,12 +13,15 @@ int main(int argc, char* argv[])
 		CoreSystem::Window wnd;
 		try {
 			Game theGame(wnd);
-			auto gameCCC = [&]() { while (wnd.EventListener()) { theGame.ComputeCorsairColors(); } };
-			std::thread	t(gameCCC);
+			std::thread t;
+			if (wnd.kbd.IsCorsairKeyboard()) {
+				auto gameCCC = [&]() { while (wnd.EventListener()) { theGame.ComputeCorsairColors(); } };
+				t = std::thread(gameCCC);
+			}
 			while (wnd.EventListener()) {
 				theGame.Go();
 			}
-			t.join();
+			if (t.joinable()) t.join();
 		}
 		catch (const SDLException& e) {
 			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, e.GetType().c_str(), e.GetMessage().c_str(), NULL);

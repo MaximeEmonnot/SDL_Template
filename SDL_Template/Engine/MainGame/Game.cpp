@@ -22,6 +22,9 @@ void Game::Go()
 
 void Game::ComputeCorsairColors()
 {
+	for (auto& rect : wnd.kbd.GetKeyboardRect()) {
+		wnd.kbd.SetKeyColorByRect(rect, RED);
+	}
 }
 
 void Game::UpdateFrame()

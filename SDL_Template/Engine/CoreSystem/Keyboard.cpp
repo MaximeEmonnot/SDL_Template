@@ -8,19 +8,25 @@
 CoreSystem::Keyboard::Keyboard()
 {
 	CorsairPerformProtocolHandshake();
-	CorsairRequestControl(CAM_ExclusiveLightingControl);
-	isCorsairKeyboard = true;
-	auto leds = CorsairGetLedPositions();
-	double maxX = 0.0, maxY = 0.0;
-	for (int i = 0; i < leds->numberOfLed; i++) {
-		auto pTemp = leds->pLedPosition[i];
-		if (pTemp.left + pTemp.width > maxX) maxX = pTemp.left + pTemp.width;
-		if (pTemp.top + pTemp.height > maxY) maxY = pTemp.top + pTemp.height;
-		SDL_Rect rTemp = { (int)pTemp.left, (int)pTemp.top, (int)pTemp.width, (int)pTemp.height };
-		rectKeys.push_back(rTemp);
-		ledPositions.insert(std::pair<SDL_Rect,CorsairLedId>(rTemp, pTemp.ledId));
+	if (const auto error = CorsairGetLastError()) {
+		isCorsairKeyboard = false;
+		keyboardHeight = keyboardWidth = 0;
 	}
-	keyboardWidth = (int)maxX, keyboardHeight = (int)maxY;
+	else {
+		CorsairRequestControl(CAM_ExclusiveLightingControl);
+		isCorsairKeyboard = true;
+		auto leds = CorsairGetLedPositions();
+		double maxX = 0.0, maxY = 0.0;
+		for (int i = 0; i < leds->numberOfLed; i++) {
+			auto pTemp = leds->pLedPosition[i];
+			if (pTemp.left + pTemp.width > maxX) maxX = pTemp.left + pTemp.width;
+			if (pTemp.top + pTemp.height > maxY) maxY = pTemp.top + pTemp.height;
+			SDL_Rect rTemp = { (int)pTemp.left, (int)pTemp.top, (int)pTemp.width, (int)pTemp.height };
+			rectKeys.push_back(rTemp);
+			ledPositions.insert(std::pair<SDL_Rect, CorsairLedId>(rTemp, pTemp.ledId));
+		}
+		keyboardWidth = (int)maxX, keyboardHeight = (int)maxY;
+	}
 }
 
 CoreSystem::Keyboard::~Keyboard()

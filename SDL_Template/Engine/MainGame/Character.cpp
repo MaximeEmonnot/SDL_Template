@@ -1,7 +1,7 @@
 #include "Character.h"
 #include <cassert>
 
-Character::Character(Graphics& gfx, SDL_Rect rect)
+Character::Character(GraphicsEngine::Graphics& gfx, SDL_Rect rect)
 	:
 	rect(rect)
 {
@@ -18,13 +18,13 @@ Character::Character(Graphics& gfx, SDL_Rect rect)
 	rapidjson::Value& v = doc["animations"];
 
 	for (rapidjson::Value::MemberIterator itr = v.MemberBegin(); itr != v.MemberEnd(); ++itr) {
-		animations.push_back(Animation({ itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt(), itr->value.GetArray()[2].GetInt(), itr->value.GetArray()[3].GetInt() },
+		animations.push_back(GraphicsEngine::Animation({ itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt(), itr->value.GetArray()[2].GetInt(), itr->value.GetArray()[3].GetInt() },
 											itr->value.GetArray()[4].GetInt(), sprite, itr->value.GetArray()[5].GetFloat()));
 	}
 	int test = 0;
 }
 
-void Character::Draw(Graphics& gfx)
+void Character::Draw(GraphicsEngine::Graphics& gfx)
 {
 	animations[iCurSequence].Draw(rect, gfx);
 }

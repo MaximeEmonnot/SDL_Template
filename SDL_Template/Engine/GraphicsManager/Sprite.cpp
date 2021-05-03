@@ -1,12 +1,12 @@
 #include "Sprite.h"
 
-Sprite::Sprite()
+GraphicsEngine::Sprite::Sprite()
     :
     tex(nullptr)
 {
 }
 
-Sprite::Sprite(const char* path, SDL_Renderer* renderer)
+GraphicsEngine::Sprite::Sprite(const char* path, SDL_Renderer* renderer)
 {
     SDL_Surface* surf = IMG_Load(path);
     if (surf == nullptr)
@@ -16,7 +16,7 @@ Sprite::Sprite(const char* path, SDL_Renderer* renderer)
     SDL_FreeSurface(surf);
 }
 
-Sprite::Sprite(SDL_Surface* surf, SDL_Renderer* renderer, int width, int height)
+GraphicsEngine::Sprite::Sprite(SDL_Surface* surf, SDL_Renderer* renderer, int width, int height)
     :
     width(width),
     height(height)
@@ -26,7 +26,7 @@ Sprite::Sprite(SDL_Surface* surf, SDL_Renderer* renderer, int width, int height)
     tex = SDL_CreateTextureFromSurface(renderer, surf);
 }
 
-Sprite::Sprite(const Sprite& newSurface)
+GraphicsEngine::Sprite::Sprite(const Sprite& newSurface)
 {
     SDL_DestroyTexture(tex);
     this->tex = newSurface.tex;
@@ -34,7 +34,7 @@ Sprite::Sprite(const Sprite& newSurface)
     this->height = newSurface.height;
 }
 
-Sprite& Sprite::operator=(const Sprite& rhs)
+GraphicsEngine::Sprite& GraphicsEngine::Sprite::operator=(const Sprite& rhs)
 {
     tex = rhs.tex;
     width = rhs.width;
@@ -42,12 +42,12 @@ Sprite& Sprite::operator=(const Sprite& rhs)
     return *this;
 }
 
-Sprite::~Sprite()
+GraphicsEngine::Sprite::~Sprite()
 {
     SDL_DestroyTexture(tex);
 }
 
-void Sprite::InitSurface(const char* path, SDL_Renderer* renderer)
+void GraphicsEngine::Sprite::InitSurface(const char* path, SDL_Renderer* renderer)
 {
     SDL_Surface* surf = IMG_Load(path);
     if (surf == nullptr)
@@ -57,17 +57,17 @@ void Sprite::InitSurface(const char* path, SDL_Renderer* renderer)
     SDL_FreeSurface(surf);
 }
 
-SDL_Texture* Sprite::GetTexture() const
+SDL_Texture* GraphicsEngine::Sprite::GetTexture() const
 {
     return tex;
 }
 
-int Sprite::GetWidth() const
+int GraphicsEngine::Sprite::GetWidth() const
 {
     return width;
 }
 
-int Sprite::GetHeight() const
+int GraphicsEngine::Sprite::GetHeight() const
 {
     return height;
 }

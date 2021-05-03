@@ -24,7 +24,7 @@ private:
 	// ***************** END USER FUNCTIONS ************* //
 private:
 	Window& wnd;
-	Graphics gfx;
+	GraphicsEngine::Graphics gfx;
 	// ***************** USER VARIABLES ******************//
 
 	// ***************** END USER VARIABLES ************* //

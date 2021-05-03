@@ -6,9 +6,9 @@
 class Character
 {
 public:
-	Character(Graphics& gfx, SDL_Rect rect);
+	Character(GraphicsEngine::Graphics& gfx, SDL_Rect rect);
 
-	void					Draw(Graphics& gfx);
+	void					Draw(GraphicsEngine::Graphics& gfx);
 	void					Update(float dt);
 
 	void                    SetPos(const IVec2D pos);
@@ -21,8 +21,8 @@ public:
 
 private:
 	SDL_Rect				rect;
-	Sprite					sprite;
-	std::vector<Animation>	animations;
+	GraphicsEngine::Sprite					sprite;
+	std::vector<GraphicsEngine::Animation>	animations;
 	int						iCurSequence = 0;
 };
 

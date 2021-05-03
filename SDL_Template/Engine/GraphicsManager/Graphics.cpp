@@ -1,6 +1,6 @@
 #include "Graphics.h"
 
-Graphics::Graphics(Window& window)
+GraphicsEngine::Graphics::Graphics(Window& window)
 	:
 	screenRect(window.GetScreenRect())
 {
@@ -10,52 +10,52 @@ Graphics::Graphics(Window& window)
 	}
 }
 
-Graphics::~Graphics()
+GraphicsEngine::Graphics::~Graphics()
 {
 	SDL_DestroyRenderer(renderer);
 }
 
-void Graphics::BeginRender()
+void GraphicsEngine::Graphics::BeginRender()
 {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 }
 
-void Graphics::EndRender()
+void GraphicsEngine::Graphics::EndRender()
 {
 	SDL_RenderPresent(renderer);
 }
 
-SDL_Renderer* Graphics::GetRenderer()
+SDL_Renderer* GraphicsEngine::Graphics::GetRenderer()
 {
 	return renderer;
 }
 
-void Graphics::DrawPixel(IVec2D pos, SDL_Color c)
+void GraphicsEngine::Graphics::DrawPixel(IVec2D pos, SDL_Color c)
 {
 	SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a);
 	SDL_RenderDrawPoint(renderer, pos.x, pos.y);
 }
 
-void Graphics::SetBackgroundColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+void GraphicsEngine::Graphics::SetBackgroundColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 {
 	SDL_SetRenderDrawColor(renderer, r, g, b, a);
 	SDL_RenderFillRect(renderer, &screenRect);
 }
 
-void Graphics::DrawRect(SDL_Rect rect, SDL_Color c)
+void GraphicsEngine::Graphics::DrawRect(SDL_Rect rect, SDL_Color c)
 {
 	SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a);
 	SDL_RenderDrawRect(renderer, &rect);
 }
 
-void Graphics::DrawFilledRect(SDL_Rect rect, SDL_Color c)
+void GraphicsEngine::Graphics::DrawFilledRect(SDL_Rect rect, SDL_Color c)
 {
 	SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a);
 	SDL_RenderFillRect(renderer, &rect);
 }
 
-void Graphics::DrawSprite(SDL_Rect destRect, SDL_Rect srcRect, const Sprite& s)
+void GraphicsEngine::Graphics::DrawSprite(SDL_Rect destRect, SDL_Rect srcRect, const Sprite& s)
 {
 	SDL_RenderCopy(renderer, s.GetTexture(), &srcRect, &destRect);
 }

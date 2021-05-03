@@ -1,6 +1,6 @@
 #include "Animation.h"
 
-Animation::Animation(SDL_Rect rect, int count, Sprite& sprite, float holdTime)
+GraphicsEngine::Animation::Animation(SDL_Rect rect, int count, Sprite& sprite, float holdTime)
 	:
 	sprite(sprite),
 	holdTime(holdTime),
@@ -12,12 +12,12 @@ Animation::Animation(SDL_Rect rect, int count, Sprite& sprite, float holdTime)
 	}
 }
 
-void Animation::Draw(SDL_Rect rect, Graphics& gfx)
+void GraphicsEngine::Animation::Draw(SDL_Rect rect, Graphics& gfx)
 {
 	gfx.DrawSprite(rect, frames[iCurFrame], sprite);
 }
 
-void Animation::Update(float dt)
+void GraphicsEngine::Animation::Update(float dt)
 {
 	curFrameTime += dt;
 	while (curFrameTime >= holdTime) {
@@ -26,22 +26,22 @@ void Animation::Update(float dt)
 	}
 }
 
-void Animation::ResetAnimation()
+void GraphicsEngine::Animation::ResetAnimation()
 {
 	iCurFrame = 0;
 }
 
-int Animation::GetWidth() const
+int GraphicsEngine::Animation::GetWidth() const
 {
 	return width;
 }
 
-int Animation::GetHeight() const
+int GraphicsEngine::Animation::GetHeight() const
 {
 	return height;
 }
 
-void Animation::Advance()
+void GraphicsEngine::Animation::Advance()
 {
 	if (++iCurFrame >= frames.size()) {
 		iCurFrame = 0;

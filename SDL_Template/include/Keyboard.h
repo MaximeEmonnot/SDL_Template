@@ -82,9 +82,8 @@ namespace CoreSystem {
 		CorsairLedId					SDLKeyToCorsairId(SDL_Scancode kCode);
 
 	private:
-		static constexpr unsigned int	nKeys = SDL_NUM_SCANCODES;
-		static constexpr unsigned int	bufferSize = 4u;
-		std::bitset<nKeys>				keystates;
+		const unsigned int	bufferSize = 4u;
+		std::bitset<SDL_NUM_SCANCODES>	keystates;
 		std::queue<Event>				bufferEvents;
 		std::queue<char>				bufferChar;
 		std::unordered_map<SDL_Rect, CorsairLedId> ledPositions;

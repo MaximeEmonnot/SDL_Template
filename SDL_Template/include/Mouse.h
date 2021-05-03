@@ -52,7 +52,7 @@ namespace CoreSystem {
 		bool						rightIsPressed = false;
 		int							x = 0;
 		int							y = 0;
-		static constexpr size_t		sizeBuffer = 4u;
+		const size_t		sizeBuffer = 4u;
 		std::queue<EventType>		buffer;
 	};
 }

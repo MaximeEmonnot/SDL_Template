@@ -38,7 +38,7 @@ public:
 			None
 		};
 		SDL_Scancode keycode = SDL_SCANCODE_UNKNOWN;
-		Type type;
+		Type type = Type::None;
 	};
 
 public:

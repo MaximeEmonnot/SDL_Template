@@ -16,11 +16,11 @@ Keyboard::Keyboard()
 		auto pTemp = leds->pLedPosition[i];
 		if (pTemp.left + pTemp.width > maxX) maxX = pTemp.left + pTemp.width;
 		if (pTemp.top + pTemp.height > maxY) maxY = pTemp.top + pTemp.height;
-		SDL_Rect rTemp = { pTemp.left, pTemp.top, pTemp.width, pTemp.height };
+		SDL_Rect rTemp = { (int)pTemp.left, (int)pTemp.top, (int)pTemp.width, (int)pTemp.height };
 		rectKeys.push_back(rTemp);
 		ledPositions.insert(std::pair<SDL_Rect,CorsairLedId>(rTemp, pTemp.ledId));
 	}
-	keyboardWidth = maxX, keyboardHeight = maxY;
+	keyboardWidth = (int)maxX, keyboardHeight = (int)maxY;
 }
 
 Keyboard::~Keyboard()

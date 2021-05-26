@@ -1,8 +1,8 @@
 #include "Music.h"
 
-SoundEngine::Music::Music(const char* path, int index)
+SoundEngine::Music::Music(const char* path)
 {
-	this->index = index;
+	this->path = path;
 	music = Mix_LoadMUS(path);
 	if (music == NULL)
 		throw SDLException("SDL Sound System Exception caught", __FILE__, __LINE__, "An error has been caught during Music Initialisation.\nPlease check file path.");
@@ -21,9 +21,4 @@ void SoundEngine::Music::Play(int loops)
 void SoundEngine::Music::Stop()
 {
 	Mix_PauseMusic();
-}
-
-int SoundEngine::Music::GetIndex() const
-{
-	return index;
 }

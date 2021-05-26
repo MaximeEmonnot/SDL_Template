@@ -1,18 +1,15 @@
 #pragma once
-#include <SDL_mixer.h>
-#include "SDLException.h"
+#include "Sound.h"
 
 namespace SoundEngine {
-	class Music {
+	class Music : public ASound{
 	public:
-		Music(const char* path, int index);
+		Music(const char* path);
 		~Music();
 
-		void Play(int loops);
-		void Stop();
-		int GetIndex() const;
+		void Play(int loops) override;
+		void Stop() override;
 	private:
-		int index = 0;
-		Mix_Music* music;
+		Mix_Music* music = NULL;
 	};
 }

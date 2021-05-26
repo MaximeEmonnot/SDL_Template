@@ -10,119 +10,35 @@ SoundEngine::SoundSystem::~SoundSystem()
 {
 	Mix_CloseAudio();
 }
-
-void SoundEngine::SoundSystem::PlayOneMusic(int musicIndex, int loops)
+void SoundEngine::SoundSystem::PlaySound(const std::shared_ptr<ASound>& sound, int loops)
 {
-	for (auto& music : musicList) {
-		if (music.GetIndex() == musicIndex) {
-			music.Play(loops);
-			return;
-		}
-	}
-	throw SDLException("SDL Sound System Exception caught", __FILE__, __LINE__, "An error has been caught during Music Playing.\nPlease check Music Index.");
+	AddNewSong(sound);
+	sound->Play(loops);
 }
 
-void SoundEngine::SoundSystem::PlayAllMusics(int loops)
+std::shared_ptr<SoundEngine::ASound> SoundEngine::SoundSystem::ConstructNewSong(const char* path, bool type)
 {
-	for (auto& music : musicList) {
-		music.Play(loops);
-	}
-}
-
-void SoundEngine::SoundSystem::PlayOneEffect(int effectIndex, int loops)
-{
-	for (auto& effect : effectList) {
-		if (effect.GetIndex() == effectIndex) {
-			effect.Play(loops);
-			return;
-		}
-	}
-	throw SDLException("SDL Sound System Exception caught", __FILE__, __LINE__, "An error has been caught during Effect Playing.\nPlease check Effect Index.");
-}
-
-void SoundEngine::SoundSystem::PlayAllEffects(int loops)
-{
-	for (auto& effect : effectList) {
-		effect.Play(loops);
-	}
-}
-
-void SoundEngine::SoundSystem::PlayAll(int loops)
-{
-	PlayAllMusics(loops);
-	PlayAllEffects(loops);
-}
-
-void SoundEngine::SoundSystem::StopOneMusic(int musicIndex)
-{
-	for (auto& music : musicList) {
-		if (music.GetIndex() == musicIndex) {
-			music.Stop();
-			return;
-		}
-	}
-
-	throw SDLException("SDL Sound System Exception caught", __FILE__, __LINE__, "An error has been caught during Music Stop.\nPlease check Music Index.");
-}
-
-void SoundEngine::SoundSystem::StopAllMusics()
-{
-	for (auto& music : musicList) {
-		music.Stop();
-	}
-}
-
-void SoundEngine::SoundSystem::StopOneEffect(int effectIndex)
-{
-	for (auto& effect : effectList) {
-		if (effect.GetIndex() == effectIndex) {
-			effect.Stop();
-			return;
-		}
-	}
-	throw SDLException("SDL Sound System Exception caught", __FILE__, __LINE__, "An error has been caught during Effect Stop.\nPlease check Effect Index.");
-}
-
-void SoundEngine::SoundSystem::StopAllEffects()
-{
-	for (auto& effect : effectList) {
-		effect.Stop();
-	}
-}
-
-void SoundEngine::SoundSystem::StopAll()
-{
-	StopAllMusics();
-	StopAllEffects();
-}
-
-void SoundEngine::SoundSystem::AddSound(const char* path, bool type)
-{
-
+	auto itr = std::find_if(soundList.begin(), soundList.end(), [&](const std::shared_ptr<ASound>& sound) { return sound->GetPath() == path; });
+	if (itr != soundList.end())
+		return *itr;
 	if (type) {
-		effectList.emplace_back(path, lastEffectIndex);
-		lastEffectIndex++;
+		std::shared_ptr<ASound> newSound =	std::make_shared<Effect>(path);
+		return newSound;
 	}
 	else {
-		musicList.emplace_back(path, lastMusicIndex);
-		lastMusicIndex++;
+		std::shared_ptr<ASound> newSound = std::make_shared<Music>(path);
+		return newSound;
 	}
+}
+
+void SoundEngine::SoundSystem::AddNewSong(const std::shared_ptr<ASound>& sound)
+{
+	auto itr = std::find_if(soundList.begin(), soundList.end(), [&](const std::shared_ptr<ASound>& testSound) { return sound->GetPath() == testSound->GetPath(); });
+	if (itr == soundList.end())
+		soundList.insert(sound);
 }
 
 void SoundEngine::SoundSystem::FlushSounds()
 {
-	FlushMusics();
-	FlushSounds();
-}
-
-void SoundEngine::SoundSystem::FlushMusics()
-{
-	musicList.clear();
-	lastMusicIndex = 0;
-}
-
-void SoundEngine::SoundSystem::FlushEffects()
-{
-	effectList.clear();
-	lastEffectIndex = 0;
+	soundList.clear();
 }

@@ -1,19 +1,15 @@
 #pragma once
-#include <SDL_mixer.h>
-#include "SDLException.h"
-
+#include "Sound.h"
 
 namespace SoundEngine {
-	class Effect {
+	class Effect : public ASound{
 	public:
-		Effect(const char* path, int index);
+		Effect(const char* path);
 		~Effect();
 
-		void		Play(int loops);
-		void		Stop();
-		int			GetIndex() const;
+		void Play(int loops) override;
+		void Stop() override;
 	private:
-		int			index = 0;
 		Mix_Chunk* effect;
 	};
 }

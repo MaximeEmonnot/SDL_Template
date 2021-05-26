@@ -46,6 +46,7 @@
     <ClInclude Include="include\Keyboard.h" />
     <ClInclude Include="include\Mouse.h" />
     <ClInclude Include="include\Music.h" />
+    <ClInclude Include="include\Rect.h" />
     <ClInclude Include="include\SDLException.h" />
     <ClInclude Include="include\Sound.h" />
     <ClInclude Include="include\SoundSystem.h" />

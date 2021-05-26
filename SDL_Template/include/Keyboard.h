@@ -5,26 +5,7 @@
 #include <vector>
 #include <bitset>
 #include <queue>
-#include "Vec2D.h"
-
-namespace std {
-	template<>
-	struct hash<SDL_Rect>
-	{
-		std::size_t operator()(const SDL_Rect& r) const {
-			using std::size_t;
-			using std::hash;
-			return ((hash<int>()(r.x) ^ (hash<int>()(r.y) << 1)) >> 1) ^ ((hash<int>()(r.w) ^ hash<int>()(r.h) << 1) >> 1);
-		}
-	};
-	template<>
-	struct equal_to<SDL_Rect>
-	{
-		bool operator() (const SDL_Rect& lhs, const SDL_Rect& rhs) const{
-			return lhs.x == rhs.x && lhs.y == rhs.y && lhs.h == rhs.h && lhs.w == rhs.w;
-		}
-	};
-}
+#include "Rect.h"
 
 namespace CoreSystem {
 	class Keyboard
@@ -59,13 +40,13 @@ namespace CoreSystem {
 		void                            SetKeyboardColor(SDL_Color c);
 		void							SetKeyColor(SDL_Scancode kCode, SDL_Color c);
 		void                            SetKeyColorByPosition(Maths::IVec2D pos, SDL_Color c);
-		void                            SetKeyColorByRect(SDL_Rect rect, SDL_Color c);
-		void                            FadeKeyColorTo(SDL_Rect rect, SDL_Color c, float alpha = .5f);
+		void                            SetKeyColorByRect(Maths::IRect rect, SDL_Color c);
+		void                            FadeKeyColorTo(Maths::IRect rect, SDL_Color c, float alpha = .5f);
 
-		SDL_Color                       GetKeyColorByPosition(SDL_Rect rect);
-		SDL_Rect                        GetKeyRect(SDL_Scancode kCode);
-		std::vector<SDL_Rect>           GetKeyboardRect() const;
-		CorsairLedId                    GetLedIdFrom(SDL_Rect rect) const;
+		SDL_Color                       GetKeyColorByPosition(Maths::IRect rect);
+		Maths::IRect                    GetKeyRect(SDL_Scancode kCode);
+		std::vector<Maths::IRect>       GetKeyboardRect() const;
+		CorsairLedId                    GetLedIdFrom(Maths::IRect rect) const;
 
 		bool                            IsCorsairKeyboard() const;
 		int								GetKeyboardWidth() const;
@@ -86,8 +67,8 @@ namespace CoreSystem {
 		std::bitset<SDL_NUM_SCANCODES>	keystates;
 		std::queue<Event>				bufferEvents;
 		std::queue<char>				bufferChar;
-		std::unordered_map<SDL_Rect, CorsairLedId> ledPositions;
-		std::vector<SDL_Rect>           rectKeys;
+		std::unordered_map<Maths::IRect, CorsairLedId, Maths::IRect::Hash> ledPositions;
+		std::vector<Maths::IRect>       rectKeys;
 		bool                            isCorsairKeyboard;
 		int								keyboardWidth;
 		int								keyboardHeight;

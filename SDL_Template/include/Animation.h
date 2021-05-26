@@ -10,9 +10,9 @@ namespace GraphicsEngine {
 	class Animation
 	{
 	public:
-		Animation(SDL_Rect rect, int count, Sprite& sprite, float holdTime);
+		Animation(Maths::IRect rect, int count, Sprite& sprite, float holdTime);
 
-		void					Draw(SDL_Rect rect, Graphics& gfx);
+		void					Draw(Maths::IRect rect, Graphics& gfx);
 
 		void					Update(float dt);
 		void					ResetAnimation();
@@ -23,7 +23,7 @@ namespace GraphicsEngine {
 		void					Advance();
 	private:
 		const Sprite& sprite;
-		std::vector<SDL_Rect>	frames;
+		std::vector<Maths::IRect>	frames;
 		float					curFrameTime = 0.0f;
 		float					holdTime;
 		int						iCurFrame = 0;

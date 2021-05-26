@@ -1,18 +1,18 @@
 #include "Animation.h"
 
-GraphicsEngine::Animation::Animation(SDL_Rect rect, int count, Sprite& sprite, float holdTime)
+GraphicsEngine::Animation::Animation(Maths::IRect rect, int count, Sprite& sprite, float holdTime)
 	:
 	sprite(sprite),
 	holdTime(holdTime),
-	width(rect.w),
-	height(rect.h)
+	width(rect.rect.w),
+	height(rect.rect.h)
 {
 	for (int i = 0; i < count; i++) {
-		frames.push_back({ rect.x + rect.w * i, rect.y, rect.w, rect.h });
+		frames.push_back({ rect.rect.x + rect.rect.w * i, rect.rect.y, rect.rect.w, rect.rect.h });
 	}
 }
 
-void GraphicsEngine::Animation::Draw(SDL_Rect rect, Graphics& gfx)
+void GraphicsEngine::Animation::Draw(Maths::IRect rect, Graphics& gfx)
 {
 	gfx.DrawSprite(rect, frames[iCurFrame], sprite);
 }

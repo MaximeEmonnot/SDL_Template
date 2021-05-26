@@ -43,19 +43,19 @@ void GraphicsEngine::Graphics::SetBackgroundColor(Uint8 r, Uint8 g, Uint8 b, Uin
 	SDL_RenderFillRect(renderer, &screenRect);
 }
 
-void GraphicsEngine::Graphics::DrawRect(SDL_Rect rect, SDL_Color c)
+void GraphicsEngine::Graphics::DrawRect(Maths::IRect rect, SDL_Color c)
 {
 	SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a);
-	SDL_RenderDrawRect(renderer, &rect);
+	SDL_RenderDrawRect(renderer, &rect.rect);
 }
 
-void GraphicsEngine::Graphics::DrawFilledRect(SDL_Rect rect, SDL_Color c)
+void GraphicsEngine::Graphics::DrawFilledRect(Maths::IRect rect, SDL_Color c)
 {
 	SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a);
-	SDL_RenderFillRect(renderer, &rect);
+	SDL_RenderFillRect(renderer, &rect.rect);
 }
 
-void GraphicsEngine::Graphics::DrawSprite(SDL_Rect destRect, SDL_Rect srcRect, const Sprite& s)
+void GraphicsEngine::Graphics::DrawSprite(Maths::IRect destRect, Maths::IRect srcRect, const Sprite& s)
 {
-	SDL_RenderCopy(renderer, s.GetTexture(), &srcRect, &destRect);
+	SDL_RenderCopy(renderer, s.GetTexture(), &srcRect.rect, &destRect.rect);
 }

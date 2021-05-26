@@ -1,7 +1,7 @@
 #include "Character.h"
 #include <cassert>
 
-Character::Character(GraphicsEngine::Graphics& gfx, SDL_Rect rect)
+Character::Character(GraphicsEngine::Graphics& gfx, Maths::IRect rect)
 	:
 	rect(rect)
 {
@@ -34,12 +34,6 @@ void Character::Update(float dt)
 	animations[iCurSequence].Update(dt);
 }
 
-void Character::SetPos(const Maths::IVec2D pos)
-{
-	rect.x = pos.x - rect.w / 2;
-	rect.y = pos.y - rect.h / 2;
-}
-
 void Character::NextAnimation()
 {
 	animations[iCurSequence].ResetAnimation();
@@ -62,19 +56,7 @@ void Character::LastAnimation()
 	}
 }
 
-void Character::ZoomIn()
-{
-	rect.w *= 2;
-	rect.h *= 2;
-}
-
-void Character::ZoomOut()
-{
-	rect.w /= 2;
-	rect.h /= 2;
-}
-
-SDL_Rect Character::GetRect() const
+Maths::IRect Character::GetRect() const
 {
 	return rect;
 }

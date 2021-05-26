@@ -109,8 +109,8 @@ void CoreSystem::Keyboard::FadeKeyColorTo(Maths::IRect rect, SDL_Color c, float 
 	auto itr = ledPositions.find(rect);
 	auto currentLedColor = CorsairLedColor{ itr->second, 0, 0, 0 };
 	CorsairGetLedsColors(1, &currentLedColor);
-	SDL_Color newColor = BlendColor(SDL_Color({ (Uint8)currentLedColor.r, (Uint8)currentLedColor.g, (Uint8)currentLedColor.b, 255 }), c, alpha);
-	auto newLedColor = CorsairLedColor{ itr->second, newColor.r, newColor.g, newColor.b };
+	GraphicsEngine::Color newColor = GraphicsEngine::Color((Uint8)currentLedColor.r, (Uint8)currentLedColor.g, (Uint8)currentLedColor.b, 255).BlendColor(GraphicsEngine::Color(c.r, c.g, c.b, c.a), alpha);
+	auto newLedColor = CorsairLedColor{ itr->second, newColor.c.r, newColor.c.g, newColor.c.b };
 	CorsairSetLedsColors(1, &newLedColor);
 }
 

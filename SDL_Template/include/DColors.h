@@ -11,8 +11,27 @@
 #define GRAY SDL_Color({128, 128, 128, 255})
 #define LIGHTGRAY SDL_Color({185, 185, 185, 255})
 
-template <typename T>
-SDL_Color BlendColor(const SDL_Color& c0, const SDL_Color& c1, T percentage) {
-	SDL_Color output = { Uint8((c1.r - c0.r) * percentage + c0.r), Uint8((c1.g - c0.g) * percentage + c0.g), Uint8((c1.b - c0.b) * percentage + c0.b), Uint8((c1.a - c0.a) * percentage + c0.a) };
-	return output;
+namespace GraphicsEngine {
+	class Color {
+	public:
+		Color()
+			:
+			c({ 0, 0, 0, 0 })
+		{}
+		Color(Uint8 red, Uint8 green, Uint8 blue, Uint8 alpha)
+			:
+			c({ red, green, blue, alpha })
+		{}
+
+		inline Color BlendColor(const Color& rhs, float percentage) {
+			c.r = Uint8((rhs.c.r - c.r) * percentage + c.r);
+			c.g = Uint8((rhs.c.g - c.g) * percentage + c.g);
+			c.b = Uint8((rhs.c.b - c.b) * percentage + c.b);
+			c.a = Uint8((rhs.c.a - c.a) * percentage + c.a);
+			return *this;
+		}
+
+	public:
+		SDL_Color c;
+	};
 }

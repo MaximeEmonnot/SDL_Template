@@ -15,26 +15,26 @@ namespace GraphicsEngine {
 		SDL_Renderer* GetRenderer();
 
 		// Draws a colored pixel at a given position. 
-		void						DrawPixel(Maths::IVec2D pos, SDL_Color c);
-		void						DrawPixel(int x, int y, SDL_Color c) {
+		void						DrawPixel(Maths::IVec2D pos, Color c);
+		void						DrawPixel(int x, int y, Color c) {
 			DrawPixel(Maths::IVec2D(x, y), c);
 		}
 		void						DrawPixel(int x, int y, Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
-			DrawPixel(x, y, { r, g, b, a });
+			DrawPixel(x, y, Color(r, g, b, a));
 		}
 
 		// Changes Background Color
 		void						SetBackgroundColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
-		void						SetBackgroundColor(SDL_Color c) {
-			SetBackgroundColor(c.r, c.g, c.b, c.a);
+		void						SetBackgroundColor(Color c) {
+			SetBackgroundColor(c.c.r, c.c.g, c.c.b, c.c.a);
 		}
 
 		// Draws the border of a colored rectangle at a given position.
-		void						DrawRect(Maths::IRect rect, SDL_Color c);
-		void						DrawRect(int x, int y, int w, int h, SDL_Color c) {
+		void						DrawRect(Maths::IRect rect, Color c);
+		void						DrawRect(int x, int y, int w, int h, Color c) {
 			DrawRect({ x, y, w, h }, c);
 		}
-		void						DrawRect(Maths::IVec2D pos, int w, int h, SDL_Color c) {
+		void						DrawRect(Maths::IVec2D pos, int w, int h, Color c) {
 			DrawRect(Maths::IRect(pos, w, h), c);
 		}
 		void						DrawRect(int x, int y, int w, int h, Uint8 r, Uint8 g, Uint8 b, Uint8 a) {
@@ -42,11 +42,11 @@ namespace GraphicsEngine {
 		}
 
 		// Draws a full colored rectangle at a given position.
-		void						DrawFilledRect(Maths::IRect rect, SDL_Color c);
-		void						DrawFilledRect(Maths::IVec2D pos, int w, int h, SDL_Color c) {
+		void						DrawFilledRect(Maths::IRect rect, Color c);
+		void						DrawFilledRect(Maths::IVec2D pos, int w, int h, Color c) {
 			DrawFilledRect(Maths::IRect(pos, w, h), c);
 		}
-		void						DrawFilledRect(int x, int y, int w, int h, SDL_Color c) {
+		void						DrawFilledRect(int x, int y, int w, int h, Color c) {
 			DrawFilledRect({ x, y, w, h }, c);
 		}
 		void						DrawFilledRect(int x, int y, int w, int h, Uint8 r, Uint8 g, Uint8 b, Uint8 a) {

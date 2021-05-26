@@ -31,9 +31,9 @@ SDL_Renderer* GraphicsEngine::Graphics::GetRenderer()
 	return renderer;
 }
 
-void GraphicsEngine::Graphics::DrawPixel(Maths::IVec2D pos, SDL_Color c)
+void GraphicsEngine::Graphics::DrawPixel(Maths::IVec2D pos, Color c)
 {
-	SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a);
+	SDL_SetRenderDrawColor(renderer, c.c.r, c.c.g, c.c.b, c.c.a);
 	SDL_RenderDrawPoint(renderer, pos.x, pos.y);
 }
 
@@ -43,15 +43,15 @@ void GraphicsEngine::Graphics::SetBackgroundColor(Uint8 r, Uint8 g, Uint8 b, Uin
 	SDL_RenderFillRect(renderer, &screenRect);
 }
 
-void GraphicsEngine::Graphics::DrawRect(Maths::IRect rect, SDL_Color c)
+void GraphicsEngine::Graphics::DrawRect(Maths::IRect rect, Color c)
 {
-	SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a);
+	SDL_SetRenderDrawColor(renderer, c.c.r, c.c.g, c.c.b, c.c.a);
 	SDL_RenderDrawRect(renderer, &rect.rect);
 }
 
-void GraphicsEngine::Graphics::DrawFilledRect(Maths::IRect rect, SDL_Color c)
+void GraphicsEngine::Graphics::DrawFilledRect(Maths::IRect rect, Color c)
 {
-	SDL_SetRenderDrawColor(renderer, c.r, c.g, c.b, c.a);
+	SDL_SetRenderDrawColor(renderer, c.c.r, c.c.g, c.c.b, c.c.a);
 	SDL_RenderFillRect(renderer, &rect.rect);
 }
 

@@ -73,56 +73,56 @@ void CoreSystem::Keyboard::FlushKeyColors()
 	}
 }
 
-void CoreSystem::Keyboard::SetKeyboardColor(SDL_Color c)
+void CoreSystem::Keyboard::SetKeyboardColor(GraphicsEngine::Color c)
 {
 	for (auto& led : ledPositions) {
-		auto ledColor = CorsairLedColor{ led.second, c.r, c.g, c.b };
+		auto ledColor = CorsairLedColor{ led.second, c.c.r, c.c.g, c.c.b };
 		CorsairSetLedsColors(1, &ledColor);
 	}
 }
 
-void CoreSystem::Keyboard::SetKeyColor(SDL_Scancode kCode, SDL_Color c)
+void CoreSystem::Keyboard::SetKeyColor(SDL_Scancode kCode, GraphicsEngine::Color c)
 {
-	auto ledColor = CorsairLedColor{ SDLKeyToCorsairId(kCode), c.r, c.g, c.b };
+	auto ledColor = CorsairLedColor{ SDLKeyToCorsairId(kCode), c.c.r, c.c.g, c.c.b };
 	CorsairSetLedsColors(1, &ledColor);
 }
 
-void CoreSystem::Keyboard::SetKeyColorByPosition(Maths::IVec2D pos, SDL_Color c)
+void CoreSystem::Keyboard::SetKeyColorByPosition(Maths::IVec2D pos, GraphicsEngine::Color c)
 {
 
 	auto itr = std::find_if(ledPositions.begin(), ledPositions.end(), [&](const auto& pair) { return pair.first.ContainsVec2D(pos); });
 	if (itr != ledPositions.end()) {
-		auto ledColor = CorsairLedColor{ itr->second, c.r, c.g, c.b };
+		auto ledColor = CorsairLedColor{ itr->second, c.c.r, c.c.g, c.c.b };
 		CorsairSetLedsColors(1, &ledColor);
 	}
 }
 
-void CoreSystem::Keyboard::SetKeyColorByRect(Maths::IRect rect, SDL_Color c)
+void CoreSystem::Keyboard::SetKeyColorByRect(Maths::IRect rect, GraphicsEngine::Color c)
 {
 	auto itr = ledPositions.find(rect);
-	auto ledColor = CorsairLedColor{ itr->second, c.r, c.g, c.b };
+	auto ledColor = CorsairLedColor{ itr->second, c.c.r, c.c.g, c.c.b };
 	CorsairSetLedsColors(1, &ledColor);
 }
 
-void CoreSystem::Keyboard::FadeKeyColorTo(Maths::IRect rect, SDL_Color c, float alpha)
+void CoreSystem::Keyboard::FadeKeyColorTo(Maths::IRect rect, GraphicsEngine::Color c, float alpha)
 {
 	auto itr = ledPositions.find(rect);
 	auto currentLedColor = CorsairLedColor{ itr->second, 0, 0, 0 };
 	CorsairGetLedsColors(1, &currentLedColor);
-	GraphicsEngine::Color newColor = GraphicsEngine::Color((Uint8)currentLedColor.r, (Uint8)currentLedColor.g, (Uint8)currentLedColor.b, 255).BlendColor(GraphicsEngine::Color(c.r, c.g, c.b, c.a), alpha);
+	GraphicsEngine::Color newColor = GraphicsEngine::Color((Uint8)currentLedColor.r, (Uint8)currentLedColor.g, (Uint8)currentLedColor.b, 255).BlendColor(GraphicsEngine::Color(c.c.r, c.c.g, c.c.b, c.c.a), alpha);
 	auto newLedColor = CorsairLedColor{ itr->second, newColor.c.r, newColor.c.g, newColor.c.b };
 	CorsairSetLedsColors(1, &newLedColor);
 }
 
-SDL_Color CoreSystem::Keyboard::GetKeyColorByPosition(Maths::IRect rect)
+GraphicsEngine::Color CoreSystem::Keyboard::GetKeyColorByPosition(Maths::IRect rect)
 {
 	auto itr = ledPositions.find(rect);
-	SDL_Color output = { 0, 0, 0, 255 };
+	GraphicsEngine::Color output = { 0, 0, 0, 255 };
 	auto ledColor = CorsairLedColor{ itr->second, 0, 0, 0 };
 	CorsairGetLedsColors(1, &ledColor);
-	output.r = ledColor.r;
-	output.g = ledColor.g;
-	output.b = ledColor.b;
+	output.c.r = ledColor.r;
+	output.c.g = ledColor.g;
+	output.c.b = ledColor.b;
 	return output;
 }
 

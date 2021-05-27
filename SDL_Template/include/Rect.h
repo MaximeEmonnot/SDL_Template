@@ -22,7 +22,7 @@ namespace Maths {
 			:
 			rect({ (int)x, (int)y, (int)width, (int)height })
 		{}
-		Rect(Vec2D<T> pos, int width, int height)
+		Rect(Vec2D<T> pos, T width, T height)
 			:
 			Rect(pos.x, pos.y, width, height)
 		{}

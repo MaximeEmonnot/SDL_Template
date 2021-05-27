@@ -16,9 +16,9 @@ GraphicsEngine::Font::~Font()
 	TTF_CloseFont(font);
 }
 
-void GraphicsEngine::Font::DrawText(Maths::IVec2D pos, const char* text, SDL_Color c)
+void GraphicsEngine::Font::DrawText(Maths::IVec2D pos, const char* text, GraphicsEngine::Color c)
 {
-	SDL_Surface* textSurf = TTF_RenderText_Solid(font, text, c);
+	SDL_Surface* textSurf = TTF_RenderText_Solid(font, text, c.c);
 	Sprite tSprite = Sprite(textSurf, gfx.GetRenderer(), textSurf->w, textSurf->h);
 	gfx.DrawSprite({ pos.x, pos.y, textSurf->w, textSurf->h }, tSprite);
 	SDL_FreeSurface(textSurf);

@@ -61,6 +61,6 @@ namespace GraphicsEngine {
 
 	private:
 		SDL_Renderer* renderer;
-		const SDL_Rect              screenRect;
+		const Maths::IRect              screenRect;
 	};
 }

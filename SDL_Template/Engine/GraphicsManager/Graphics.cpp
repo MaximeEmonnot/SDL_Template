@@ -40,7 +40,7 @@ void GraphicsEngine::Graphics::DrawPixel(Maths::IVec2D pos, Color c)
 void GraphicsEngine::Graphics::SetBackgroundColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 {
 	SDL_SetRenderDrawColor(renderer, r, g, b, a);
-	SDL_RenderFillRect(renderer, &screenRect);
+	SDL_RenderFillRect(renderer, &screenRect.rect);
 }
 
 void GraphicsEngine::Graphics::DrawRect(Maths::IRect rect, Color c)

@@ -6,6 +6,7 @@
 #include <bitset>
 #include <queue>
 #include "Rect.h"
+#include "DColors.h"
 
 namespace CoreSystem {
 	class Keyboard
@@ -37,13 +38,13 @@ namespace CoreSystem {
 		bool							KeyIsEmpty() const;
 
 		void                            FlushKeyColors();
-		void                            SetKeyboardColor(SDL_Color c);
-		void							SetKeyColor(SDL_Scancode kCode, SDL_Color c);
-		void                            SetKeyColorByPosition(Maths::IVec2D pos, SDL_Color c);
-		void                            SetKeyColorByRect(Maths::IRect rect, SDL_Color c);
-		void                            FadeKeyColorTo(Maths::IRect rect, SDL_Color c, float alpha = .5f);
+		void                            SetKeyboardColor(GraphicsEngine::Color c);
+		void							SetKeyColor(SDL_Scancode kCode, GraphicsEngine::Color c);
+		void                            SetKeyColorByPosition(Maths::IVec2D pos, GraphicsEngine::Color c);
+		void                            SetKeyColorByRect(Maths::IRect rect, GraphicsEngine::Color c);
+		void                            FadeKeyColorTo(Maths::IRect rect, GraphicsEngine::Color c, float alpha = .5f);
 
-		SDL_Color                       GetKeyColorByPosition(Maths::IRect rect);
+		GraphicsEngine::Color                       GetKeyColorByPosition(Maths::IRect rect);
 		Maths::IRect                    GetKeyRect(SDL_Scancode kCode);
 		std::vector<Maths::IRect>       GetKeyboardRect() const;
 		CorsairLedId                    GetLedIdFrom(Maths::IRect rect) const;

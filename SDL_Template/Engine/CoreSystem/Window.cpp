@@ -108,7 +108,7 @@ const int CoreSystem::Window::GetHeight() const
 	return height;
 }
 
-const SDL_Rect CoreSystem::Window::GetScreenRect() const
+const Maths::IRect CoreSystem::Window::GetScreenRect() const
 {
 	return screenRect;
 }

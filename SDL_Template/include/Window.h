@@ -17,7 +17,7 @@ namespace CoreSystem {
 		SDL_Window* GetWindow();
 		const int	GetWidth() const;
 		const int   GetHeight() const;
-		const SDL_Rect GetScreenRect() const;
+		const Maths::IRect GetScreenRect() const;
 
 	public:
 		Timer       t;
@@ -31,6 +31,6 @@ namespace CoreSystem {
 		bool        running;
 		const int	width = 800;
 		const int   height = 600;
-		const SDL_Rect screenRect = { 0, 0, width, height };
+		const Maths::IRect screenRect = { 0, 0, width, height };
 	};
 }

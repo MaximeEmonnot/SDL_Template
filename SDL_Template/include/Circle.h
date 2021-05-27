@@ -1,5 +1,5 @@
 #pragma once
-#include "Vec2D.h"
+#include "Rect.h"
 
 namespace Maths {
 	template <typename T>
@@ -22,6 +22,14 @@ namespace Maths {
 		bool operator!=(const Circle& rhs) const {
 			return !(*this == rhs);
 		}
+
+		bool IsOverlappingRect(const Rect<T>& rect) const {
+			return Distance(Vec2D<T>(rect.rect.x, rect.rect.y), pos) < radius ||
+				Distance(Vec2D<T>(rect.rect.x + rect.rect.w, rect.rect.y), pos) < radius ||
+				Distance(Vec2D<T>(rect.rect.x, rect.rect.y + rect.rect.h), pos) < radius ||
+				Distance(Vec2D<T>(rect.rect.x + rect.rect.w, rect.rect.y + rect.h), pos) < radius;
+		}
+
 	public:
 		Vec2D<T> pos;
 		T radius;
@@ -29,12 +37,4 @@ namespace Maths {
 
 	typedef Circle<int> ICircle;
 	typedef Circle<float> FCircle;
-
-	template<typename T>
-	bool RectIsOverlappedByCircle(const SDL_Rect& rect, const Circle<T> circle) {
-		return Distance(Vec2D<T>(rect.x, rect.y), circle.pos) < circle.radius ||
-			Distance(Vec2D<T>(rect.x + rect.w, rect.y), circle.pos) < circle.radius ||
-			Distance(Vec2D<T>(rect.x, rect.y + rect.h), circle.pos) < circle.radius ||
-			Distance(Vec2D<T>(rect.x + rect.w, rect.y + rect.h), circle.pos) < circle.radius;
-	}
 }

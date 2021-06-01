@@ -3,6 +3,10 @@
 
 CoreSystem::Window::Window()
 {
+	t = CoreSystem::Timer::GetInstance();
+	kbd = Keyboard::GetInstance();
+	mouse = Mouse::GetInstance();
+	sSystem = SoundEngine::SoundSystem::GetInstance();
 	event.type = SDL_FIRSTEVENT;
 	running = true;
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -22,8 +26,6 @@ CoreSystem::Window::Window()
 
 CoreSystem::Window::~Window()
 {
-	kbd.Flush();
-	mouse.Flush();
 	SDL_DestroyWindow(window);
 	SDL_Quit();
 }
@@ -39,7 +41,7 @@ bool CoreSystem::Window::EventListener() noexcept
 		{
 			switch (event.window.event) {
 			case SDL_WINDOWEVENT_FOCUS_LOST:
-				kbd.Flush();
+				kbd->Flush();
 				break;
 			default:
 				break;
@@ -48,11 +50,11 @@ bool CoreSystem::Window::EventListener() noexcept
 			break;
 			// *************** BEGIN KEYBOARD EVENTS *************** //
 		case SDL_KEYDOWN:
-			kbd.OnKeyPressed(event.key.keysym.scancode);
-			kbd.OnChar(event.key.keysym.sym);
+			kbd->OnKeyPressed(event.key.keysym.scancode);
+			kbd->OnChar(event.key.keysym.sym);
 			break;
 		case SDL_KEYUP:
-			kbd.OnKeyReleased(event.key.keysym.scancode);
+			kbd->OnKeyReleased(event.key.keysym.scancode);
 			break;
 			// ***************** END KEYBOARD EVENTS *************** //
 
@@ -60,29 +62,29 @@ bool CoreSystem::Window::EventListener() noexcept
 		case SDL_MOUSEBUTTONDOWN:
 		{
 			if (event.button.button == SDL_BUTTON_LEFT)
-				mouse.OnLeftPressed();
+				mouse->OnLeftPressed();
 			else if (event.button.button == SDL_BUTTON_RIGHT)
-				mouse.OnRightPressed();
+				mouse->OnRightPressed();
 		}
 			break;
 		case SDL_MOUSEBUTTONUP:
 		{
 			if (event.button.button == SDL_BUTTON_LEFT)
-				mouse.OnLeftReleased();
+				mouse->OnLeftReleased();
 			else if (event.button.button == SDL_BUTTON_RIGHT)
-				mouse.OnRightReleased();
+				mouse->OnRightReleased();
 		}
 			break;
 		case SDL_MOUSEWHEEL:
 		{
 			if (event.wheel.y > 0)
-				mouse.OnWheelUp();
+				mouse->OnWheelUp();
 			else if (event.wheel.y < 0)
-				mouse.OnWheelDown();
+				mouse->OnWheelDown();
 		}
 			break;
 		case SDL_MOUSEMOTION: 
-			mouse.OnMouseMove((int)event.button.x, (int)event.button.y);
+			mouse->OnMouseMove((int)event.button.x, (int)event.button.y);
 			break;
 			// ****************** END MOUSE EVENTS ***************** //
 

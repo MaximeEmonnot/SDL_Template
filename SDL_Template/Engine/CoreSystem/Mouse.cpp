@@ -1,5 +1,10 @@
 #include "Mouse.h"
 
+CoreSystem::Mouse::~Mouse()
+{
+	Flush();
+}
+
 CoreSystem::Mouse::EventType CoreSystem::Mouse::Read()
 {
 	if (buffer.size() > 0u) {

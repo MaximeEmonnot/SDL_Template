@@ -7,9 +7,10 @@
 #include <queue>
 #include "Rect.h"
 #include "DColors.h"
+#include "SingletonMaker.h"
 
 namespace CoreSystem {
-	class Keyboard
+	class Keyboard : public SingletonMaker<CoreSystem::Keyboard>
 	{
 	private:
 		friend class Window;
@@ -37,6 +38,9 @@ namespace CoreSystem {
 		// Returns true if no keys are pressed, false otherwise.
 		bool							KeyIsEmpty() const;
 
+
+		//CORSAIR
+
 		void                            FlushKeyColors();
 		void                            SetKeyboardColor(GraphicsEngine::Color c);
 		void							SetKeyColor(SDL_Scancode kCode, GraphicsEngine::Color c);
@@ -61,6 +65,8 @@ namespace CoreSystem {
 		template<typename T>
 		void							TrimBuffer(std::queue<T>& buffer);
 
+		//CORSAIR
+
 		CorsairLedId					SDLKeyToCorsairId(SDL_Scancode kCode);
 
 	private:
@@ -68,6 +74,8 @@ namespace CoreSystem {
 		std::bitset<SDL_NUM_SCANCODES>	keystates;
 		std::queue<Event>				bufferEvents;
 		std::queue<char>				bufferChar;
+
+		//CORSAIR
 		std::unordered_map<Maths::IRect, CorsairLedId, Maths::IRect::Hash> ledPositions;
 		std::vector<Maths::IRect>       rectKeys;
 		bool                            isCorsairKeyboard;

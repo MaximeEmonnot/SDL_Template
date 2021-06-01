@@ -12,7 +12,7 @@ namespace GraphicsEngine {
 	public:
 		Animation(Maths::IRect rect, int count, Sprite& sprite, float holdTime);
 
-		void					Draw(Maths::IRect rect, Graphics& gfx);
+		void					Draw(Maths::IRect rect);
 
 		void					Update(float dt);
 		void					ResetAnimation();
@@ -22,6 +22,7 @@ namespace GraphicsEngine {
 	private:
 		void					Advance();
 	private:
+		std::shared_ptr<Graphics> gfx;
 		const Sprite& sprite;
 		std::vector<Maths::IRect>	frames;
 		float					curFrameTime = 0.0f;

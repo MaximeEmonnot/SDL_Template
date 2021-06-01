@@ -6,7 +6,7 @@ namespace GraphicsEngine {
 	class Font
 	{
 	public:
-		Font(const char* path, int size, Graphics& gfx);
+		Font(const char* path, int size);
 		~Font();
 
 		// Draws text at a given position.
@@ -15,7 +15,7 @@ namespace GraphicsEngine {
 			DrawText(Maths::IVec2D(x, y), text, c);
 		}
 	private:
-		Graphics& gfx;
+		std::shared_ptr<Graphics> gfx;
 		TTF_Font* font;
 	};
 }

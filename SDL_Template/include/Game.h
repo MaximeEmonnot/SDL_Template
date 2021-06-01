@@ -10,7 +10,7 @@
 class Game
 {
 public:
-	Game(CoreSystem::Window& wnd);
+	Game();
 	~Game();
 
 	void Go();
@@ -23,10 +23,11 @@ private:
 
 	// ***************** END USER FUNCTIONS ************* //
 private:
-	CoreSystem::Window& wnd;
-	GraphicsEngine::Graphics gfx;
+	std::shared_ptr<CoreSystem::Window> wnd;
+	std::shared_ptr<GraphicsEngine::Graphics> gfx;
 	// ***************** USER VARIABLES ******************//
 
+	std::shared_ptr<SoundEngine::SoundSystem> sSystem;
 	// ***************** END USER VARIABLES ************* //
 };
 

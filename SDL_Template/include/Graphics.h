@@ -1,13 +1,14 @@
 #pragma once
+#include "SingletonMaker.h"
 #include "Window.h"
 #include "DColors.h"
 #include "Sprite.h"
 #include "Rect.h"
 
 namespace GraphicsEngine {
-	class Graphics {
+	class Graphics : public CoreSystem::SingletonMaker<GraphicsEngine::Graphics>{
 	public:
-		Graphics(CoreSystem::Window& window);
+		Graphics();
 		~Graphics();
 		void						BeginRender();
 		void						EndRender();

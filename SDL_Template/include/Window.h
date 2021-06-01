@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL.h>
+#include "SingletonMaker.h"
 #include "Timer.h"
 #include "Mouse.h"
 #include "Keyboard.h"
@@ -7,7 +8,7 @@
 #include "SDLException.h"
 
 namespace CoreSystem {
-	class Window {
+	class Window : public SingletonMaker<Window> {
 	public:
 		Window();
 		~Window();
@@ -20,10 +21,10 @@ namespace CoreSystem {
 		const Maths::IRect GetScreenRect() const;
 
 	public:
-		Timer       t;
-		Mouse		mouse;
-		Keyboard	kbd;
-		SoundEngine::SoundSystem sSystem;
+		std::shared_ptr<Timer>       t;
+		std::shared_ptr<Mouse>		mouse;
+		std::shared_ptr<Keyboard>	kbd;
+		std::shared_ptr<SoundEngine::SoundSystem> sSystem;
 
 	private:
 		SDL_Window* window;

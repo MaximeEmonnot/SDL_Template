@@ -1,9 +1,10 @@
 #pragma once
 #include <queue>
+#include "SingletonMaker.h"
 #include "Vec2D.h"
 
 namespace CoreSystem {
-	class Mouse
+	class Mouse : public SingletonMaker<CoreSystem::Mouse>
 	{
 	private:
 		friend class Window;
@@ -20,7 +21,7 @@ namespace CoreSystem {
 		};
 	public:
 		Mouse() = default;
-		~Mouse() = default;
+		~Mouse();
 
 		// Returns the last Event caught.
 		Mouse::EventType			Read();
@@ -30,7 +31,7 @@ namespace CoreSystem {
 		// Returns mouse position on the Y axis.
 		int							GetMousePosY() const;
 		// Returns mouse coordonates. Can be used with Vec2D.
-		Maths::IVec2D						GetMousePos() const;
+		Maths::IVec2D				GetMousePos() const;
 		// Returns true if Left Mouse Button is currently pressed, false otherwise.
 		bool						LeftIsPressed() const;
 		// Returns true if Right Mouse Button is currently pressed, false otherwise.

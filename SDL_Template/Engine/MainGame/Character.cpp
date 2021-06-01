@@ -1,10 +1,11 @@
 #include "Character.h"
 #include <cassert>
 
-Character::Character(GraphicsEngine::Graphics& gfx, Maths::IRect rect)
+Character::Character(Maths::IRect rect)
 	:
 	rect(rect)
 {
+	
 	std::ifstream file;
 	file.open("json\\kirby.json");
 	if (!file)
@@ -13,7 +14,8 @@ Character::Character(GraphicsEngine::Graphics& gfx, Maths::IRect rect)
 	rapidjson::Document doc;
 	doc.ParseStream(isw);
 	file.close();
-	sprite.InitSurface(doc["filename"].GetString(), gfx.GetRenderer());
+
+	sprite.InitSurface(doc["filename"].GetString());
 
 	rapidjson::Value& v = doc["animations"];
 
@@ -24,9 +26,9 @@ Character::Character(GraphicsEngine::Graphics& gfx, Maths::IRect rect)
 	int test = 0;
 }
 
-void Character::Draw(GraphicsEngine::Graphics& gfx)
+void Character::Draw()
 {
-	animations[iCurSequence].Draw(rect, gfx);
+	animations[iCurSequence].Draw(rect);
 }
 
 void Character::Update(float dt)

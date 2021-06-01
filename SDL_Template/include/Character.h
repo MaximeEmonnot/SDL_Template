@@ -6,9 +6,9 @@
 class Character
 {
 public:
-	Character(GraphicsEngine::Graphics& gfx, Maths::IRect rect);
+	Character(Maths::IRect rect);
 
-	void					Draw(GraphicsEngine::Graphics& gfx);
+	void					Draw();
 	void					Update(float dt);
 
 	void					NextAnimation();
@@ -22,4 +22,3 @@ private:
 	std::vector<GraphicsEngine::Animation>	animations;
 	int						iCurSequence = 0;
 };
-

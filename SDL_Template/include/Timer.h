@@ -1,8 +1,9 @@
 #pragma once
 #include <chrono>
+#include "SingletonMaker.h"
 
 namespace CoreSystem {
-	class Timer
+	class Timer : public SingletonMaker<Timer>
 	{
 	public:
 		Timer();

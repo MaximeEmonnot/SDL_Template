@@ -10,15 +10,15 @@
 int main(int argc, char* argv[])
 {
 	try {
-		CoreSystem::Window wnd;
+		std::shared_ptr<CoreSystem::Window> wnd = CoreSystem::Window::GetInstance();
 		try {
-			Game theGame(wnd);
+			Game theGame;
 			std::thread t;
-			if (wnd.kbd.IsCorsairKeyboard()) {
-				auto gameCCC = [&]() { while (wnd.EventListener()) { theGame.ComputeCorsairColors(); } };
+			if (wnd->kbd->IsCorsairKeyboard()) {
+				auto gameCCC = [&]() { while (wnd->EventListener()) { theGame.ComputeCorsairColors(); } };
 				t = std::thread(gameCCC);
 			}
-			while (wnd.EventListener()) {
+			while (wnd->EventListener()) {
 				theGame.Go();
 			}
 			if (t.joinable()) t.join();

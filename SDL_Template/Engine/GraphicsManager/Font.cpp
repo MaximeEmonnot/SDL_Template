@@ -1,8 +1,8 @@
 #include "Font.h"
 
-GraphicsEngine::Font::Font(const char* path, int size, Graphics& gfx)
+GraphicsEngine::Font::Font(const char* path, int size)
 	:
-	gfx(gfx)
+	gfx(Graphics::GetInstance())
 {
 	if (TTF_Init() < 0)
 		throw SDLException("SDL TTF Exception caught", __FILE__, __LINE__, "An error has been caught during TTF Initialisation.");
@@ -19,7 +19,7 @@ GraphicsEngine::Font::~Font()
 void GraphicsEngine::Font::DrawText(Maths::IVec2D pos, const char* text, GraphicsEngine::Color c)
 {
 	SDL_Surface* textSurf = TTF_RenderText_Solid(font, text, c.c);
-	Sprite tSprite = Sprite(textSurf, gfx.GetRenderer(), textSurf->w, textSurf->h);
-	gfx.DrawSprite({ pos.x, pos.y, textSurf->w, textSurf->h }, tSprite);
+	Sprite tSprite = Sprite(textSurf, textSurf->w, textSurf->h);
+	gfx->DrawSprite({ pos.x, pos.y, textSurf->w, textSurf->h }, tSprite);
 	SDL_FreeSurface(textSurf);
 }

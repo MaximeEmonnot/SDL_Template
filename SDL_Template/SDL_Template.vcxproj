@@ -48,6 +48,7 @@
     <ClInclude Include="include\Music.h" />
     <ClInclude Include="include\Rect.h" />
     <ClInclude Include="include\SDLException.h" />
+    <ClInclude Include="include\SingletonMaker.h" />
     <ClInclude Include="include\Sound.h" />
     <ClInclude Include="include\SoundSystem.h" />
     <ClInclude Include="include\Sprite.h" />

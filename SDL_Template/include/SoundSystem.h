@@ -1,9 +1,8 @@
 #pragma once
 #include <SDL_mixer.h>
-#include <vector>
 #include <unordered_set>
-#include <memory>
 #include "SDLException.h"
+#include "SingletonMaker.h"
 #include "Effect.h"
 #include "Music.h"
 
@@ -11,7 +10,7 @@
 #define EFFECT 1
 
 namespace SoundEngine {
-	class SoundSystem
+	class SoundSystem : public CoreSystem::SingletonMaker<SoundSystem>
 	{
 	public:
 		SoundSystem();
@@ -28,11 +27,5 @@ namespace SoundEngine {
 
 	private:
 		std::unordered_set<std::shared_ptr<ASound>, ASound::Hash> soundList;
-
 	};
 }
-
-//Modifications :
-// - AddSound -> doit retourner une classe abstraite (ex : ASound)
-// - PlaySound -> Music ou Effect en paramètre
-// - virer les index

@@ -1,10 +1,9 @@
 #include "Graphics.h"
 
-GraphicsEngine::Graphics::Graphics(CoreSystem::Window& window)
-	:
-	screenRect(window.GetScreenRect())
+GraphicsEngine::Graphics::Graphics()
 {
-	renderer = SDL_CreateRenderer(window.GetWindow(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	std::shared_ptr<CoreSystem::Window> window = CoreSystem::Window::GetInstance();
+	renderer = SDL_CreateRenderer(window->GetWindow(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (renderer == NULL) {
 		throw SDLException("SDL Graphics Exception caught", __FILE__, __LINE__, "An error has been caught during SDL Renderer Creation.");
 	}

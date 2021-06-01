@@ -1,4 +1,5 @@
 #include "Sprite.h"
+#include "Graphics.h"
 
 GraphicsEngine::Sprite::Sprite()
     :
@@ -6,24 +7,26 @@ GraphicsEngine::Sprite::Sprite()
 {
 }
 
-GraphicsEngine::Sprite::Sprite(const char* path, SDL_Renderer* renderer)
+GraphicsEngine::Sprite::Sprite(const char* path)
 {
+    auto gfx = Graphics::GetInstance();
     SDL_Surface* surf = IMG_Load(path);
     if (surf == nullptr)
         throw SDLException("SDL Sprite Exception", __FILE__, __LINE__, "An error has been caught during SDL Surface initialisation.\nPlease check sprite path.");
-    tex = SDL_CreateTextureFromSurface(renderer, surf);
+    tex = SDL_CreateTextureFromSurface(gfx->GetRenderer(), surf);
     width = surf->w, height = surf->h;
     SDL_FreeSurface(surf);
 }
 
-GraphicsEngine::Sprite::Sprite(SDL_Surface* surf, SDL_Renderer* renderer, int width, int height)
+GraphicsEngine::Sprite::Sprite(SDL_Surface* surf, int width, int height)
     :
     width(width),
     height(height)
 {
+    auto gfx = Graphics::GetInstance();
     if (surf == nullptr)
         throw SDLException("SDL Sprite Exception", __FILE__, __LINE__, "An error has been caught during SDL Surface initialisation.\nPlease check sprite path.");
-    tex = SDL_CreateTextureFromSurface(renderer, surf);
+    tex = SDL_CreateTextureFromSurface(gfx->GetRenderer(), surf);
 }
 
 GraphicsEngine::Sprite::Sprite(const Sprite& newSurface)
@@ -47,12 +50,13 @@ GraphicsEngine::Sprite::~Sprite()
     SDL_DestroyTexture(tex);
 }
 
-void GraphicsEngine::Sprite::InitSurface(const char* path, SDL_Renderer* renderer)
+void GraphicsEngine::Sprite::InitSurface(const char* path)
 {
+    auto gfx = Graphics::GetInstance();
     SDL_Surface* surf = IMG_Load(path);
     if (surf == nullptr)
         throw SDLException("SDL Sprite Exception", __FILE__, __LINE__, "An error has been caught during SDL Surface initialisation.\nPlease check sprite path.");
-    tex = SDL_CreateTextureFromSurface(renderer, surf);
+    tex = SDL_CreateTextureFromSurface(gfx->GetRenderer(), surf);
     width = surf->w, height = surf->h;
     SDL_FreeSurface(surf);
 }

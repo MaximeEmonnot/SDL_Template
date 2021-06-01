@@ -1,12 +1,12 @@
 #include "Game.h"
 #include <random>
 
-Game::Game(CoreSystem::Window& wnd)
-	:
-	wnd(wnd),
-	gfx(wnd)
+Game::Game():
+	wnd(CoreSystem::Window::GetInstance()),
+	gfx(GraphicsEngine::Graphics::GetInstance()),
+	sSystem(SoundEngine::SoundSystem::GetInstance())
 {
-	wnd.sSystem.PlaySound(wnd.sSystem.ConstructNewSong("music\\gigachad.wav", MUSIC), 1);
+	sSystem->PlaySound(sSystem->ConstructNewSong("music\\gigachad.wav", MUSIC), 1);
 }
 
 Game::~Game()
@@ -14,10 +14,10 @@ Game::~Game()
 
 void Game::Go()
 {
-	gfx.BeginRender();
+	gfx->BeginRender();
 	UpdateFrame();
 	RenderFrame();
-	gfx.EndRender();
+	gfx->EndRender();
 }
 
 void Game::ComputeCorsairColors()

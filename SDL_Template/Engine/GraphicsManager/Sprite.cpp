@@ -55,7 +55,7 @@ void GraphicsEngine::Sprite::InitSurface(const char* path)
     auto gfx = Graphics::GetInstance();
     SDL_Surface* surf = IMG_Load(path);
     if (surf == nullptr)
-        throw SDLException("SDL Sprite Exception", __FILE__, __LINE__, "An error has been caught during SDL Surface initialisation.\nPlease check sprite path.");
+        throw SDLException("SDL Sprite Exception", __FILE__, "An error has been caught during SDL Surface initialisation.\nPlease check sprite path.", __LINE__);
     mpTex = SDL_CreateTextureFromSurface(gfx->GetRenderer(), surf);
     mWidth = surf->w, mHeight = surf->h;
     SDL_FreeSurface(surf);

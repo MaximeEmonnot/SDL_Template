@@ -6,32 +6,32 @@ namespace CoreSystem {
 	class SingletonMaker {
 	public:
 		static std::shared_ptr<T> GetInstance() {
-			if (singleton == nullptr) {
-				singleton = std::make_shared<T>();
+			if (mspSingleton == nullptr) {
+				mspSingleton = std::make_shared<T>();
 			}
-			return singleton;
+			return mspSingleton;
 		}
 		template<typename Q>
 		static std::shared_ptr<T> GetInstance(Q param) {
-			if (singleton == nullptr) {
-				singleton = std::make_shared<T>(param);
+			if (mspSingleton == nullptr) {
+				mspSingleton = std::make_shared<T>(param);
 			}
-			return singleton;
+			return mspSingleton;
 		}
 		template <typename ...Args>
 		static std::shared_ptr<T> GetInstance(Args... param) {
-			if (singleton == nullptr) {
-				singleton = std::make_shared<T>(param...);
+			if (mspSingleton == nullptr) {
+				mspSingleton = std::make_shared<T>(param...);
 			}
-			return singleton;
+			return mspSingleton;
 		}
 
 		static void Kill() {
-			singleton = nullptr;
+			mspSingleton = nullptr;
 		}
 
 	private:
-		static std::shared_ptr<T> singleton;
+		static std::shared_ptr<T> mspSingleton;
 	};
-	template <typename T> std::shared_ptr<T> SingletonMaker<T>::singleton = nullptr;
+	template <typename T> std::shared_ptr<T> SingletonMaker<T>::mspSingleton = nullptr;
 }

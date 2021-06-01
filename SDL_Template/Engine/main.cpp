@@ -14,11 +14,11 @@ int main(int argc, char* argv[])
 		try {
 			Game theGame;
 			std::thread t;
-			if (wnd->kbd->IsCorsairKeyboard()) {
-				auto gameCCC = [&]() { while (wnd->EventListener()) { theGame.ComputeCorsairColors(); } };
+			if (wnd->pKbd->IsCorsairKeyboard()) {
+				auto gameCCC = [&]() { while (wnd->ListensToEvents()) { theGame.ComputeCorsairColors(); } };
 				t = std::thread(gameCCC);
 			}
-			while (wnd->EventListener()) {
+			while (wnd->ListensToEvents()) {
 				theGame.Go();
 			}
 			if (t.joinable()) t.join();

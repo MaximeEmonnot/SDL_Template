@@ -26,6 +26,6 @@ namespace SoundEngine {
 
 
 	private:
-		std::unordered_set<std::shared_ptr<ASound>, ASound::Hash> soundList;
+		std::unordered_set<std::shared_ptr<ASound>, ASound::Hash> mSoundList;
 	};
 }

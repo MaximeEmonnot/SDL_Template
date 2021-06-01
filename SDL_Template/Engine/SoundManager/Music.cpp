@@ -1,21 +1,22 @@
 #include "Music.h"
 
 SoundEngine::Music::Music(const char* path)
+	:
+	pMusic(Mix_LoadMUS(path))
 {
 	this->path = path;
-	music = Mix_LoadMUS(path);
-	if (music == NULL)
-		throw SDLException("SDL Sound System Exception caught", __FILE__, __LINE__, "An error has been caught during Music Initialisation.\nPlease check file path.");
+	if (pMusic == NULL)
+		throw SDLException("SDL Sound System Exception caught", __FILE__, "An error has been caught during Music Initialisation.\nPlease check file path.", __LINE__);
 }
 
 SoundEngine::Music::~Music()
 {
-	Mix_FreeMusic(music);
+	Mix_FreeMusic(pMusic);
 }
 
 void SoundEngine::Music::Play(int loops)
 {
-	Mix_PlayMusic(music, loops);
+	Mix_PlayMusic(pMusic, loops);
 }
 
 void SoundEngine::Music::Stop()

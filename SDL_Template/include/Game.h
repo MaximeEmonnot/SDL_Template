@@ -23,11 +23,10 @@ private:
 
 	// ***************** END USER FUNCTIONS ************* //
 private:
-	std::shared_ptr<CoreSystem::Window> wnd;
-	std::shared_ptr<GraphicsEngine::Graphics> gfx;
+	std::shared_ptr<CoreSystem::Window> mpWnd;
+	std::shared_ptr<GraphicsEngine::Graphics> mpGfx;
 	// ***************** USER VARIABLES ******************//
 
-	std::shared_ptr<SoundEngine::SoundSystem> sSystem;
 	// ***************** END USER VARIABLES ************* //
 };
 

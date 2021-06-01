@@ -52,6 +52,9 @@ namespace Maths {
 		bool operator==(const Rect& rhs) const {
 			return rect.x == rhs.rect.x && rect.y == rhs.rect.y && rect.w == rhs.rect.w && rect.h == rhs.rect.h;
 		}
+		bool operator!=(const Rect& rhs) const {
+			return !(this == rhs);
+		}
 
 		Vec2D<T> GetVec2DFrom() const {
 			return Vec2D<T>(rect.x, rect.y);

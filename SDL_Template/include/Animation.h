@@ -10,7 +10,7 @@ namespace GraphicsEngine {
 	class Animation
 	{
 	public:
-		Animation(Maths::IRect rect, int count, Sprite& sprite, float holdTime);
+		Animation(Maths::IRect rect, int count, Sprite& rSprite, float holdTime);
 		~Animation();
 
 		void					Draw(Maths::IRect rect);
@@ -23,14 +23,14 @@ namespace GraphicsEngine {
 	private:
 		void					Advance();
 	private:
-		std::shared_ptr<Graphics> gfx;
-		const Sprite& sprite;
-		std::vector<Maths::IRect>	frames;
-		float					curFrameTime = 0.0f;
-		float					holdTime;
-		int						iCurFrame = 0;
-		int						width;
-		int						height;
+		std::shared_ptr<Graphics>	mpGfx;
+		const Sprite&				mrSprite;
+		std::vector<Maths::IRect>	mFrames;
+		float						mCurFrameTime = 0.0f;
+		float						mHoldTime;
+		int							miCurFrame = 0;
+		int							mWidth;
+		int							mHeight;
 	};
 }
 

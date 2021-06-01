@@ -2,54 +2,54 @@
 
 GraphicsEngine::Animation::Animation(Maths::IRect rect, int count, Sprite& sprite, float holdTime)
 	:
-	gfx(Graphics::GetInstance()),
-	sprite(sprite),
-	holdTime(holdTime),
-	width(rect.rect.w),
-	height(rect.rect.h)
+	mpGfx(Graphics::GetInstance()),
+	mrSprite(sprite),
+	mHoldTime(holdTime),
+	mWidth(rect.rect.w),
+	mHeight(rect.rect.h)
 {
 	for (int i = 0; i < count; i++) {
-		frames.push_back({ rect.rect.x + rect.rect.w * i, rect.rect.y, rect.rect.w, rect.rect.h });
+		mFrames.push_back({ rect.rect.x + rect.rect.w * i, rect.rect.y, rect.rect.w, rect.rect.h });
 	}
 }
 
 GraphicsEngine::Animation::~Animation()
 {
-	gfx->Kill();
+	mpGfx->Kill();
 }
 
 void GraphicsEngine::Animation::Draw(Maths::IRect rect)
 {
-	gfx->DrawSprite(rect, frames[iCurFrame], sprite);
+	mpGfx->DrawSprite(rect, mFrames[miCurFrame], mrSprite);
 }
 
 void GraphicsEngine::Animation::Update(float dt)
 {
-	curFrameTime += dt;
-	while (curFrameTime >= holdTime) {
+	mCurFrameTime += dt;
+	while (mCurFrameTime >= mHoldTime) {
 		Advance();
-		curFrameTime -= holdTime;
+		mCurFrameTime -= mHoldTime;
 	}
 }
 
 void GraphicsEngine::Animation::ResetAnimation()
 {
-	iCurFrame = 0;
+	miCurFrame = 0;
 }
 
 int GraphicsEngine::Animation::GetWidth() const
 {
-	return width;
+	return mWidth;
 }
 
 int GraphicsEngine::Animation::GetHeight() const
 {
-	return height;
+	return mHeight;
 }
 
 void GraphicsEngine::Animation::Advance()
 {
-	if (++iCurFrame >= frames.size()) {
-		iCurFrame = 0;
+	if (++miCurFrame >= mFrames.size()) {
+		miCurFrame = 0;
 	}
 }

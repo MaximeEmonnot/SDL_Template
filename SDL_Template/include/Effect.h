@@ -10,6 +10,6 @@ namespace SoundEngine {
 		void Play(int loops) override;
 		void Stop() override;
 	private:
-		Mix_Chunk* effect;
+		Mix_Chunk* pEffect;
 	};
 }

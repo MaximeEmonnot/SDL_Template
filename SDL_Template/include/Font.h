@@ -15,8 +15,8 @@ namespace GraphicsEngine {
 			DrawText(Maths::IVec2D(x, y), text, c);
 		}
 	private:
-		std::shared_ptr<Graphics> gfx;
-		TTF_Font* font;
+		std::shared_ptr<Graphics>	pGfx;
+		TTF_Font*					pFont;
 	};
 }
 

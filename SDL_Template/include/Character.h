@@ -14,11 +14,11 @@ public:
 	void					NextAnimation();
 	void					LastAnimation();
 
-	Maths::IRect				GetRect() const;
+	Maths::IRect			GetRect() const;
 
 private:
-	Maths::IRect				rect;
-	GraphicsEngine::Sprite					sprite;
-	std::vector<GraphicsEngine::Animation>	animations;
-	int						iCurSequence = 0;
+	Maths::IRect							mRect;
+	GraphicsEngine::Sprite					mSprite;
+	std::vector<GraphicsEngine::Animation>	mAnimations;
+	int										miCurSequence = 0;
 };

@@ -13,25 +13,25 @@ namespace CoreSystem {
 		Window();
 		~Window();
 
-		bool		EventListener() noexcept;
+		bool		ListensToEvents() noexcept;
 
-		SDL_Window* GetWindow();
+		SDL_Window* pGetWindow();
 		const int	GetWidth() const;
 		const int   GetHeight() const;
 		const Maths::IRect GetScreenRect() const;
 
 	public:
-		std::shared_ptr<Timer>       t;
-		std::shared_ptr<Mouse>		mouse;
-		std::shared_ptr<Keyboard>	kbd;
-		std::shared_ptr<SoundEngine::SoundSystem> sSystem;
+		std::shared_ptr<Timer>      pTimer;
+		std::shared_ptr<Mouse>		pMouse;
+		std::shared_ptr<Keyboard>	pKbd;
+		std::shared_ptr<SoundEngine::SoundSystem> pSoundSystem;
 
 	private:
-		SDL_Window* window;
-		SDL_Event	event;
-		bool        running;
-		const int	width = 800;
-		const int   height = 600;
-		const Maths::IRect screenRect = { 0, 0, width, height };
+		SDL_Window* mpWindow;
+		SDL_Event	mEvent;
+		bool        mbIsRunning;
+		const int	mWidth = 800;
+		const int   mHeight = 600;
+		const Maths::IRect screenRect = { 0, 0, mWidth, mHeight };
 	};
 }

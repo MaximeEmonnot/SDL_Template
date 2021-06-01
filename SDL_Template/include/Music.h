@@ -10,6 +10,6 @@ namespace SoundEngine {
 		void Play(int loops) override;
 		void Stop() override;
 	private:
-		Mix_Music* music = NULL;
+		Mix_Music* pMusic = NULL;
 	};
 }

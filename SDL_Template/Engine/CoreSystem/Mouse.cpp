@@ -7,9 +7,9 @@ CoreSystem::Mouse::~Mouse()
 
 CoreSystem::Mouse::EventType CoreSystem::Mouse::Read()
 {
-	if (buffer.size() > 0u) {
-		auto e = buffer.front();
-		buffer.pop();
+	if (mBuffer.size() > 0u) {
+		auto e = mBuffer.front();
+		mBuffer.pop();
 		return e;
 	}
 	else {
@@ -19,84 +19,84 @@ CoreSystem::Mouse::EventType CoreSystem::Mouse::Read()
 
 int CoreSystem::Mouse::GetMousePosX() const
 {
-	return x;
+	return mX;
 }
 
 int CoreSystem::Mouse::GetMousePosY() const
 {
-	return y;
+	return mY;
 }
 
 Maths::IVec2D CoreSystem::Mouse::GetMousePos() const
 {
-	return Maths::IVec2D(x, y);
+	return Maths::IVec2D(mX, mY);
 }
 
 bool CoreSystem::Mouse::LeftIsPressed() const
 {
-	return leftIsPressed;
+	return mbLeftIsPressed;
 }
 
 bool CoreSystem::Mouse::RightIsPressed() const
 {
-	return rightIsPressed;
+	return mbRightIsPressed;
 }
 
 void CoreSystem::Mouse::OnMouseMove(int newx, int newy)
 {
-	x = newx, y = newy;
-	buffer.push(EventType::Move);
+	mX = newx, mY = newy;
+	mBuffer.push(EventType::Move);
 	TrimBuffer();
 }
 
 void CoreSystem::Mouse::OnLeftPressed()
 {
-	leftIsPressed = true;
-	buffer.push(EventType::LPress);
+	mbLeftIsPressed = true;
+	mBuffer.push(EventType::LPress);
 	TrimBuffer();
 }
 
 void CoreSystem::Mouse::OnLeftReleased()
 {
-	leftIsPressed = false;
-	buffer.push(EventType::LRelease);
+	mbLeftIsPressed = false;
+	mBuffer.push(EventType::LRelease);
 	TrimBuffer();
 }
 
 void CoreSystem::Mouse::OnRightPressed()
 {
-	rightIsPressed = true;
-	buffer.push(EventType::RPress);
+	mbRightIsPressed = true;
+	mBuffer.push(EventType::RPress);
 	TrimBuffer();
 }
 
 void CoreSystem::Mouse::OnRightReleased()
 {
-	rightIsPressed = false;
-	buffer.push(EventType::RRelease);
+	mbRightIsPressed = false;
+	mBuffer.push(EventType::RRelease);
 	TrimBuffer();
 }
 
 void CoreSystem::Mouse::OnWheelUp()
 {
-	buffer.push(EventType::WheelUp);
+	mBuffer.push(EventType::WheelUp);
 	TrimBuffer();
 }
 
 void CoreSystem::Mouse::OnWheelDown()
 {
-	buffer.push(EventType::WheelDown);
+	mBuffer.push(EventType::WheelDown);
 	TrimBuffer();
 }
 
 void CoreSystem::Mouse::TrimBuffer()
 {
-	if (buffer.size() > sizeBuffer) {
-		buffer.pop();
+	if (mBuffer.size() > mSizeBuffer) {
+		mBuffer.pop();
 	}
 }
 
 void CoreSystem::Mouse::Flush()
 {
-	buffer = std::queue<Mouse::EventType>();
+	mBuffer = std::queue<Mouse::EventType>();
 }

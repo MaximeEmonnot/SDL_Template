@@ -36,20 +36,20 @@ namespace Maths {
 			return *this;
 		}
 
-		Vec2D operator+(Vec2D& rhs) {
+		Vec2D operator+(const Vec2D& rhs) {
 			x += rhs.x;
 			y += rhs.y;
 			return *this;
 		}
-		void operator+=(Vec2D& rhs) {
+		void operator+=(const Vec2D& rhs) {
 			*this = *this + rhs;
 		}
-		Vec2D operator-(Vec2D& rhs) {
+		Vec2D operator-(const Vec2D& rhs) {
 			x -= rhs.x;
 			y -= rhs.y;
 			return *this;
 		}
-		void operator-=(Vec2D& rhs) {
+		void operator-=(const Vec2D& rhs) {
 			*this = *this - rhs;
 		}
 		Vec2D operator*(T scale) {
@@ -68,10 +68,10 @@ namespace Maths {
 			*this = *this / scale;
 		}
 
-		bool operator==(Vec2D& rhs) {
+		bool operator==(const Vec2D& rhs) const {
 			return x == rhs.x && y == rhs.y;
 		}
-		bool operator!=(Vec2D& rhs) {
+		bool operator!=(const Vec2D& rhs) const {
 			return !(*this == rhs);
 		}
 

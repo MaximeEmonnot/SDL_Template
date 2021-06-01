@@ -2,26 +2,23 @@
 #include <random>
 
 Game::Game():
-	wnd(CoreSystem::Window::GetInstance()),
-	gfx(GraphicsEngine::Graphics::GetInstance()),
-	sSystem(SoundEngine::SoundSystem::GetInstance())
+	mpWnd(CoreSystem::Window::GetInstance()),
+	mpGfx(GraphicsEngine::Graphics::GetInstance())
 {
-	sSystem->PlaySound(sSystem->ConstructNewSong("music\\gigachad.wav", MUSIC), 1);
 }
 
 Game::~Game()
 {
-	wnd->Kill();
-	gfx->Kill();
-	sSystem->Kill();
+	mpWnd->Kill();
+	mpGfx->Kill();
 }
 
 void Game::Go()
 {
-	gfx->BeginRender();
+	mpGfx->BeginRender();
 	UpdateFrame();
 	RenderFrame();
-	gfx->EndRender();
+	mpGfx->EndRender();
 }
 
 void Game::ComputeCorsairColors()

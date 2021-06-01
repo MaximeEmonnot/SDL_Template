@@ -26,8 +26,8 @@ namespace GraphicsEngine {
 		int				GetHeight() const;
 
 	private:
-		SDL_Texture*    tex;
-		int				width = 0;
-		int				height = 0;
+		SDL_Texture*    mpTex;
+		int				mWidth = 0;
+		int				mHeight = 0;
 	};
 }

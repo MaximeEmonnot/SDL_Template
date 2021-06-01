@@ -49,11 +49,11 @@ namespace CoreSystem {
 		void						Flush();
 
 	private:
-		bool						leftIsPressed = false;
-		bool						rightIsPressed = false;
-		int							x = 0;
-		int							y = 0;
-		const size_t		sizeBuffer = 4u;
-		std::queue<EventType>		buffer;
+		bool						mbLeftIsPressed = false;
+		bool						mbRightIsPressed = false;
+		int							mX = 0;
+		int							mY = 0;
+		const size_t				mSizeBuffer = 4u;
+		std::queue<EventType>		mBuffer;
 	};
 }

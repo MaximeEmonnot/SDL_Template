@@ -70,16 +70,16 @@ namespace CoreSystem {
 		CorsairLedId					SDLKeyToCorsairId(SDL_Scancode kCode);
 
 	private:
-		const unsigned int	bufferSize = 4u;
-		std::bitset<SDL_NUM_SCANCODES>	keystates;
-		std::queue<Event>				bufferEvents;
-		std::queue<char>				bufferChar;
+		const unsigned int				mBufferSize = 4u;
+		std::bitset<SDL_NUM_SCANCODES>	mKeystates;
+		std::queue<Event>				mBufferEvents;
+		std::queue<char>				mBufferChar;
 
 		//CORSAIR
-		std::unordered_map<Maths::IRect, CorsairLedId, Maths::IRect::Hash> ledPositions;
-		std::vector<Maths::IRect>       rectKeys;
-		bool                            isCorsairKeyboard;
-		int								keyboardWidth;
-		int								keyboardHeight;
+		std::unordered_map<Maths::IRect, CorsairLedId, Maths::IRect::Hash>	mLedPositions;
+		std::vector<Maths::IRect>											mRectKeys;
+		bool																mbIsCorsairKeyboard;
+		int																	mKeyboardWidth;
+		int																	mKeyboardHeight;
 	};
 }

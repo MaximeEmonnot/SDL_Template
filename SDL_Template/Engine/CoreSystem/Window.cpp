@@ -3,50 +3,50 @@
 
 CoreSystem::Window::Window()
 	:
-	t(Timer::GetInstance()),
-	kbd(Keyboard::GetInstance()),
-	mouse(Mouse::GetInstance()),
-	sSystem(SoundEngine::SoundSystem::GetInstance())
+	pTimer(Timer::GetInstance()),
+	pKbd(Keyboard::GetInstance()),
+	pMouse(Mouse::GetInstance()),
+	pSoundSystem(SoundEngine::SoundSystem::GetInstance())
 {
-	event.type = SDL_FIRSTEVENT;
-	running = true;
+	mEvent.type = SDL_FIRSTEVENT;
+	mbIsRunning = true;
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-		throw SDLException("SDL Window Exception caught", __FILE__, __LINE__, "An error has been caught during SDL Initialisation.");
+		throw SDLException("SDL Window Exception caught", __FILE__, "An error has been caught during SDL Initialisation.", __LINE__);
 	}
-	window = SDL_CreateWindow("Template SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL);
-	if (window == NULL) {
-		throw SDLException("SDL Window Exception caught", __FILE__, __LINE__, "An error has been caught during Window Creation.");
+	mpWindow = SDL_CreateWindow("Template SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, mWidth, mHeight, SDL_WINDOW_OPENGL);
+	if (mpWindow == NULL) {
+		throw SDLException("SDL Window Exception caught", __FILE__, "An error has been caught during Window Creation.", __LINE__);
 	}
 	SDL_Surface* surf = IMG_Load("Images\\icon.png");
 	if (surf == nullptr) {
-		throw SDLException("SDL Window Exception caught", __FILE__, __LINE__, "An error has been caught during Icon loading.\nPlease check filename (MUST be \"icon.png\").");
+		throw SDLException("SDL Window Exception caught", __FILE__, "An error has been caught during Icon loading.\nPlease check filename (MUST be \"icon.png\").", __LINE__);
 	}
-	SDL_SetWindowIcon(window, surf);
+	SDL_SetWindowIcon(mpWindow, surf);
 	SDL_ShowCursor(1);
 }
 
 CoreSystem::Window::~Window()
 {
-	sSystem->Kill();
-	mouse->Kill();
-	kbd->Kill();
-	t->Kill();
-	SDL_DestroyWindow(window);
+	pSoundSystem->Kill();
+	pMouse->Kill();
+	pKbd->Kill();
+	pTimer->Kill();
+	SDL_DestroyWindow(mpWindow);
 	SDL_Quit();
 }
 
-bool CoreSystem::Window::EventListener() noexcept
+bool CoreSystem::Window::ListensToEvents() noexcept
 {
-	while (SDL_PollEvent(&event)) {
-		switch (event.type) {
+	while (SDL_PollEvent(&mEvent)) {
+		switch (mEvent.type) {
 		case SDL_QUIT:
-			running = false;
+			mbIsRunning = false;
 			break;
 		case SDL_WINDOWEVENT:
 		{
-			switch (event.window.event) {
+			switch (mEvent.window.event) {
 			case SDL_WINDOWEVENT_FOCUS_LOST:
-				kbd->Flush();
+				pKbd->Flush();
 				break;
 			default:
 				break;
@@ -55,41 +55,41 @@ bool CoreSystem::Window::EventListener() noexcept
 			break;
 			// *************** BEGIN KEYBOARD EVENTS *************** //
 		case SDL_KEYDOWN:
-			kbd->OnKeyPressed(event.key.keysym.scancode);
-			kbd->OnChar(event.key.keysym.sym);
+			pKbd->OnKeyPressed(mEvent.key.keysym.scancode);
+			pKbd->OnChar(mEvent.key.keysym.sym);
 			break;
 		case SDL_KEYUP:
-			kbd->OnKeyReleased(event.key.keysym.scancode);
+			pKbd->OnKeyReleased(mEvent.key.keysym.scancode);
 			break;
 			// ***************** END KEYBOARD EVENTS *************** //
 
 			// ***************** BEGIN MOUSE EVENTS **************** //
 		case SDL_MOUSEBUTTONDOWN:
 		{
-			if (event.button.button == SDL_BUTTON_LEFT)
-				mouse->OnLeftPressed();
-			else if (event.button.button == SDL_BUTTON_RIGHT)
-				mouse->OnRightPressed();
+			if (mEvent.button.button == SDL_BUTTON_LEFT)
+				pMouse->OnLeftPressed();
+			else if (mEvent.button.button == SDL_BUTTON_RIGHT)
+				pMouse->OnRightPressed();
 		}
 			break;
 		case SDL_MOUSEBUTTONUP:
 		{
-			if (event.button.button == SDL_BUTTON_LEFT)
-				mouse->OnLeftReleased();
-			else if (event.button.button == SDL_BUTTON_RIGHT)
-				mouse->OnRightReleased();
+			if (mEvent.button.button == SDL_BUTTON_LEFT)
+				pMouse->OnLeftReleased();
+			else if (mEvent.button.button == SDL_BUTTON_RIGHT)
+				pMouse->OnRightReleased();
 		}
 			break;
 		case SDL_MOUSEWHEEL:
 		{
-			if (event.wheel.y > 0)
-				mouse->OnWheelUp();
-			else if (event.wheel.y < 0)
-				mouse->OnWheelDown();
+			if (mEvent.wheel.y > 0)
+				pMouse->OnWheelUp();
+			else if (mEvent.wheel.y < 0)
+				pMouse->OnWheelDown();
 		}
 			break;
 		case SDL_MOUSEMOTION: 
-			mouse->OnMouseMove((int)event.button.x, (int)event.button.y);
+			pMouse->OnMouseMove((int)mEvent.button.x, (int)mEvent.button.y);
 			break;
 			// ****************** END MOUSE EVENTS ***************** //
 
@@ -97,22 +97,22 @@ bool CoreSystem::Window::EventListener() noexcept
 			break;
 		}
 	}
-	return running;
+	return mbIsRunning;
 }
 
-SDL_Window* CoreSystem::Window::GetWindow()
+SDL_Window* CoreSystem::Window::pGetWindow()
 {
-	return window;
+	return mpWindow;
 }
 
 const int CoreSystem::Window::GetWidth() const
 {
-	return width;
+	return mWidth;
 }
 
 const int CoreSystem::Window::GetHeight() const
 {
-	return height;
+	return mHeight;
 }
 
 const Maths::IRect CoreSystem::Window::GetScreenRect() const

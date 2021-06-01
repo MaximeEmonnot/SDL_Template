@@ -5,6 +5,7 @@ Game::Game():
 	mpWnd(CoreSystem::Window::GetInstance()),
 	mpGfx(GraphicsEngine::Graphics::GetInstance())
 {
+	mpWnd->pSoundSystem->PlaySound(mpWnd->pSoundSystem->ConstructNewSong("music/gigachad.wav", MUSIC), 1);
 }
 
 Game::~Game()

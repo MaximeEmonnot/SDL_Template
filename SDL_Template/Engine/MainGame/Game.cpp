@@ -10,7 +10,11 @@ Game::Game():
 }
 
 Game::~Game()
-{}
+{
+	wnd->Kill();
+	gfx->Kill();
+	sSystem->Kill();
+}
 
 void Game::Go()
 {

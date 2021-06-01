@@ -13,6 +13,7 @@ GraphicsEngine::Font::Font(const char* path, int size)
 
 GraphicsEngine::Font::~Font()
 {
+	gfx->Kill();
 	TTF_CloseFont(font);
 }
 

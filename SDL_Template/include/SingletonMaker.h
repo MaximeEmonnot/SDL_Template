@@ -25,6 +25,11 @@ namespace CoreSystem {
 			}
 			return singleton;
 		}
+
+		static void Kill() {
+			singleton = nullptr;
+		}
+
 	private:
 		static std::shared_ptr<T> singleton;
 	};

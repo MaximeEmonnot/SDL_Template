@@ -13,6 +13,11 @@ GraphicsEngine::Animation::Animation(Maths::IRect rect, int count, Sprite& sprit
 	}
 }
 
+GraphicsEngine::Animation::~Animation()
+{
+	gfx->Kill();
+}
+
 void GraphicsEngine::Animation::Draw(Maths::IRect rect)
 {
 	gfx->DrawSprite(rect, frames[iCurFrame], sprite);

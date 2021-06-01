@@ -32,6 +32,7 @@ int main(int argc, char* argv[])
 		catch (...) {
 			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Unknown error caught", "An unknown error has been caught during Game Routine.", NULL);
 		}
+		wnd->Kill();
 	}
 	catch (const SDLException& e) {
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, e.GetType().c_str(), e.GetMessage().c_str(), NULL);
@@ -42,7 +43,6 @@ int main(int argc, char* argv[])
 	catch (...) {
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Unknown error caught", "An unknown error has been caught during Window Creation.", NULL);
 	}
-
 
 #if _DEBUG
 	_CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_FILE);

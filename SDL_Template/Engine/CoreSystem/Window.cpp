@@ -2,11 +2,12 @@
 #include "Graphics.h"
 
 CoreSystem::Window::Window()
+	:
+	t(Timer::GetInstance()),
+	kbd(Keyboard::GetInstance()),
+	mouse(Mouse::GetInstance()),
+	sSystem(SoundEngine::SoundSystem::GetInstance())
 {
-	t = CoreSystem::Timer::GetInstance();
-	kbd = Keyboard::GetInstance();
-	mouse = Mouse::GetInstance();
-	sSystem = SoundEngine::SoundSystem::GetInstance();
 	event.type = SDL_FIRSTEVENT;
 	running = true;
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -26,6 +27,10 @@ CoreSystem::Window::Window()
 
 CoreSystem::Window::~Window()
 {
+	sSystem->Kill();
+	mouse->Kill();
+	kbd->Kill();
+	t->Kill();
 	SDL_DestroyWindow(window);
 	SDL_Quit();
 }

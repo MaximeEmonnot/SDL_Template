@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Engine\CoreSystem\Keyboard.cpp" />
     <ClCompile Include="Engine\CoreSystem\Mouse.cpp" />
+    <ClCompile Include="Engine\CoreSystem\ThreadPool.cpp" />
     <ClCompile Include="Engine\CoreSystem\Timer.cpp" />
     <ClCompile Include="Engine\CoreSystem\Window.cpp" />
     <ClCompile Include="Engine\GraphicsManager\Animation.cpp" />
@@ -52,6 +53,7 @@
     <ClInclude Include="include\Sound.h" />
     <ClInclude Include="include\SoundSystem.h" />
     <ClInclude Include="include\Sprite.h" />
+    <ClInclude Include="include\ThreadPool.h" />
     <ClInclude Include="include\Timer.h" />
     <ClInclude Include="include\Vec2D.h" />
     <ClInclude Include="include\Window.h" />

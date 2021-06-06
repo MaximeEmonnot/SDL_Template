@@ -6,6 +6,7 @@ CoreSystem::Window::Window()
 	pTimer(Timer::GetInstance()),
 	pKbd(Keyboard::GetInstance()),
 	pMouse(Mouse::GetInstance()),
+	pThreadPool(ThreadPool::GetInstance(30)),
 	pSoundSystem(SoundEngine::SoundSystem::GetInstance())
 {
 	mEvent.type = SDL_FIRSTEVENT;
@@ -28,6 +29,7 @@ CoreSystem::Window::Window()
 CoreSystem::Window::~Window()
 {
 	pSoundSystem->Kill();
+	pThreadPool->Kill();
 	pMouse->Kill();
 	pKbd->Kill();
 	pTimer->Kill();

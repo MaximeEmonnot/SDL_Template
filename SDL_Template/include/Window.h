@@ -4,6 +4,7 @@
 #include "Timer.h"
 #include "Mouse.h"
 #include "Keyboard.h"
+#include "ThreadPool.h"
 #include "SoundSystem.h"
 #include "SDLException.h"
 
@@ -24,6 +25,7 @@ namespace CoreSystem {
 		std::shared_ptr<Timer>      pTimer;
 		std::shared_ptr<Mouse>		pMouse;
 		std::shared_ptr<Keyboard>	pKbd;
+		std::shared_ptr<ThreadPool>	pThreadPool;
 		std::shared_ptr<SoundEngine::SoundSystem> pSoundSystem;
 
 	private:

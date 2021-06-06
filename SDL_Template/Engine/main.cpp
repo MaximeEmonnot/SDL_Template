@@ -4,7 +4,6 @@
 #include <crtdbg.h>
 #endif
 
-#include <thread>
 #include "Game.h"
 
 int main(int argc, char* argv[])
@@ -13,15 +12,13 @@ int main(int argc, char* argv[])
 		std::shared_ptr<CoreSystem::Window> wnd = CoreSystem::Window::GetInstance();
 		try {
 			Game theGame;
-			std::thread t;
 			if (wnd->pKbd->IsCorsairKeyboard()) {
-				auto gameCCC = [&]() { while (wnd->ListensToEvents()) { theGame.ComputeCorsairColors(); } };
-				t = std::thread(gameCCC);
+				auto gameCCC = [&] { while (wnd->ListensToEvents()) { theGame.ComputeCorsairColors(); } };
+				wnd->pThreadPool->Enqueue(gameCCC);
 			}
 			while (wnd->ListensToEvents()) {
 				theGame.Go();
 			}
-			if (t.joinable()) t.join();
 		}
 		catch (const SDLException& e) {
 			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, e.GetType().c_str(), e.GetMessage().c_str(), NULL);

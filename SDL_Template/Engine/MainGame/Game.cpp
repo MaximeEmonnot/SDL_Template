@@ -4,14 +4,13 @@
 Game::Game():
 	mpWnd(CoreSystem::Window::GetInstance()),
 	mpGfx(GraphicsEngine::Graphics::GetInstance()),
-	menu(new MiddleMenu(new TopMenu(new LeftMenu(new BottomMenu(new RightMenu(new BasicMenu()))))))
+	box("Test bro", Maths::IRect(Maths::IVec2D(400, 400), 100, 50)),
+	player(Maths::IRect(Maths::IVec2D(75, 75), 64, 64), "json/kirby.json")
 {
 }
 
 Game::~Game()
 {
-	menu->Destroy();
-	delete menu;
 	mpWnd->Kill();
 	mpGfx->Kill();
 }
@@ -31,10 +30,26 @@ void Game::ComputeCorsairColors()
 
 void Game::UpdateFrame()
 {
-	menu->Update(mpWnd->pMouse);
+	player.Update(mpWnd->pTimer->DeltaTime());
+
+	Maths::IVec2D dir;
+	if (mpWnd->pKbd->KeyIsPressed(SDL_SCANCODE_LEFT)) {
+		dir.x -= 1;
+	}
+	if (mpWnd->pKbd->KeyIsPressed(SDL_SCANCODE_UP)) {
+		dir.y -= 1;
+	}
+	if (mpWnd->pKbd->KeyIsPressed(SDL_SCANCODE_RIGHT)) {
+		dir.x += 1;
+	}
+	if (mpWnd->pKbd->KeyIsPressed(SDL_SCANCODE_DOWN)) {
+		dir.y += 1;
+	}
+	player.Move(dir);
 }
 
 void Game::RenderFrame()
 {
-	menu->Draw(font);
+	player.Draw();
+	box.Draw(font);
 }

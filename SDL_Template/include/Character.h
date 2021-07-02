@@ -9,12 +9,9 @@ public:
 	void					Draw();
 	void					Update(float dt);
 
-	void					NextAnimation();
-	void					LastAnimation();
-
 	Maths::IRect			GetRect() const;
 
-private:
+protected:
 	Maths::IRect							mRect;
 	GraphicsEngine::Sprite					mSprite;
 	std::vector<GraphicsEngine::Animation>	mAnimations;

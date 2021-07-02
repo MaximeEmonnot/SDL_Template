@@ -11,7 +11,6 @@ namespace GraphicsEngine {
 	{
 	public:
 		Animation(Maths::IRect rect, int count, Sprite& rSprite, float holdTime);
-		~Animation();
 
 		void					Draw(Maths::IRect rect);
 

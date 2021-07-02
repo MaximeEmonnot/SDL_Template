@@ -31,6 +31,8 @@
     <ClCompile Include="Engine\GameFiles\MenuListDecorator.cpp" />
     <ClCompile Include="Engine\GameFiles\LeftMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\MiddleMenu.cpp" />
+    <ClCompile Include="Engine\GameFiles\Player.cpp" />
+    <ClCompile Include="Engine\GameFiles\TextBox.cpp" />
     <ClCompile Include="Engine\GameFiles\TopMenu.cpp" />
     <ClCompile Include="Engine\GraphicsManager\Animation.cpp" />
     <ClCompile Include="Engine\GraphicsManager\Font.cpp" />
@@ -63,6 +65,7 @@
     <ClInclude Include="include\MiddleMenu.h" />
     <ClInclude Include="include\Mouse.h" />
     <ClInclude Include="include\Music.h" />
+    <ClInclude Include="include\Player.h" />
     <ClInclude Include="include\Rect.h" />
     <ClInclude Include="include\RightMenu.h" />
     <ClInclude Include="include\EngineException.h" />
@@ -71,6 +74,7 @@
     <ClInclude Include="include\SoundSystem.h" />
     <ClInclude Include="include\Sprite.h" />
     <ClInclude Include="include\LeftMenu.h" />
+    <ClInclude Include="include\TextBox.h" />
     <ClInclude Include="include\ThreadPool.h" />
     <ClInclude Include="include\Timer.h" />
     <ClInclude Include="include\TopMenu.h" />

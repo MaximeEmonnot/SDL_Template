@@ -90,6 +90,7 @@ namespace Maths {
 		}
 
 	public:
+
 		T x = (T)0;
 		T y = (T)0;
 	};

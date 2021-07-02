@@ -5,7 +5,7 @@ GraphicsEngine::Graphics::Graphics()
 	std::shared_ptr<CoreSystem::Window> window = CoreSystem::Window::GetInstance();
 	mpRenderer = SDL_CreateRenderer(window->pGetWindow(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (mpRenderer == NULL) {
-		throw SDLException("SDL Graphics Exception caught", __FILE__, "An error has been caught during SDL Renderer Creation.", __LINE__);
+		throw EngineException("SDL Graphics Exception caught", __FILE__, "An error has been caught during SDL Renderer Creation.", __LINE__);
 	}
 }
 

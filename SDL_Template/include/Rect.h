@@ -1,5 +1,6 @@
 #pragma once
 #include "Vec2D.h"
+
 namespace Maths {
 	template <typename T>
 	class Rect {
@@ -7,9 +8,8 @@ namespace Maths {
 		class Hash {
 		public:
 			size_t operator()(const Rect& rhs) const {
-				using std::size_t;
-				using std::hash;
-				return ((hash<int>()(rhs.rect.x) ^ (hash<int>()(rhs.rect.y) << 1)) >> 1) ^ ((hash<int>()(rhs.rect.w) ^ hash<int>()(rhs.rect.h) << 1) >> 1);
+				std::hash<int> hasher;
+				return ((hasher(rhs.rect.x) ^ (hasher(rhs.rect.y) << 1)) >> 1) ^ ((hasher(rhs.rect.w) ^ hasher(rhs.rect.h) << 1) >> 1);
 			}
 		};
 

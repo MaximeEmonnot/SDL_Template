@@ -12,15 +12,15 @@ CoreSystem::Window::Window()
 	mEvent.type = SDL_FIRSTEVENT;
 	mbIsRunning = true;
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-		throw SDLException("SDL Window Exception caught", __FILE__, "An error has been caught during SDL Initialisation.", __LINE__);
+		throw EngineException("SDL Window Exception caught", __FILE__, "An error has been caught during SDL Initialisation.", __LINE__);
 	}
 	mpWindow = SDL_CreateWindow("Template SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, mWidth, mHeight, SDL_WINDOW_OPENGL);
 	if (mpWindow == NULL) {
-		throw SDLException("SDL Window Exception caught", __FILE__, "An error has been caught during Window Creation.", __LINE__);
+		throw EngineException("SDL Window Exception caught", __FILE__, "An error has been caught during Window Creation.", __LINE__);
 	}
 	SDL_Surface* surf = IMG_Load("Images\\icon.png");
 	if (surf == nullptr) {
-		throw SDLException("SDL Window Exception caught", __FILE__, "An error has been caught during Icon loading.\nPlease check filename (MUST be \"icon.png\").", __LINE__);
+		throw EngineException("SDL Window Exception caught", __FILE__, "An error has been caught during Icon loading.\nPlease check filename (MUST be \"icon.png\").", __LINE__);
 	}
 	SDL_SetWindowIcon(mpWindow, surf);
 	SDL_ShowCursor(1);

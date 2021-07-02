@@ -1,10 +1,20 @@
 #pragma once
 #include <SDL_rect.h>
+#include <functional>
 #include <cmath>
 
 namespace Maths {
 	template <typename T>
 	class Vec2D {
+	public:
+		class Hash {
+		public:
+			size_t operator()(const Vec2D& vect) const {
+				std::hash<int> hasher;
+				return (hasher(vect.x) ^ (hasher(vect.y) << 1)) >> 1;
+			}
+		};
+
 	public:
 		Vec2D() = default;
 		Vec2D(T x, T y)

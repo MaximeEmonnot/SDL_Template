@@ -1,7 +1,7 @@
 #pragma once
 #include <SDL.h>
 #include <SDL_image.h>
-#include "SDLException.h"
+#include "EngineException.h"
 
 namespace GraphicsEngine {
 	class Sprite
@@ -19,7 +19,7 @@ namespace GraphicsEngine {
 		void			InitSurface(const char* path);
 
 		// Returns the saved Texture.
-		SDL_Texture* GetTexture() const;
+		SDL_Texture*    GetTexture() const;
 		// Returns the saved Texture's width.
 		int				GetWidth() const;
 		// Returns the savec Texture's height.

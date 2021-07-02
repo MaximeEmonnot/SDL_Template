@@ -1,7 +1,7 @@
 #pragma once
 #include <SDL_mixer.h>
 #include <unordered_set>
-#include "SDLException.h"
+#include "EngineException.h"
 #include "SingletonMaker.h"
 #include "Effect.h"
 #include "Music.h"

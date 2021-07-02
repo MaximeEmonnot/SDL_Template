@@ -6,7 +6,7 @@
 #include "Keyboard.h"
 #include "ThreadPool.h"
 #include "SoundSystem.h"
-#include "SDLException.h"
+#include "EngineException.h"
 
 namespace CoreSystem {
 	class Window : public SingletonMaker<Window> {

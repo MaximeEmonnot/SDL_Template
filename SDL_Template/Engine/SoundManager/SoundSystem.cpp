@@ -3,7 +3,7 @@
 SoundEngine::SoundSystem::SoundSystem()
 {
 	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096) < 0)
-		throw SDLException("SDL Sound System Exception caught", __FILE__, "An error has been caught during Sound System Initialisation.", __LINE__);
+		throw EngineException("SDL Sound System Exception caught", __FILE__, "An error has been caught during Sound System Initialisation.", __LINE__);
 }
 
 SoundEngine::SoundSystem::~SoundSystem()

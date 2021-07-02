@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
 				theGame.Go();
 			}
 		}
-		catch (const SDLException& e) {
+		catch (const EngineException& e) {
 			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, e.GetType().c_str(), e.GetMessage().c_str(), NULL);
 		}
 		catch (const std::exception& e) {
@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
 		}
 		wnd->Kill();
 	}
-	catch (const SDLException& e) {
+	catch (const EngineException& e) {
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, e.GetType().c_str(), e.GetMessage().c_str(), NULL);
 	}
 	catch (const std::exception& e) {

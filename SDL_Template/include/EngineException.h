@@ -1,10 +1,10 @@
 #pragma once
 #include <string>
 
-class SDLException
+class EngineException
 {
 public:
-	SDLException(const std::string& type, const std::string& file, const std::string& note, unsigned int line) noexcept
+	EngineException(const std::string& type, const std::string& file, const std::string& note, unsigned int line) noexcept
 		:
 		mType(type),
 		mFile(file),

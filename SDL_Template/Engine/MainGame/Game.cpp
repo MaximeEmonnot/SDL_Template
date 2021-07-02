@@ -3,13 +3,15 @@
 
 Game::Game():
 	mpWnd(CoreSystem::Window::GetInstance()),
-	mpGfx(GraphicsEngine::Graphics::GetInstance())
+	mpGfx(GraphicsEngine::Graphics::GetInstance()),
+	menu(new MiddleMenu(new TopMenu(new LeftMenu(new BottomMenu(new RightMenu(new BasicMenu()))))))
 {
-	mpWnd->pSoundSystem->PlaySound(mpWnd->pSoundSystem->ConstructNewSong("music/gigachad.wav", MUSIC), 1);
 }
 
 Game::~Game()
 {
+	menu->Destroy();
+	delete menu;
 	mpWnd->Kill();
 	mpGfx->Kill();
 }
@@ -24,12 +26,15 @@ void Game::Go()
 
 void Game::ComputeCorsairColors()
 {
+	
 }
 
 void Game::UpdateFrame()
 {
+	menu->Update(mpWnd->pMouse);
 }
 
 void Game::RenderFrame()
 {
+	menu->Draw(font);
 }

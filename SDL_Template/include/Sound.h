@@ -2,7 +2,7 @@
 #include <SDL_mixer.h>
 #include <string>
 #include <memory>
-#include "SDLException.h"
+#include "EngineException.h"
 
 namespace SoundEngine {
 	class ASound {

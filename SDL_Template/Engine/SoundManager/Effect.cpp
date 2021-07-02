@@ -6,7 +6,7 @@ SoundEngine::Effect::Effect(const char* path)
 {
 	this->path = path;
 	if (pEffect == NULL)
-		throw SDLException("SDL Sound System Exception caught", __FILE__, "An error has been caught during SoundEffect Initialisation.\nPlease check file path.", __LINE__);
+		throw EngineException("SDL Sound System Exception caught", __FILE__, "An error has been caught during SoundEffect Initialisation.\nPlease check file path.", __LINE__);
 }
 
 SoundEngine::Effect::~Effect()

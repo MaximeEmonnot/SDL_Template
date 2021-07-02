@@ -1,7 +1,5 @@
 #pragma once
-#include <rapidjson/istreamwrapper.h>
-#include <rapidjson/document.h>
-#include <fstream>
+#include "JSONParser.h"
 #include "Animation.h"
 class Character
 {

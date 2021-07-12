@@ -28,11 +28,14 @@
     <ClCompile Include="Engine\GameFiles\BasicMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\BottomMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\Button.cpp" />
+    <ClCompile Include="Engine\GameFiles\ExplorationScene.cpp" />
     <ClCompile Include="Engine\GameFiles\MenuListDecorator.cpp" />
     <ClCompile Include="Engine\GameFiles\LeftMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\MiddleMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\Player.cpp" />
+    <ClCompile Include="Engine\GameFiles\Scene.cpp" />
     <ClCompile Include="Engine\GameFiles\TextBox.cpp" />
+    <ClCompile Include="Engine\GameFiles\TitleScene.cpp" />
     <ClCompile Include="Engine\GameFiles\TopMenu.cpp" />
     <ClCompile Include="Engine\GraphicsManager\Animation.cpp" />
     <ClCompile Include="Engine\GraphicsManager\Font.cpp" />
@@ -56,6 +59,7 @@
     <ClInclude Include="include\Circle.h" />
     <ClInclude Include="include\DColors.h" />
     <ClInclude Include="include\Effect.h" />
+    <ClInclude Include="include\ExplorationScene.h" />
     <ClInclude Include="include\Font.h" />
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\Graphics.h" />
@@ -69,6 +73,7 @@
     <ClInclude Include="include\Rect.h" />
     <ClInclude Include="include\RightMenu.h" />
     <ClInclude Include="include\EngineException.h" />
+    <ClInclude Include="include\Scene.h" />
     <ClInclude Include="include\SingletonMaker.h" />
     <ClInclude Include="include\Sound.h" />
     <ClInclude Include="include\SoundSystem.h" />
@@ -77,6 +82,7 @@
     <ClInclude Include="include\TextBox.h" />
     <ClInclude Include="include\ThreadPool.h" />
     <ClInclude Include="include\Timer.h" />
+    <ClInclude Include="include\TitleScene.h" />
     <ClInclude Include="include\TopMenu.h" />
     <ClInclude Include="include\Vec2D.h" />
     <ClInclude Include="include\Window.h" />

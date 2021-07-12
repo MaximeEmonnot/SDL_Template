@@ -1,9 +1,9 @@
 #include "Button.h"
 #include <iostream>
 
-Button::Button(Maths::IVec2D pos, std::string text, std::function<void()> func)
+Button::Button(Maths::IVec2D pos, std::string text, std::function<void(int&)> func)
 	:
-	rect(pos, text.size() * 8, 16),
+	rect(pos, (int)text.size() * 8, 16),
 	text(text),
 	function(func),
 	pGfx(GraphicsEngine::Graphics::GetInstance())
@@ -29,9 +29,9 @@ bool Button::OnHover(Maths::IVec2D mousePos) const
 	return rect.ContainsVec2D(mousePos);
 }
 
-void Button::ComputeFunction() const
+void Button::ComputeFunction(int& output) const
 {
-	function();
+	function(output);
 }
 
 void Button::Draw(GraphicsEngine::Color buttonColor, GraphicsEngine::Font& font)

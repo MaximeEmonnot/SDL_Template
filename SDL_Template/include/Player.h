@@ -1,5 +1,6 @@
 #pragma once
 #include "Character.h"
+#include "Keyboard.h"
 
 class Player : public Character {
 private:
@@ -16,8 +17,9 @@ private:
 public:
 	Player(Maths::IRect rect, const std::string& animFile);
 
-	void Move(Maths::IVec2D dir);
+	void Move();
 private:
-	float speed = 2.0f;
+	std::shared_ptr<CoreSystem::Keyboard> pKbd;
 	Maths::IVec2D velocity;
+	float speed = 2.0f;
 };

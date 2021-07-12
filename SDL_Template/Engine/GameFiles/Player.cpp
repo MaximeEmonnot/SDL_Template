@@ -2,7 +2,8 @@
 
 Player::Player(Maths::IRect rect, const std::string& animFile)
 	:
-	Character(rect)
+	Character(rect),
+	pKbd(CoreSystem::Keyboard::GetInstance())
 {
 	JSONParser jsonParse(animFile);
 
@@ -23,10 +24,24 @@ Player::Player(Maths::IRect rect, const std::string& animFile)
 	miCurSequence = (int)AnimationList::StandingRight;
 }
 
-void Player::Move(Maths::IVec2D dir)
+void Player::Move()
 {
+	Maths::IVec2D dir;
+	if (pKbd->KeyIsPressed(SDL_SCANCODE_LEFT)) {
+		dir.x -= 1;
+	}
+	if (pKbd->KeyIsPressed(SDL_SCANCODE_UP)) {
+		dir.y -= 1;
+	}
+	if (pKbd->KeyIsPressed(SDL_SCANCODE_RIGHT)) {
+		dir.x += 1;
+	}
+	if (pKbd->KeyIsPressed(SDL_SCANCODE_DOWN)) {
+		dir.y += 1;
+	}
+
 	//Movement
-	mRect += dir * speed;
+	mRect += dir * (int)speed;
 	
 	//Animation
 	if (dir != Maths::IVec2D(0,0)) {

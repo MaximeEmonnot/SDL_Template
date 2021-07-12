@@ -102,6 +102,11 @@ bool CoreSystem::Window::ListensToEvents() noexcept
 	return mbIsRunning;
 }
 
+void CoreSystem::Window::ExitGame()
+{
+	mbIsRunning = false;
+}
+
 SDL_Window* CoreSystem::Window::pGetWindow()
 {
 	return mpWindow;

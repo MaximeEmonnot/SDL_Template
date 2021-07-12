@@ -8,8 +8,8 @@ TextBox::TextBox(const std::string& text, const Maths::IRect& rect)
 {
 }
 
-void TextBox::Draw(GraphicsEngine::Font& font)
+void TextBox::Draw(GraphicsEngine::Font& font, const GraphicsEngine::Color& textColor, const GraphicsEngine::Color& boxColor)
 {
-	font.DrawText(rect.GetCenterOfRect(), text.c_str(), BLUE);
-	pGfx->DrawRect(rect, RED);
+	font.DrawText(rect.GetVec2DFrom(), text.c_str(), textColor);
+	pGfx->DrawRect(rect, boxColor);
 }

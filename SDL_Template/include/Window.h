@@ -16,6 +16,8 @@ namespace CoreSystem {
 
 		bool		ListensToEvents() noexcept;
 
+		void        ExitGame();
+
 		SDL_Window* pGetWindow();
 		const int	GetWidth() const;
 		const int   GetHeight() const;

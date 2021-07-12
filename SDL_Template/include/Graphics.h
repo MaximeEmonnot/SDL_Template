@@ -55,13 +55,16 @@ namespace GraphicsEngine {
 		}
 
 		// Draws a given sprite at a given position.
+		void						DrawSprite(const Sprite& rSprite) {
+			DrawSprite(mScreenRect, rSprite);
+		}
 		void						DrawSprite(Maths::IRect destRect, const Sprite& rSprite) {
 			DrawSprite(destRect, Maths::IRect(0, 0, rSprite.GetWidth(), rSprite.GetHeight()), rSprite);
 		}
 		void						DrawSprite(Maths::IRect destRect, Maths::IRect srcRect, const Sprite& rSprite);
 
 	private:
-		SDL_Renderer*					mpRenderer;
-		const Maths::IRect              mScreenRect;
+		SDL_Renderer*				mpRenderer;
+		Maths::IRect				mScreenRect;
 	};
 }

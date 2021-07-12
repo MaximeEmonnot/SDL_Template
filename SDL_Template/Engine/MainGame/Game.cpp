@@ -3,10 +3,11 @@
 
 Game::Game():
 	mpWnd(CoreSystem::Window::GetInstance()),
-	mpGfx(GraphicsEngine::Graphics::GetInstance()),
-	box("Test bro", Maths::IRect(Maths::IVec2D(400, 400), 100, 50)),
-	player(Maths::IRect(Maths::IVec2D(75, 75), 64, 64), "json/kirby.json")
+	mpGfx(GraphicsEngine::Graphics::GetInstance())
 {
+	scenes.emplace_back(std::make_shared<TitleScene>("Images/background.png"));
+	scenes.emplace_back(std::make_shared<ExplorationScene>("Images/background.png"));
+	currentScene = scenes.begin();
 }
 
 Game::~Game()
@@ -30,26 +31,24 @@ void Game::ComputeCorsairColors()
 
 void Game::UpdateFrame()
 {
-	player.Update(mpWnd->pTimer->DeltaTime());
+	int output = -1;
+	(*currentScene)->Update(output);
 
-	Maths::IVec2D dir;
-	if (mpWnd->pKbd->KeyIsPressed(SDL_SCANCODE_LEFT)) {
-		dir.x -= 1;
+	switch (output) {
+	case 0:
+		mpWnd->ExitGame();
+		break;
+	case 1:
+		currentScene++;
+		break;
+	case 2:
+		break;
+	default:
+		break;
 	}
-	if (mpWnd->pKbd->KeyIsPressed(SDL_SCANCODE_UP)) {
-		dir.y -= 1;
-	}
-	if (mpWnd->pKbd->KeyIsPressed(SDL_SCANCODE_RIGHT)) {
-		dir.x += 1;
-	}
-	if (mpWnd->pKbd->KeyIsPressed(SDL_SCANCODE_DOWN)) {
-		dir.y += 1;
-	}
-	player.Move(dir);
 }
 
 void Game::RenderFrame()
 {
-	player.Draw();
-	box.Draw(font);
+	(*currentScene)->Draw();
 }

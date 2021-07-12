@@ -89,6 +89,17 @@ namespace Maths {
 			return sqrtf(x * x + y * y);
 		}
 
+		Vec2D GetNormalized() {
+			float magnitude = 1 / GetLength();
+			x *= magnitude;
+			y *= magnitude;
+			return *this;
+		}
+
+		void Normalize() {
+			*this = GetNormalized();
+		}
+
 	public:
 
 		T x = (T)0;

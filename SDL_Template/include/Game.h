@@ -3,8 +3,8 @@
 #include "Window.h"
 #include <memory>
 // ***** USER INCLUDES ***** //
-#include "TextBox.h"
-#include "Player.h"
+#include "TitleScene.h"
+#include "ExplorationScene.h"
 // *** END USER INCLUDES *** //
 
 
@@ -27,12 +27,8 @@ private:
 	std::shared_ptr<CoreSystem::Window> mpWnd;
 	std::shared_ptr<GraphicsEngine::Graphics> mpGfx;
 	// ***************** USER VARIABLES ******************//
-
-	TextBox box;
-
-	Player player;
-
-	GraphicsEngine::Font font = GraphicsEngine::Font("ttf/arcadeClassic.TTF", 16);
+	std::vector<std::shared_ptr<Scene>> scenes;
+	std::vector<std::shared_ptr<Scene>>::iterator currentScene;
 	// ***************** END USER VARIABLES ************* //
 };
 

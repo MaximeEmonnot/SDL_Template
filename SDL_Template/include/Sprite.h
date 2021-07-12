@@ -15,7 +15,7 @@ namespace GraphicsEngine {
 		Sprite& operator= (const Sprite& rhs);
 		~Sprite();
 
-		// Initializes the sprite. Needs the Graphics Renderer.
+		// Initializes the sprite.
 		void			InitSurface(const char* path);
 
 		// Returns the saved Texture.

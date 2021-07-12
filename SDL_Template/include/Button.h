@@ -6,13 +6,13 @@
 
 class Button {
 public:
-	Button(Maths::IVec2D pos, std::string text, std::function<void()> func);
+	Button(Maths::IVec2D pos, std::string text, std::function<void(int&)> func);
 	~Button();
 
 	bool OnClick(Maths::IVec2D mousePos);
 	bool OnHover(Maths::IVec2D mousePos) const;
 
-	void ComputeFunction() const;
+	void ComputeFunction(int& output) const;
 
 	void Draw(GraphicsEngine::Color buttonColor, GraphicsEngine::Font& font);
 	
@@ -22,6 +22,6 @@ private:
 	bool bIsClicked = false;
 	Maths::IRect rect;
 	std::string text;
-	std::function<void()> function;
+	std::function<void(int&)> function;
 	std::shared_ptr<GraphicsEngine::Graphics> pGfx;
 };

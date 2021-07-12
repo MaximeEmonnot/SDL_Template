@@ -28,11 +28,14 @@
     <ClCompile Include="Engine\GameFiles\BasicMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\BottomMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\Button.cpp" />
+    <ClCompile Include="Engine\GameFiles\ChoosingScene.cpp" />
     <ClCompile Include="Engine\GameFiles\ExplorationScene.cpp" />
+    <ClCompile Include="Engine\GameFiles\FightingScene.cpp" />
     <ClCompile Include="Engine\GameFiles\MenuListDecorator.cpp" />
     <ClCompile Include="Engine\GameFiles\LeftMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\MiddleMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\Player.cpp" />
+    <ClCompile Include="Engine\GameFiles\Pokemon.cpp" />
     <ClCompile Include="Engine\GameFiles\Scene.cpp" />
     <ClCompile Include="Engine\GameFiles\TextBox.cpp" />
     <ClCompile Include="Engine\GameFiles\TitleScene.cpp" />
@@ -56,10 +59,12 @@
     <ClInclude Include="include\BottomMenu.h" />
     <ClInclude Include="include\Button.h" />
     <ClInclude Include="include\Character.h" />
+    <ClInclude Include="include\ChoosingScene.h" />
     <ClInclude Include="include\Circle.h" />
     <ClInclude Include="include\DColors.h" />
     <ClInclude Include="include\Effect.h" />
     <ClInclude Include="include\ExplorationScene.h" />
+    <ClInclude Include="include\FightingScene.h" />
     <ClInclude Include="include\Font.h" />
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\Graphics.h" />
@@ -70,6 +75,7 @@
     <ClInclude Include="include\Mouse.h" />
     <ClInclude Include="include\Music.h" />
     <ClInclude Include="include\Player.h" />
+    <ClInclude Include="include\Pokemon.h" />
     <ClInclude Include="include\Rect.h" />
     <ClInclude Include="include\RightMenu.h" />
     <ClInclude Include="include\EngineException.h" />

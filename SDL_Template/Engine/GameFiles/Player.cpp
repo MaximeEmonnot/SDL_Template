@@ -86,3 +86,20 @@ void Player::Move()
 	//Current Velocity
 	velocity = dir;
 }
+
+void Player::SetPokemon(Pokemon& pkmn)
+{
+	pokemon = pkmn;
+}
+
+Pokemon& Player::GetPokemon()
+{
+	return pokemon;
+}
+
+void Player::DrawPokemon()
+{
+	if (pKbd->KeyIsPressed(SDL_SCANCODE_P)) {
+		pokemon.DrawFrontSprite(Maths::IRect(250, 250, 128, 128));
+	}
+}

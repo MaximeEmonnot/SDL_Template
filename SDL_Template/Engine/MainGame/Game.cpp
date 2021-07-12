@@ -6,7 +6,9 @@ Game::Game():
 	mpGfx(GraphicsEngine::Graphics::GetInstance())
 {
 	scenes.emplace_back(std::make_shared<TitleScene>("Images/background.png"));
+	scenes.emplace_back(std::make_shared<ChoosingScene>("Images/background.png"));
 	scenes.emplace_back(std::make_shared<ExplorationScene>("Images/background.png"));
+	scenes.emplace_back(std::make_shared<FightingScene>("Images/background.png"));
 	currentScene = scenes.begin();
 }
 
@@ -25,27 +27,14 @@ void Game::Go()
 }
 
 void Game::ComputeCorsairColors()
-{
-	
+{	
 }
 
 void Game::UpdateFrame()
 {
-	int output = -1;
-	(*currentScene)->Update(output);
+	(*currentScene)->Update();
 
-	switch (output) {
-	case 0:
-		mpWnd->ExitGame();
-		break;
-	case 1:
-		currentScene++;
-		break;
-	case 2:
-		break;
-	default:
-		break;
-	}
+	if ((*currentScene)->ChangeScene()) currentScene += std::ptrdiff_t((int)(*currentScene)->GetNextScene() - (int)(*currentScene)->GetCurrentScene());
 }
 
 void Game::RenderFrame()

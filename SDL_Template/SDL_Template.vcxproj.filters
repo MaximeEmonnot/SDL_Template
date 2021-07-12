@@ -13,204 +13,273 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\CoreSystem">
+      <UniqueIdentifier>{fb174f4d-0948-4ee8-8d35-7c793982371f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\GameFiles">
+      <UniqueIdentifier>{f96c5286-7b00-43a8-8dca-9d57304bd38f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\GraphicsManager">
+      <UniqueIdentifier>{cfa13b83-d23d-4c13-a3f1-5efeaf62944b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\MainGame">
+      <UniqueIdentifier>{7fe782b3-900a-408d-8dc9-a0b690bf5e61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\SoundManager">
+      <UniqueIdentifier>{757d6950-e289-48e7-a503-4d79caa0db29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Maths">
+      <UniqueIdentifier>{a4ed9dbe-a6d3-4e22-a9cc-d441079ca883}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\GameFiles\Menu">
+      <UniqueIdentifier>{738c0673-d2ef-41f1-9aef-4e710d8bc69e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\GameFiles\Entity">
+      <UniqueIdentifier>{490bc22d-8a78-4180-add6-953a01d5d569}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\GameFiles\Scenes">
+      <UniqueIdentifier>{17c817a6-43db-496e-83e2-9e7b8dbc5199}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\CoreSystem">
+      <UniqueIdentifier>{b2cc663c-0179-4edc-9250-def2716796fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\GameFiles">
+      <UniqueIdentifier>{60222d59-1f23-43b7-a379-948946f63763}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\GameFiles\Menu">
+      <UniqueIdentifier>{6497fcb7-f90e-4631-8131-1c66ea9b957c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\GameFiles\Entity">
+      <UniqueIdentifier>{c0e8e166-c489-452a-aa67-c24e038f929b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\GameFiles\Scenes">
+      <UniqueIdentifier>{5c829f50-b5b1-42f2-a499-85491204f898}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\GraphicsManager">
+      <UniqueIdentifier>{ec3c849f-b5e0-4d78-8c7a-34569218f388}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\MainGame">
+      <UniqueIdentifier>{ddf140ca-4bc1-4927-baf4-59f129bc5229}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\SoundManager">
+      <UniqueIdentifier>{1707b100-87ea-4055-8977-9530f0f28bf9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\main.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\SoundManager\SoundSystem.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\GraphicsManager\Animation.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Fichiers sources\GraphicsManager</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GraphicsManager\Font.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Fichiers sources\GraphicsManager</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GraphicsManager\Graphics.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Fichiers sources\GraphicsManager</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GraphicsManager\Sprite.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\CoreSystem\Timer.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\CoreSystem\Window.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\SoundManager\Music.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Fichiers sources\GraphicsManager</Filter>
     </ClCompile>
     <ClCompile Include="Engine\SoundManager\Effect.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Fichiers sources\SoundManager</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\MainGame\Character.cpp">
-      <Filter>Fichiers sources</Filter>
+    <ClCompile Include="Engine\SoundManager\Music.cpp">
+      <Filter>Fichiers sources\SoundManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\SoundManager\SoundSystem.cpp">
+      <Filter>Fichiers sources\SoundManager</Filter>
     </ClCompile>
     <ClCompile Include="Engine\MainGame\Game.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Fichiers sources\MainGame</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\CoreSystem\Keyboard.cpp">
-      <Filter>Fichiers sources</Filter>
+    <ClCompile Include="Engine\MainGame\Character.cpp">
+      <Filter>Fichiers sources\MainGame</Filter>
     </ClCompile>
     <ClCompile Include="Engine\CoreSystem\Mouse.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Fichiers sources\CoreSystem</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\CoreSystem\ThreadPool.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameFiles\Button.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameFiles\MenuListDecorator.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="include\RightMenu.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameFiles\BasicMenu.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameFiles\BottomMenu.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameFiles\LeftMenu.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameFiles\TopMenu.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameFiles\MiddleMenu.cpp">
-      <Filter>Fichiers sources</Filter>
+    <ClCompile Include="Engine\CoreSystem\Keyboard.cpp">
+      <Filter>Fichiers sources\CoreSystem</Filter>
     </ClCompile>
     <ClCompile Include="Engine\CoreSystem\JSONParser.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Fichiers sources\CoreSystem</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameFiles\Player.cpp">
-      <Filter>Fichiers sources</Filter>
+    <ClCompile Include="Engine\CoreSystem\Timer.cpp">
+      <Filter>Fichiers sources\CoreSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\CoreSystem\ThreadPool.cpp">
+      <Filter>Fichiers sources\CoreSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\CoreSystem\Window.cpp">
+      <Filter>Fichiers sources\CoreSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameFiles\BasicMenu.cpp">
+      <Filter>Fichiers sources\GameFiles\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameFiles\BottomMenu.cpp">
+      <Filter>Fichiers sources\GameFiles\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameFiles\Button.cpp">
+      <Filter>Fichiers sources\GameFiles\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameFiles\LeftMenu.cpp">
+      <Filter>Fichiers sources\GameFiles\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameFiles\MenuListDecorator.cpp">
+      <Filter>Fichiers sources\GameFiles\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameFiles\MiddleMenu.cpp">
+      <Filter>Fichiers sources\GameFiles\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="include\RightMenu.cpp">
+      <Filter>Fichiers sources\GameFiles\Menu</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameFiles\TextBox.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Fichiers sources\GameFiles\Menu</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameFiles\Scene.cpp">
-      <Filter>Fichiers sources</Filter>
+    <ClCompile Include="Engine\GameFiles\TopMenu.cpp">
+      <Filter>Fichiers sources\GameFiles\Menu</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameFiles\ExplorationScene.cpp">
-      <Filter>Fichiers sources</Filter>
+    <ClCompile Include="Engine\GameFiles\Player.cpp">
+      <Filter>Fichiers sources\GameFiles\Entity</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameFiles\TitleScene.cpp">
-      <Filter>Fichiers sources</Filter>
+      <Filter>Fichiers sources\GameFiles\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameFiles\ExplorationScene.cpp">
+      <Filter>Fichiers sources\GameFiles\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameFiles\Scene.cpp">
+      <Filter>Fichiers sources\GameFiles\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameFiles\ChoosingScene.cpp">
+      <Filter>Fichiers sources\GameFiles\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameFiles\FightingScene.cpp">
+      <Filter>Fichiers sources\GameFiles\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameFiles\Pokemon.cpp">
+      <Filter>Fichiers sources\GameFiles\Entity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Animation.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Character.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Circle.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Font.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Game.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Graphics.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+    <ClInclude Include="include\JSONParser.h">
+      <Filter>Fichiers d%27en-tête\CoreSystem</Filter>
     </ClInclude>
     <ClInclude Include="include\Keyboard.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Fichiers d%27en-tête\CoreSystem</Filter>
     </ClInclude>
     <ClInclude Include="include\Mouse.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\SoundSystem.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Sprite.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Timer.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Vec2D.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Window.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\DColors.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Music.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Effect.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Sound.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Rect.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="include\SingletonMaker.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Fichiers d%27en-tête\CoreSystem</Filter>
     </ClInclude>
     <ClInclude Include="include\ThreadPool.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Fichiers d%27en-tête\CoreSystem</Filter>
     </ClInclude>
-    <ClInclude Include="include\AMenu.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+    <ClInclude Include="include\Timer.h">
+      <Filter>Fichiers d%27en-tête\CoreSystem</Filter>
     </ClInclude>
-    <ClInclude Include="include\Button.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+    <ClInclude Include="include\Window.h">
+      <Filter>Fichiers d%27en-tête\CoreSystem</Filter>
     </ClInclude>
-    <ClInclude Include="include\BasicMenu.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+    <ClInclude Include="include\Animation.h">
+      <Filter>Fichiers d%27en-tête\GraphicsManager</Filter>
     </ClInclude>
-    <ClInclude Include="include\MenuListDecorator.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+    <ClInclude Include="include\Font.h">
+      <Filter>Fichiers d%27en-tête\GraphicsManager</Filter>
     </ClInclude>
-    <ClInclude Include="include\RightMenu.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+    <ClInclude Include="include\Graphics.h">
+      <Filter>Fichiers d%27en-tête\GraphicsManager</Filter>
     </ClInclude>
-    <ClInclude Include="include\BottomMenu.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+    <ClInclude Include="include\Sprite.h">
+      <Filter>Fichiers d%27en-tête\GraphicsManager</Filter>
     </ClInclude>
-    <ClInclude Include="include\LeftMenu.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+    <ClInclude Include="include\Character.h">
+      <Filter>Fichiers d%27en-tête\MainGame</Filter>
     </ClInclude>
-    <ClInclude Include="include\TopMenu.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+    <ClInclude Include="include\Game.h">
+      <Filter>Fichiers d%27en-tête\MainGame</Filter>
     </ClInclude>
-    <ClInclude Include="include\MiddleMenu.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+    <ClInclude Include="include\Effect.h">
+      <Filter>Fichiers d%27en-tête\SoundManager</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Music.h">
+      <Filter>Fichiers d%27en-tête\SoundManager</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SoundSystem.h">
+      <Filter>Fichiers d%27en-tête\SoundManager</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Circle.h">
+      <Filter>Fichiers d%27en-tête\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Rect.h">
+      <Filter>Fichiers d%27en-tête\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Vec2D.h">
+      <Filter>Fichiers d%27en-tête\Maths</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Sound.h">
+      <Filter>Fichiers d%27en-tête\SoundManager</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DColors.h">
+      <Filter>Fichiers d%27en-tête\GraphicsManager</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SingletonMaker.h">
+      <Filter>Fichiers d%27en-tête\CoreSystem</Filter>
     </ClInclude>
     <ClInclude Include="include\EngineException.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Fichiers d%27en-tête\CoreSystem</Filter>
     </ClInclude>
-    <ClInclude Include="include\JSONParser.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+    <ClInclude Include="include\AMenu.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
     </ClInclude>
-    <ClInclude Include="include\Player.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+    <ClInclude Include="include\BasicMenu.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="include\BottomMenu.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Button.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="include\LeftMenu.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MenuListDecorator.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MiddleMenu.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RightMenu.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
     </ClInclude>
     <ClInclude Include="include\TextBox.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
     </ClInclude>
-    <ClInclude Include="include\Scene.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+    <ClInclude Include="include\TopMenu.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Player.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Entity</Filter>
     </ClInclude>
     <ClInclude Include="include\ExplorationScene.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Fichiers d%27en-tête\GameFiles\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Scene.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="include\TitleScene.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Fichiers d%27en-tête\GameFiles\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ChoosingScene.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="include\FightingScene.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Pokemon.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Entity</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

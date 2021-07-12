@@ -4,7 +4,9 @@
 #include <memory>
 // ***** USER INCLUDES ***** //
 #include "TitleScene.h"
+#include "ChoosingScene.h"
 #include "ExplorationScene.h"
+#include "FightingScene.h"
 // *** END USER INCLUDES *** //
 
 

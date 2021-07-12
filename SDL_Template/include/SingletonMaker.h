@@ -11,13 +11,6 @@ namespace CoreSystem {
 			}
 			return mspSingleton;
 		}
-		template<typename Q>
-		static std::shared_ptr<T> GetInstance(Q param) {
-			if (mspSingleton == nullptr) {
-				mspSingleton = std::make_shared<T>(param);
-			}
-			return mspSingleton;
-		}
 		template <typename ...Args>
 		static std::shared_ptr<T> GetInstance(Args... param) {
 			if (mspSingleton == nullptr) {

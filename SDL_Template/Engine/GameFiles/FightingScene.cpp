@@ -17,11 +17,14 @@ FightingScene::~FightingScene()
 	actionMenu->Destroy();
 	delete actionMenu;
 	delete enemyPokemon;
+	pPlayer->Kill();
 }
 
 void FightingScene::Update()
 {
 	if (bWillChangeScene) {
+		delete enemyPokemon;
+		enemyPokemon = nullptr;
 		enemyPokemon = CreateRandomPokemon();
 		newScene = Scene::SceneType::ExplorationScene;
 		bWillChangeScene = false;
@@ -59,7 +62,7 @@ void FightingScene::Draw()
 Pokemon* FightingScene::CreateRandomPokemon()
 {
 	std::mt19937 rng(std::random_device{}());
-	std::uniform_int_distribution<int> dist(0, 3);
+	std::uniform_int_distribution<int> dist(0, 2);
 	switch (dist(rng)) {
 	case 0:
 		return new Pokemon("Images/bulbasaur.png");

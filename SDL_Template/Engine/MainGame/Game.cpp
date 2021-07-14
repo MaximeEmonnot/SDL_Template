@@ -10,6 +10,10 @@ Game::Game():
 	scenes.emplace_back(std::make_shared<ExplorationScene>("Images/background.png"));
 	scenes.emplace_back(std::make_shared<FightingScene>("Images/background.png"));
 	currentScene = scenes.begin();
+
+
+	JSONParser::Writer testWriter;
+	testWriter.SaveJsonAt("json/writingTest.json");
 }
 
 Game::~Game()

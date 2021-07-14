@@ -5,12 +5,12 @@ Player::Player(Maths::IRect rect, const std::string& animFile)
 	Character(rect),
 	pKbd(CoreSystem::Keyboard::GetInstance())
 {
-	JSONParser jsonParse(animFile);
+	JSONParser::Reader jsonParse;
+	jsonParse.ReadFile(animFile);
 
 	mSprite.InitSurface(jsonParse.GetValueOf("filename").GetString());
 
 	auto& v = jsonParse.GetValueOf("animations");
-
 	for (auto itr = v.MemberBegin(); itr != v.MemberEnd(); ++itr) {
 		mAnimations.push_back(GraphicsEngine::Animation({ itr->value.GetArray()[0].GetInt(),
 														itr->value.GetArray()[1].GetInt(),

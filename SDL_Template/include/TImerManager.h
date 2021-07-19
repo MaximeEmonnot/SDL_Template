@@ -10,5 +10,6 @@ public:
 	void ResetTimer(float& timer, float value) const;
 
 private:
+
 	std::shared_ptr<CoreSystem::Timer> pTimer = CoreSystem::Timer::GetInstance();
 };

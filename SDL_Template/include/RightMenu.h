@@ -4,5 +4,5 @@
 class RightMenu : public MenuListDecorator
 {
 public:
-	RightMenu(AMenu* decoratedMenu);
+	RightMenu(std::unique_ptr<AMenu> decoratedMenu);
 };

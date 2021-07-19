@@ -26,5 +26,5 @@ private:
 	Pokemon choice0;
 	Pokemon choice1;
 	Pokemon choice2;
-	AMenu* choiceMenu;
+	std::unique_ptr<AMenu> choiceMenu;
 };

@@ -7,21 +7,17 @@ FightingScene::FightingScene(const std::string& backgroundSprite)
 	Scene(backgroundSprite, Scene::SceneType::FightingScene),
 	pPlayer(Player::GetInstance(Maths::IRect(384, 284, 32, 32), "json/kirby.json")),
 	pMouse(CoreSystem::Mouse::GetInstance()),
-	actionMenu(new RightMenu(new BasicMenu())),
+	actionMenu(std::make_unique<RightMenu>(std::make_unique<BasicMenu>())),
 	enemyPokemon(CreateRandomPokemon()),
 	attackPlayer("You attacked the enemy pokemon!", Maths::IRect(25, 500, 200, 75)),
 	attackEnemy("The enemy pokemon attacked you!", Maths::IRect(25, 500, 200, 75)),
 	fleePlayer("You are fleeing!", Maths::IRect(25,500,200,75)),
-	pokemonMenu(new PokemonMenu(new BasicMenu(), pPlayer->GetPokemon()))
+	pokemonMenu(std::make_unique<PokemonMenu>(std::make_unique<BasicMenu>(), pPlayer->GetPokemon()))
 {
 }
 
 FightingScene::~FightingScene()
 {
-	actionMenu->Destroy();
-	delete actionMenu;
-	pokemonMenu->Destroy();
-	delete pokemonMenu;
 	delete enemyPokemon;
 	pPlayer->Kill();
 }
@@ -55,15 +51,10 @@ void FightingScene::Update()
 
 		if (bIsChoosingAbility) {
 			pokemonMenu->Update(output, pMouse);
-			switch (output)
-			{
-			case 0:
+			if (output != -1) {
 				//pPlayer->GetPokemon().SelectedAttack(output) OR defined in PokemonMenu;
 				bIsFighting = true;
 				bIsChoosingAbility = false;
-				break;
-			default:
-				break;
 			}
 		}
 		else {

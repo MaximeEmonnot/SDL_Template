@@ -56,20 +56,17 @@ bool Pokemon::IsDead() const
 
 Pokemon::Ability Pokemon::GetAbility(int index) const
 {
+
 	switch (index) {
 	case 0:
 		return firstAbility;
-		break;
 	case 1:
 		return secondAbility;
-		break;
 	case 2:
 		return thirdAbility;
-		break;
 	case 3:
 		return fourthAbility;
-		break;
 	default:
-		break;
+		throw EngineException("Pokemon Ability NULL", __FILE__, "An exception occured.\nPokemon ability was out of range.", __LINE__);
 	}
 }

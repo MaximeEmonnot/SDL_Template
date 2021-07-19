@@ -1,17 +1,15 @@
 #include "MenuListDecorator.h"
 
-MenuListDecorator::MenuListDecorator(AMenu* decoratedMenu)
+MenuListDecorator::MenuListDecorator(std::unique_ptr<AMenu> decoratedMenu)
 	:
-	pDecoratedMenu(decoratedMenu)
+	pDecoratedMenu(std::move(decoratedMenu))
 {
 }
 
-void MenuListDecorator::Destroy()
-{	
+MenuListDecorator::~MenuListDecorator()
+{
+	printf("Destructor Menu\n");
 	buttonList.clear();
-	buttonList.~vector();
-	pDecoratedMenu->Destroy();
-	delete pDecoratedMenu;
 }
 
 void MenuListDecorator::Update(int& output, std::shared_ptr<CoreSystem::Mouse> mouse, CoreSystem::Mouse::EventType e)

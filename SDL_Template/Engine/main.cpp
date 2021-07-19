@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
 				wnd->pThreadPool->Enqueue(gameCCC);
 			}
 			while (wnd->ListensToEvents()) {
-				theGame.Go();
+				if (!wnd->IsMinimized()) theGame.Go();
 			}
 		}
 		catch (const EngineException& e) {

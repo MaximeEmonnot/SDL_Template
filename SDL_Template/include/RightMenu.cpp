@@ -1,9 +1,9 @@
 #include "RightMenu.h"
 #include <iostream>
 
-RightMenu::RightMenu(AMenu* decoratedMenu)
+RightMenu::RightMenu(std::unique_ptr<AMenu> decoratedMenu)
 	:
-	MenuListDecorator(decoratedMenu)
+	MenuListDecorator(std::move(decoratedMenu))
 {
 	std::unordered_map<Maths::IVec2D, std::pair<std::string, std::function<void(int&)>>, Maths::IVec2D::Hash> buttonCharacteristics;
 	buttonCharacteristics.insert(std::pair<Maths::IVec2D, std::pair<std::string, std::function<void(int&)>>>(Maths::IVec2D(675, 400), std::make_pair<std::string, std::function<void(int&)>>("Fight", [](int& out) { std::cout << "Fight!\n"; out = 0; })));

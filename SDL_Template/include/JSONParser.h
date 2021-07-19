@@ -6,10 +6,7 @@
 #include <rapidjson/writer.h>
 #include <fstream>
 
-class JSONParser {
-public:
-	JSONParser() = default;
-public:
+namespace JSONParser {
 	class Reader {
 	public:
 		void ReadFile(const std::string& filePath);

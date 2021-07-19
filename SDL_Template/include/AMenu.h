@@ -7,7 +7,7 @@
 class AMenu {
 public:
 	AMenu() = default;
-	virtual void Destroy() = 0;
+	virtual ~AMenu() = default;
 
 	virtual void Update(int& output, std::shared_ptr<CoreSystem::Mouse> mouse, CoreSystem::Mouse::EventType e = CoreSystem::Mouse::EventType::None) = 0;
 	virtual void Draw(GraphicsEngine::Font& font) = 0;

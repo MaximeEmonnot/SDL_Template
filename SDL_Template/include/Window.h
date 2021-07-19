@@ -23,6 +23,8 @@ namespace CoreSystem {
 		const int   GetHeight() const;
 		const Maths::IRect GetScreenRect() const;
 
+		bool IsMinimized() const;
+
 	public:
 		std::shared_ptr<Timer>      pTimer;
 		std::shared_ptr<Mouse>		pMouse;
@@ -34,6 +36,7 @@ namespace CoreSystem {
 		SDL_Window* mpWindow;
 		SDL_Event	mEvent;
 		bool        mbIsRunning;
+		bool		mbIsMinimized;
 		const int	mWidth = 800;
 		const int   mHeight = 600;
 		const Maths::IRect screenRect = { 0, 0, mWidth, mHeight };

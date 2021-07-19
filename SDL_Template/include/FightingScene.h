@@ -29,8 +29,9 @@ private:
 	std::shared_ptr<Player> pPlayer;
 	std::shared_ptr <CoreSystem::Mouse> pMouse;
 
-	TimerManager timer;
 
+	//Modifier pour Timer (float en interne)
+	TimerManager timer;
 	float attackTimer = 1.5f;
 	float fleeTimer = 2.0f;
 
@@ -41,8 +42,8 @@ private:
 	bool bEnemyIsAttacking = false;
 	
 	Pokemon* enemyPokemon;
-	AMenu* actionMenu;
-	AMenu* pokemonMenu;
+	std::unique_ptr<AMenu> actionMenu;
+	std::unique_ptr<AMenu> pokemonMenu;
 
 	TextBox attackPlayer;
 	TextBox attackEnemy;

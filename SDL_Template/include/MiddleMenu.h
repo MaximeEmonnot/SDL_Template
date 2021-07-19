@@ -4,5 +4,5 @@
 class MiddleMenu : public MenuListDecorator
 {
 public:
-	MiddleMenu(AMenu* decoratedMenu);
+	MiddleMenu(std::unique_ptr<AMenu> decoratedMenu);
 };

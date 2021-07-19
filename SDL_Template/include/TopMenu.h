@@ -3,5 +3,5 @@
 
 class TopMenu : public MenuListDecorator {
 public:
-	TopMenu(AMenu* decoratedMenu);
+	TopMenu(std::unique_ptr<AMenu> decoratedMenu);
 };

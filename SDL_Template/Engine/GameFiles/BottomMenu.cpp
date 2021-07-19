@@ -1,9 +1,9 @@
 #include "BottomMenu.h"
 #include <iostream>
 
-BottomMenu::BottomMenu(AMenu* decoratedMenu)
+BottomMenu::BottomMenu(std::unique_ptr<AMenu> decoratedMenu)
 	:
-	MenuListDecorator(decoratedMenu)
+	MenuListDecorator(std::move(decoratedMenu))
 {
 	std::unordered_map<Maths::IVec2D, std::pair<std::string, std::function<void(int&)>>, Maths::IVec2D::Hash> buttonCharacteristics;
 	buttonCharacteristics.insert(std::pair<Maths::IVec2D, std::pair<std::string, std::function<void(int&)>>>(Maths::IVec2D(200, 525), std::make_pair<std::string, std::function<void(int&)>>("Bulbasaur", [](int& out) {std::cout << "Bulbasaur!\n"; out = 1; })));

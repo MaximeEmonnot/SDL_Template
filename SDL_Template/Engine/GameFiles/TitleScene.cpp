@@ -5,16 +5,10 @@ TitleScene::TitleScene(const std::string& backgroundSprite)
 	Scene(backgroundSprite, Scene::SceneType::TitleScene),
 	pWnd(CoreSystem::Window::GetInstance()),
 	pMouse(CoreSystem::Mouse::GetInstance()),
-	menu(new MiddleMenu(new BasicMenu())),
+	menu(std::make_unique<MiddleMenu>(std::make_unique<BasicMenu>())),
 	title("Game title text", Maths::IRect(150, 25, 200, 100)),
 	pPlayer(Player::GetInstance(Maths::IRect(384, 284, 32, 32), "json/kirby.json"))
 {
-}
-
-TitleScene::~TitleScene()
-{
-	menu->Destroy();
-	delete menu;
 }
 
 void TitleScene::Update()

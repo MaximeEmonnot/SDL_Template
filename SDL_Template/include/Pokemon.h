@@ -36,9 +36,10 @@ private:
 	Ability secondAbility = {"Fireball", 60, 10, 10};
 	Ability thirdAbility = {"CHARGE", 80, 10, 10};
 	Ability fourthAbility = {"BOOOOm", 25, 10, 10};
-
+	
 	std::shared_ptr<GraphicsEngine::Graphics> pGfx;
 	GraphicsEngine::Sprite sprite;
+
 	int hp;
 	int	att;
 	int def;

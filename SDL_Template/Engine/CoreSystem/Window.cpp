@@ -7,7 +7,8 @@ CoreSystem::Window::Window()
 	pKbd(Keyboard::GetInstance()),
 	pMouse(Mouse::GetInstance()),
 	pThreadPool(ThreadPool::GetInstance(30)),
-	pSoundSystem(SoundEngine::SoundSystem::GetInstance())
+	pSoundSystem(SoundEngine::SoundSystem::GetInstance()),
+	mbIsMinimized(false)
 {
 	mEvent.type = SDL_FIRSTEVENT;
 	mbIsRunning = true;
@@ -49,6 +50,15 @@ bool CoreSystem::Window::ListensToEvents() noexcept
 			switch (mEvent.window.event) {
 			case SDL_WINDOWEVENT_FOCUS_LOST:
 				pKbd->Flush();
+				break;
+			case SDL_WINDOWEVENT_MINIMIZED:
+				mbIsMinimized = true;
+				while (SDL_WaitEvent(&mEvent)) {
+					if (mEvent.window.event == SDL_WINDOWEVENT_RESTORED) {
+						mbIsMinimized = false;
+						break;
+					}
+				}
 				break;
 			default:
 				break;
@@ -125,4 +135,9 @@ const int CoreSystem::Window::GetHeight() const
 const Maths::IRect CoreSystem::Window::GetScreenRect() const
 {
 	return screenRect;
+}
+
+bool CoreSystem::Window::IsMinimized() const
+{
+	return mbIsMinimized;
 }

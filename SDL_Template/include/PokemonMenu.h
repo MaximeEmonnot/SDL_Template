@@ -4,5 +4,5 @@
 
 class PokemonMenu : public MenuListDecorator {
 public:
-	PokemonMenu(AMenu* decoratedMenu, const Pokemon& pkmn);
+	PokemonMenu(std::unique_ptr<AMenu> decoratedMenu, const Pokemon& pkmn);
 };

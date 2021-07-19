@@ -21,6 +21,7 @@ public:
 	public:
 		Writer();
 
+		//Add a simple member
 		template <typename...Args>
 		void AddValueForMember(const std::string& memberName, Args... value) {
 			rapidjson::Value v(rapidjson::kArrayType);
@@ -33,11 +34,12 @@ public:
 		void AddValueForMember(const std::string& memberName, T value) {
 			rapidjson::Value name;
 			name.SetString(memberName.c_str(), doc.GetAllocator());
-			rapidjson::Value v(value, doc.GetAllocator());
+			rapidjson::Value v(value);
 			doc.AddMember(name, v, doc.GetAllocator());
 		}
 		void AddStringValueForMember(const std::string& memberName, const std::string& value);
 
+		//Add an object member, that can contains simple members
 		template<typename...Args>
 		void AddObjectMember(const std::string& objectName, const std::string& memberName, Args...value) {
 			if (doc.HasMember(objectName.c_str())) {

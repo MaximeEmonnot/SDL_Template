@@ -6,7 +6,8 @@ TitleScene::TitleScene(const std::string& backgroundSprite)
 	pWnd(CoreSystem::Window::GetInstance()),
 	pMouse(CoreSystem::Mouse::GetInstance()),
 	menu(new MiddleMenu(new BasicMenu())),
-	title("Game title text", Maths::IRect(150, 25, 200, 100))
+	title("Game title text", Maths::IRect(150, 25, 200, 100)),
+	pPlayer(Player::GetInstance(Maths::IRect(384, 284, 32, 32), "json/kirby.json"))
 {
 }
 
@@ -30,10 +31,22 @@ void TitleScene::Update()
 		pWnd->ExitGame();
 		break;
 	case 1:
+	{
 		bWillChangeScene = true;
-		newScene = Scene::SceneType::ChoosingScene;
+		std::ifstream in("json/saveFile.json");
+		if (in) {
+			newScene = Scene::SceneType::ExplorationScene;
+			pPlayer->InitFromJSON();
+			printf("Loaded from save file!\n");
+		}
+		else {
+			newScene = Scene::SceneType::ChoosingScene;
+			printf("No save file found!\n");
+		}
+	}
 		break;
 	case 2:
+		std::remove("json/saveFile.json");
 		break;
 	default:
 		break;

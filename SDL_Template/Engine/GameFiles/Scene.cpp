@@ -5,7 +5,7 @@ Scene::Scene(const std::string& backgroundPath, Scene::SceneType type)
 	pGfx(GraphicsEngine::Graphics::GetInstance()),
 	currentScene(type)
 {
-	backgroundSprite.InitSurface(backgroundPath.c_str());
+	//backgroundSprite.InitSurface(backgroundPath.c_str());
 }
 
 bool Scene::ChangeScene() const

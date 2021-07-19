@@ -3,6 +3,7 @@
 Player::Player(Maths::IRect rect, const std::string& animFile)
 	:
 	Character(rect),
+	pGrid(Grid::GetInstance()),
 	pKbd(CoreSystem::Keyboard::GetInstance())
 {
 	JSONParser::Reader jsonParse;
@@ -24,6 +25,53 @@ Player::Player(Maths::IRect rect, const std::string& animFile)
 	miCurSequence = (int)AnimationList::StandingRight;
 }
 
+void Player::InitFromJSON()
+{
+	JSONParser::Reader jsonReader;
+	jsonReader.ReadFile("json/saveFile.json");
+
+	//Init World Pos
+	auto& value = jsonReader.GetValueOf("Position");
+	pGrid->SetWorldPosition(Maths::IVec2D(value.GetArray()[0].GetInt(), value.GetArray()[1].GetInt()));
+
+	//Init Pokemon
+	auto& pokemonValue = jsonReader.GetValueOf("Pokemon");
+	pokemon.hp = pokemonValue.FindMember("HP")->value.GetInt();
+	pokemon.att = pokemonValue.FindMember("Attack")->value.GetInt();
+	pokemon.def = pokemonValue.FindMember("Defense")->value.GetInt();
+	pokemon.lvl = pokemonValue.FindMember("Level")->value.GetInt();
+	pokemon.id = pokemonValue.FindMember("ID")->value.GetInt();
+	pokemon.pGfx = GraphicsEngine::Graphics::GetInstance();
+	switch (pokemon.id)
+	{
+	case 1:
+		pokemon.sprite.InitSurface("Images/bulbasaur.png");
+		break;
+	case 2:
+		pokemon.sprite.InitSurface("Images/charmander.png");
+		break;
+	case 3:
+		pokemon.sprite.InitSurface("Images/squirttle.png");
+		break;
+	default:
+		break;
+	}
+}
+
+void Player::SaveJSON()
+{
+	JSONParser::Writer jsonWriter;
+	jsonWriter.AddValueForMember("Position", pGrid->GetWorldPosition().x, pGrid->GetWorldPosition().y);
+
+	jsonWriter.AddObjectMember("Pokemon", "HP", pokemon.hp);
+	jsonWriter.AddObjectMember("Pokemon", "Attack", pokemon.att);
+	jsonWriter.AddObjectMember("Pokemon", "Defense", pokemon.def);
+	jsonWriter.AddObjectMember("Pokemon", "Level", pokemon.lvl);
+	jsonWriter.AddObjectMember("Pokemon", "ID", pokemon.id);
+
+	jsonWriter.SaveJsonAt("json/saveFile.json");
+}
+
 void Player::Move()
 {
 	Maths::IVec2D dir;
@@ -41,7 +89,7 @@ void Player::Move()
 	}
 
 	//Movement
-	mRect += dir * (int)speed;
+	//mRect += dir * (int)speed;
 	
 	//Animation
 	if (dir != Maths::IVec2D(0,0)) {

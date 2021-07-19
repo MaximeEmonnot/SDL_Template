@@ -3,12 +3,12 @@
 ChoosingScene::ChoosingScene(const std::string& backgroundSprite)
 	:
 	Scene(backgroundSprite, Scene::SceneType::ChoosingScene),
-	pPlayer(Player::GetInstance(Maths::IRect(10, 10, 32, 32), "json/kirby.json")),
+	pPlayer(Player::GetInstance(Maths::IRect(384, 284, 32, 32), "json/kirby.json")),
 	pMouse(CoreSystem::Mouse::GetInstance()),
 	choiceMenu(new BottomMenu(new BasicMenu())),
-	choice0("Images/bulbasaur.png"),
-	choice1("Images/charmander.png"),
-	choice2("Images/squirttle.png")
+	choice0("Images/bulbasaur.png", 1),
+	choice1("Images/charmander.png", 2),
+	choice2("Images/squirttle.png", 3)
 {
 }
 

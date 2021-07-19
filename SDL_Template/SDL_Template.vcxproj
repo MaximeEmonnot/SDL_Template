@@ -31,13 +31,16 @@
     <ClCompile Include="Engine\GameFiles\ChoosingScene.cpp" />
     <ClCompile Include="Engine\GameFiles\ExplorationScene.cpp" />
     <ClCompile Include="Engine\GameFiles\FightingScene.cpp" />
+    <ClCompile Include="Engine\GameFiles\Grid.cpp" />
     <ClCompile Include="Engine\GameFiles\MenuListDecorator.cpp" />
     <ClCompile Include="Engine\GameFiles\LeftMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\MiddleMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\Player.cpp" />
     <ClCompile Include="Engine\GameFiles\Pokemon.cpp" />
+    <ClCompile Include="Engine\GameFiles\PokemonMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\Scene.cpp" />
     <ClCompile Include="Engine\GameFiles\TextBox.cpp" />
+    <ClCompile Include="Engine\GameFiles\TimerManager.cpp" />
     <ClCompile Include="Engine\GameFiles\TitleScene.cpp" />
     <ClCompile Include="Engine\GameFiles\TopMenu.cpp" />
     <ClCompile Include="Engine\GraphicsManager\Animation.cpp" />
@@ -68,6 +71,7 @@
     <ClInclude Include="include\Font.h" />
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\Graphics.h" />
+    <ClInclude Include="include\Grid.h" />
     <ClInclude Include="include\JSONParser.h" />
     <ClInclude Include="include\Keyboard.h" />
     <ClInclude Include="include\MenuListDecorator.h" />
@@ -76,6 +80,7 @@
     <ClInclude Include="include\Music.h" />
     <ClInclude Include="include\Player.h" />
     <ClInclude Include="include\Pokemon.h" />
+    <ClInclude Include="include\PokemonMenu.h" />
     <ClInclude Include="include\Rect.h" />
     <ClInclude Include="include\RightMenu.h" />
     <ClInclude Include="include\EngineException.h" />
@@ -88,6 +93,7 @@
     <ClInclude Include="include\TextBox.h" />
     <ClInclude Include="include\ThreadPool.h" />
     <ClInclude Include="include\Timer.h" />
+    <ClInclude Include="include\TImerManager.h" />
     <ClInclude Include="include\TitleScene.h" />
     <ClInclude Include="include\TopMenu.h" />
     <ClInclude Include="include\Vec2D.h" />

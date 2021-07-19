@@ -2,8 +2,12 @@
 #include "Scene.h"
 #include "Player.h"
 
+#include "TImerManager.h"
+
+#include "PokemonMenu.h"
 #include "BasicMenu.h"
 #include "RightMenu.h"
+#include "TextBox.h"
 
 class FightingScene : public Scene {
 public:
@@ -25,6 +29,22 @@ private:
 	std::shared_ptr<Player> pPlayer;
 	std::shared_ptr <CoreSystem::Mouse> pMouse;
 
+	TimerManager timer;
+
+	float attackTimer = 1.5f;
+	float fleeTimer = 2.0f;
+
+	bool bIsChoosingAbility = false;
+	bool bIsFighting = false;
+	bool bIsFleeing = false;
+	bool bPlayerIsAttacking = false;
+	bool bEnemyIsAttacking = false;
+	
 	Pokemon* enemyPokemon;
 	AMenu* actionMenu;
+	AMenu* pokemonMenu;
+
+	TextBox attackPlayer;
+	TextBox attackEnemy;
+	TextBox fleePlayer;
 };

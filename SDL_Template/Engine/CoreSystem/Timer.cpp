@@ -2,12 +2,18 @@
 
 CoreSystem::Timer::Timer()
 	:
-	mLast(std::chrono::steady_clock::now())
+	mLast(std::chrono::steady_clock::now()),
+	deltaTime(0.0f)
 {}
 
-float CoreSystem::Timer::DeltaTime()
+void CoreSystem::Timer::Update()
 {
 	const auto old = mLast;
 	mLast = std::chrono::steady_clock::now();
-	return std::chrono::duration<float>(mLast - old).count();
+	deltaTime = std::chrono::duration<float>(mLast - old).count();
+}
+
+float CoreSystem::Timer::DeltaTime()
+{
+	return deltaTime;
 }

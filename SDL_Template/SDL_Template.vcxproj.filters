@@ -162,6 +162,15 @@
     <ClCompile Include="Engine\GameFiles\Pokemon.cpp">
       <Filter>Fichiers sources\GameFiles\Entity</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GameFiles\Grid.cpp">
+      <Filter>Fichiers sources\GameFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameFiles\TimerManager.cpp">
+      <Filter>Fichiers sources\GameFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameFiles\PokemonMenu.cpp">
+      <Filter>Fichiers sources\GameFiles\Menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\JSONParser.h">
@@ -280,6 +289,15 @@
     </ClInclude>
     <ClInclude Include="include\Pokemon.h">
       <Filter>Fichiers d%27en-tête\GameFiles\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Grid.h">
+      <Filter>Fichiers d%27en-tête\GameFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TImerManager.h">
+      <Filter>Fichiers d%27en-tête\GameFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PokemonMenu.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

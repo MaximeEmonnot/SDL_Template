@@ -1,8 +1,8 @@
 #include "ChoosingScene.h"
 
-ChoosingScene::ChoosingScene(const std::string& backgroundSprite)
+ChoosingScene::ChoosingScene()
 	:
-	Scene(backgroundSprite, Scene::SceneType::ChoosingScene),
+	Scene(Scene::SceneType::ChoosingScene),
 	pPlayer(Player::GetInstance(Maths::IRect(384, 284, 32, 32), "json/kirby.json")),
 	pMouse(CoreSystem::Mouse::GetInstance()),
 	choiceMenu(std::make_unique<BottomMenu>(std::make_unique<BasicMenu>())),

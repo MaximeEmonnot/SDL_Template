@@ -1,9 +1,13 @@
 #pragma once
 
 #include <random>
+#include <unordered_map>
 #include "Graphics.h"
+#include "Player.h"
 
 class Grid : public CoreSystem::SingletonMaker<Grid> {
+private:
+	friend class ExplorationScene;
 private:
 	class Tile {
 	public:
@@ -45,6 +49,7 @@ public:
 
 private:
 	void GenerateGrid();
+	void GenerateItems();
 
 	bool NextTileIsRocks(const Maths::IVec2D& pos);
 
@@ -52,6 +57,7 @@ private:
 	GraphicsEngine::Sprite tileSprite;
 	std::shared_ptr<GraphicsEngine::Graphics> pGfx;
 	std::shared_ptr<CoreSystem::Keyboard> pKbd;
+	std::shared_ptr<Player> pPlayer;
 
 	const int tileWidth = 32;
 	const int tileHeight = 32;
@@ -68,4 +74,6 @@ private:
 	
 	int generationSeed;
 	std::vector<Tile> tiles;
+
+	std::unordered_map<Maths::IVec2D, std::string, Maths::IVec2D::Hash> items;
 };

@@ -32,6 +32,7 @@
     <ClCompile Include="Engine\GameFiles\ExplorationScene.cpp" />
     <ClCompile Include="Engine\GameFiles\FightingScene.cpp" />
     <ClCompile Include="Engine\GameFiles\Grid.cpp" />
+    <ClCompile Include="Engine\GameFiles\ItemInventory.cpp" />
     <ClCompile Include="Engine\GameFiles\MenuListDecorator.cpp" />
     <ClCompile Include="Engine\GameFiles\LeftMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\MiddleMenu.cpp" />
@@ -72,6 +73,7 @@
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\Graphics.h" />
     <ClInclude Include="include\Grid.h" />
+    <ClInclude Include="include\ItemInventory.h" />
     <ClInclude Include="include\JSONParser.h" />
     <ClInclude Include="include\Keyboard.h" />
     <ClInclude Include="include\MenuListDecorator.h" />

@@ -2,13 +2,15 @@
 #include <random>
 #include <iostream>
 
-FightingScene::FightingScene(const std::string& backgroundSprite)
+FightingScene::FightingScene()
 	:
-	Scene(backgroundSprite, Scene::SceneType::FightingScene),
+	Scene(Scene::SceneType::FightingScene),
 	pPlayer(Player::GetInstance(Maths::IRect(384, 284, 32, 32), "json/kirby.json")),
 	pMouse(CoreSystem::Mouse::GetInstance()),
 	actionMenu(std::make_unique<RightMenu>(std::make_unique<BasicMenu>())),
 	enemyPokemon(CreateRandomPokemon()),
+	enemyPkmnRect(500, 50, 128, 128),
+	playerPkmnRect(200, 200, 128, 128),
 	attackPlayer("You attacked the enemy pokemon!", Maths::IRect(25, 500, 200, 75)),
 	attackEnemy("The enemy pokemon attacked you!", Maths::IRect(25, 500, 200, 75)),
 	fleePlayer("You are fleeing!", Maths::IRect(25,500,200,75)),
@@ -35,14 +37,16 @@ void FightingScene::Update()
 		Fight();
 	}
 	else if (bEnemyIsAttacking) {
-		timer.Update(attackTimer);
-		if (timer.IsTimerDown(attackTimer)) {
+		attackTimer.Update();
+		PlayAnimation(playerPkmnRect);
+		if (attackTimer.IsTimerDown()) {
+			playerPkmnRect.rect.x = 200;
 			bEnemyIsAttacking = false;
 		}
 	}
 	else if (bIsFleeing) {
-		timer.Update(fleeTimer);
-		if (timer.IsTimerDown(fleeTimer)) {
+		fleeTimer.Update();
+		if (fleeTimer.IsTimerDown()) {
 			Flee();
 		}
 	}
@@ -65,7 +69,7 @@ void FightingScene::Update()
 				bIsChoosingAbility = true;
 				break;
 			case 1:
-				timer.ResetTimer(fleeTimer, 2.0f);
+				fleeTimer.ResetTimer(2.0f);
 				bIsFleeing = true;
 				break;
 			default:
@@ -85,8 +89,8 @@ void FightingScene::Update()
 
 void FightingScene::Draw()
 {
-	pPlayer->GetPokemon().DrawFrontSprite(Maths::IRect(200, 200, 128, 128));
-	enemyPokemon->DrawFrontSprite(Maths::IRect(500, 50, 128, 128));
+	pPlayer->GetPokemon().DrawFrontSprite(playerPkmnRect);
+	enemyPokemon->DrawFrontSprite(enemyPkmnRect);
 
 	if (!bIsFighting && !bEnemyIsAttacking) {
 		if (bIsChoosingAbility) 
@@ -125,20 +129,33 @@ Pokemon* FightingScene::CreateRandomPokemon()
 	}
 }
 
+void FightingScene::PlayAnimation(Maths::IRect& rect)
+{
+	rect.rect.x += currentDir;
+	
+	animationTimer.Update();
+	if (animationTimer.IsTimerDown()) {
+		animationTimer.ResetTimer(0.10f);
+		currentDir *= -1;
+	}
+}
+
 void FightingScene::Fight()
 {
 	if (!bPlayerIsAttacking) {
-		timer.ResetTimer(attackTimer, 3.0f);
+		attackTimer.ResetTimer(3.0f);
 		pPlayer->GetPokemon().Attack(*enemyPokemon);
 		bPlayerIsAttacking = true;
 	}
 	else {
-		timer.Update(attackTimer);
-		if (timer.IsTimerDown(attackTimer)) {
+		attackTimer.Update();
+		PlayAnimation(enemyPkmnRect);
+		if (attackTimer.IsTimerDown()) {
+			enemyPkmnRect.rect.x = 500;
 			bPlayerIsAttacking = false;
 			enemyPokemon->Attack(pPlayer->GetPokemon());
 			bEnemyIsAttacking = true;
-			timer.ResetTimer(attackTimer, 3.0f);
+			attackTimer.ResetTimer(3.0f);
 			bIsFighting = false;
 			std::cout << "Enemy has " << enemyPokemon->GetHP() << " HP left!\n";
 			std::cout << "Your pokemon has " << pPlayer->GetPokemon().GetHP() << " HP Left!\n";

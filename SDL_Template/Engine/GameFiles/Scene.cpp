@@ -1,11 +1,10 @@
 #include "Scene.h"
 
-Scene::Scene(const std::string& backgroundPath, Scene::SceneType type)
+Scene::Scene(Scene::SceneType type)
 	:
 	pGfx(GraphicsEngine::Graphics::GetInstance()),
 	currentScene(type)
 {
-	//backgroundSprite.InitSurface(backgroundPath.c_str());
 }
 
 bool Scene::ChangeScene() const

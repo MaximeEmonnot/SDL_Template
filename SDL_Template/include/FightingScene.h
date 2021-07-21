@@ -11,7 +11,7 @@
 
 class FightingScene : public Scene {
 public:
-	FightingScene(const std::string& backgroundSprite);
+	FightingScene();
 	~FightingScene();
 
 	void Update() override;
@@ -19,6 +19,8 @@ public:
 
 private:
 	Pokemon* CreateRandomPokemon();
+
+	void PlayAnimation(Maths::IRect& rect);
 
 	void Fight();
 	void Flee();
@@ -29,11 +31,13 @@ private:
 	std::shared_ptr<Player> pPlayer;
 	std::shared_ptr <CoreSystem::Mouse> pMouse;
 
+	TimerManager attackTimer;
+	TimerManager fleeTimer;
+	TimerManager animationTimer;
 
-	//Modifier pour Timer (float en interne)
-	TimerManager timer;
-	float attackTimer = 1.5f;
-	float fleeTimer = 2.0f;
+	int currentDir = 1;
+
+	float time;
 
 	bool bIsChoosingAbility = false;
 	bool bIsFighting = false;
@@ -42,6 +46,9 @@ private:
 	bool bEnemyIsAttacking = false;
 	
 	Pokemon* enemyPokemon;
+	Maths::IRect enemyPkmnRect;
+	Maths::IRect playerPkmnRect;
+
 	std::unique_ptr<AMenu> actionMenu;
 	std::unique_ptr<AMenu> pokemonMenu;
 

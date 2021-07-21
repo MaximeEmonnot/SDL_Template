@@ -171,6 +171,9 @@
     <ClCompile Include="Engine\GameFiles\PokemonMenu.cpp">
       <Filter>Fichiers sources\GameFiles\Menu</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GameFiles\ItemInventory.cpp">
+      <Filter>Fichiers sources\GameFiles\Menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\JSONParser.h">
@@ -297,6 +300,9 @@
       <Filter>Fichiers d%27en-tête\GameFiles</Filter>
     </ClInclude>
     <ClInclude Include="include\PokemonMenu.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ItemInventory.h">
       <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
     </ClInclude>
   </ItemGroup>

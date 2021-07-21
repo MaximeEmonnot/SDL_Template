@@ -1,8 +1,8 @@
 #include "TitleScene.h"
 
-TitleScene::TitleScene(const std::string& backgroundSprite)
+TitleScene::TitleScene()
 	:
-	Scene(backgroundSprite, Scene::SceneType::TitleScene),
+	Scene(Scene::SceneType::TitleScene),
 	pWnd(CoreSystem::Window::GetInstance()),
 	pMouse(CoreSystem::Mouse::GetInstance()),
 	menu(std::make_unique<MiddleMenu>(std::make_unique<BasicMenu>())),
@@ -27,10 +27,11 @@ void TitleScene::Update()
 	case 1:
 	{
 		bWillChangeScene = true;
-		std::ifstream in("json/saveFile.json");
-		if (in) {
+		std::ifstream inSF("json/saveFile.json");
+		std::ifstream inMC("json/mapCoords.json");
+		if (inSF && inMC) {
 			newScene = Scene::SceneType::ExplorationScene;
-			pPlayer->InitFromJSON();
+			pPlayer->TEST_bInitFromJSON = true;
 			printf("Loaded from save file!\n");
 		}
 		else {
@@ -41,6 +42,7 @@ void TitleScene::Update()
 		break;
 	case 2:
 		std::remove("json/saveFile.json");
+		std::remove("json/mapCoords.json");
 		break;
 	default:
 		break;

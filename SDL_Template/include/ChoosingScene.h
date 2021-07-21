@@ -9,7 +9,7 @@
 
 class ChoosingScene : public Scene {
 public:
-	ChoosingScene(const std::string& backgroundSprite);
+	ChoosingScene();
 	~ChoosingScene();
 
 	void Update() override;

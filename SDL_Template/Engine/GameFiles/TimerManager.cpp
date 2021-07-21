@@ -1,16 +1,21 @@
 #include "TimerManager.h"
 
-void TimerManager::Update(float& timer)
+void TimerManager::Update()
 {
 	timer -= pTimer->DeltaTime();
 }
 
-bool TimerManager::IsTimerDown(const float& timer) const
+bool TimerManager::IsTimerDown() const
 {
 	return timer <= 0.0f;
 }
 
-void TimerManager::ResetTimer(float& timer, float value) const
+void TimerManager::ResetTimer(float value)
 {
 	timer = value;
+}
+
+float TimerManager::GetTimer() const
+{
+	return timer;
 }

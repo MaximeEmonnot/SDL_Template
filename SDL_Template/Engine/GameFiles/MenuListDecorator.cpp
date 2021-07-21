@@ -8,7 +8,6 @@ MenuListDecorator::MenuListDecorator(std::unique_ptr<AMenu> decoratedMenu)
 
 MenuListDecorator::~MenuListDecorator()
 {
-	printf("Destructor Menu\n");
 	buttonList.clear();
 }
 

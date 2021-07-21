@@ -5,10 +5,10 @@ Game::Game():
 	mpWnd(CoreSystem::Window::GetInstance()),
 	mpGfx(GraphicsEngine::Graphics::GetInstance())
 {
-	scenes.emplace_back(std::make_shared<TitleScene>("Images/background.png"));
-	scenes.emplace_back(std::make_shared<ChoosingScene>("Images/background.png"));
-	scenes.emplace_back(std::make_shared<ExplorationScene>("Images/background.png"));
-	scenes.emplace_back(std::make_shared<FightingScene>("Images/background.png"));
+	scenes.emplace_back(std::make_shared<TitleScene>());
+	scenes.emplace_back(std::make_shared<ChoosingScene>());
+	scenes.emplace_back(std::make_shared<ExplorationScene>());
+	scenes.emplace_back(std::make_shared<FightingScene>());
 	currentScene = scenes.begin();
 }
 

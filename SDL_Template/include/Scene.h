@@ -11,7 +11,7 @@ public:
 		Null
 	};
 public:
-	Scene(const std::string& backgroundPath, Scene::SceneType type);
+	Scene(Scene::SceneType type);
 
 	virtual void Update() = 0;
 	virtual void Draw() = 0;
@@ -22,8 +22,7 @@ public:
 
 protected:
 	std::shared_ptr<GraphicsEngine::Graphics> pGfx;
-	GraphicsEngine::Sprite backgroundSprite;
-	bool bWillChangeScene = false;
 	SceneType currentScene;
 	SceneType newScene = SceneType::Null;
+	bool bWillChangeScene = false;
 };

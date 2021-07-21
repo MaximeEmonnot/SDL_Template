@@ -3,7 +3,7 @@
 Player::Player(Maths::IRect rect, const std::string& animFile)
 	:
 	Character(rect),
-	pGrid(Grid::GetInstance()),
+	//pGrid(Grid::GetInstance()),
 	pKbd(CoreSystem::Keyboard::GetInstance())
 {
 	JSONParser::Reader jsonParse;
@@ -30,9 +30,11 @@ void Player::InitFromJSON()
 	JSONParser::Reader jsonReader;
 	jsonReader.ReadFile("json/saveFile.json");
 
-	//Init World Pos
-	auto& value = jsonReader.GetValueOf("Position");
-	pGrid->SetWorldPosition(Maths::IVec2D(value.GetArray()[0].GetInt(), value.GetArray()[1].GetInt()));
+	//Init inventory
+	auto& inventoryValue = jsonReader.GetValueOf("Inventory");
+	for (auto itr = inventoryValue.MemberBegin(); itr != inventoryValue.MemberEnd(); ++itr) {
+		items.insert(std::pair<Maths::IVec2D, std::string>(Maths::IVec2D(itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt()), itr->name.GetString()));
+	}
 
 	//Init Pokemon
 	auto& pokemonValue = jsonReader.GetValueOf("Pokemon");
@@ -61,8 +63,13 @@ void Player::InitFromJSON()
 void Player::SaveJSON()
 {
 	JSONParser::Writer jsonWriter;
-	jsonWriter.AddValueForMember("Position", pGrid->GetWorldPosition().x, pGrid->GetWorldPosition().y);
 
+	//Save Inventory
+	for (auto& entry : items) {
+		jsonWriter.AddObjectMember("Inventory", entry.second, entry.first.x, entry.first.y);
+	}
+
+	//Save PKMN
 	jsonWriter.AddObjectMember("Pokemon", "HP", pokemon.hp);
 	jsonWriter.AddObjectMember("Pokemon", "Attack", pokemon.att);
 	jsonWriter.AddObjectMember("Pokemon", "Defense", pokemon.def);
@@ -96,17 +103,21 @@ void Player::Move()
 		if (dir.y != 0) {
 			if (dir.y > 0) {
 				miCurSequence = (int)AnimationList::WalkingDown;
+				lookingDirection = Maths::IVec2D(0, 1);
 			}
 			else {
 				miCurSequence = (int)AnimationList::WalkingUp;
+				lookingDirection = Maths::IVec2D(0, -1);
 			}
 		}
 		else {
 			if (dir.x > 0) {
 				miCurSequence = (int)AnimationList::WalkingRight;
+				lookingDirection = Maths::IVec2D(1, 0);
 			}
 			else {
 				miCurSequence = (int)AnimationList::WalkingLeft;
+				lookingDirection = Maths::IVec2D(-1, 0);
 			}
 		}
 	}
@@ -145,9 +156,33 @@ Pokemon& Player::GetPokemon()
 	return pokemon;
 }
 
+Maths::IVec2D Player::GetLookingDirection() const
+{
+	return lookingDirection;
+}
+
 void Player::DrawPokemon()
 {
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_P)) {
 		pokemon.DrawFrontSprite(Maths::IRect(250, 250, 128, 128));
 	}
+}
+
+void Player::TEST_PickUpItem(const std::pair<Maths::IVec2D, std::string>& item)
+{
+	items.insert(item);
+}
+
+void Player::TEST_UseItem(int index)
+{
+	auto itr = items.begin();
+	for (int i = 0; i < index; i++) {
+		itr++;
+	}
+	items.erase(itr);
+}
+
+std::unordered_map<Maths::IVec2D, std::string, Maths::IVec2D::Hash> Player::GetItemList() const
+{
+	return items;
 }

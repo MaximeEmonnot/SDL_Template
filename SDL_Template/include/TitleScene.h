@@ -8,7 +8,7 @@
 class TitleScene : public Scene {
 
 public:
-	TitleScene(const std::string& backgroundSprite);
+	TitleScene();
 
 	void Update() override;
 	void Draw() override;

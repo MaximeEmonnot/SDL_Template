@@ -16,10 +16,11 @@ SoundEngine::Music::~Music()
 
 void SoundEngine::Music::Play(int loops)
 {
+	Mix_FadeInMusic(pMusic, loops, 50);
 	Mix_PlayMusic(pMusic, loops);
 }
 
 void SoundEngine::Music::Stop()
 {
-	Mix_PauseMusic();
+	Mix_FadeOutMusic(50);
 }

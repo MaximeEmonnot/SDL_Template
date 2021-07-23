@@ -14,6 +14,7 @@ ExplorationScene::ExplorationScene()
 	pSoundSystem(SoundEngine::SoundSystem::GetInstance())
 {
 	if ((pTimer->GetCurrentTime().x >= 18 && pTimer->GetCurrentTime().y >= 30) ||
+		(pTimer->GetCurrentTime().x >= 19) ||
 		(pTimer->GetCurrentTime().x <= 6 && pTimer->GetCurrentTime().y <= 30)) {
 		bIsNight = true;
 	}
@@ -36,7 +37,7 @@ void ExplorationScene::Update()
 		bIsPlayingSong = true;
 	}
 	else {
-		if (((pTimer->GetCurrentTime().x >= 18 && pTimer->GetCurrentTime().y >= 30) || (pTimer->GetCurrentTime().x < 6 && pTimer->GetCurrentTime().y >= 30)) && !bIsNight) {
+		if (((pTimer->GetCurrentTime().x >= 18 && pTimer->GetCurrentTime().y >= 30) || (pTimer->GetCurrentTime().x >= 19) || (pTimer->GetCurrentTime().x < 6 && pTimer->GetCurrentTime().y >= 30)) && !bIsNight) {
 			bIsPlayingSong = false;
 			bIsNight = true;
 			pSoundSystem->StopSounds();

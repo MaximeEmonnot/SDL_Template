@@ -39,19 +39,39 @@ void Pokemon::Attack(Pokemon& enemy)
 	enemy.hp -= (att - enemy.def);
 }
 
-void Pokemon::Heal()
+void Pokemon::Heal(int value)
 {
-	hp = 20;
+	hp = (hp + value > currentMaxHP) ? currentMaxHP : hp + value;
 }
 
 int Pokemon::GetHP() const
 {
 	return hp;
 }
-
 bool Pokemon::IsDead() const
 {
 	return hp <= 0;
+}
+
+void Pokemon::BoostAttack(int value)
+{
+	att = (att + value > maxAtt) ? maxAtt : att + value;
+}
+
+
+void Pokemon::BoostDefense(int value)
+{
+	def = (def + value > maxDef) ? maxDef : def + value;
+}
+
+void Pokemon::BoostHP(int value)
+{
+	currentMaxHP = (currentMaxHP + value > maxHP) ? maxHP : currentMaxHP + value;
+}
+
+void Pokemon::BoostLVL(int value)
+{
+	lvl = (lvl + value > maxLvl) ? maxLvl : lvl + value;
 }
 
 Pokemon::Ability Pokemon::GetAbility(int index) const

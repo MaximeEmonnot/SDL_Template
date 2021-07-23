@@ -25,15 +25,31 @@ Player::Player(Maths::IRect rect, const std::string& animFile)
 	miCurSequence = (int)AnimationList::StandingRight;
 }
 
+Player::~Player()
+{
+	printf("Player destructor !\n");
+	items.clear();
+}
+
 void Player::InitFromJSON()
 {
 	JSONParser::Reader jsonReader;
 	jsonReader.ReadFile("json/saveFile.json");
 
-	//Init inventory
-	auto& inventoryValue = jsonReader.GetValueOf("Inventory");
-	for (auto itr = inventoryValue.MemberBegin(); itr != inventoryValue.MemberEnd(); ++itr) {
-		items.insert(std::pair<Maths::IVec2D, std::string>(Maths::IVec2D(itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt()), itr->name.GetString()));
+	//Init consumables
+	if (jsonReader.IsValueAvailable("Consumables")) {
+		auto& consumableValue = jsonReader.GetValueOf("Consumables");
+		for (auto itr = consumableValue.MemberBegin(); itr != consumableValue.MemberEnd(); ++itr) {
+			items.insert(std::pair<std::shared_ptr<Item>, int>(std::make_shared<Consumable>(itr->name.GetString(), itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt()), itr->value.GetArray()[2].GetInt()));
+		}
+	}
+
+	//Init balls
+	if (jsonReader.IsValueAvailable("Balls")) {
+		auto& ballValue = jsonReader.GetValueOf("Balls");
+		for (auto itr = ballValue.MemberBegin(); itr != ballValue.MemberEnd(); ++itr) {
+			items.insert(std::pair<std::shared_ptr<Item>, int>(std::make_shared<Ball>(itr->name.GetString(), itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt()), itr->value.GetArray()[2].GetInt()));
+		}
 	}
 
 	//Init Pokemon
@@ -66,7 +82,17 @@ void Player::SaveJSON()
 
 	//Save Inventory
 	for (auto& entry : items) {
-		jsonWriter.AddObjectMember("Inventory", entry.second, entry.first.x, entry.first.y);
+		
+		std::shared_ptr<Consumable> consumable = std::dynamic_pointer_cast<Consumable, Item>(entry.first);
+		if (consumable != nullptr) {
+			jsonWriter.AddObjectMember("Consumables", consumable->GetName(), consumable->GetID(), consumable->GetBonusValue(), entry.second);
+		}
+		else {
+			std::shared_ptr<Ball> ball = std::dynamic_pointer_cast<Ball, Item>(entry.first);
+			if (ball != nullptr) {
+				jsonWriter.AddObjectMember("Balls", ball->GetName(), ball->GetID(), ball->GetProbability(), entry.second);
+			}
+		}
 	}
 
 	//Save PKMN
@@ -168,21 +194,38 @@ void Player::DrawPokemon()
 	}
 }
 
-void Player::TEST_PickUpItem(const std::pair<Maths::IVec2D, std::string>& item)
+void Player::TEST_PickUpItem(std::shared_ptr<Item> item)
 {
-	items.insert(item);
+	auto itr = std::find_if(items.begin(), items.end(), [&](std::pair<std::shared_ptr<Item>, int> i) {return item->GetID() == i.first->GetID(); });
+	if (itr != items.end()) {
+		itr->second++;
+	}
+	else {
+		items.insert(std::pair<std::shared_ptr<Item>, int>(item, 1));
+	}
 }
 
 void Player::TEST_UseItem(int index)
 {
-	auto itr = items.begin();
-	for (int i = 0; i < index; i++) {
-		itr++;
+	auto itr = std::find_if(items.begin(), items.end(), [&](std::pair<std::shared_ptr<Item>, int> item) {return index == item.first->GetID(); });
+	if (itr != items.end()) {
+		std::shared_ptr<Consumable> consumable = std::dynamic_pointer_cast<Consumable, Item>(itr->first);
+		if (consumable != nullptr) {
+			consumable->UseItem(pokemon);
+			if (itr->second > 1) {
+				itr->second--;
+			}
+			else {
+				items.erase(itr);
+			}
+		}
+		else {
+			printf("Can't use that item now!\n");
+		}
 	}
-	items.erase(itr);
 }
 
-std::unordered_map<Maths::IVec2D, std::string, Maths::IVec2D::Hash> Player::GetItemList() const
+std::map<std::shared_ptr<Item>, int> Player::GetItemList() const
 {
 	return items;
 }

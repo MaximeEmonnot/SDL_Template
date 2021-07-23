@@ -40,6 +40,7 @@ private:
 	float time;
 
 	bool bIsChoosingAbility = false;
+	bool bIsChoosingBall = false;
 	bool bIsFighting = false;
 	bool bIsFleeing = false;
 	bool bPlayerIsAttacking = false;

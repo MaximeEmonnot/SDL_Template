@@ -5,6 +5,9 @@
 #include "Graphics.h"
 #include "Player.h"
 
+#include "Consumable.h"
+#include "Ball.h"
+
 class Grid : public CoreSystem::SingletonMaker<Grid> {
 private:
 	friend class ExplorationScene;
@@ -69,11 +72,12 @@ private:
 	int currentPlayerXPos;
 	int currentPlayerYPos;
 
-	int xOffset = 0;
-	int yOffset = 0;
+	long long xOffset = 0;
+	long long yOffset = 0;
 	
 	int generationSeed;
 	std::vector<Tile> tiles;
 
-	std::unordered_map<Maths::IVec2D, std::string, Maths::IVec2D::Hash> items;
+	std::vector<std::shared_ptr<Item>> itemList;
+	std::unordered_map<Maths::IVec2D, std::shared_ptr<Item>, Maths::IVec2D::Hash> items;
 };

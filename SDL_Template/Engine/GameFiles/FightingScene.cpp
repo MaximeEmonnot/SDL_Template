@@ -72,6 +72,9 @@ void FightingScene::Update()
 				fleeTimer.ResetTimer(2.0f);
 				bIsFleeing = true;
 				break;
+			case 2:
+				bIsChoosingBall = true;
+				break;
 			default:
 				break;
 			}

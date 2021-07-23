@@ -1,0 +1,18 @@
+{
+"Consumables" : {
+  "Potion" : [15, 20],
+  "Super Potion" : [16, 50],
+  "Hyper Potion" : [17, 200],
+  "Potion Max" : [18, 500],
+  "Attack+" : [19, 3],
+  "Defense+" : [20, 3],
+  "HP+" : [21, 3],
+  "Super Candy" : [22, 1]
+},
+"Balls" : {
+ "Pokeball" : [1, 15],
+ "Superball" : [2, 30],
+ "Hyperball" : [3, 50],
+ "Masterball" : [4, 100]
+}
+}

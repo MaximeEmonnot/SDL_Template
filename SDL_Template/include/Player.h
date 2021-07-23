@@ -3,6 +3,11 @@
 #include "Keyboard.h"
 #include "Pokemon.h"
 
+#include "Consumable.h"
+#include "Ball.h"
+#include <map>
+
+
 class Player : public CoreSystem::SingletonMaker<Player>, public Character {
 private:
 	friend class ExplorationScene;
@@ -19,6 +24,7 @@ private:
 	};
 public:
 	Player(Maths::IRect rect, const std::string& animFile);
+	~Player() override;
 
 	void InitFromJSON();
 	void SaveJSON();
@@ -32,10 +38,10 @@ public:
 
 	void DrawPokemon();
 
-	void TEST_PickUpItem(const std::pair<Maths::IVec2D, std::string>& item);
+	void TEST_PickUpItem(std::shared_ptr<Item> item);
 	void TEST_UseItem(int index);
 
-	std::unordered_map<Maths::IVec2D, std::string, Maths::IVec2D::Hash> GetItemList() const;
+	std::map<std::shared_ptr<Item>, int> GetItemList() const;
 
 public:
 	bool TEST_bInitFromJSON = false;
@@ -45,7 +51,7 @@ private:
 
 	Maths::IVec2D worldPosition;
 
-	std::unordered_map<Maths::IVec2D, std::string, Maths::IVec2D::Hash> items;
+	std::map<std::shared_ptr<Item>, int> items;
 	std::shared_ptr<CoreSystem::Keyboard> pKbd;
 	Maths::IVec2D velocity;
 	Maths::IVec2D lookingDirection;

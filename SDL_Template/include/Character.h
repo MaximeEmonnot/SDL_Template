@@ -5,6 +5,7 @@ class Character
 {
 public:
 	Character(Maths::IRect rect);
+	virtual ~Character() = default;
 
 	void					Draw();
 	void					Update(float dt);

@@ -24,7 +24,12 @@ public:
 
 	void Attack(Pokemon& enemy);
 
-	void Heal();
+	void Heal(int value);
+
+	void BoostAttack(int value);
+	void BoostDefense(int value);
+	void BoostHP(int value);
+	void BoostLVL(int value);
 
 	int GetHP() const;
 	bool IsDead() const;
@@ -45,4 +50,10 @@ private:
 	int def;
 	int lvl;
 	int id;
+
+	int currentMaxHP;
+	const int maxHP = 999;
+	const int maxAtt = 999;
+	const int maxDef = 999;
+	const int maxLvl = 100;
 };

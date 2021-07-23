@@ -25,13 +25,16 @@
     <ClCompile Include="Engine\CoreSystem\ThreadPool.cpp" />
     <ClCompile Include="Engine\CoreSystem\Timer.cpp" />
     <ClCompile Include="Engine\CoreSystem\Window.cpp" />
+    <ClCompile Include="Engine\GameFiles\Ball.cpp" />
     <ClCompile Include="Engine\GameFiles\BasicMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\BottomMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\Button.cpp" />
     <ClCompile Include="Engine\GameFiles\ChoosingScene.cpp" />
+    <ClCompile Include="Engine\GameFiles\Consumable.cpp" />
     <ClCompile Include="Engine\GameFiles\ExplorationScene.cpp" />
     <ClCompile Include="Engine\GameFiles\FightingScene.cpp" />
     <ClCompile Include="Engine\GameFiles\Grid.cpp" />
+    <ClCompile Include="Engine\GameFiles\Item.cpp" />
     <ClCompile Include="Engine\GameFiles\ItemInventory.cpp" />
     <ClCompile Include="Engine\GameFiles\MenuListDecorator.cpp" />
     <ClCompile Include="Engine\GameFiles\LeftMenu.cpp" />
@@ -59,12 +62,14 @@
   <ItemGroup>
     <ClInclude Include="include\AMenu.h" />
     <ClInclude Include="include\Animation.h" />
+    <ClInclude Include="include\Ball.h" />
     <ClInclude Include="include\BasicMenu.h" />
     <ClInclude Include="include\BottomMenu.h" />
     <ClInclude Include="include\Button.h" />
     <ClInclude Include="include\Character.h" />
     <ClInclude Include="include\ChoosingScene.h" />
     <ClInclude Include="include\Circle.h" />
+    <ClInclude Include="include\Consumable.h" />
     <ClInclude Include="include\DColors.h" />
     <ClInclude Include="include\Effect.h" />
     <ClInclude Include="include\ExplorationScene.h" />
@@ -73,6 +78,7 @@
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\Graphics.h" />
     <ClInclude Include="include\Grid.h" />
+    <ClInclude Include="include\Item.h" />
     <ClInclude Include="include\ItemInventory.h" />
     <ClInclude Include="include\JSONParser.h" />
     <ClInclude Include="include\Keyboard.h" />

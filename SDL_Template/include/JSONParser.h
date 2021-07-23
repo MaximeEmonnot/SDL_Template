@@ -10,6 +10,7 @@ namespace JSONParser {
 	class Reader {
 	public:
 		void ReadFile(const std::string& filePath);
+		bool IsValueAvailable(const std::string& name);
 		rapidjson::Value& GetValueOf(const std::string& name);
 	private:
 		rapidjson::Document doc;

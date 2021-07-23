@@ -7,6 +7,8 @@
 #include "ItemInventory.h"
 #include "BasicMenu.h"
 
+#include "SoundSystem.h"
+
 class ExplorationScene : public Scene
 {
 public:
@@ -23,10 +25,10 @@ private:
 private:
 	GraphicsEngine::Font font = GraphicsEngine::Font("ttf/arcadeClassic.TTF", 16);
 
-	size_t lastPlayerItemSize = 0;
-
 	bool bIsShowingMenu = false;
 	bool bIsShowingItemInventory = false;
+	bool bIsPlayingSong = false;
+	bool bIsNight = false;
 
 	std::unique_ptr<AMenu> menu;
 	std::unique_ptr<AMenu> itemInventoryMenu;
@@ -37,4 +39,5 @@ private:
 	std::shared_ptr<CoreSystem::Mouse> pMouse;
 	std::shared_ptr<CoreSystem::Window> pWnd;
 	std::shared_ptr<CoreSystem::Keyboard> pKbd;
+	std::shared_ptr<SoundEngine::SoundSystem> pSoundSystem;
 };

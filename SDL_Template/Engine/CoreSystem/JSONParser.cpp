@@ -68,6 +68,11 @@ void JSONParser::Reader::ReadFile(const std::string& filePath)
 	file.close();
 }
 
+bool JSONParser::Reader::IsValueAvailable(const std::string& name)
+{
+	return doc.HasMember(name.c_str());
+}
+
 rapidjson::Value& JSONParser::Reader::GetValueOf(const std::string& name)
 {
 	rapidjson::Value& v = doc[name.c_str()];

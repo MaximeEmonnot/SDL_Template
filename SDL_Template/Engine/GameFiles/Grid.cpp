@@ -69,6 +69,19 @@ Grid::Grid()
 	lastPlayerYPos(yOffset + 300)
 {
 	tileSprite.InitSurface("Images/tileSheet.png");
+
+	JSONParser::Reader jsonReader;
+	jsonReader.ReadFile("json/itemList.json");
+
+	auto& consumables = jsonReader.GetValueOf("Consumables");
+	for (auto itr = consumables.MemberBegin(); itr != consumables.MemberEnd(); ++itr) {
+		itemList.emplace_back(std::make_shared<Consumable>(itr->name.GetString(), itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt()));
+	}
+
+	auto& balls = jsonReader.GetValueOf("Balls");
+	for (auto itr = balls.MemberBegin(); itr != balls.MemberEnd(); ++itr) {
+		itemList.emplace_back(std::make_shared<Ball>(itr->name.GetString(), itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt()));
+	}
 }
 
 void Grid::GenerateGrid()
@@ -95,7 +108,62 @@ void Grid::GenerateItems()
 			uint32_t m2 = (tmp >> 32) ^ tmp;
 			if (m2 % 5 < 4) {
 				if (m2 % 250 < 1) {
-					items.insert(std::pair<Maths::IVec2D, std::string>(Maths::IVec2D(i, j), std::string("item" + std::to_string(k))));
+					std::mt19937 rng(std::random_device{}());
+					std::uniform_int_distribution<int> dist(0, 100);
+					if (dist(rng) < 40) {
+						//Consumables
+						if (dist(rng) < 70){
+						// Potion 35%
+						items.insert(std::pair<Maths::IVec2D, std::shared_ptr<Item>>(Maths::IVec2D(i, j), itemList.at(0)));
+						}
+						else if (dist(rng) < 55) {
+						// Super potion 20%
+						items.insert(std::pair<Maths::IVec2D, std::shared_ptr<Item>>(Maths::IVec2D(i, j), itemList.at(1)));
+						}
+						else if (dist(rng) < 70) {
+						// Hyper potion 15%
+						items.insert(std::pair<Maths::IVec2D, std::shared_ptr<Item>>(Maths::IVec2D(i, j), itemList.at(2)));
+						}
+						else if (dist(rng) < 73) {
+						// Potion max 3%
+						items.insert(std::pair<Maths::IVec2D, std::shared_ptr<Item>>(Maths::IVec2D(i, j), itemList.at(3)));
+						}
+						else if (dist(rng) < 83) {
+						// Attack+ 10%
+						items.insert(std::pair<Maths::IVec2D, std::shared_ptr<Item>>(Maths::IVec2D(i, j), itemList.at(4)));
+						}
+						else if (dist(rng) < 93) {
+						// Defense+ 10%
+						items.insert(std::pair<Maths::IVec2D, std::shared_ptr<Item>>(Maths::IVec2D(i, j), itemList.at(5)));
+						}
+						else if (dist(rng) < 98) {
+						// HP+ 5%
+						items.insert(std::pair<Maths::IVec2D, std::shared_ptr<Item>>(Maths::IVec2D(i, j), itemList.at(6)));
+						}
+						else {
+						//Super candy 2%
+						items.insert(std::pair<Maths::IVec2D, std::shared_ptr<Item>>(Maths::IVec2D(i, j), itemList.at(7)));
+						}
+					}
+					else {
+						//Balls
+						if (dist(rng) < 45) {
+						//Pokeball 45%
+						items.insert(std::pair<Maths::IVec2D, std::shared_ptr<Item>>(Maths::IVec2D(i, j), itemList.at(8)));
+						}
+						else if (dist(rng) < 78){
+						//Superball 33%
+						items.insert(std::pair<Maths::IVec2D, std::shared_ptr<Item>>(Maths::IVec2D(i, j), itemList.at(9)));
+						}
+						else if (dist(rng) < 99) {
+						//HyperBall 21%
+						items.insert(std::pair<Maths::IVec2D, std::shared_ptr<Item>>(Maths::IVec2D(i, j), itemList.at(10)));
+						}
+						else {
+						//Masterball 1%
+						items.insert(std::pair<Maths::IVec2D, std::shared_ptr<Item>>(Maths::IVec2D(i, j), itemList.at(11)));
+						}
+					}
 					k++;
 				}
 			}
@@ -157,22 +225,22 @@ void Grid::Update()
 
 		if (pPlayer->GetLookingDirection() == Maths::IVec2D(0, -1) &&
 			upTile != items.end()) {
-			pPlayer->TEST_PickUpItem(std::pair<Maths::IVec2D, std::string>(upTile->first, upTile->second));
+			pPlayer->TEST_PickUpItem(upTile->second);
 			items.erase(upTile);
 		}
 		else if (pPlayer->GetLookingDirection() == Maths::IVec2D(1, 0) &&
 			rightTile != items.end()) {
-			pPlayer->TEST_PickUpItem(std::pair<Maths::IVec2D, std::string>(rightTile->first, rightTile->second));
+			pPlayer->TEST_PickUpItem(rightTile->second);
 			items.erase(rightTile);
 		}
 		else if (pPlayer->GetLookingDirection() == Maths::IVec2D(0, 1) &&
 			downTile != items.end()) {
-			pPlayer->TEST_PickUpItem(std::pair<Maths::IVec2D, std::string>(downTile->first, downTile->second));
+			pPlayer->TEST_PickUpItem(downTile->second);
 			items.erase(downTile);
 		}
 		else if (pPlayer->GetLookingDirection() == Maths::IVec2D(-1, 0) &&
 			leftTile != items.end()) {
-			pPlayer->TEST_PickUpItem(std::pair<Maths::IVec2D, std::string>(leftTile->first, leftTile->second));
+			pPlayer->TEST_PickUpItem(leftTile->second);
 			items.erase(leftTile);
 		}
 	}

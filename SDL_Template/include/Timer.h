@@ -1,6 +1,7 @@
 #pragma once
 #include <chrono>
 #include "SingletonMaker.h"
+#include "Vec2D.h"
 
 namespace CoreSystem {
 	class Timer : public SingletonMaker<Timer>
@@ -9,6 +10,8 @@ namespace CoreSystem {
 		Timer();
 
 		void Update();
+
+		Maths::IVec2D GetCurrentTime();
 
 		//Returns elapsed time since last frame. Can be used in Updates functions. 
 		float DeltaTime();

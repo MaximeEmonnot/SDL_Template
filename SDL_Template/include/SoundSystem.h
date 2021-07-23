@@ -17,6 +17,7 @@ namespace SoundEngine {
 		~SoundSystem();
 
 		void					PlaySound(const std::shared_ptr<ASound>& sound, int loops);
+		void                    StopSounds();
 
 		std::shared_ptr<ASound> ConstructNewSong(const char* path, bool type);
 

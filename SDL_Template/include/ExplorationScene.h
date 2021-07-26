@@ -4,6 +4,7 @@
 #include "Font.h"
 
 #include "TopMenu.h"
+#include "PokemonInventory.h"
 #include "ItemInventory.h"
 #include "BasicMenu.h"
 
@@ -27,11 +28,13 @@ private:
 
 	bool bIsShowingMenu = false;
 	bool bIsShowingItemInventory = false;
+	bool bIsShowingPokemonInventory = false;
 	bool bIsPlayingSong = false;
-	bool bIsNight = false;
+	bool bCurrentDayState = false;
 
 	std::unique_ptr<AMenu> menu;
 	std::unique_ptr<AMenu> itemInventoryMenu;
+	std::unique_ptr<AMenu> pokemonInventoryMenu;
 
 	std::shared_ptr<Grid> pGrid;
 	std::shared_ptr<Player> pPlayer;

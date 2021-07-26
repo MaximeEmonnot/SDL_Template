@@ -4,12 +4,12 @@
 
 class TextBox {
 public:
-	TextBox(const std::string& text, const Maths::IRect& rect);
+	TextBox(GraphicsEngine::Font& font, const Maths::IRect& rect);
 
-	void Draw(GraphicsEngine::Font& font, const GraphicsEngine::Color& textColor, const GraphicsEngine::Color& boxColor);
+	void Draw(const std::string& text, const GraphicsEngine::Color& textColor, const GraphicsEngine::Color& boxColor);
 
 private:
+	GraphicsEngine::Font font;
 	std::shared_ptr<GraphicsEngine::Graphics> pGfx;
 	Maths::IRect rect;
-	std::string text;
 };

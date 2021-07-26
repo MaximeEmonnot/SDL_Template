@@ -2,10 +2,9 @@
 #include "MenuListDecorator.h"
 #include "Player.h"
 
-class PokemonMenu : public MenuListDecorator {
+class PokemonInventory : public MenuListDecorator {
 public:
-	PokemonMenu(std::unique_ptr<AMenu> decoratedMenu);
-
+	PokemonInventory(std::unique_ptr<AMenu> decoratedMenu);
 private:
 	std::shared_ptr<Player> pPlayer;
 };

@@ -1,8 +1,10 @@
 #include "Pokemon.h"
 
-Pokemon::Pokemon(const std::string& spritePath, int id)
+Pokemon::Pokemon(const std::string& spritePath, const std::string& name, int id)
 	:
 	pGfx(GraphicsEngine::Graphics::GetInstance()),
+	name(name),
+	currentMaxHP(20),
 	hp(20),
 	att(5),
 	def(3),
@@ -15,8 +17,10 @@ Pokemon::Pokemon(const std::string& spritePath, int id)
 Pokemon& Pokemon::operator=(const Pokemon& rhs)
 {
 	pGfx = GraphicsEngine::Graphics::GetInstance();
+	name = rhs.name;
 	sprite = rhs.sprite;
 	hp = rhs.hp;
+	currentMaxHP = rhs.currentMaxHP;
 	att = rhs.att;
 	def = rhs.def;
 	lvl = rhs.lvl;
@@ -72,6 +76,28 @@ void Pokemon::BoostHP(int value)
 void Pokemon::BoostLVL(int value)
 {
 	lvl = (lvl + value > maxLvl) ? maxLvl : lvl + value;
+}
+
+std::string Pokemon::GetName() const
+{
+	return name;
+}
+
+bool Pokemon::operator==(const Pokemon& rhs) const
+{
+	return
+		(name == rhs.name) &&
+		(hp == rhs.hp) &&
+		(currentMaxHP == rhs.currentMaxHP) &&
+		(att == rhs.att) &&
+		(def == rhs.def) && 
+		(lvl == rhs.lvl) &&
+		(id == rhs.id);
+}
+
+bool Pokemon::operator!=(const Pokemon& rhs) const
+{
+	return !(*this == rhs);
 }
 
 Pokemon::Ability Pokemon::GetAbility(int index) const

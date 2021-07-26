@@ -3,7 +3,7 @@
 ItemInventory::ItemInventory(std::unique_ptr<AMenu> decoratedMenu)
 	:
 	MenuListDecorator(std::move(decoratedMenu)),
-	pPlayer(Player::GetInstance(Maths::IRect(384, 284, 32, 32), "json/kirby.json"))
+	pPlayer(Player::GetInstance(Maths::IRect(384, 267, 32, 44), "json/player.json"))
 {
 	std::unordered_map<Maths::IVec2D, std::pair<std::string, std::function<void(int&)>>, Maths::IVec2D::Hash> buttonCharacteristics;
 	int i = 0;

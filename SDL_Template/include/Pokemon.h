@@ -15,7 +15,7 @@ private:
 	};
 public:
 	Pokemon() = default;
-	Pokemon(const std::string& spritePath, int id);
+	Pokemon(const std::string& spritePath, const std::string& name, int id);
 
 	Pokemon& operator=(const Pokemon& rhs);
 
@@ -31,10 +31,15 @@ public:
 	void BoostHP(int value);
 	void BoostLVL(int value);
 
+	std::string GetName() const;
+	
 	int GetHP() const;
 	bool IsDead() const;
 
 	Pokemon::Ability GetAbility(int index) const;
+
+	bool operator==(const Pokemon& rhs) const;
+	bool operator!=(const Pokemon& rhs) const;
 
 private:
 	Ability firstAbility = {"First attack", 50, 10, 10};
@@ -45,13 +50,16 @@ private:
 	std::shared_ptr<GraphicsEngine::Graphics> pGfx;
 	GraphicsEngine::Sprite sprite;
 
+
+	std::string name;
+
+	int currentMaxHP;
 	int hp;
 	int	att;
 	int def;
 	int lvl;
 	int id;
 
-	int currentMaxHP;
 	const int maxHP = 999;
 	const int maxAtt = 999;
 	const int maxDef = 999;

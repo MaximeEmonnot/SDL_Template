@@ -5,19 +5,15 @@ ExplorationScene::ExplorationScene()
 	Scene(Scene::SceneType::ExplorationScene),
 	menu(std::make_unique<TopMenu>(std::make_unique<BasicMenu>())),
 	itemInventoryMenu(std::make_unique<ItemInventory>(std::make_unique<BasicMenu>())),
+	pokemonInventoryMenu(std::make_unique<PokemonInventory>(std::make_unique<BasicMenu>())),
 	pGrid(Grid::GetInstance()),
-	pPlayer(Player::GetInstance(Maths::IRect(384, 284, 32, 32), "json/kirby.json")),
+	pPlayer(Player::GetInstance(Maths::IRect(384, 267, 32, 44), "json/player.json")),
 	pTimer(CoreSystem::Timer::GetInstance()),
 	pMouse(CoreSystem::Mouse::GetInstance()),
 	pWnd(CoreSystem::Window::GetInstance()),
 	pKbd(CoreSystem::Keyboard::GetInstance()),
 	pSoundSystem(SoundEngine::SoundSystem::GetInstance())
 {
-	if ((pTimer->GetCurrentTime().x >= 18 && pTimer->GetCurrentTime().y >= 30) ||
-		(pTimer->GetCurrentTime().x >= 19) ||
-		(pTimer->GetCurrentTime().x <= 6 && pTimer->GetCurrentTime().y <= 30)) {
-		bIsNight = true;
-	}
 }
 
 ExplorationScene::~ExplorationScene()
@@ -27,8 +23,9 @@ ExplorationScene::~ExplorationScene()
 
 void ExplorationScene::Update()
 {
+	//Song
 	if (!bIsPlayingSong) {
-		if (bIsNight) {
+		if (pTimer->IsNightTime()) {
 			pSoundSystem->PlaySound(pSoundSystem->ConstructNewSong("music/nightwalk.wav", MUSIC), -1);
 		}
 		else {
@@ -37,20 +34,20 @@ void ExplorationScene::Update()
 		bIsPlayingSong = true;
 	}
 	else {
-		if (((pTimer->GetCurrentTime().x >= 18 && pTimer->GetCurrentTime().y >= 30) || (pTimer->GetCurrentTime().x >= 19) || (pTimer->GetCurrentTime().x < 6 && pTimer->GetCurrentTime().y >= 30)) && !bIsNight) {
-			bIsPlayingSong = false;
-			bIsNight = true;
+		if (bCurrentDayState != pTimer->IsNightTime()) {
 			pSoundSystem->StopSounds();
-		}
-		else if (pTimer->GetCurrentTime().x >= 6 && pTimer->GetCurrentTime().x < 18 && pTimer->GetCurrentTime().y >= 30 && bIsNight) {
+			bCurrentDayState = pTimer->IsNightTime();
 			bIsPlayingSong = false;
-			bIsNight = false;
-			pSoundSystem->StopSounds();
 		}
 	}
 
+	//Update menus
 	itemInventoryMenu = nullptr;
+	pokemonInventoryMenu = nullptr;
 	itemInventoryMenu = std::make_unique<ItemInventory>(std::make_unique<BasicMenu>());
+	pokemonInventoryMenu = std::make_unique<PokemonInventory>(std::make_unique<BasicMenu>());
+
+	//Init from json
 	if (pPlayer->TEST_bInitFromJSON) {
 		pPlayer->TEST_bInitFromJSON = false;
 		InitFromJSON();
@@ -59,7 +56,7 @@ void ExplorationScene::Update()
 	bWillChangeScene = false;
 
 	pPlayer->Update(pTimer->DeltaTime());
-	if (!bIsShowingMenu && !bIsShowingItemInventory) {
+	if (!bIsShowingMenu && !bIsShowingItemInventory && !bIsShowingPokemonInventory) {
 		pPlayer->Move();
 		pGrid->Update();
 	}
@@ -77,6 +74,8 @@ void ExplorationScene::Update()
 				bIsShowingMenu = false;
 				break;
 			case 2:
+				bIsShowingPokemonInventory = true;
+				bIsShowingMenu = false;
 				break;
 			case 3:
 				pPlayer->SaveJSON();
@@ -94,11 +93,18 @@ void ExplorationScene::Update()
 			}
 		}
 		if (bIsShowingItemInventory) {
+				int output = -1;
+				itemInventoryMenu->Update(output, pMouse);
+				if (output != -1) {
+					pPlayer->TEST_UseItem(output);
+					printf("item clicked!\n");
+				}
+			}
+		if (bIsShowingPokemonInventory) {
 			int output = -1;
-			itemInventoryMenu->Update(output, pMouse);
+			pokemonInventoryMenu->Update(output, pMouse);
 			if (output != -1) {
-				pPlayer->TEST_UseItem(output);
-				printf("item clicked!\n");
+				printf("Pokemon clicked!\n");
 			}
 		}
 	}
@@ -118,6 +124,9 @@ void ExplorationScene::Update()
 		if (bIsShowingItemInventory) {
 			bIsShowingItemInventory = false;
 		}
+		else if (bIsShowingPokemonInventory) {
+			bIsShowingPokemonInventory = false;
+		}
 	}
 }
 
@@ -125,13 +134,16 @@ void ExplorationScene::Draw()
 {
 	pGrid->Draw();
 	pPlayer->Draw();
-	pPlayer->DrawPokemon();
+	//pPlayer->DrawPokemon();
 
 	if (bIsShowingMenu) {
 		menu->Draw(font);
 	}
 	if (bIsShowingItemInventory) {
 		itemInventoryMenu->Draw(font);
+	}
+	if (bIsShowingPokemonInventory) {
+		pokemonInventoryMenu->Draw(font);
 	}
 	font.DrawText(Maths::IVec2D(10, 10), (std::string("X     ") + std::to_string(pGrid->GetWorldPosition().x) + "\n" + std::string("Y     ") + std::to_string(pGrid->GetWorldPosition().y)).c_str(), RED);
 }

@@ -13,6 +13,8 @@ namespace CoreSystem {
 
 		Maths::IVec2D GetCurrentTime();
 
+		bool IsNightTime();
+
 		//Returns elapsed time since last frame. Can be used in Updates functions. 
 		float DeltaTime();
 

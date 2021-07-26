@@ -31,12 +31,16 @@ public:
 
 	void Move();
 
-	void SetPokemon(Pokemon& pkmn);
+	void AddPokemon(Pokemon& pkmn);
+	void SetFirstPokemon(Pokemon& pkmn);
 	Pokemon& GetPokemon();
+	std::vector<Pokemon> GetPokemonList() const;
 
 	Maths::IVec2D GetLookingDirection() const;
 
 	void DrawPokemon();
+
+	bool TEST_CapturePokemon(int index, Pokemon& pkmn);
 
 	void TEST_PickUpItem(std::shared_ptr<Item> item);
 	void TEST_UseItem(int index);
@@ -47,7 +51,10 @@ public:
 	bool TEST_bInitFromJSON = false;
 
 private:
-	Pokemon pokemon;
+
+	std::vector<Pokemon>::iterator selectedPokemon;
+
+	std::vector<Pokemon> pokemon;
 
 	Maths::IVec2D worldPosition;
 

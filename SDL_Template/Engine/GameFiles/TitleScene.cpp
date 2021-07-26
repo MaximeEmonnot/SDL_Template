@@ -7,7 +7,7 @@ TitleScene::TitleScene()
 	pMouse(CoreSystem::Mouse::GetInstance()),
 	menu(std::make_unique<MiddleMenu>(std::make_unique<BasicMenu>())),
 	title("Game title text", Maths::IRect(150, 25, 200, 100)),
-	pPlayer(Player::GetInstance(Maths::IRect(384, 284, 32, 32), "json/kirby.json"))
+	pPlayer(Player::GetInstance(Maths::IRect(384, 267, 32, 44), "json/player.json"))
 {
 }
 

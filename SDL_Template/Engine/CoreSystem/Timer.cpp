@@ -25,6 +25,11 @@ Maths::IVec2D CoreSystem::Timer::GetCurrentTime()
 	return Maths::IVec2D(ltm.tm_hour, ltm.tm_min);
 }
 
+bool CoreSystem::Timer::IsNightTime()
+{
+	return (GetCurrentTime().x >= 18 && GetCurrentTime().y >= 30) || (GetCurrentTime().x > 18) || (GetCurrentTime().x <= 6 && GetCurrentTime().y < 30);
+}
+
 float CoreSystem::Timer::DeltaTime()
 {
 	return deltaTime;

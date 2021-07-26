@@ -63,7 +63,7 @@ Grid::Grid()
 	:
 	pGfx(GraphicsEngine::Graphics::GetInstance()),
 	pKbd(CoreSystem::Keyboard::GetInstance()),
-	pPlayer(Player::GetInstance(Maths::IRect(384, 284, 32, 32), "json/kirby.json")),
+	pPlayer(Player::GetInstance(Maths::IRect(384, 267, 32, 44), "json/player.json")),
 	generationSeed(std::random_device{}()),
 	lastPlayerXPos(xOffset + 400),
 	lastPlayerYPos(yOffset + 300)
@@ -96,9 +96,8 @@ void Grid::GenerateGrid()
 
 void Grid::GenerateItems()
 {
-	int k = 0;
-	for (size_t i = 0; i < 1000; i++) {
-		for (size_t j = 0; j < 1000; j++) {
+	for (int i = -1000; i < 1000; i++) {
+		for (int j = -1000; j < 1000; j++) {
 			uint32_t nLehmer = (j & 0xFFFF) << 12 | (i & 0xFFFF);
 			nLehmer += 0xe120fc15;
 			uint64_t tmp;
@@ -106,13 +105,13 @@ void Grid::GenerateItems()
 			uint32_t m1 = (tmp >> 32) ^ tmp;
 			tmp = (uint64_t)m1 * 0x12fad5c9;
 			uint32_t m2 = (tmp >> 32) ^ tmp;
-			if (m2 % 5 < 4) {
+			if (m2 % 10 < 8) {
 				if (m2 % 250 < 1) {
 					std::mt19937 rng(std::random_device{}());
 					std::uniform_int_distribution<int> dist(0, 100);
 					if (dist(rng) < 40) {
 						//Consumables
-						if (dist(rng) < 70){
+						if (dist(rng) < 35){
 						// Potion 35%
 						items.insert(std::pair<Maths::IVec2D, std::shared_ptr<Item>>(Maths::IVec2D(i, j), itemList.at(0)));
 						}
@@ -164,7 +163,6 @@ void Grid::GenerateItems()
 						items.insert(std::pair<Maths::IVec2D, std::shared_ptr<Item>>(Maths::IVec2D(i, j), itemList.at(11)));
 						}
 					}
-					k++;
 				}
 			}
 		}
@@ -191,29 +189,29 @@ void Grid::Update()
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_UP)) {
 		if (!NextTileIsRocks(Maths::IVec2D(400, 282)) &&
 			items.find(Maths::IVec2D( (xOffset + 400) / tileWidth, (yOffset + 282) / tileHeight)) == items.end()) {
-			yOffset -= 4;
-			currentPlayerYPos = lastPlayerYPos - 4;
+			yOffset -= 2;
+			currentPlayerYPos = lastPlayerYPos - 2;
 		}
 	}
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_RIGHT)) {
 		if (!NextTileIsRocks(Maths::IVec2D(418, 300)) &&
 			items.find(Maths::IVec2D((xOffset + 418) / tileWidth, (yOffset + 300) / tileHeight)) == items.end()) {
-			xOffset += 4;
-			currentPlayerXPos = lastPlayerXPos + 4;
+			xOffset += 2;
+			currentPlayerXPos = lastPlayerXPos + 2;
 		}
 	}
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_DOWN)) {
 		if (!NextTileIsRocks(Maths::IVec2D(400, 318)) &&
 			items.find(Maths::IVec2D((xOffset + 400) / tileWidth, (yOffset + 318) / tileHeight)) == items.end()) {
-			yOffset += 4;
-			currentPlayerYPos = lastPlayerYPos + 4;
+			yOffset += 2;
+			currentPlayerYPos = lastPlayerYPos + 2;
 		}
 	}
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_LEFT)) {
 		if (!NextTileIsRocks(Maths::IVec2D(382, 300)) &&
 			items.find(Maths::IVec2D((xOffset + 382) / tileWidth, (yOffset + 300) / tileHeight)) == items.end()) {
-			xOffset -= 4;
-			currentPlayerXPos = lastPlayerXPos - 4;
+			xOffset -= 2;
+			currentPlayerXPos = lastPlayerXPos - 2;
 		}
 	}
 
@@ -265,6 +263,7 @@ void Grid::Draw()
 		default:
 			break;
 		}
+		if (pTimer->IsNightTime()) tileSprite.BlendColor(GraphicsEngine::Color(64, 64, 128, 128));
 		pGfx->DrawSprite(Maths::IRect(tile.GetWorldPosition().x * tileWidth - xOffset, tile.GetWorldPosition().y * tileHeight - yOffset, tileWidth, tileHeight), srcRect, tileSprite);
 	}
 

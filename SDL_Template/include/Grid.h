@@ -60,6 +60,7 @@ private:
 	GraphicsEngine::Sprite tileSprite;
 	std::shared_ptr<GraphicsEngine::Graphics> pGfx;
 	std::shared_ptr<CoreSystem::Keyboard> pKbd;
+	std::shared_ptr<CoreSystem::Timer> pTimer;
 	std::shared_ptr<Player> pPlayer;
 
 	const int tileWidth = 32;

@@ -183,6 +183,12 @@
     <ClCompile Include="Engine\GameFiles\Ball.cpp">
       <Filter>Fichiers sources\GameFiles</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GameFiles\ItemTypeMenu.cpp">
+      <Filter>Fichiers sources\GameFiles\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameFiles\PokemonInventory.cpp">
+      <Filter>Fichiers sources\GameFiles\Menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\JSONParser.h">
@@ -322,6 +328,15 @@
     </ClInclude>
     <ClInclude Include="include\Ball.h">
       <Filter>Fichiers d%27en-tête\GameFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ItemTypeMenu.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ItemMenu.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PokemonInventory.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

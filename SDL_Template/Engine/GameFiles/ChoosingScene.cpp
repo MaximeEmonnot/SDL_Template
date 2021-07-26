@@ -3,12 +3,12 @@
 ChoosingScene::ChoosingScene()
 	:
 	Scene(Scene::SceneType::ChoosingScene),
-	pPlayer(Player::GetInstance(Maths::IRect(384, 284, 32, 32), "json/kirby.json")),
+	pPlayer(Player::GetInstance(Maths::IRect(384, 267, 32, 44), "json/player.json")),
 	pMouse(CoreSystem::Mouse::GetInstance()),
 	choiceMenu(std::make_unique<BottomMenu>(std::make_unique<BasicMenu>())),
-	choice0("Images/bulbasaur.png", 1),
-	choice1("Images/charmander.png", 2),
-	choice2("Images/squirttle.png", 3)
+	choice0("Images/bulbasaur.png", "Bulbasaur", 1),
+	choice1("Images/charmander.png", "Charmander", 2),
+	choice2("Images/squirttle.png", "Squirttle", 3)
 {
 }
 
@@ -23,7 +23,7 @@ void ChoosingScene::Update()
 	choiceMenu->Update(output, pMouse);
 
 	if (output != -1) {
-		pPlayer->SetPokemon(GetChoice(output));
+		pPlayer->AddPokemon(GetChoice(output));
 		bWillChangeScene = true;
 		newScene = Scene::SceneType::ExplorationScene;
 	}

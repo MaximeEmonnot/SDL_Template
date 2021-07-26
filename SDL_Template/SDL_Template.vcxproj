@@ -36,11 +36,13 @@
     <ClCompile Include="Engine\GameFiles\Grid.cpp" />
     <ClCompile Include="Engine\GameFiles\Item.cpp" />
     <ClCompile Include="Engine\GameFiles\ItemInventory.cpp" />
+    <ClCompile Include="Engine\GameFiles\ItemTypeMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\MenuListDecorator.cpp" />
     <ClCompile Include="Engine\GameFiles\LeftMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\MiddleMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\Player.cpp" />
     <ClCompile Include="Engine\GameFiles\Pokemon.cpp" />
+    <ClCompile Include="Engine\GameFiles\PokemonInventory.cpp" />
     <ClCompile Include="Engine\GameFiles\PokemonMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\Scene.cpp" />
     <ClCompile Include="Engine\GameFiles\TextBox.cpp" />
@@ -80,6 +82,8 @@
     <ClInclude Include="include\Grid.h" />
     <ClInclude Include="include\Item.h" />
     <ClInclude Include="include\ItemInventory.h" />
+    <ClInclude Include="include\ItemMenu.h" />
+    <ClInclude Include="include\ItemTypeMenu.h" />
     <ClInclude Include="include\JSONParser.h" />
     <ClInclude Include="include\Keyboard.h" />
     <ClInclude Include="include\MenuListDecorator.h" />
@@ -88,6 +92,7 @@
     <ClInclude Include="include\Music.h" />
     <ClInclude Include="include\Player.h" />
     <ClInclude Include="include\Pokemon.h" />
+    <ClInclude Include="include\PokemonInventory.h" />
     <ClInclude Include="include\PokemonMenu.h" />
     <ClInclude Include="include\Rect.h" />
     <ClInclude Include="include\RightMenu.h" />

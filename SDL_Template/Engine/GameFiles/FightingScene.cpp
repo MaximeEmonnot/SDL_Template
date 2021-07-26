@@ -15,12 +15,7 @@ FightingScene::FightingScene()
 	enemyPokemon(CreateRandomPokemon()),
 	enemyPkmnRect(500, 50, 128, 128),
 	playerPkmnRect(200, 200, 128, 128),
-	attackPlayer("You attacked the enemy pokemon!", Maths::IRect(25, 500, 200, 75)),
-	healPlayer("You healed your pokemon!", Maths::IRect(25, 500, 200, 75)),
-	capturePlayer("You threw a pokeball!", Maths::IRect(25, 500, 200, 75)),
-	attackEnemy("The enemy pokemon attacked you!", Maths::IRect(25, 500, 200, 75)),
-	fleePlayer("You are fleeing!", Maths::IRect(25, 500, 200, 75)),
-	successfulCatch("You catched the enemy Pokemon!", Maths::IRect(25, 500, 200, 75))
+	text(font, Maths::IRect(25, 500, 200, 75))
 {
 }
 
@@ -182,22 +177,22 @@ void FightingScene::Draw()
 	}
 
 	if (bPlayerIsAttacking) {
-		attackPlayer.Draw(font, WHITE, WHITE);
+		text.Draw("You attacked the enemy Pokemon!", WHITE, WHITE);
 	}
 	if (bPlayerIsHealing) {
-		healPlayer.Draw(font, WHITE, WHITE);
+		text.Draw("You healed your pokemon!", WHITE, WHITE);
 	}
 	if (bPlayerIsCatching) {
-		capturePlayer.Draw(font, WHITE, WHITE);
+		text.Draw("You threw a pokeball!", WHITE, WHITE);
 	}
 	if (bEnemyIsCatched) {
-		successfulCatch.Draw(font, WHITE, WHITE);
+		text.Draw("You catched the enemy Pokemon!", WHITE, WHITE);
 	}
 	if (bEnemyIsAttacking) {
-		attackEnemy.Draw(font, WHITE, WHITE);
+		text.Draw("The enemy pokemon attacked you!", WHITE, WHITE);
 	}
 	if (bIsFleeing) {
-		fleePlayer.Draw(font, WHITE, WHITE);
+		text.Draw("You are fleeing!", WHITE, WHITE);
 	}
 }
 

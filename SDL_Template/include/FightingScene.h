@@ -70,10 +70,5 @@ private:
 	std::unique_ptr<AMenu> ballMenu;
 	std::unique_ptr<AMenu> pokemonMenu;
 
-	TextBox attackPlayer;
-	TextBox healPlayer;
-	TextBox capturePlayer;
-	TextBox attackEnemy;
-	TextBox fleePlayer;
-	TextBox successfulCatch;
+	TextBox text;
 };

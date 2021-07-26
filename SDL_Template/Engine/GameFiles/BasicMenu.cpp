@@ -8,6 +8,6 @@ void BasicMenu::Update(int& output, std::shared_ptr<CoreSystem::Mouse> mouse, Co
 {
 }
 
-void BasicMenu::Draw(GraphicsEngine::Font& font)
+void BasicMenu::Draw()
 {
 }

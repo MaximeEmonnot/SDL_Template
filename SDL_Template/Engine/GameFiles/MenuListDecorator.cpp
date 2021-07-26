@@ -25,15 +25,15 @@ void MenuListDecorator::Update(int& output, std::shared_ptr<CoreSystem::Mouse> m
 	}
 }
 
-void MenuListDecorator::Draw(GraphicsEngine::Font& font)
+void MenuListDecorator::Draw()
 {
-	pDecoratedMenu->Draw(font);
+	pDecoratedMenu->Draw();
 	for (auto& button : buttonList) {
 		if (button.GetState()) {
-			button.Draw(GREEN, font);
+			button.Draw(GREEN);
 		}
 		else {
-			button.Draw(GRAY, font);
+			button.Draw(GRAY);
 		}
 	}
 }

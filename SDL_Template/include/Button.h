@@ -14,7 +14,7 @@ public:
 
 	void ComputeFunction(int& output) const;
 
-	void Draw(GraphicsEngine::Color buttonColor, GraphicsEngine::Font& font);
+	void Draw(GraphicsEngine::Color buttonColor);
 	
 	bool GetState();
 
@@ -23,5 +23,6 @@ private:
 	Maths::IRect rect;
 	std::string text;
 	std::function<void(int&)> function;
+	std::shared_ptr<GraphicsEngine::Font> pFont;
 	std::shared_ptr<GraphicsEngine::Graphics> pGfx;
 };

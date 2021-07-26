@@ -30,8 +30,6 @@ private:
 	void Flee();
 
 private:
-	GraphicsEngine::Font font = GraphicsEngine::Font("ttf/arcadeClassic.TTF", 16);
-
 	std::shared_ptr<Player> pPlayer;
 	std::shared_ptr <CoreSystem::Mouse> pMouse;
 
@@ -71,4 +69,5 @@ private:
 	std::unique_ptr<AMenu> pokemonMenu;
 
 	TextBox text;
+
 };

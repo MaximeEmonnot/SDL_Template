@@ -2,9 +2,19 @@
 
 Scene::Scene(Scene::SceneType type)
 	:
+	pFont(GraphicsEngine::Font::GetInstance("ttf/arcadeClassic.TTF", 16)),
 	pGfx(GraphicsEngine::Graphics::GetInstance()),
 	currentScene(type)
 {
+}
+
+void Scene::Draw()
+{
+}
+
+Scene::~Scene()
+{
+	pFont->Kill();
 }
 
 bool Scene::ChangeScene() const

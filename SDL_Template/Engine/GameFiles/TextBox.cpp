@@ -1,8 +1,8 @@
 #include "TextBox.h"
 
-TextBox::TextBox(GraphicsEngine::Font& font, const Maths::IRect& rect)
+TextBox::TextBox(const Maths::IRect& rect)
 	:
-	font(font),
+	pFont(GraphicsEngine::Font::GetInstance("ttf/arcadeClassic.TTF", 16)),
 	pGfx(GraphicsEngine::Graphics::GetInstance()),
 	rect(rect)
 {
@@ -10,6 +10,6 @@ TextBox::TextBox(GraphicsEngine::Font& font, const Maths::IRect& rect)
 
 void TextBox::Draw(const std::string& text, const GraphicsEngine::Color& textColor, const GraphicsEngine::Color& boxColor)
 {
-	font.DrawText(rect.GetVec2DFrom(), text.c_str(), textColor);
+	pFont->DrawText(rect.GetVec2DFrom(), text.c_str(), textColor);
 	pGfx->DrawRect(rect, boxColor);
 }

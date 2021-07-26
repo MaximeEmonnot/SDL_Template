@@ -24,8 +24,6 @@ private:
 	void InitFromJSON();
 
 private:
-	GraphicsEngine::Font font = GraphicsEngine::Font("ttf/arcadeClassic.TTF", 16);
-
 	bool bIsShowingMenu = false;
 	bool bIsShowingItemInventory = false;
 	bool bIsShowingPokemonInventory = false;

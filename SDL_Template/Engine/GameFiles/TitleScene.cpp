@@ -6,7 +6,7 @@ TitleScene::TitleScene()
 	pWnd(CoreSystem::Window::GetInstance()),
 	pMouse(CoreSystem::Mouse::GetInstance()),
 	menu(std::make_unique<MiddleMenu>(std::make_unique<BasicMenu>())),
-	title(font, Maths::IRect(150, 25, 200, 100)),
+	title(Maths::IRect(150, 25, 200, 100)),
 	pPlayer(Player::GetInstance(Maths::IRect(384, 267, 32, 44), "json/player.json"))
 {
 }
@@ -51,6 +51,6 @@ void TitleScene::Update()
 
 void TitleScene::Draw()
 {
-	menu->Draw(font);
+	menu->Draw();
 	title.Draw("Game title text", WHITE, GRAY);
 }

@@ -19,8 +19,6 @@ private:
 	Pokemon& GetChoice(int choice);
 
 private:
-	GraphicsEngine::Font font = GraphicsEngine::Font("ttf/arcadeClassic.TTF", 16);
-
 	std::shared_ptr<Player> pPlayer;
 	std::shared_ptr <CoreSystem::Mouse> pMouse; 
 	Pokemon choice0;

@@ -34,7 +34,7 @@ void ChoosingScene::Draw()
 	choice0.DrawFrontSprite(Maths::IRect(150, 250, 128, 128));
 	choice1.DrawFrontSprite(Maths::IRect(300, 250, 128, 128));
 	choice2.DrawFrontSprite(Maths::IRect(450, 250, 128, 128));
-	choiceMenu->Draw(font);
+	choiceMenu->Draw();
 }
 
 Pokemon& ChoosingScene::GetChoice(int choice)

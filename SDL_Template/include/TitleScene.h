@@ -14,7 +14,6 @@ public:
 	void Draw() override;
 	
 private:
-	GraphicsEngine::Font font = GraphicsEngine::Font("ttf/arcadeClassic.TTF", 16);
 	std::shared_ptr<CoreSystem::Window> pWnd;
 	std::shared_ptr<CoreSystem::Mouse> pMouse;
 	std::shared_ptr<Player> pPlayer;

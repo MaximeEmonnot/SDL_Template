@@ -1,5 +1,6 @@
 #pragma once
 #include "Player.h"
+#include "Font.h"
 
 class Scene {
 public:
@@ -12,6 +13,7 @@ public:
 	};
 public:
 	Scene(Scene::SceneType type);
+	~Scene();
 
 	virtual void Update() = 0;
 	virtual void Draw() = 0;
@@ -21,6 +23,7 @@ public:
 	SceneType GetNextScene() const;
 
 protected:
+	std::shared_ptr<GraphicsEngine::Font> pFont;
 	std::shared_ptr<GraphicsEngine::Graphics> pGfx;
 	SceneType currentScene;
 	SceneType newScene = SceneType::Null;

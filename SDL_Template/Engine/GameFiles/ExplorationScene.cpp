@@ -137,15 +137,15 @@ void ExplorationScene::Draw()
 	//pPlayer->DrawPokemon();
 
 	if (bIsShowingMenu) {
-		menu->Draw(font);
+		menu->Draw();
 	}
 	if (bIsShowingItemInventory) {
-		itemInventoryMenu->Draw(font);
+		itemInventoryMenu->Draw();
 	}
 	if (bIsShowingPokemonInventory) {
-		pokemonInventoryMenu->Draw(font);
+		pokemonInventoryMenu->Draw();
 	}
-	font.DrawText(Maths::IVec2D(10, 10), (std::string("X     ") + std::to_string(pGrid->GetWorldPosition().x) + "\n" + std::string("Y     ") + std::to_string(pGrid->GetWorldPosition().y)).c_str(), RED);
+	pFont->DrawText(Maths::IVec2D(10, 10), (std::string("X     ") + std::to_string(pGrid->GetWorldPosition().x) + "\n" + std::string("Y     ") + std::to_string(pGrid->GetWorldPosition().y)).c_str(), RED);
 }
 
 void ExplorationScene::SaveToJSON()

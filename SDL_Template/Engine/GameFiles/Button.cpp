@@ -6,13 +6,13 @@ Button::Button(Maths::IVec2D pos, std::string text, std::function<void(int&)> fu
 	rect(pos, (int)text.size() * 8, 16),
 	text(text),
 	function(func),
+	pFont(GraphicsEngine::Font::GetInstance("ttf/arcadeClassic.TTF", 16)),
 	pGfx(GraphicsEngine::Graphics::GetInstance())
 {
 }
 
 Button::~Button()
 {
-	pGfx = nullptr;
 }
 
 bool Button::OnClick(Maths::IVec2D mousePos)
@@ -34,10 +34,10 @@ void Button::ComputeFunction(int& output) const
 	function(output);
 }
 
-void Button::Draw(GraphicsEngine::Color buttonColor, GraphicsEngine::Font& font)
+void Button::Draw(GraphicsEngine::Color buttonColor)
 {
 	pGfx->DrawFilledRect(rect, buttonColor);
-	font.DrawText(rect.GetVec2DFrom(), text.c_str(), BLACK);
+	pFont->DrawText(rect.GetVec2DFrom(), text.c_str(), BLACK);
 }
 
 bool Button::GetState()

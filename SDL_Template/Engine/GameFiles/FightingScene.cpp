@@ -15,7 +15,7 @@ FightingScene::FightingScene()
 	enemyPokemon(CreateRandomPokemon()),
 	enemyPkmnRect(500, 50, 128, 128),
 	playerPkmnRect(200, 200, 128, 128),
-	text(font, Maths::IRect(25, 500, 200, 75))
+	text(Maths::IRect(25, 500, 200, 75))
 {
 }
 
@@ -169,11 +169,11 @@ void FightingScene::Draw()
 	if (!bIsCatching && !bEnemyIsCatched) enemyPokemon->DrawFrontSprite(enemyPkmnRect);
 
 	if (!bIsFighting && !bIsHealing && !bEnemyIsAttacking && !bIsCatching && !bEnemyIsCatched) {
-		if (bIsChoosingAbility) pokemonMenu->Draw(font);
-		else if (bIsChoosingItemType) itemTypeMenu->Draw(font);
-		else if (bIsChoosingItem) consumableMenu->Draw(font);
-		else if (bIsChoosingBall) ballMenu->Draw(font);
-		else actionMenu->Draw(font);
+		if (bIsChoosingAbility) pokemonMenu->Draw();
+		else if (bIsChoosingItemType) itemTypeMenu->Draw();
+		else if (bIsChoosingItem) consumableMenu->Draw();
+		else if (bIsChoosingBall) ballMenu->Draw();
+		else actionMenu->Draw();
 	}
 
 	if (bPlayerIsAttacking) {

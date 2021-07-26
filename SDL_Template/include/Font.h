@@ -3,7 +3,7 @@
 #include "Graphics.h"
 
 namespace GraphicsEngine {
-	class Font
+	class Font : public CoreSystem::SingletonMaker<Font>
 	{
 	public:
 		Font(const char* path, int size);

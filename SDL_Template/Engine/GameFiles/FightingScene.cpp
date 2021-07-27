@@ -41,158 +41,172 @@ void FightingScene::Update()
 		newScene = Scene::SceneType::ExplorationScene;
 		bWillChangeScene = false;
 	}
-	if (bIsFighting) {
+
+	int output = -1;
+
+	switch (state) {
+	case FightingState::PlayerFighting:
 		Fight();
-	}
-	else if (bIsHealing) {
+		break;
+	case FightingState::PlayerHealing:
 		Heal();
-	}
-	else if (bIsCatching) {
+		break;
+	case FightingState::PlayerCatching:
 		Capture();
-	}
-	else if (bEnemyIsAttacking) {
+		break;
+	case FightingState::PlayerFleeing:
+		fleeTimer.Update();
+		if (fleeTimer.IsTimerDown()) {
+			Flee();
+		}
+		break;
+	case FightingState::EnemyAttacking:
 		attackTimer.Update();
 		PlayAnimation(playerPkmnRect);
 		if (attackTimer.IsTimerDown()) {
 			playerPkmnRect.rect.x = 200;
-			bEnemyIsAttacking = false;
+			state = FightingState::ChoosingAction;
 		}
-	}
-	else if (bEnemyIsCatched) {
-		fleeTimer.Update();
-		if (fleeTimer.IsTimerDown()) {
-			bWillChangeScene = true;
-			newScene = Scene::SceneType::ExplorationScene;
-			bEnemyIsCatched = false;
-		}
-	}
-	else if (bIsFleeing) {
+		break;
+	case FightingState::EnemyCatched:
 		fleeTimer.Update();
 		if (fleeTimer.IsTimerDown()) {
 			Flee();
 		}
+		break;
+	case FightingState::ChoosingAction:
+		actionMenu->Update(output, pMouse);
+		switch (output)
+		{
+		case 0:
+			state = FightingState::ChoosingAbility;
+			break;
+		case 1:
+			state = FightingState::ChoosingItemType;
+			break;
+		case 2:
+			fleeTimer.ResetTimer(2.0f);
+			state = FightingState::PlayerFleeing;
+			break;
+		default:
+			break;
+		}
+		break;
+	case FightingState::ChoosingAbility:
+		pokemonMenu->Update(output, pMouse);
+		if (output != -1) {
+			//pPlayer->GetPokemon().SelectedAttack(output) OR defined in PokemonMenu;
+			if (output == 30) {
+				state = FightingState::ChoosingAction;
+			}
+			else {
+				attackTimer.ResetTimer(3.0f);
+				pPlayer->GetPokemon().Attack(*enemyPokemon);
+				state = FightingState::PlayerFighting;
+			}
+		}
+		break;
+	case FightingState::ChoosingBall:
+		ballMenu->Update(output, pMouse);
+		if (output != -1) {
+			if (output == 30) {
+				state = FightingState::ChoosingItemType;
+			}
+			else {
+				chosenBall = output;
+				attackTimer.ResetTimer(3.0f);
+				state = FightingState::PlayerCatching;
+			}
+		}
+		break;
+	case FightingState::ChoosingConsumable:
+		consumableMenu->Update(output, pMouse);
+		if (output != -1) {
+			if (output == 30) {
+				state = FightingState::ChoosingItemType;
+			}
+			else {
+				attackTimer.ResetTimer(3.0f);
+				pPlayer->TEST_UseItem(output);
+				state = FightingState::PlayerHealing;
+			}
+		}
+		break;
+	case FightingState::ChoosingItemType:
+		itemTypeMenu->Update(output, pMouse);
+		switch (output) {
+		case 0:
+			state = FightingState::ChoosingConsumable;
+			break;
+		case 1:
+			state = FightingState::ChoosingBall;
+			break;
+		case 30:
+			state = FightingState::ChoosingAction;
+			break;
+		default:
+			break;
+		}
+		break;
+	case FightingState::ChoosingPokemon:
+		break;
+	default:
+		break;
 	}
-	else {
-		int output = -1;
 
-		if (bIsChoosingAbility) {
-			pokemonMenu->Update(output, pMouse);
-			if (output != -1) {
-				//pPlayer->GetPokemon().SelectedAttack(output) OR defined in PokemonMenu;
-				if (output == 30) {
-					bIsChoosingAbility = false;
-				}
-				else {
-					bIsFighting = true;
-					bIsChoosingAbility = false;
-				}
-			}
-		}
-		else if (bIsChoosingItemType) {
-			itemTypeMenu->Update(output, pMouse);
-			switch (output) {
-			case 0: 
-				bIsChoosingItem = true;
-				bIsChoosingItemType = false;
-				break;
-			case 1:
-				bIsChoosingBall = true;
-				bIsChoosingItemType = false;
-				break;
-			case 30:
-				bIsChoosingItemType = false;
-				break;
-			default :
-				break;
-			}
-		}
-		else if (bIsChoosingItem) {
-			consumableMenu->Update(output, pMouse);
-			if (output != -1) {
-				if (output == 30) {
-					bIsChoosingItem = false;
-					bIsChoosingItemType = true;
-				}
-				else {
-					chosenItem = output;
-					bIsHealing = true;
-					bIsChoosingItem = false;
-				}
-			}
-		}
-		else if (bIsChoosingBall) {
-			ballMenu->Update(output, pMouse);
-			if (output != -1) {
-				if (output == 30) {
-					bIsChoosingBall = false;
-					bIsChoosingItemType = true;
-				}
-				else {
-					chosenBall = output;
-					bIsChoosingBall = false;
-					bIsCatching = true;
-				}
-			}
-		}
-		else {
-			actionMenu->Update(output, pMouse);
-			switch (output)
-			{
-			case 0:
-				bIsChoosingAbility = true;
-				break;
-			case 1:
-				bIsChoosingItemType = true;
-				break;
-			case 2:
-				fleeTimer.ResetTimer(2.0f);
-				bIsFleeing = true;
-				break;
-			default:
-				break;
-			}
-		}
-		if (enemyPokemon->IsDead()) {
-			std::cout << "You won!\n";
-			Flee();
-		}
-		else if (pPlayer->GetPokemon().IsDead()) {
-			std::cout << "You lost!\n";
-			Flee();
-		}
+	if (enemyPokemon->IsDead()) {
+		std::cout << "You won!\n";
+		Flee();
+	}
+	else if (pPlayer->GetPokemon().IsDead()) {
+		std::cout << "You lost!\n";
+		Flee();
 	}
 }
 
 void FightingScene::Draw()
 {
 	pPlayer->GetPokemon().DrawFrontSprite(playerPkmnRect);
-	if (!bIsCatching && !bEnemyIsCatched) enemyPokemon->DrawFrontSprite(enemyPkmnRect);
+	if (state != FightingState::PlayerCatching && state != FightingState::EnemyCatched) enemyPokemon->DrawFrontSprite(enemyPkmnRect);
 
-	if (!bIsFighting && !bIsHealing && !bEnemyIsAttacking && !bIsCatching && !bEnemyIsCatched) {
-		if (bIsChoosingAbility) pokemonMenu->Draw();
-		else if (bIsChoosingItemType) itemTypeMenu->Draw();
-		else if (bIsChoosingItem) consumableMenu->Draw();
-		else if (bIsChoosingBall) ballMenu->Draw();
-		else actionMenu->Draw();
-	}
-
-	if (bPlayerIsAttacking) {
+	switch (state) {
+	case FightingState::ChoosingAction:
+		actionMenu->Draw();
+		break;
+	case FightingState::ChoosingAbility:
+		pokemonMenu->Draw();
+		break;
+	case FightingState::ChoosingItemType:
+		itemTypeMenu->Draw();
+		break;
+	case FightingState::ChoosingConsumable:
+		consumableMenu->Draw();
+		break;
+	case FightingState::ChoosingBall:
+		ballMenu->Draw();
+		break;
+	case FightingState::ChoosingPokemon:
+		break;
+	case FightingState::PlayerFighting:
 		text.Draw("You attacked the enemy Pokemon!", WHITE, WHITE);
-	}
-	if (bPlayerIsHealing) {
+		break;
+	case FightingState::PlayerHealing:
 		text.Draw("You healed your pokemon!", WHITE, WHITE);
-	}
-	if (bPlayerIsCatching) {
+		break;
+	case FightingState::PlayerCatching:
 		text.Draw("You threw a pokeball!", WHITE, WHITE);
-	}
-	if (bEnemyIsCatched) {
-		text.Draw("You catched the enemy Pokemon!", WHITE, WHITE);
-	}
-	if (bEnemyIsAttacking) {
-		text.Draw("The enemy pokemon attacked you!", WHITE, WHITE);
-	}
-	if (bIsFleeing) {
+		break;
+	case FightingState::PlayerFleeing:
 		text.Draw("You are fleeing!", WHITE, WHITE);
+		break;
+	case FightingState::EnemyAttacking:
+		text.Draw("The enemy pokemon attacked you!", WHITE, WHITE);
+		break;
+	case FightingState::EnemyCatched:
+		text.Draw("You catched the enemy Pokemon!", WHITE, WHITE);
+		break;
+	default:
+		break;
 	}
 }
 
@@ -229,71 +243,44 @@ void FightingScene::PlayAnimation(Maths::IRect& rect)
 
 void FightingScene::Fight()
 {
-	if (!bPlayerIsAttacking) {
+	attackTimer.Update();
+	PlayAnimation(enemyPkmnRect);
+	if (attackTimer.IsTimerDown()) {
+		enemyPkmnRect.rect.x = 500;
+		enemyPokemon->Attack(pPlayer->GetPokemon());
+		state = FightingState::EnemyAttacking;
 		attackTimer.ResetTimer(3.0f);
-		pPlayer->GetPokemon().Attack(*enemyPokemon);
-		bPlayerIsAttacking = true;
-	}
-	else {
-		attackTimer.Update();
-		PlayAnimation(enemyPkmnRect);
-		if (attackTimer.IsTimerDown()) {
-			enemyPkmnRect.rect.x = 500;
-			bPlayerIsAttacking = false;
-			enemyPokemon->Attack(pPlayer->GetPokemon());
-			bEnemyIsAttacking = true;
-			attackTimer.ResetTimer(3.0f);
-			bIsFighting = false;
-			std::cout << "Enemy has " << enemyPokemon->GetHP() << " HP left!\n";
-			std::cout << "Your pokemon has " << pPlayer->GetPokemon().GetHP() << " HP Left!\n";
-		}
+		std::cout << "Enemy has " << enemyPokemon->GetHP() << " HP left!\n";
+		std::cout << "Your pokemon has " << pPlayer->GetPokemon().GetHP() << " HP Left!\n";
 	}
 }
 
 void FightingScene::Heal()
 {
-	if (!bPlayerIsHealing) {
+	attackTimer.Update();
+	if (attackTimer.IsTimerDown()) {
+		enemyPokemon->Attack(pPlayer->GetPokemon());
+		state = FightingState::EnemyAttacking;
 		attackTimer.ResetTimer(3.0f);
-		pPlayer->TEST_UseItem(chosenItem);
-		bPlayerIsHealing = true;
-	}
-	else {
-		attackTimer.Update();
-		if (attackTimer.IsTimerDown()) {
-			bPlayerIsHealing = false;
-			enemyPokemon->Attack(pPlayer->GetPokemon());
-			bEnemyIsAttacking = true;
-			attackTimer.ResetTimer(3.0f);
-			bIsHealing = false;
-			std::cout << "Enemy has " << enemyPokemon->GetHP() << " HP left!\n";
-			std::cout << "Your pokemon has " << pPlayer->GetPokemon().GetHP() << " HP Left!\n";
-		}
+		std::cout << "Enemy has " << enemyPokemon->GetHP() << " HP left!\n";
+		std::cout << "Your pokemon has " << pPlayer->GetPokemon().GetHP() << " HP Left!\n";
 	}
 }
 
 void FightingScene::Capture()
 {
-	if (!bPlayerIsCatching) {
-		attackTimer.ResetTimer(3.0f);
-		bPlayerIsCatching = true;
-	}
-	else {
-		attackTimer.Update();
-		if (attackTimer.IsTimerDown()) {
-			bPlayerIsCatching = false;
-			if (pPlayer->TEST_CapturePokemon(chosenBall, *enemyPokemon)) {
-				bEnemyIsCatched = true;
-				bIsCatching = false;
-				fleeTimer.ResetTimer(2.0f);
-			}
-			else {
-				enemyPokemon->Attack(pPlayer->GetPokemon());
-				bEnemyIsAttacking = true;
-				attackTimer.ResetTimer(3.0f);
-				bIsCatching = false;
-				std::cout << "Enemy has " << enemyPokemon->GetHP() << " HP left!\n";
-				std::cout << "Your pokemon has " << pPlayer->GetPokemon().GetHP() << " HP Left!\n";
-			}
+	attackTimer.Update();
+	if (attackTimer.IsTimerDown()) {
+		if (pPlayer->TEST_CapturePokemon(chosenBall, *enemyPokemon)) {
+			state = FightingState::EnemyCatched;
+			fleeTimer.ResetTimer(2.0f);
+		}
+		else {
+			enemyPokemon->Attack(pPlayer->GetPokemon());
+			state = FightingState::EnemyAttacking;
+			attackTimer.ResetTimer(3.0f);
+			std::cout << "Enemy has " << enemyPokemon->GetHP() << " HP left!\n";
+			std::cout << "Your pokemon has " << pPlayer->GetPokemon().GetHP() << " HP Left!\n";
 		}
 	}
 }
@@ -302,5 +289,5 @@ void FightingScene::Flee()
 {
 	bWillChangeScene = true;
 	newScene = Scene::SceneType::ExplorationScene;
-	bIsFleeing = false;
+	state = FightingState::ChoosingAction;
 }

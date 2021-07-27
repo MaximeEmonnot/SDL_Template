@@ -12,6 +12,21 @@
 #include "TextBox.h"
 
 class FightingScene : public Scene {
+private:
+	enum class FightingState {
+		ChoosingAction,
+		ChoosingAbility,
+		ChoosingItemType,
+		ChoosingConsumable,
+		ChoosingBall,
+		ChoosingPokemon,
+		PlayerFighting,
+		PlayerHealing,
+		PlayerCatching,
+		PlayerFleeing,
+		EnemyAttacking,
+		EnemyCatched
+	};
 public:
 	FightingScene();
 	~FightingScene();
@@ -39,25 +54,12 @@ private:
 
 	int currentDir = 1;
 
-	int chosenItem = -1;
 	int chosenBall = -1;
 
 	float time;
 
-	bool bIsChoosingAbility = false;
-	bool bIsChoosingItemType = false;
-	bool bIsChoosingItem = false;
-	bool bIsChoosingBall = false;
-	bool bIsFighting = false;
-	bool bIsHealing = false;
-	bool bIsCatching = false;
-	bool bIsFleeing = false;
-	bool bPlayerIsCatching = false;
-	bool bPlayerIsAttacking = false;
-	bool bPlayerIsHealing = false;
-	bool bEnemyIsAttacking = false;
-	bool bEnemyIsCatched = false;
-	
+	FightingState state = FightingState::ChoosingAction;
+
 	Pokemon* enemyPokemon;
 	Maths::IRect enemyPkmnRect;
 	Maths::IRect playerPkmnRect;

@@ -27,7 +27,7 @@ Maths::IVec2D CoreSystem::Timer::GetCurrentTime()
 
 bool CoreSystem::Timer::IsNightTime()
 {
-	return (GetCurrentTime().x >= 18 && GetCurrentTime().y >= 30) || (GetCurrentTime().x > 18) || (GetCurrentTime().x <= 6 && GetCurrentTime().y < 30);
+	return (GetCurrentTime().x >= 18 && GetCurrentTime().y >= 30) || (GetCurrentTime().x > 18) || (GetCurrentTime().x < 7) || (GetCurrentTime().x <= 6 && GetCurrentTime().y < 30);
 }
 
 float CoreSystem::Timer::DeltaTime()

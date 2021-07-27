@@ -6,12 +6,18 @@
 #include "TopMenu.h"
 #include "PokemonInventory.h"
 #include "ItemInventory.h"
-#include "BasicMenu.h"
 
 #include "SoundSystem.h"
 
 class ExplorationScene : public Scene
 {
+private:
+	enum class MenuState {
+		ShowingMenu,
+		ShowingItemInventory,
+		ShowingPokemonInventory,
+		None
+	};
 public:
 	ExplorationScene();
 	~ExplorationScene();
@@ -24,9 +30,9 @@ private:
 	void InitFromJSON();
 
 private:
-	bool bIsShowingMenu = false;
-	bool bIsShowingItemInventory = false;
-	bool bIsShowingPokemonInventory = false;
+
+	MenuState state = MenuState::None;
+
 	bool bIsPlayingSong = false;
 	bool bCurrentDayState = false;
 

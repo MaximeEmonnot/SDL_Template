@@ -56,62 +56,60 @@ void ExplorationScene::Update()
 	bWillChangeScene = false;
 
 	pPlayer->Update(pTimer->DeltaTime());
-	if (!bIsShowingMenu && !bIsShowingItemInventory && !bIsShowingPokemonInventory) {
+
+	int output = -1;
+
+	switch (state) {
+	case MenuState::None:
 		pPlayer->Move();
 		pGrid->Update();
-	}
-	else {
-		if (bIsShowingMenu) {
-			int output = -1;
-			menu->Update(output, pMouse);
-
-			switch (output) {
-			case 0:
-				pWnd->ExitGame();
-				break;
-			case 1:
-				bIsShowingItemInventory = true;
-				bIsShowingMenu = false;
-				break;
-			case 2:
-				bIsShowingPokemonInventory = true;
-				bIsShowingMenu = false;
-				break;
-			case 3:
-				pPlayer->SaveJSON();
-				SaveToJSON();
-				break;
-			case 4:
-				bWillChangeScene = true;
-				bIsShowingMenu = false;
-				bIsPlayingSong = false;
-				pSoundSystem->StopSounds();
-				newScene = Scene::SceneType::TitleScene;
-				break;
-			default:
-				break;
-			}
+		break;
+	case MenuState::ShowingMenu:
+		menu->Update(output, pMouse);
+		switch (output) {
+		case 0:
+			pWnd->ExitGame();
+			break;
+		case 1:
+			state = MenuState::ShowingItemInventory;
+			break;
+		case 2:
+			state = MenuState::ShowingPokemonInventory;
+			break;
+		case 3:
+			pPlayer->SaveJSON();
+			SaveToJSON();
+			break;
+		case 4:
+			bWillChangeScene = true;
+			state = MenuState::None;
+			bIsPlayingSong = false;
+			pSoundSystem->StopSounds();
+			newScene = Scene::SceneType::TitleScene;
+			break;
+		default:
+			break;
 		}
-		if (bIsShowingItemInventory) {
-				int output = -1;
-				itemInventoryMenu->Update(output, pMouse);
-				if (output != -1) {
-					pPlayer->TEST_UseItem(output);
-					printf("item clicked!\n");
-				}
-			}
-		if (bIsShowingPokemonInventory) {
-			int output = -1;
-			pokemonInventoryMenu->Update(output, pMouse);
-			if (output != -1) {
-				printf("Pokemon clicked!\n");
-			}
+		break;
+	case MenuState::ShowingItemInventory:
+		itemInventoryMenu->Update(output, pMouse);
+		if (output != -1) {
+			pPlayer->TEST_UseItem(output);
+			printf("item clicked!\n");
 		}
+		break;
+	case MenuState::ShowingPokemonInventory:
+		pokemonInventoryMenu->Update(output, pMouse);
+		if (output != -1) {
+			printf("Pokemon clicked!\n");
+		}
+		break;
+	default:
+		break;
 	}
 
 	if (pGrid->PlayerTriggersFight() && !pPlayer->GetPokemon().IsDead()) {
 		bWillChangeScene = true;
-		bIsShowingMenu = false;
 		bIsPlayingSong = false;
 		pSoundSystem->StopSounds();
 		newScene = Scene::SceneType::FightingScene;
@@ -120,13 +118,20 @@ void ExplorationScene::Update()
 	auto e = pKbd->ReadKey();
 
 	if (e.keycode == SDL_SCANCODE_ESCAPE && e.type == CoreSystem::Keyboard::Event::Type::Pressed) {
-		bIsShowingMenu = !bIsShowingMenu;
-		if (bIsShowingItemInventory) {
-			bIsShowingItemInventory = false;
+		switch (state)
+		{
+		case ExplorationScene::MenuState::ShowingMenu:
+			state = MenuState::None;
+			break;
+		case ExplorationScene::MenuState::ShowingItemInventory:
+		case ExplorationScene::MenuState::ShowingPokemonInventory:
+		case ExplorationScene::MenuState::None:
+			state = MenuState::ShowingMenu;
+			break;
+		default:
+			break;
 		}
-		else if (bIsShowingPokemonInventory) {
-			bIsShowingPokemonInventory = false;
-		}
+
 	}
 }
 
@@ -134,16 +139,19 @@ void ExplorationScene::Draw()
 {
 	pGrid->Draw();
 	pPlayer->Draw();
-	//pPlayer->DrawPokemon();
 
-	if (bIsShowingMenu) {
+	switch (state) {
+	case MenuState::ShowingMenu:
 		menu->Draw();
-	}
-	if (bIsShowingItemInventory) {
+		break;
+	case MenuState::ShowingItemInventory:
 		itemInventoryMenu->Draw();
-	}
-	if (bIsShowingPokemonInventory) {
+		break;
+	case MenuState::ShowingPokemonInventory:
 		pokemonInventoryMenu->Draw();
+		break;
+	default:
+		break;
 	}
 	pFont->DrawText(Maths::IVec2D(10, 10), (std::string("X     ") + std::to_string(pGrid->GetWorldPosition().x) + "\n" + std::string("Y     ") + std::to_string(pGrid->GetWorldPosition().y)).c_str(), RED);
 }

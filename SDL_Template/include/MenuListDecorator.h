@@ -1,5 +1,6 @@
 #pragma once
 #include "AMenu.h"
+#include "BasicMenu.h"
 #include <unordered_map>
 
 class MenuListDecorator : public AMenu

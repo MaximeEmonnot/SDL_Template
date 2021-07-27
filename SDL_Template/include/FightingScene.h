@@ -7,7 +7,6 @@
 #include "PokemonMenu.h"
 #include "ItemTypeMenu.h"
 #include "ItemMenu.h"
-#include "BasicMenu.h"
 #include "RightMenu.h"
 #include "TextBox.h"
 
@@ -55,8 +54,6 @@ private:
 	int currentDir = 1;
 
 	int chosenBall = -1;
-
-	float time;
 
 	FightingState state = FightingState::ChoosingAction;
 

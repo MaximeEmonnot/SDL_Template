@@ -6,10 +6,18 @@ ChoosingScene::ChoosingScene()
 	pPlayer(Player::GetInstance(Maths::IRect(384, 267, 32, 44), "json/player.json")),
 	pMouse(CoreSystem::Mouse::GetInstance()),
 	choiceMenu(std::make_unique<ChoiceMenu>(std::make_unique<BasicMenu>())),
-	choice0("Images/bulbasaur.png", "Bulbasaur", 1),
-	choice1("Images/charmander.png", "Charmander", 2),
-	choice2("Images/squirttle.png", "Squirttle", 3)
+	choice0("Images/bulbasaur.png", "Bulbasaur", 1, Pokemon::Type::Grass),
+	choice1("Images/charmander.png", "Charmander", 2, Pokemon::Type::Fire),
+	choice2("Images/squirttle.png", "Squirttle", 3, Pokemon::Type::Water)
 {
+	choice0.LoadAbility(Pokemon::Ability("Charge", 55, 20, Pokemon::Type::Normal));
+	choice0.LoadAbility(Pokemon::Ability("Vine Whip", 45, 25, Pokemon::Type::Grass));
+
+	choice1.LoadAbility(Pokemon::Ability("Charge", 55, 20, Pokemon::Type::Normal));
+	choice1.LoadAbility(Pokemon::Ability("Flame Wheel", 60, 25, Pokemon::Type::Fire));
+	
+	choice2.LoadAbility(Pokemon::Ability("Charge", 55, 20, Pokemon::Type::Normal));
+	choice2.LoadAbility(Pokemon::Ability("Bubble", 40, 30, Pokemon::Type::Water));
 }
 
 ChoosingScene::~ChoosingScene()

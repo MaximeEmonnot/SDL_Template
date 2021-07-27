@@ -16,6 +16,7 @@ private:
 		ShowingMenu,
 		ShowingItemInventory,
 		ShowingPokemonInventory,
+		HealingPokemon,
 		None
 	};
 public:
@@ -32,6 +33,8 @@ private:
 private:
 
 	MenuState state = MenuState::None;
+
+	int chosenItem = -1;
 
 	bool bIsPlayingSong = false;
 	bool bCurrentDayState = false;

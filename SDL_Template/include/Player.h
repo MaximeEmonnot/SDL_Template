@@ -43,7 +43,12 @@ public:
 	bool TEST_CapturePokemon(int index, Pokemon& pkmn);
 
 	void TEST_PickUpItem(std::shared_ptr<Item> item);
-	void TEST_UseItem(int index);
+	void TEST_UseItem(int indexItem) {
+		TEST_UseItem(indexItem, selectedPokemon - pokemon.begin());
+	}
+	void TEST_UseItem(int indexItem, int indexPkmn);
+
+	bool TEST_CanUseItem(int index);
 
 	std::map<std::shared_ptr<Item>, int> GetItemList() const;
 

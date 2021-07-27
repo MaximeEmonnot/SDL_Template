@@ -94,8 +94,14 @@ void ExplorationScene::Update()
 	case MenuState::ShowingItemInventory:
 		itemInventoryMenu->Update(output, pMouse);
 		if (output != -1) {
-			pPlayer->TEST_UseItem(output);
-			printf("item clicked!\n");
+			if (pPlayer->TEST_CanUseItem(output)) {
+				chosenItem = output;
+				state = MenuState::HealingPokemon;
+				printf("item clicked!\n");
+			}
+			else {
+				printf("Cant use that item yet!\n");
+			}
 		}
 		break;
 	case MenuState::ShowingPokemonInventory:
@@ -104,6 +110,13 @@ void ExplorationScene::Update()
 			printf("Pokemon clicked!\n");
 		}
 		break;
+	case MenuState::HealingPokemon:
+		pokemonInventoryMenu->Update(output, pMouse);
+		if (output != -1) {
+			pPlayer->TEST_UseItem(chosenItem, output);
+			state = MenuState::None;
+			printf("Pokemon healed !");
+		}
 	default:
 		break;
 	}
@@ -128,6 +141,9 @@ void ExplorationScene::Update()
 		case ExplorationScene::MenuState::None:
 			state = MenuState::ShowingMenu;
 			break;
+		case MenuState::HealingPokemon:
+			state = MenuState::ShowingItemInventory;
+			break;
 		default:
 			break;
 		}
@@ -148,6 +164,10 @@ void ExplorationScene::Draw()
 		itemInventoryMenu->Draw();
 		break;
 	case MenuState::ShowingPokemonInventory:
+		pokemonInventoryMenu->Draw();
+		break;
+	case MenuState::HealingPokemon:
+		itemInventoryMenu->Draw();
 		pokemonInventoryMenu->Draw();
 		break;
 	default:

@@ -13,11 +13,12 @@ FightingScene::FightingScene()
 	ballMenu(std::make_unique<ItemMenu<Ball>>(std::make_unique<BasicMenu>())),
 	abilityMenu(std::make_unique<AbilityMenu>(std::make_unique<BasicMenu>())),
 	pokemonMenu(std::make_unique<PokemonMenu>(std::make_unique<BasicMenu>())),
-	enemyPokemon(CreateRandomPokemon()),
 	enemyPkmnRect(500, 50, 128, 128),
 	playerPkmnRect(200, 200, 128, 128),
 	text(Maths::IRect(25, 500, 200, 75))
 {
+	InitializeAbilityList();
+	enemyPokemon = CreateRandomPokemon();
 }
 
 FightingScene::~FightingScene()
@@ -236,21 +237,75 @@ void FightingScene::Draw()
 
 Pokemon* FightingScene::CreateRandomPokemon()
 {
+	Pokemon* pkmn = new Pokemon();
 	std::mt19937 rng(std::random_device{}());
-	std::uniform_int_distribution<int> dist(0, 2);
-	switch (dist(rng)) {
+	std::uniform_int_distribution<int> distPkmn(0, 2);
+	std::uniform_int_distribution<int> distAbilities(0, 100);
+	std::uniform_int_distribution<int> distType(0, 4);
+	switch (distPkmn(rng)) {
 	case 0:
-		return new Pokemon("Images/bulbasaur.png", "Bulbasaur", 1);
+		delete pkmn;
+		pkmn = nullptr;
+		pkmn = new Pokemon("Images/bulbasaur.png", "Bulbasaur", 1, Pokemon::Type::Grass);
 		break;
 	case 1:
-		return new Pokemon("Images/charmander.png", "Charmander", 2);
+		delete pkmn;
+		pkmn = nullptr;
+		pkmn = new Pokemon("Images/charmander.png", "Charmander", 2, Pokemon::Type::Fire);
 		break;
 	case 2:
-		return new Pokemon("Images/squirttle.png", "Squirttle", 3);
+		delete pkmn;
+		pkmn = nullptr;
+		pkmn = new Pokemon("Images/squirttle.png", "Squirttle", 3, Pokemon::Type::Water);
 		break;
 	default:
-		return new Pokemon();
 		break;
+	}
+	for (size_t i = 0; i < 4; i++) {
+		if (distType(rng) < 1) {
+			auto ability = std::find_if(abilityList.begin(), abilityList.end(), [&](const std::pair<Pokemon::Ability, int> entry) { return (entry.first.GetType() == Pokemon::Type::Normal && distAbilities(rng) <= entry.second); });
+			if (ability != abilityList.end()) {
+				pkmn->LoadAbility(ability->first);
+			}
+		}
+		else {
+			auto ability = std::find_if(abilityList.begin(), abilityList.end(), [&](const std::pair<Pokemon::Ability, int> entry) { return (entry.first.GetType() == pkmn->GetType() && distAbilities(rng) <= entry.second); });
+			if (ability != abilityList.end()) {
+				pkmn->LoadAbility(ability->first);
+			}
+		}
+	}
+
+	return pkmn;
+}
+
+void FightingScene::InitializeAbilityList()
+{
+	JSONParser::Reader jsonReader;
+	jsonReader.ReadFile("json/abilityList.json");
+
+	//Read Normal abilities
+	auto& normalAbilities = jsonReader.GetValueOf("Normal");
+	for (auto itr = normalAbilities.MemberBegin(); itr != normalAbilities.MemberEnd(); ++itr) {
+		abilityList.insert(std::pair<Pokemon::Ability, int>(Pokemon::Ability(itr->name.GetString(), itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt(), Pokemon::Type::Normal), itr->value.GetArray()[2].GetInt()));
+	}
+
+	//Read Fire Abilities
+	auto& fireAbilities = jsonReader.GetValueOf("Fire");
+	for (auto itr = fireAbilities.MemberBegin(); itr != fireAbilities.MemberEnd(); ++itr) {
+		abilityList.insert(std::pair<Pokemon::Ability, int>(Pokemon::Ability(itr->name.GetString(), itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt(), Pokemon::Type::Fire), itr->value.GetArray()[2].GetInt()));
+	}
+
+	//Read Water Abilities
+	auto& waterAbilities = jsonReader.GetValueOf("Water");
+	for (auto itr = waterAbilities.MemberBegin(); itr != waterAbilities.MemberEnd(); ++itr) {
+		abilityList.insert(std::pair<Pokemon::Ability, int>(Pokemon::Ability(itr->name.GetString(), itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt(), Pokemon::Type::Water), itr->value.GetArray()[2].GetInt()));
+	}
+
+	//Read Grass Abilities
+	auto& grassAbilities = jsonReader.GetValueOf("Grass");
+	for (auto itr = grassAbilities.MemberBegin(); itr != grassAbilities.MemberEnd(); ++itr) {
+		abilityList.insert(std::pair<Pokemon::Ability, int>(Pokemon::Ability(itr->name.GetString(), itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt(), Pokemon::Type::Grass), itr->value.GetArray()[2].GetInt()));
 	}
 }
 
@@ -274,8 +329,8 @@ void FightingScene::Fight()
 		enemyPokemon->Attack(pPlayer->GetPokemon());
 		state = FightingState::EnemyAttacking;
 		attackTimer.ResetTimer(3.0f);
-		std::cout << "Enemy has " << enemyPokemon->GetHP() << " HP left!\n";
-		std::cout << "Your pokemon has " << pPlayer->GetPokemon().GetHP() << " HP Left!\n";
+		std::cout << "Enemy has " << enemyPokemon->GetHP().x << " HP left!\n";
+		std::cout << "Your pokemon has " << pPlayer->GetPokemon().GetHP().x << " HP Left!\n";
 	}
 }
 
@@ -286,8 +341,8 @@ void FightingScene::Heal()
 		enemyPokemon->Attack(pPlayer->GetPokemon());
 		state = FightingState::EnemyAttacking;
 		attackTimer.ResetTimer(3.0f);
-		std::cout << "Enemy has " << enemyPokemon->GetHP() << " HP left!\n";
-		std::cout << "Your pokemon has " << pPlayer->GetPokemon().GetHP() << " HP Left!\n";
+		std::cout << "Enemy has " << enemyPokemon->GetHP().x << " HP left!\n";
+		std::cout << "Your pokemon has " << pPlayer->GetPokemon().GetHP().x << " HP Left!\n";
 	}
 }
 
@@ -298,8 +353,8 @@ void FightingScene::Switch()
 		enemyPokemon->Attack(pPlayer->GetPokemon());
 		state = FightingState::EnemyAttacking;
 		attackTimer.ResetTimer(3.0f);
-		std::cout << "Enemy has " << enemyPokemon->GetHP() << " HP left!\n";
-		std::cout << "Your pokemon has " << pPlayer->GetPokemon().GetHP() << " HP Left!\n";
+		std::cout << "Enemy has " << enemyPokemon->GetHP().x << " HP left!\n";
+		std::cout << "Your pokemon has " << pPlayer->GetPokemon().GetHP().x << " HP Left!\n";
 	}
 }
 
@@ -315,8 +370,8 @@ void FightingScene::Capture()
 			enemyPokemon->Attack(pPlayer->GetPokemon());
 			state = FightingState::EnemyAttacking;
 			attackTimer.ResetTimer(3.0f);
-			std::cout << "Enemy has " << enemyPokemon->GetHP() << " HP left!\n";
-			std::cout << "Your pokemon has " << pPlayer->GetPokemon().GetHP() << " HP Left!\n";
+			std::cout << "Enemy has " << enemyPokemon->GetHP().x << " HP left!\n";
+			std::cout << "Your pokemon has " << pPlayer->GetPokemon().GetHP().x << " HP Left!\n";
 		}
 	}
 }

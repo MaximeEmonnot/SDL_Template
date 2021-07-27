@@ -36,7 +36,7 @@
     <ClCompile Include="Engine\GameFiles\FightingScene.cpp" />
     <ClCompile Include="Engine\GameFiles\Grid.cpp" />
     <ClCompile Include="Engine\GameFiles\Item.cpp" />
-    <ClCompile Include="Engine\GameFiles\ItemInventory.cpp" />
+    <ClCompile Include="Engine\GameFiles\ItemInventoryMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\ItemTypeMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\MenuListDecorator.cpp" />
     <ClCompile Include="Engine\GameFiles\LeftMenu.cpp" />
@@ -230,7 +230,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\includes\RapidJSON\;..\includes\SDL2\SDL2_base\include\;..\includes\SDL2\SDL2_image\include\;..\includes\SDL2\SDL2_mixer\include\;..\includes\SDL2\SDL2_ttf\include\;..\includes\SDL2\SDL2_net\include\;..\includes\ICUE\include\;.\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

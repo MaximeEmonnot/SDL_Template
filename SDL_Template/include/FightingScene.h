@@ -35,7 +35,8 @@ public:
 
 private:
 	Pokemon* CreateRandomPokemon();
-
+	void InitializeAbilityList();
+	
 	void PlayAnimation(Maths::IRect& rect);
 
 	void Fight();
@@ -47,6 +48,9 @@ private:
 private:
 	std::shared_ptr<Player> pPlayer;
 	std::shared_ptr <CoreSystem::Mouse> pMouse;
+
+	//Map with abilities and respective probabilities
+	std::unordered_map<Pokemon::Ability, int, Pokemon::Ability::Hash> abilityList;
 
 	TimerManager attackTimer;
 	TimerManager fleeTimer;

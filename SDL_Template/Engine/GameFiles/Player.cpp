@@ -68,12 +68,15 @@ void Player::InitFromJSON()
 	switch (pkmn.id)
 	{
 	case 1:
+		pkmn.type = Pokemon::Type::Grass;
 		pkmn.sprite.InitSurface("Images/bulbasaur.png");
 		break;
 	case 2:
+		pkmn.type = Pokemon::Type::Fire;
 		pkmn.sprite.InitSurface("Images/charmander.png");
 		break;
 	case 3:
+		pkmn.type = Pokemon::Type::Water;
 		pkmn.sprite.InitSurface("Images/squirttle.png");
 		break;
 	default:
@@ -99,12 +102,15 @@ void Player::InitFromJSON()
 			switch (newPkmn.id)
 			{
 			case 1:
+				newPkmn.type = Pokemon::Type::Grass;
 				newPkmn.sprite.InitSurface("Images/bulbasaur.png");
 				break;
 			case 2:
+				newPkmn.type = Pokemon::Type::Fire;
 				newPkmn.sprite.InitSurface("Images/charmander.png");
 				break;
 			case 3:
+				newPkmn.type = Pokemon::Type::Water;
 				newPkmn.sprite.InitSurface("Images/squirttle.png");
 				break;
 			default:
@@ -278,13 +284,13 @@ void Player::TEST_PickUpItem(std::shared_ptr<Item> item)
 	}
 }
 
-void Player::TEST_UseItem(int index)
+void Player::TEST_UseItem(int indexItem, int indexPkmn)
 {
-	auto itr = std::find_if(items.begin(), items.end(), [&](std::pair<std::shared_ptr<Item>, int> item) {return index == item.first->GetID(); });
+	auto itr = std::find_if(items.begin(), items.end(), [&](std::pair<std::shared_ptr<Item>, int> item) {return indexItem == item.first->GetID(); });
 	if (itr != items.end()) {
 		std::shared_ptr<Consumable> consumable = std::dynamic_pointer_cast<Consumable, Item>(itr->first);
 		if (consumable != nullptr) {
-			consumable->UseItem(*selectedPokemon);
+			consumable->UseItem(pokemon.at(indexPkmn));
 			if (itr->second > 1) {
 				itr->second--;
 			}
@@ -296,6 +302,15 @@ void Player::TEST_UseItem(int index)
 			printf("Can't use that item now!\n");
 		}
 	}
+}
+
+bool Player::TEST_CanUseItem(int index)
+{
+	auto itr = std::find_if(items.begin(), items.end(), [&](std::pair<std::shared_ptr<Item>, int> item) {return index == item.first->GetID(); });
+	if (itr != items.end()) {
+		return (std::dynamic_pointer_cast<Consumable, Item>(itr->first) != nullptr);
+	}
+	return false;
 }
 
 std::map<std::shared_ptr<Item>, int> Player::GetItemList() const

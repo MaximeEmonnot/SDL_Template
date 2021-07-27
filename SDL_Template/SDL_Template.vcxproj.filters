@@ -64,6 +64,12 @@
     <Filter Include="Fichiers sources\SoundManager">
       <UniqueIdentifier>{1707b100-87ea-4055-8977-9530f0f28bf9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers sources\GameFiles\Items">
+      <UniqueIdentifier>{3f201c80-5983-485a-ab7c-6c47de973054}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\GameFiles\Items">
+      <UniqueIdentifier>{d0e978c3-dba6-4752-b0bf-532a1a0de7ce}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\main.cpp">
@@ -150,26 +156,11 @@
     <ClCompile Include="Engine\GameFiles\Pokemon.cpp">
       <Filter>Fichiers sources\GameFiles\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameFiles\Grid.cpp">
-      <Filter>Fichiers sources\GameFiles</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\GameFiles\TimerManager.cpp">
       <Filter>Fichiers sources\GameFiles</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameFiles\PokemonMenu.cpp">
       <Filter>Fichiers sources\GameFiles\Menu</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameFiles\ItemInventory.cpp">
-      <Filter>Fichiers sources\GameFiles\Menu</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameFiles\Item.cpp">
-      <Filter>Fichiers sources\GameFiles</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameFiles\Consumable.cpp">
-      <Filter>Fichiers sources\GameFiles</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameFiles\Ball.cpp">
-      <Filter>Fichiers sources\GameFiles</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameFiles\ItemTypeMenu.cpp">
       <Filter>Fichiers sources\GameFiles\Menu</Filter>
@@ -187,6 +178,21 @@
       <Filter>Fichiers sources\GameFiles\Menu</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameFiles\ActionMenu.cpp">
+      <Filter>Fichiers sources\GameFiles\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameFiles\Grid.cpp">
+      <Filter>Fichiers sources\GameFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameFiles\Ball.cpp">
+      <Filter>Fichiers sources\GameFiles\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameFiles\Consumable.cpp">
+      <Filter>Fichiers sources\GameFiles\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameFiles\Item.cpp">
+      <Filter>Fichiers sources\GameFiles\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameFiles\ItemInventoryMenu.cpp">
       <Filter>Fichiers sources\GameFiles\Menu</Filter>
     </ClCompile>
   </ItemGroup>
@@ -305,15 +311,6 @@
     <ClInclude Include="include\PokemonMenu.h">
       <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
     </ClInclude>
-    <ClInclude Include="include\Item.h">
-      <Filter>Fichiers d%27en-tête\GameFiles</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Consumable.h">
-      <Filter>Fichiers d%27en-tête\GameFiles</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Ball.h">
-      <Filter>Fichiers d%27en-tête\GameFiles</Filter>
-    </ClInclude>
     <ClInclude Include="include\ItemTypeMenu.h">
       <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
     </ClInclude>
@@ -337,6 +334,15 @@
     </ClInclude>
     <ClInclude Include="include\ExplorationMenu.h">
       <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Ball.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Consumable.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Item.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Items</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

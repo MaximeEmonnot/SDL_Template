@@ -1,1 +1,1 @@
-{"Consumables":{"Potion":[15,20,1],"Super Potion":[16,50,3]},"Balls":{"Superball":[2,30,2],"Hyperball":[3,50,1],"Pokeball":[1,15,2]},"Selected Pokemon":{"Name":"Squirttle","Characteristics":[10,20,5,3,1,3]},"Pokemons":{"Charmander":[18,20,5,3,1,2],"Bulbasaur":[18,20,5,3,1,1]}}
+{"Consumables":{"Super Potion":[16,50,2]},"Balls":{"Pokeball":[1,15,5],"Hyperball":[3,50,2]},"Selected Pokemon":{"Name":"Charmander","Characteristics":[20,20,5,3,1,2]}}

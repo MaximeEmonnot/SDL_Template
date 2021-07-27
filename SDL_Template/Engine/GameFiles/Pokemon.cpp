@@ -1,6 +1,6 @@
 #include "Pokemon.h"
 
-Pokemon::Pokemon(const std::string& spritePath, const std::string& name, int id)
+Pokemon::Pokemon(const std::string& spritePath, const std::string& name, int id, Type type)
 	:
 	pGfx(GraphicsEngine::Graphics::GetInstance()),
 	name(name),
@@ -9,7 +9,8 @@ Pokemon::Pokemon(const std::string& spritePath, const std::string& name, int id)
 	att(5),
 	def(3),
 	lvl(1),
-	id(id)
+	id(id),
+	type(type)
 {
 	sprite.InitSurface(spritePath.c_str());
 }
@@ -17,6 +18,7 @@ Pokemon::Pokemon(const std::string& spritePath, const std::string& name, int id)
 Pokemon& Pokemon::operator=(const Pokemon& rhs)
 {
 	pGfx = GraphicsEngine::Graphics::GetInstance();
+	type = rhs.type;
 	name = rhs.name;
 	sprite = rhs.sprite;
 	hp = rhs.hp;
@@ -25,7 +27,13 @@ Pokemon& Pokemon::operator=(const Pokemon& rhs)
 	def = rhs.def;
 	lvl = rhs.lvl;
 	id = rhs.id;
+	abilities = rhs.abilities;
 	return *this;
+}
+
+void Pokemon::LoadAbility(Pokemon::Ability ability)
+{
+	abilities.push_back(ability);
 }
 
 void Pokemon::DrawFrontSprite(Maths::IRect destRect)
@@ -48,9 +56,9 @@ void Pokemon::Heal(int value)
 	hp = (hp + value > currentMaxHP) ? currentMaxHP : hp + value;
 }
 
-int Pokemon::GetHP() const
+Maths::IVec2D Pokemon::GetHP() const
 {
-	return hp;
+	return Maths::IVec2D(hp, currentMaxHP);
 }
 bool Pokemon::IsDead() const
 {
@@ -100,19 +108,70 @@ bool Pokemon::operator!=(const Pokemon& rhs) const
 	return !(*this == rhs);
 }
 
-Pokemon::Ability Pokemon::GetAbility(int index) const
+Pokemon::Type Pokemon::GetType() const
 {
+	return type;
+}
 
-	switch (index) {
-	case 0:
-		return firstAbility;
-	case 1:
-		return secondAbility;
-	case 2:
-		return thirdAbility;
-	case 3:
-		return fourthAbility;
-	default:
-		throw EngineException("Pokemon Ability NULL", __FILE__, "An exception occured.\nPokemon ability was out of range.", __LINE__);
-	}
+std::vector<Pokemon::Ability> Pokemon::GetAbilities() const
+{
+	return abilities;
+}
+
+Pokemon::Ability::Ability(const std::string& name, int pow, int PP, Type type)
+	:
+	type(type),
+	name(name),
+	power(pow),
+	maxPP(PP),
+	currentPP(PP)
+{
+}
+
+Pokemon::Ability& Pokemon::Ability::operator=(const Ability& rhs)
+{
+	type = rhs.type;
+	name = rhs.name;
+	power = rhs.power;
+	maxPP = rhs.maxPP;
+	currentPP = rhs.currentPP;
+	return *this;
+}
+
+void Pokemon::Ability::UseAbility()
+{
+	currentPP--;
+}
+
+Pokemon::Type Pokemon::Ability::GetType() const
+{
+	return type;
+}
+
+std::string Pokemon::Ability::GetName() const
+{
+	return name;
+}
+
+int Pokemon::Ability::GetPower() const
+{
+	return power;
+}
+
+int Pokemon::Ability::GetPP() const
+{
+	return currentPP;
+}
+
+int Pokemon::Ability::GetMaxPP() const
+{
+	return maxPP;
+}
+
+bool Pokemon::Ability::operator==(const Ability& rhs) const
+{
+	return (name == rhs.name) &&
+		(power == rhs.power) &&
+		(maxPP == rhs.maxPP) &&
+		(type == rhs.type);
 }

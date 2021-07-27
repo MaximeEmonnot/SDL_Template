@@ -6,8 +6,40 @@
 class Pokemon {
 private:
 	friend class Player;
-private:
-	struct Ability {
+public:
+	enum class Type {
+		Fire,
+		Water,
+		Grass,
+		Normal
+	};
+public:
+	class Ability {
+	public:
+		class Hash {
+		public:
+			size_t operator()(const Ability& ability) const {
+				std::hash<std::string> hasher;
+				return hasher(ability.name);
+			}
+		};
+	public:
+		Ability(const std::string& name, int pow, int PP, Type type);
+
+		Ability& operator=(const Ability& rhs);
+
+		void UseAbility();
+
+		Pokemon::Type GetType() const;
+		std::string GetName() const;
+		int GetPower() const;
+		int GetPP() const;
+		int GetMaxPP() const;
+
+		bool operator==(const Ability& rhs) const;
+
+	private:
+		Pokemon::Type type;
 		std::string name;
 		int power;
 		int maxPP;
@@ -15,9 +47,11 @@ private:
 	};
 public:
 	Pokemon() = default;
-	Pokemon(const std::string& spritePath, const std::string& name, int id);
+	Pokemon(const std::string& spritePath, const std::string& name, int id, Type type);
 
 	Pokemon& operator=(const Pokemon& rhs);
+
+	void LoadAbility(Pokemon::Ability ability);
 
 	void DrawFrontSprite(Maths::IRect destRect);
 	void DrawBackSprite(Maths::IRect destRect);
@@ -33,23 +67,22 @@ public:
 
 	std::string GetName() const;
 	
-	int GetHP() const;
+	Maths::IVec2D GetHP() const;
 	bool IsDead() const;
 
-	Pokemon::Ability GetAbility(int index) const;
+	Type GetType() const;
+	std::vector<Pokemon::Ability> GetAbilities() const;
 
 	bool operator==(const Pokemon& rhs) const;
 	bool operator!=(const Pokemon& rhs) const;
 
 private:
-	Ability firstAbility = {"First attack", 50, 10, 10};
-	Ability secondAbility = {"Fireball", 60, 10, 10};
-	Ability thirdAbility = {"CHARGE", 80, 10, 10};
-	Ability fourthAbility = {"BOOOOm", 25, 10, 10};
-	
+	std::vector<Ability> abilities;
+
 	std::shared_ptr<GraphicsEngine::Graphics> pGfx;
 	GraphicsEngine::Sprite sprite;
 
+	Pokemon::Type type;
 
 	std::string name;
 

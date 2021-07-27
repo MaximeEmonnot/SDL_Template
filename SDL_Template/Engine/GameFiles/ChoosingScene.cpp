@@ -5,7 +5,7 @@ ChoosingScene::ChoosingScene()
 	Scene(Scene::SceneType::ChoosingScene),
 	pPlayer(Player::GetInstance(Maths::IRect(384, 267, 32, 44), "json/player.json")),
 	pMouse(CoreSystem::Mouse::GetInstance()),
-	choiceMenu(std::make_unique<BottomMenu>(std::make_unique<BasicMenu>())),
+	choiceMenu(std::make_unique<ChoiceMenu>(std::make_unique<BasicMenu>())),
 	choice0("Images/bulbasaur.png", "Bulbasaur", 1),
 	choice1("Images/charmander.png", "Charmander", 2),
 	choice2("Images/squirttle.png", "Squirttle", 3)

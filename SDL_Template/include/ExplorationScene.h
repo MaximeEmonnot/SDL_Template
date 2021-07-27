@@ -3,9 +3,9 @@
 #include "Grid.h"
 #include "Font.h"
 
-#include "TopMenu.h"
-#include "PokemonInventory.h"
-#include "ItemInventory.h"
+#include "ExplorationMenu.h"
+#include "PokemonInventoryMenu.h"
+#include "ItemInventoryMenu.h"
 
 #include "SoundSystem.h"
 
@@ -36,7 +36,7 @@ private:
 	bool bIsPlayingSong = false;
 	bool bCurrentDayState = false;
 
-	std::unique_ptr<AMenu> menu;
+	std::unique_ptr<AMenu> explorationMenu;
 	std::unique_ptr<AMenu> itemInventoryMenu;
 	std::unique_ptr<AMenu> pokemonInventoryMenu;
 

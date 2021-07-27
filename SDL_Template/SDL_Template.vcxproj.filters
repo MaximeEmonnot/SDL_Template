@@ -117,9 +117,6 @@
     <ClCompile Include="Engine\GameFiles\BasicMenu.cpp">
       <Filter>Fichiers sources\GameFiles\Menu</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameFiles\BottomMenu.cpp">
-      <Filter>Fichiers sources\GameFiles\Menu</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\GameFiles\Button.cpp">
       <Filter>Fichiers sources\GameFiles\Menu</Filter>
     </ClCompile>
@@ -129,16 +126,7 @@
     <ClCompile Include="Engine\GameFiles\MenuListDecorator.cpp">
       <Filter>Fichiers sources\GameFiles\Menu</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameFiles\MiddleMenu.cpp">
-      <Filter>Fichiers sources\GameFiles\Menu</Filter>
-    </ClCompile>
-    <ClCompile Include="include\RightMenu.cpp">
-      <Filter>Fichiers sources\GameFiles\Menu</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\GameFiles\TextBox.cpp">
-      <Filter>Fichiers sources\GameFiles\Menu</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameFiles\TopMenu.cpp">
       <Filter>Fichiers sources\GameFiles\Menu</Filter>
     </ClCompile>
     <ClCompile Include="Engine\GameFiles\Player.cpp">
@@ -186,7 +174,19 @@
     <ClCompile Include="Engine\GameFiles\ItemTypeMenu.cpp">
       <Filter>Fichiers sources\GameFiles\Menu</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameFiles\PokemonInventory.cpp">
+    <ClCompile Include="Engine\GameFiles\ChoiceMenu.cpp">
+      <Filter>Fichiers sources\GameFiles\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameFiles\TitleMenu.cpp">
+      <Filter>Fichiers sources\GameFiles\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameFiles\PokemonInventoryMenu.cpp">
+      <Filter>Fichiers sources\GameFiles\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameFiles\ExplorationMenu.cpp">
+      <Filter>Fichiers sources\GameFiles\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameFiles\ActionMenu.cpp">
       <Filter>Fichiers sources\GameFiles\Menu</Filter>
     </ClCompile>
   </ItemGroup>
@@ -263,9 +263,6 @@
     <ClInclude Include="include\BasicMenu.h">
       <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
     </ClInclude>
-    <ClInclude Include="include\BottomMenu.h">
-      <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
-    </ClInclude>
     <ClInclude Include="include\Button.h">
       <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
     </ClInclude>
@@ -275,16 +272,7 @@
     <ClInclude Include="include\MenuListDecorator.h">
       <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
     </ClInclude>
-    <ClInclude Include="include\MiddleMenu.h">
-      <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
-    </ClInclude>
-    <ClInclude Include="include\RightMenu.h">
-      <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
-    </ClInclude>
     <ClInclude Include="include\TextBox.h">
-      <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
-    </ClInclude>
-    <ClInclude Include="include\TopMenu.h">
       <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
     </ClInclude>
     <ClInclude Include="include\Player.h">
@@ -317,9 +305,6 @@
     <ClInclude Include="include\PokemonMenu.h">
       <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
     </ClInclude>
-    <ClInclude Include="include\ItemInventory.h">
-      <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
-    </ClInclude>
     <ClInclude Include="include\Item.h">
       <Filter>Fichiers d%27en-tête\GameFiles</Filter>
     </ClInclude>
@@ -335,7 +320,22 @@
     <ClInclude Include="include\ItemMenu.h">
       <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
     </ClInclude>
-    <ClInclude Include="include\PokemonInventory.h">
+    <ClInclude Include="include\ChoiceMenu.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ItemInventoryMenu.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TitleMenu.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PokemonInventoryMenu.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ActionMenu.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ExplorationMenu.h">
       <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
     </ClInclude>
   </ItemGroup>

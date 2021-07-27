@@ -1,6 +1,7 @@
 #pragma once
 #include "Player.h"
 #include "Font.h"
+#include "TextBox.h"
 
 class Scene {
 public:

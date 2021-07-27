@@ -1,7 +1,7 @@
-#include "MiddleMenu.h"
+#include "TitleMenu.h"
 #include <iostream>
 
-MiddleMenu::MiddleMenu(std::unique_ptr<AMenu> decoratedMenu)
+TitleMenu::TitleMenu(std::unique_ptr<AMenu> decoratedMenu)
 	:
 	MenuListDecorator(std::move(decoratedMenu)) 
 {

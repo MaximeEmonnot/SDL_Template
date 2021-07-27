@@ -7,8 +7,7 @@
 #include "PokemonMenu.h"
 #include "ItemTypeMenu.h"
 #include "ItemMenu.h"
-#include "RightMenu.h"
-#include "TextBox.h"
+#include "ActionMenu.h"
 
 class FightingScene : public Scene {
 private:
@@ -22,6 +21,7 @@ private:
 		PlayerFighting,
 		PlayerHealing,
 		PlayerCatching,
+		PlayerSwitching,
 		PlayerFleeing,
 		EnemyAttacking,
 		EnemyCatched
@@ -40,6 +40,7 @@ private:
 
 	void Fight();
 	void Heal();
+	void Switch();
 	void Capture();
 	void Flee();
 
@@ -65,6 +66,7 @@ private:
 	std::unique_ptr<AMenu> itemTypeMenu;
 	std::unique_ptr<AMenu> consumableMenu;
 	std::unique_ptr<AMenu> ballMenu;
+	std::unique_ptr<AMenu> abilityMenu;
 	std::unique_ptr<AMenu> pokemonMenu;
 
 	TextBox text;

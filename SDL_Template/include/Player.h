@@ -32,7 +32,7 @@ public:
 	void Move();
 
 	void AddPokemon(Pokemon& pkmn);
-	void SetFirstPokemon(Pokemon& pkmn);
+	void SetFirstPokemon(int index);
 	Pokemon& GetPokemon();
 	std::vector<Pokemon> GetPokemonList() const;
 

@@ -1,9 +1,8 @@
 #pragma once
 #include "Scene.h"
-
 #include "Player.h"
 
-#include "BottomMenu.h"
+#include "ChoiceMenu.h"
 #include "Graphics.h"
 
 class ChoosingScene : public Scene {

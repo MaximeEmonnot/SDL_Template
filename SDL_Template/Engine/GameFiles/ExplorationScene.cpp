@@ -3,9 +3,9 @@
 ExplorationScene::ExplorationScene()
 	:
 	Scene(Scene::SceneType::ExplorationScene),
-	menu(std::make_unique<TopMenu>(std::make_unique<BasicMenu>())),
-	itemInventoryMenu(std::make_unique<ItemInventory>(std::make_unique<BasicMenu>())),
-	pokemonInventoryMenu(std::make_unique<PokemonInventory>(std::make_unique<BasicMenu>())),
+	explorationMenu(std::make_unique<ExplorationMenu>(std::make_unique<BasicMenu>())),
+	itemInventoryMenu(std::make_unique<ItemInventoryMenu>(std::make_unique<BasicMenu>())),
+	pokemonInventoryMenu(std::make_unique<PokemonInventoryMenu>(std::make_unique<BasicMenu>())),
 	pGrid(Grid::GetInstance()),
 	pPlayer(Player::GetInstance(Maths::IRect(384, 267, 32, 44), "json/player.json")),
 	pTimer(CoreSystem::Timer::GetInstance()),
@@ -44,8 +44,8 @@ void ExplorationScene::Update()
 	//Update menus
 	itemInventoryMenu = nullptr;
 	pokemonInventoryMenu = nullptr;
-	itemInventoryMenu = std::make_unique<ItemInventory>(std::make_unique<BasicMenu>());
-	pokemonInventoryMenu = std::make_unique<PokemonInventory>(std::make_unique<BasicMenu>());
+	itemInventoryMenu = std::make_unique<ItemInventoryMenu>(std::make_unique<BasicMenu>());
+	pokemonInventoryMenu = std::make_unique<PokemonInventoryMenu>(std::make_unique<BasicMenu>());
 
 	//Init from json
 	if (pPlayer->TEST_bInitFromJSON) {
@@ -65,7 +65,7 @@ void ExplorationScene::Update()
 		pGrid->Update();
 		break;
 	case MenuState::ShowingMenu:
-		menu->Update(output, pMouse);
+		explorationMenu->Update(output, pMouse);
 		switch (output) {
 		case 0:
 			pWnd->ExitGame();
@@ -142,7 +142,7 @@ void ExplorationScene::Draw()
 
 	switch (state) {
 	case MenuState::ShowingMenu:
-		menu->Draw();
+		explorationMenu->Draw();
 		break;
 	case MenuState::ShowingItemInventory:
 		itemInventoryMenu->Draw();

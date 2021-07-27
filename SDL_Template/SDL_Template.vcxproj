@@ -25,9 +25,10 @@
     <ClCompile Include="Engine\CoreSystem\ThreadPool.cpp" />
     <ClCompile Include="Engine\CoreSystem\Timer.cpp" />
     <ClCompile Include="Engine\CoreSystem\Window.cpp" />
+    <ClCompile Include="Engine\GameFiles\ActionMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\Ball.cpp" />
     <ClCompile Include="Engine\GameFiles\BasicMenu.cpp" />
-    <ClCompile Include="Engine\GameFiles\BottomMenu.cpp" />
+    <ClCompile Include="Engine\GameFiles\ChoiceMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\Button.cpp" />
     <ClCompile Include="Engine\GameFiles\ChoosingScene.cpp" />
     <ClCompile Include="Engine\GameFiles\Consumable.cpp" />
@@ -39,16 +40,16 @@
     <ClCompile Include="Engine\GameFiles\ItemTypeMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\MenuListDecorator.cpp" />
     <ClCompile Include="Engine\GameFiles\LeftMenu.cpp" />
-    <ClCompile Include="Engine\GameFiles\MiddleMenu.cpp" />
+    <ClCompile Include="Engine\GameFiles\TitleMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\Player.cpp" />
     <ClCompile Include="Engine\GameFiles\Pokemon.cpp" />
-    <ClCompile Include="Engine\GameFiles\PokemonInventory.cpp" />
+    <ClCompile Include="Engine\GameFiles\PokemonInventoryMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\PokemonMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\Scene.cpp" />
     <ClCompile Include="Engine\GameFiles\TextBox.cpp" />
     <ClCompile Include="Engine\GameFiles\TimerManager.cpp" />
     <ClCompile Include="Engine\GameFiles\TitleScene.cpp" />
-    <ClCompile Include="Engine\GameFiles\TopMenu.cpp" />
+    <ClCompile Include="Engine\GameFiles\ExplorationMenu.cpp" />
     <ClCompile Include="Engine\GraphicsManager\Animation.cpp" />
     <ClCompile Include="Engine\GraphicsManager\Font.cpp" />
     <ClCompile Include="Engine\GraphicsManager\Graphics.cpp" />
@@ -59,14 +60,13 @@
     <ClCompile Include="Engine\SoundManager\Effect.cpp" />
     <ClCompile Include="Engine\SoundManager\Music.cpp" />
     <ClCompile Include="Engine\SoundManager\SoundSystem.cpp" />
-    <ClCompile Include="include\RightMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AMenu.h" />
     <ClInclude Include="include\Animation.h" />
     <ClInclude Include="include\Ball.h" />
     <ClInclude Include="include\BasicMenu.h" />
-    <ClInclude Include="include\BottomMenu.h" />
+    <ClInclude Include="include\ChoiceMenu.h" />
     <ClInclude Include="include\Button.h" />
     <ClInclude Include="include\Character.h" />
     <ClInclude Include="include\ChoosingScene.h" />
@@ -81,21 +81,21 @@
     <ClInclude Include="include\Graphics.h" />
     <ClInclude Include="include\Grid.h" />
     <ClInclude Include="include\Item.h" />
-    <ClInclude Include="include\ItemInventory.h" />
+    <ClInclude Include="include\ItemInventoryMenu.h" />
     <ClInclude Include="include\ItemMenu.h" />
     <ClInclude Include="include\ItemTypeMenu.h" />
     <ClInclude Include="include\JSONParser.h" />
     <ClInclude Include="include\Keyboard.h" />
     <ClInclude Include="include\MenuListDecorator.h" />
-    <ClInclude Include="include\MiddleMenu.h" />
+    <ClInclude Include="include\TitleMenu.h" />
     <ClInclude Include="include\Mouse.h" />
     <ClInclude Include="include\Music.h" />
     <ClInclude Include="include\Player.h" />
     <ClInclude Include="include\Pokemon.h" />
-    <ClInclude Include="include\PokemonInventory.h" />
+    <ClInclude Include="include\PokemonInventoryMenu.h" />
     <ClInclude Include="include\PokemonMenu.h" />
     <ClInclude Include="include\Rect.h" />
-    <ClInclude Include="include\RightMenu.h" />
+    <ClInclude Include="include\ActionMenu.h" />
     <ClInclude Include="include\EngineException.h" />
     <ClInclude Include="include\Scene.h" />
     <ClInclude Include="include\SingletonMaker.h" />
@@ -108,7 +108,7 @@
     <ClInclude Include="include\Timer.h" />
     <ClInclude Include="include\TImerManager.h" />
     <ClInclude Include="include\TitleScene.h" />
-    <ClInclude Include="include\TopMenu.h" />
+    <ClInclude Include="include\ExplorationMenu.h" />
     <ClInclude Include="include\Vec2D.h" />
     <ClInclude Include="include\Window.h" />
   </ItemGroup>

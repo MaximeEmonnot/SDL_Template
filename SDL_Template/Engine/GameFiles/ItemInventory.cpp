@@ -1,6 +1,6 @@
-#include "ItemInventory.h"
+#include "ItemInventoryMenu.h"
 
-ItemInventory::ItemInventory(std::unique_ptr<AMenu> decoratedMenu)
+ItemInventoryMenu::ItemInventoryMenu(std::unique_ptr<AMenu> decoratedMenu)
 	:
 	MenuListDecorator(std::move(decoratedMenu)),
 	pPlayer(Player::GetInstance(Maths::IRect(384, 267, 32, 44), "json/player.json"))

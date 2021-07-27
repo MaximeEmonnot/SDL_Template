@@ -1,7 +1,7 @@
-#include "TopMenu.h"
+#include "ExplorationMenu.h"
 #include <iostream>
 
-TopMenu::TopMenu(std::unique_ptr<AMenu> decoratedMenu)
+ExplorationMenu::ExplorationMenu(std::unique_ptr<AMenu> decoratedMenu)
 	:
 	MenuListDecorator(std::move(decoratedMenu))
 {

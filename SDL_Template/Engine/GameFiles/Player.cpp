@@ -137,7 +137,7 @@ void Player::SaveJSON()
 
 	//Save selected pkmn
 	jsonWriter.AddObjectStringMember("Selected Pokemon", "Name", selectedPokemon->name);
-	jsonWriter.AddObjectMember("Selected Pokemon", "Characteristics", selectedPokemon->hp, selectedPokemon->currentMaxHP, selectedPokemon->att, selectedPokemon->def, selectedPokemon->def, selectedPokemon->lvl, selectedPokemon->id);
+	jsonWriter.AddObjectMember("Selected Pokemon", "Characteristics", selectedPokemon->hp, selectedPokemon->currentMaxHP, selectedPokemon->att, selectedPokemon->def, selectedPokemon->lvl, selectedPokemon->id);
 
 	//Save Pokemons
 	for (auto& pkmn : pokemon) {
@@ -219,14 +219,12 @@ void Player::Move()
 void Player::AddPokemon(Pokemon& pkmn)
 {
 	pokemon.push_back(pkmn);
-	if (pokemon.size() == 1) {
-		selectedPokemon = pokemon.begin();
-	}
+	selectedPokemon = pokemon.begin();
 }
 
-void Player::SetFirstPokemon(Pokemon& pkmn)
+void Player::SetFirstPokemon(int index)
 {
-	selectedPokemon = std::find(pokemon.begin(), pokemon.end(), pkmn);
+	selectedPokemon = std::next(pokemon.begin(), index);
 }
 
 Pokemon& Player::GetPokemon()

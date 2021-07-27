@@ -1,7 +1,7 @@
-#include "BottomMenu.h"
+#include "ChoiceMenu.h"
 #include <iostream>
 
-BottomMenu::BottomMenu(std::unique_ptr<AMenu> decoratedMenu)
+ChoiceMenu::ChoiceMenu(std::unique_ptr<AMenu> decoratedMenu)
 	:
 	MenuListDecorator(std::move(decoratedMenu))
 {

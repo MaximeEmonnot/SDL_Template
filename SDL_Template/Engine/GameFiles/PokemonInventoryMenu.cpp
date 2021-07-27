@@ -1,6 +1,6 @@
-#include "PokemonInventory.h"
+#include "PokemonInventoryMenu.h"
 
-PokemonInventory::PokemonInventory(std::unique_ptr<AMenu> decoratedMenu)
+PokemonInventoryMenu::PokemonInventoryMenu(std::unique_ptr<AMenu> decoratedMenu)
 	:
 	MenuListDecorator(std::move (decoratedMenu)),
 	pPlayer(Player::GetInstance(Maths::IRect(384, 267, 32, 44), "json/player.json"))

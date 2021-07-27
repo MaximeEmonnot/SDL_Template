@@ -7,10 +7,11 @@ FightingScene::FightingScene()
 	Scene(Scene::SceneType::FightingScene),
 	pPlayer(Player::GetInstance(Maths::IRect(384, 267, 32, 44), "json/player.json")),
 	pMouse(CoreSystem::Mouse::GetInstance()),
-	actionMenu(std::make_unique<RightMenu>(std::make_unique<BasicMenu>())),
+	actionMenu(std::make_unique<ActionMenu>(std::make_unique<BasicMenu>())),
 	itemTypeMenu(std::make_unique<ItemTypeMenu>(std::make_unique<BasicMenu>())),
 	consumableMenu(std::make_unique<ItemMenu<Consumable>>(std::make_unique<BasicMenu>())),
 	ballMenu(std::make_unique<ItemMenu<Ball>>(std::make_unique<BasicMenu>())),
+	abilityMenu(std::make_unique<AbilityMenu>(std::make_unique<BasicMenu>())),
 	pokemonMenu(std::make_unique<PokemonMenu>(std::make_unique<BasicMenu>())),
 	enemyPokemon(CreateRandomPokemon()),
 	enemyPkmnRect(500, 50, 128, 128),
@@ -27,9 +28,11 @@ FightingScene::~FightingScene()
 
 void FightingScene::Update()
 {
+	abilityMenu = nullptr;
 	pokemonMenu = nullptr;
 	consumableMenu = nullptr;
 	ballMenu = nullptr;
+	abilityMenu = std::make_unique<AbilityMenu>(std::make_unique<BasicMenu>());
 	pokemonMenu = std::make_unique<PokemonMenu>(std::make_unique<BasicMenu>());
 	consumableMenu = std::make_unique<ItemMenu<Consumable>>(std::make_unique<BasicMenu>());
 	ballMenu = std::make_unique<ItemMenu<Ball>>(std::make_unique<BasicMenu>());
@@ -53,6 +56,9 @@ void FightingScene::Update()
 		break;
 	case FightingState::PlayerCatching:
 		Capture();
+		break;
+	case FightingState::PlayerSwitching:
+		Switch();
 		break;
 	case FightingState::PlayerFleeing:
 		fleeTimer.Update();
@@ -85,6 +91,9 @@ void FightingScene::Update()
 			state = FightingState::ChoosingItemType;
 			break;
 		case 2:
+			state = FightingState::ChoosingPokemon;
+			break;
+		case 3:
 			fleeTimer.ResetTimer(2.0f);
 			state = FightingState::PlayerFleeing;
 			break;
@@ -93,7 +102,7 @@ void FightingScene::Update()
 		}
 		break;
 	case FightingState::ChoosingAbility:
-		pokemonMenu->Update(output, pMouse);
+		abilityMenu->Update(output, pMouse);
 		if (output != -1) {
 			//pPlayer->GetPokemon().SelectedAttack(output) OR defined in PokemonMenu;
 			if (output == 30) {
@@ -149,6 +158,17 @@ void FightingScene::Update()
 		}
 		break;
 	case FightingState::ChoosingPokemon:
+		pokemonMenu->Update(output, pMouse);
+		if (output != -1) {
+			if (output == 30) {
+				state = FightingState::ChoosingAction;
+			}
+			else {
+				attackTimer.ResetTimer(3.0f);
+				pPlayer->SetFirstPokemon(output);
+				state = FightingState::PlayerSwitching;
+			}
+		}
 		break;
 	default:
 		break;
@@ -174,7 +194,7 @@ void FightingScene::Draw()
 		actionMenu->Draw();
 		break;
 	case FightingState::ChoosingAbility:
-		pokemonMenu->Draw();
+		abilityMenu->Draw();
 		break;
 	case FightingState::ChoosingItemType:
 		itemTypeMenu->Draw();
@@ -186,12 +206,16 @@ void FightingScene::Draw()
 		ballMenu->Draw();
 		break;
 	case FightingState::ChoosingPokemon:
+		pokemonMenu->Draw();
 		break;
 	case FightingState::PlayerFighting:
 		text.Draw("You attacked the enemy Pokemon!", WHITE, WHITE);
 		break;
 	case FightingState::PlayerHealing:
 		text.Draw("You healed your pokemon!", WHITE, WHITE);
+		break;
+	case FightingState::PlayerSwitching:
+		text.Draw("You changed your lead pokemon!", WHITE, WHITE);
 		break;
 	case FightingState::PlayerCatching:
 		text.Draw("You threw a pokeball!", WHITE, WHITE);
@@ -256,6 +280,18 @@ void FightingScene::Fight()
 }
 
 void FightingScene::Heal()
+{
+	attackTimer.Update();
+	if (attackTimer.IsTimerDown()) {
+		enemyPokemon->Attack(pPlayer->GetPokemon());
+		state = FightingState::EnemyAttacking;
+		attackTimer.ResetTimer(3.0f);
+		std::cout << "Enemy has " << enemyPokemon->GetHP() << " HP left!\n";
+		std::cout << "Your pokemon has " << pPlayer->GetPokemon().GetHP() << " HP Left!\n";
+	}
+}
+
+void FightingScene::Switch()
 {
 	attackTimer.Update();
 	if (attackTimer.IsTimerDown()) {

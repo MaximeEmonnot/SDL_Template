@@ -33,61 +33,28 @@ Player::~Player()
 
 void Player::InitFromJSON()
 {
-	JSONParser::Reader jsonReader;
-	jsonReader.ReadFile("json/saveFile.json");
+	JSONParser::Reader jsonReaderSF;
+	jsonReaderSF.ReadFile("json/saveFile.json");
 
 	//Init consumables
-	if (jsonReader.IsValueAvailable("Consumables")) {
-		auto& consumableValue = jsonReader.GetValueOf("Consumables");
+	if (jsonReaderSF.IsValueAvailable("Consumables")) {
+		auto& consumableValue = jsonReaderSF.GetValueOf("Consumables");
 		for (auto itr = consumableValue.MemberBegin(); itr != consumableValue.MemberEnd(); ++itr) {
 			items.insert(std::pair<std::shared_ptr<Item>, int>(std::make_shared<Consumable>(itr->name.GetString(), itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt()), itr->value.GetArray()[2].GetInt()));
 		}
 	}
 
 	//Init balls
-	if (jsonReader.IsValueAvailable("Balls")) {
-		auto& ballValue = jsonReader.GetValueOf("Balls");
+	if (jsonReaderSF.IsValueAvailable("Balls")) {
+		auto& ballValue = jsonReaderSF.GetValueOf("Balls");
 		for (auto itr = ballValue.MemberBegin(); itr != ballValue.MemberEnd(); ++itr) {
 			items.insert(std::pair<std::shared_ptr<Item>, int>(std::make_shared<Ball>(itr->name.GetString(), itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt()), itr->value.GetArray()[2].GetInt()));
 		}
 	}
 
-	//Init lead pokemon
-	Pokemon pkmn;
-
-	auto& leadPkmn = jsonReader.GetValueOf("Selected Pokemon");
-
-	pkmn.name = leadPkmn.FindMember("Name")->value.GetString();
-	pkmn.hp = leadPkmn.FindMember("Characteristics")->value.GetArray()[0].GetInt();
-	pkmn.currentMaxHP = leadPkmn.FindMember("Characteristics")->value.GetArray()[1].GetInt();
-	pkmn.att = leadPkmn.FindMember("Characteristics")->value.GetArray()[2].GetInt();
-	pkmn.def = leadPkmn.FindMember("Characteristics")->value.GetArray()[3].GetInt();
-	pkmn.lvl = leadPkmn.FindMember("Characteristics")->value.GetArray()[4].GetInt();
-	pkmn.id = leadPkmn.FindMember("Characteristics")->value.GetArray()[5].GetInt();
-	pkmn.pGfx = GraphicsEngine::Graphics::GetInstance();
-	switch (pkmn.id)
-	{
-	case 1:
-		pkmn.type = Pokemon::Type::Grass;
-		pkmn.sprite.InitSurface("Images/bulbasaur.png");
-		break;
-	case 2:
-		pkmn.type = Pokemon::Type::Fire;
-		pkmn.sprite.InitSurface("Images/charmander.png");
-		break;
-	case 3:
-		pkmn.type = Pokemon::Type::Water;
-		pkmn.sprite.InitSurface("Images/squirttle.png");
-		break;
-	default:
-		break;
-	}
-
-	AddPokemon(pkmn);
-
 	//Init Pokemon list
-	if (jsonReader.IsValueAvailable("Pokemons")) {
-		auto& pokemonValue = jsonReader.GetValueOf("Pokemons");
+	if (jsonReaderSF.IsValueAvailable("Pokemons")) {
+		auto& pokemonValue = jsonReaderSF.GetValueOf("Pokemons");
 		for (auto itr = pokemonValue.MemberBegin(); itr != pokemonValue.MemberEnd(); ++itr) {
 			Pokemon newPkmn;
 
@@ -120,6 +87,15 @@ void Player::InitFromJSON()
 			AddPokemon(newPkmn);
 		}
 	}
+
+	//Init Pokemons abilities
+	for (auto& pkmn : pokemon) {
+		auto& pokemonValue = jsonReaderSF.GetValueOf(pkmn.name);
+		for (auto itr = pokemonValue.MemberBegin(); itr != pokemonValue.MemberEnd(); ++itr) {
+			pkmn.LoadAbility(Pokemon::Ability(itr->name.GetString(), itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt(), pkmn.type));
+		}
+	}
+
 }
 
 void Player::SaveJSON()
@@ -142,13 +118,18 @@ void Player::SaveJSON()
 	}
 
 	//Save selected pkmn
-	jsonWriter.AddObjectStringMember("Selected Pokemon", "Name", selectedPokemon->name);
-	jsonWriter.AddObjectMember("Selected Pokemon", "Characteristics", selectedPokemon->hp, selectedPokemon->currentMaxHP, selectedPokemon->att, selectedPokemon->def, selectedPokemon->lvl, selectedPokemon->id);
+	jsonWriter.AddObjectMember("Pokemons", selectedPokemon->name , selectedPokemon->hp, selectedPokemon->currentMaxHP, selectedPokemon->att, selectedPokemon->def, selectedPokemon->lvl, selectedPokemon->id);
+	for (auto& ability : selectedPokemon->GetAbilities()) {
+		jsonWriter.AddObjectMember(selectedPokemon->name, ability.GetName(), ability.GetPower(), ability.GetMaxPP());
+	}
 
 	//Save Pokemons
 	for (auto& pkmn : pokemon) {
 		if (pkmn != *selectedPokemon) {
 			jsonWriter.AddObjectMember("Pokemons", pkmn.GetName(), pkmn.hp, pkmn.currentMaxHP, pkmn.att, pkmn.def, pkmn.lvl, pkmn.id);
+			for (auto& ability : pkmn.GetAbilities()) {
+				jsonWriter.AddObjectMember(pkmn.name, ability.GetName(), ability.GetPower(), ability.GetMaxPP());
+			}
 		}
 	}
 

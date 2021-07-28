@@ -27,7 +27,7 @@ public:
 	~Player() override;
 
 	void InitFromJSON();
-	void SaveJSON();
+	void SaveToJSON();
 
 	void Move();
 

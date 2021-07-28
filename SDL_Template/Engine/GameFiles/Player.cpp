@@ -98,7 +98,7 @@ void Player::InitFromJSON()
 
 }
 
-void Player::SaveJSON()
+void Player::SaveToJSON()
 {
 	JSONParser::Writer jsonWriter;
 

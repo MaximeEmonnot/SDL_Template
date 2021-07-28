@@ -13,22 +13,38 @@ private:
 	friend class ExplorationScene;
 private:
 	class Tile {
+	private:
+		friend class Grid;
 	public:
-		enum class Type
+		enum class GroundType
 		{
 			Grass,
 			Rocks,
 			Sand,
 			None
 		};
+		enum class EventType {
+			 Item,
+			 Tree,
+			 Boulder,
+			 None
+		};
 	public:
+		Tile() = default;
 		Tile(int x_world_pos, int y_world_pos, int seed);
 
-		Tile::Type GetType();
-		Maths::IVec2D GetWorldPosition();
+		std::shared_ptr<Item> CreateItem(std::vector<std::shared_ptr<Item>> items);
+
+		void ClearEventType();
+
+		Tile::GroundType GetGroundType() const;
+		Tile::EventType GetEventType() const;
+		Maths::IVec2D GetWorldPosition() const;
 
 		bool PlayerTriggersFight(int player_x_pos, int player_y_pos);
 	private:
+		void InitFromJSON(int x_pos, int y_pos, Tile::GroundType g_type, Tile::EventType e_type);
+
 		uint32_t Lehmer32();
 
 		int rndInt(int min, int max);
@@ -37,7 +53,8 @@ private:
 		uint32_t nLehmer = 0;
 
 		Maths::IVec2D worldPos;
-		Tile::Type type = Tile::Type::None;
+		Tile::GroundType groundType = Tile::GroundType::None;
+		Tile::EventType eventType = Tile::EventType::None;
 	};
 public:
 	Grid();
@@ -52,9 +69,12 @@ public:
 
 private:
 	void GenerateGrid();
-	void GenerateItems();
 
-	bool NextTileIsRocks(const Maths::IVec2D& pos);
+	bool TileIsObstacleAt(const Maths::IVec2D& pos);
+
+	void InitFromJSON();
+	void SaveToJSON();
+
 
 private:
 	GraphicsEngine::Sprite tileSprite;
@@ -77,7 +97,8 @@ private:
 	long long yOffset = 0;
 	
 	int generationSeed;
-	std::vector<Tile> tiles;
+	//New version
+	std::unordered_map<Maths::IVec2D, Tile, Maths::IVec2D::Hash> tiles;
 
 	std::vector<std::shared_ptr<Item>> itemList;
 	std::unordered_map<Maths::IVec2D, std::shared_ptr<Item>, Maths::IVec2D::Hash> items;

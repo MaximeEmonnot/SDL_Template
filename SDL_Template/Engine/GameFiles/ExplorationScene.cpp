@@ -77,7 +77,7 @@ void ExplorationScene::Update()
 			state = MenuState::ShowingPokemonInventory;
 			break;
 		case 3:
-			pPlayer->SaveJSON();
+			pPlayer->SaveToJSON();
 			SaveToJSON();
 			break;
 		case 4:
@@ -178,56 +178,12 @@ void ExplorationScene::Draw()
 
 void ExplorationScene::SaveToJSON()
 {
-	JSONParser::Writer jsonWriter;
-
-	jsonWriter.AddValueForMember("Player", pGrid->GetWorldPosition().x, pGrid->GetWorldPosition().y);
-
-	for (auto& entry : pGrid->items) {
-		std::shared_ptr<Consumable> consumable = std::dynamic_pointer_cast<Consumable, Item>(entry.second);
-		if (consumable != nullptr) {
-			jsonWriter.AddObjectMember("Consumables", consumable->GetName(), entry.first.x, entry.first.y, consumable->GetID(), consumable->GetBonusValue());
-		}
-		else {
-			std::shared_ptr<Ball> ball = std::dynamic_pointer_cast<Ball, Item>(entry.second);
-			if (ball != nullptr) {
-				jsonWriter.AddObjectMember("Balls", ball->GetName(), entry.first.x, entry.first.y, ball->GetID(), ball->GetProbability());
-			}
-		}
-	}
-
-	jsonWriter.SaveJsonAt("json/mapCoords.json");
-
-	pPlayer->SaveJSON();
+	pGrid->SaveToJSON();
+	pPlayer->SaveToJSON();
 }
 
 void ExplorationScene::InitFromJSON()
 {
-	JSONParser::Reader jsonReader;
-	jsonReader.ReadFile("json/mapCoords.json");
-
-	std::unordered_map<Maths::IVec2D, std::shared_ptr<Item>, Maths::IVec2D::Hash> itemsFromJSON;
-
-	//Init consumables
-	if (jsonReader.IsValueAvailable("Consumables")) {
-		auto& consumables = jsonReader.GetValueOf("Consumables");
-		for (auto itr = consumables.MemberBegin(); itr != consumables.MemberEnd(); ++itr) {
-			itemsFromJSON.insert(std::pair<Maths::IVec2D, std::shared_ptr<Item>>(Maths::IVec2D(itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt()), std::make_shared<Consumable>(itr->name.GetString(), itr->value.GetArray()[2].GetInt(), itr->value.GetArray()[3].GetInt())));
-		}
-	}
-
-	//Init balls
-	if (jsonReader.IsValueAvailable("Balls")) {
-		auto& balls = jsonReader.GetValueOf("Balls");
-		for (auto itr = balls.MemberBegin(); itr != balls.MemberEnd(); ++itr) {
-			itemsFromJSON.insert(std::pair<Maths::IVec2D, std::shared_ptr<Item>>(Maths::IVec2D(itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt()), std::make_shared<Ball>(itr->name.GetString(), itr->value.GetArray()[2].GetInt(), itr->value.GetArray()[3].GetInt())));
-		}
-	}
-
-	auto& value = jsonReader.GetValueOf("Player");
-	pGrid->SetWorldPosition(Maths::IVec2D(value.GetArray()[0].GetInt(), value.GetArray()[1].GetInt()));
-
-	pGrid->items.clear();
-	pGrid->items = itemsFromJSON;
-	
-	pPlayer->InitFromJSON();
+	pGrid->InitFromJSON();
+	pPlayer->InitFromJSON();	
 }

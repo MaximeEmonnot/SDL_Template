@@ -31,7 +31,7 @@ private:
 		};
 	public:
 		Tile() = default;
-		Tile(int x_world_pos, int y_world_pos, int seed);
+		Tile(int x_world_pos, int y_world_pos, int seed, const Grid& grid);
 
 		std::shared_ptr<Item> CreateItem(std::vector<std::shared_ptr<Item>> items);
 
@@ -75,6 +75,7 @@ private:
 	void InitFromJSON();
 	void SaveToJSON();
 
+	int GetNeighbourGroundType(const Maths::IVec2D& pos, Grid::Tile::GroundType g_type) const;
 
 private:
 	GraphicsEngine::Sprite tileSprite;

@@ -1,28 +1,78 @@
 #include "Grid.h"
 #include <random>
 
-Grid::Tile::Tile(int x_world_pos, int y_world_pos, int seed)
+Grid::Tile::Tile(int x_world_pos, int y_world_pos, int seed, const Grid& grid)
 	:
 	worldPos(x_world_pos, y_world_pos)
 {
 	nLehmer = (x_world_pos & 0xFFFF) << seed | (y_world_pos & 0xFFFF);
 
-	// 50% grass 25% Forest 15% water 8% Rocks 2% Sand
-	if (rndInt(0, 10) < 8) {
-		groundType = GroundType::Sand;
-		if (rndInt(0, 100) < 1) {
+	int probaGrass = 0;
+	int probaRocks = 0;
+	switch (grid.GetNeighbourGroundType(worldPos, Tile::GroundType::Grass)) {
+	case 1:
+		probaGrass = 20;
+	case 2:
+	case 3:
+		probaGrass = 40;
+		break;
+	case 4:
+	case 5:
+		probaGrass = 55;
+		break;
+	case 6:
+	case 7:
+		probaGrass = 75;
+		break;
+	case 8:
+		probaGrass = 80;
+	default:
+		break;
+	}
+	switch (grid.GetNeighbourGroundType(worldPos, Tile::GroundType::Rocks))
+	{
+	case 1:
+	case 2:
+		probaRocks = 15;
+	case 3:
+	case 4:
+	case 5:
+		probaRocks = 10;
+	case 6:
+	case 7:
+	case 8:
+		probaRocks = 5;
+	default:
+		break;
+	}
+
+	if (rndInt(0, 100) < probaRocks) {
+		groundType = GroundType::Rocks;
+	}
+	else if (rndInt(0, 100) < probaGrass) {
+		groundType = GroundType::Grass;
+		if (rndInt(0, 200) < 1) {
 			eventType = EventType::Item;
 		}
 	}
 	else {
-		if (rndInt(0, 4) < 3) {
-			groundType = GroundType::Grass;
-			if (rndInt(0, 250) < 1) {
+		// 50% grass 25% Forest 15% water 8% Rocks 2% Sand
+		if (rndInt(0, 10) < 8) {
+			groundType = GroundType::Sand;
+			if (rndInt(0, 100) < 1) {
 				eventType = EventType::Item;
 			}
 		}
 		else {
-			groundType = GroundType::Rocks;
+			if (rndInt(0, 4) < 3) {
+				groundType = GroundType::Grass;
+				if (rndInt(0, 250) < 1) {
+					eventType = EventType::Item;
+				}
+			}
+			else {
+				groundType = GroundType::Rocks;
+			}
 		}
 	}
 }
@@ -109,12 +159,18 @@ Grid::Grid()
 	pGfx(GraphicsEngine::Graphics::GetInstance()),
 	pKbd(CoreSystem::Keyboard::GetInstance()),
 	pPlayer(Player::GetInstance(Maths::IRect(384, 267, 32, 44), "json/player.json")),
-	generationSeed(std::random_device{}()),
 	lastPlayerXPos(xOffset + 400),
 	lastPlayerYPos(yOffset + 300)
 {
+	//Init generation seed
+	std::mt19937 rng(std::random_device{}());
+	std::uniform_int_distribution<int> dist(-20, 20);
+	generationSeed = dist(rng);
+
+	//Init sprites
 	tileSprite.InitSurface("Images/tileSheet.png");
 
+	//Init item list
 	JSONParser::Reader jsonReader;
 	jsonReader.ReadFile("json/itemList.json");
 
@@ -137,7 +193,7 @@ void Grid::GenerateGrid()
 			Maths::IVec2D pos = Maths::IVec2D(j + int(xOffset / tileWidth), i + int(yOffset / tileHeight));
 			auto itr = tiles.find(pos);
 			if (itr == tiles.end()) {
-				Tile tile = Tile(j + int(xOffset / tileWidth), i + int(yOffset / tileHeight), 12);
+				Tile tile = Tile(j + int(xOffset / tileWidth), i + int(yOffset / tileHeight), generationSeed, *this);
 				tiles.insert(std::pair<Maths::IVec2D, Tile>(pos, tile));
 				if (tile.GetEventType() == Tile::EventType::Item) {
 					items.insert(std::pair<Maths::IVec2D, std::shared_ptr<Item>>(pos, tile.CreateItem(itemList)));
@@ -187,15 +243,20 @@ void Grid::InitFromJSON()
 			items.insert(std::pair<Maths::IVec2D, std::shared_ptr<Item>>(Maths::IVec2D(itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt()), std::make_shared<Ball>(itr->name.GetString(), itr->value.GetArray()[2].GetInt(), itr->value.GetArray()[3].GetInt())));
 		}
 	}
-
+	//Init Player
 	auto& value = jsonReader.GetValueOf("Player");
 	xOffset = value.GetArray()[0].GetInt(); 
 	yOffset = value.GetArray()[1].GetInt();
+
+	//Init seed
+	generationSeed = jsonReader.GetValueOf("Seed").GetInt();
 }
 
 void Grid::SaveToJSON()
 {
 	JSONParser::Writer jsonWriter;
+	//Save generation seed
+	jsonWriter.AddValueForMember("Seed", generationSeed);
 	//Save player position
 	jsonWriter.AddValueForMember("Player", xOffset, yOffset);
 	//Save tiles
@@ -219,6 +280,23 @@ void Grid::SaveToJSON()
 	}
 
 	jsonWriter.SaveJsonAt("json/mapCoords.json");
+}
+
+int Grid::GetNeighbourGroundType(const Maths::IVec2D& pos, Grid::Tile::GroundType g_type) const
+{
+	int ground = 0;
+	for (int i = -1; i <= 1; i++) {
+		for (int j = -1; j <= 1; j++) {
+			Maths::IVec2D neighbourPos = Maths::IVec2D(pos.x + i, pos.y + j);
+			if (neighbourPos != pos) {
+				auto itr = tiles.find(neighbourPos);
+				if (itr != tiles.end() && itr->second.GetGroundType() == g_type) {
+					ground++;
+				}
+			}
+		}
+	}
+	return ground;
 }
 
 void Grid::Update()

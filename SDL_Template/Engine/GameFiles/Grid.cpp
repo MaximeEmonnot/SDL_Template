@@ -1,14 +1,16 @@
 #include "Grid.h"
 #include <random>
+#include <iostream>
 
 Grid::Tile::Tile(int x_world_pos, int y_world_pos, int seed, const Grid& grid)
-	:
-	worldPos(x_world_pos, y_world_pos)
 {
-	nLehmer = (x_world_pos & 0xFFFF) << seed | (y_world_pos & 0xFFFF);
+	uint32_t nLehmer = (x_world_pos & 0xFFFF) << seed | (y_world_pos & 0xFFFF);
 
 	int probaGrass = 0;
 	int probaRocks = 0;
+
+	Maths::IVec2D worldPos = Maths::IVec2D(x_world_pos, y_world_pos);
+
 	switch (grid.GetNeighbourGroundType(worldPos, Tile::GroundType::Grass)) {
 	case 1:
 		probaGrass = 20;
@@ -46,32 +48,37 @@ Grid::Tile::Tile(int x_world_pos, int y_world_pos, int seed, const Grid& grid)
 		break;
 	}
 
-	if (rndInt(0, 100) < probaRocks) {
-		groundType = GroundType::Rocks;
-	}
-	else if (rndInt(0, 100) < probaGrass) {
-		groundType = GroundType::Grass;
-		if (rndInt(0, 200) < 1) {
-			eventType = EventType::Item;
-		}
+	if (rndInt(0, 1000, nLehmer) < 1) {
+		groundType = GroundType::House0;
 	}
 	else {
-		// 50% grass 25% Forest 15% water 8% Rocks 2% Sand
-		if (rndInt(0, 10) < 8) {
-			groundType = GroundType::Sand;
-			if (rndInt(0, 100) < 1) {
+		if (rndInt(0, 100, nLehmer) < probaRocks) {
+			groundType = GroundType::Rocks;
+		}
+		else if (rndInt(0, 100, nLehmer) < probaGrass) {
+			groundType = GroundType::Grass;
+			if (rndInt(0, 200, nLehmer) < 1) {
 				eventType = EventType::Item;
 			}
 		}
 		else {
-			if (rndInt(0, 4) < 3) {
-				groundType = GroundType::Grass;
-				if (rndInt(0, 250) < 1) {
+			// 50% grass 25% Forest 15% water 8% Rocks 2% Sand
+			if (rndInt(0, 10, nLehmer) < 8) {
+				groundType = GroundType::Sand;
+				if (rndInt(0, 100, nLehmer) < 1) {
 					eventType = EventType::Item;
 				}
 			}
 			else {
-				groundType = GroundType::Rocks;
+				if (rndInt(0, 4, nLehmer) < 3) {
+					groundType = GroundType::Grass;
+					if (rndInt(0, 250, nLehmer) < 1) {
+						eventType = EventType::Item;
+					}
+				}
+				else {
+					groundType = GroundType::Rocks;
+				}
 			}
 		}
 	}
@@ -115,14 +122,38 @@ Grid::Tile::GroundType Grid::Tile::GetGroundType() const
 	return groundType;
 }
 
-Maths::IVec2D Grid::Tile::GetWorldPosition() const
+bool Grid::Tile::IsObstacle() const
 {
-	return worldPos;
+	switch (groundType)
+	{
+	case Grid::Tile::GroundType::Rocks:
+	case Grid::Tile::GroundType::House0:
+	case Grid::Tile::GroundType::House1:
+	case Grid::Tile::GroundType::House2:
+	case Grid::Tile::GroundType::House3:
+	case Grid::Tile::GroundType::House4:
+	case Grid::Tile::GroundType::House5:
+	case Grid::Tile::GroundType::House6:
+	case Grid::Tile::GroundType::House7:
+	case Grid::Tile::GroundType::House8:
+	case Grid::Tile::GroundType::House9:
+	case Grid::Tile::GroundType::House10:
+	case Grid::Tile::GroundType::House11:
+	case Grid::Tile::GroundType::House12:
+	case Grid::Tile::GroundType::House13:
+	case Grid::Tile::GroundType::House14:
+	case Grid::Tile::GroundType::House15:
+		return true;
+		break;
+	default:
+		break;
+	}
+	return eventType == EventType::Item;
 }
 
-bool Grid::Tile::PlayerTriggersFight(int player_x_pos, int player_y_pos)
+bool Grid::Tile::PlayerTriggersFight()
 {
-	if (worldPos == Maths::IVec2D(player_x_pos, player_y_pos)) {
+	if (groundType == Tile::GroundType::Grass) {
 		std::mt19937 rng(std::random_device{}());
 		std::uniform_int_distribution<int> dist(0, 20);
 		if (dist(rng) == 1)
@@ -131,14 +162,13 @@ bool Grid::Tile::PlayerTriggersFight(int player_x_pos, int player_y_pos)
 	return false;
 }
 
-void Grid::Tile::InitFromJSON(int x_pos, int y_pos, Tile::GroundType g_type, Tile::EventType e_type)
+void Grid::Tile::InitFromJSON(Tile::GroundType g_type, Tile::EventType e_type)
 {
-	worldPos = Maths::IVec2D(x_pos, y_pos);
 	groundType = g_type;
 	eventType = e_type;
 }
 
-uint32_t Grid::Tile::Lehmer32()
+uint32_t Grid::Tile::Lehmer32(uint32_t nLehmer)
 {
 	nLehmer += 0xe120fc15;
 	uint64_t tmp;
@@ -149,9 +179,9 @@ uint32_t Grid::Tile::Lehmer32()
 	return m2;
 }
 
-int Grid::Tile::rndInt(int min, int max)
+int Grid::Tile::rndInt(int min, int max, uint32_t nLehmer)
 {
-	return (Lehmer32() % (max - min)) + min;
+	return (Lehmer32(nLehmer) % (max - min)) + min;
 }
 
 Grid::Grid()
@@ -159,8 +189,8 @@ Grid::Grid()
 	pGfx(GraphicsEngine::Graphics::GetInstance()),
 	pKbd(CoreSystem::Keyboard::GetInstance()),
 	pPlayer(Player::GetInstance(Maths::IRect(384, 267, 32, 44), "json/player.json")),
-	lastPlayerXPos(xOffset + 400),
-	lastPlayerYPos(yOffset + 300)
+	currentPlayerXPos(400),
+	currentPlayerYPos(300)
 {
 	//Init generation seed
 	std::mt19937 rng(std::random_device{}());
@@ -198,10 +228,27 @@ void Grid::GenerateGrid()
 				if (tile.GetEventType() == Tile::EventType::Item) {
 					items.insert(std::pair<Maths::IVec2D, std::shared_ptr<Item>>(pos, tile.CreateItem(itemList)));
 				}
+				if (tile.GetGroundType() == Tile::GroundType::House0) {
+					CreateHouseAt(pos);
+				}
 			}
 		}
 	}
 
+}
+
+void Grid::CreateHouseAt(const Maths::IVec2D& pos)
+{
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			Maths::IVec2D tilePos = Maths::IVec2D(i, j) + pos;
+			if (tilePos != pos) {
+				Tile tile;
+				tile.groundType = Grid::Tile::GroundType(int(Grid::Tile::GroundType::House0) + j * 4 + i);
+				tiles.insert(std::pair<Maths::IVec2D, Tile>(tilePos, tile));
+			}
+		}
+	}
 }
 
 bool Grid::TileIsObstacleAt(const Maths::IVec2D& pos)
@@ -211,7 +258,7 @@ bool Grid::TileIsObstacleAt(const Maths::IVec2D& pos)
 	//New version
 	auto itr = tiles.find(adaptatedPos);
 	if (itr != tiles.end()) {
-		return (itr->second.GetGroundType() == Grid::Tile::GroundType::Rocks) || (itr->second.GetEventType() == Grid::Tile::EventType::Item);
+		return itr->second.IsObstacle();
 	}
 }
 
@@ -224,7 +271,7 @@ void Grid::InitFromJSON()
 	auto& tileInfos = jsonReader.GetValueOf("Tiles");
 	for (auto itr = tileInfos.MemberBegin(); itr != tileInfos.MemberEnd(); ++itr) {
 		Tile tile;
-		tile.InitFromJSON(itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt(), Tile::GroundType(itr->value.GetArray()[2].GetInt()), Tile::EventType(itr->value.GetArray()[3].GetInt()));
+		tile.InitFromJSON(Tile::GroundType(itr->value.GetArray()[2].GetInt()), Tile::EventType(itr->value.GetArray()[3].GetInt()));
 		tiles.insert(std::pair<Maths::IVec2D, Tile>(Maths::IVec2D(itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt()), tile));
 	}
 
@@ -305,25 +352,25 @@ void Grid::Update()
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_UP)) {
 		if (!TileIsObstacleAt(Maths::IVec2D(400, 282))) {
 			yOffset -= 2;
-			currentPlayerYPos = lastPlayerYPos - 2;
+			currentPlayerYPos -= 2;
 		}
 	}
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_RIGHT)) {
 		if (!TileIsObstacleAt(Maths::IVec2D(418, 300))) {
 			xOffset += 2;
-			currentPlayerXPos = lastPlayerXPos + 2;
+			currentPlayerXPos += 2;
 		}
 	}
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_DOWN)) {
 		if (!TileIsObstacleAt(Maths::IVec2D(400, 318))) {
 			yOffset += 2;
-			currentPlayerYPos = lastPlayerYPos + 2;
+			currentPlayerYPos += 2;
 		}
 	}
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_LEFT)) {
 		if (!TileIsObstacleAt(Maths::IVec2D(382, 300))) {
 			xOffset -= 2;
-			currentPlayerXPos = lastPlayerXPos - 2;
+			currentPlayerXPos -= 2;
 		}
 	}
 	
@@ -364,6 +411,54 @@ void Grid::Draw()
 				case Grid::Tile::GroundType::Rocks:
 					srcRect = Maths::IRect(32, 0, 16, 16);
 					break;
+				case Grid::Tile::GroundType::House0:
+					srcRect = Maths::IRect(0, 16, 16, 16);
+					break;
+				case Grid::Tile::GroundType::House1:
+					srcRect = Maths::IRect(16, 16, 16, 16);
+					break;
+				case Grid::Tile::GroundType::House2:
+					srcRect = Maths::IRect(32, 16, 16, 16);
+					break;
+				case Grid::Tile::GroundType::House3:
+					srcRect = Maths::IRect(48, 16, 16, 16);
+					break;
+				case Grid::Tile::GroundType::House4:
+					srcRect = Maths::IRect(0, 32, 16, 16);
+					break;
+				case Grid::Tile::GroundType::House5:
+					srcRect = Maths::IRect(16, 32, 16, 16);
+					break;
+				case Grid::Tile::GroundType::House6:
+					srcRect = Maths::IRect(32, 32, 16, 16);
+					break;
+				case Grid::Tile::GroundType::House7:
+					srcRect = Maths::IRect(48, 32, 16, 16);
+					break;
+				case Grid::Tile::GroundType::House8:
+					srcRect = Maths::IRect(0, 48, 16, 16);
+					break;
+				case Grid::Tile::GroundType::House9:
+					srcRect = Maths::IRect(16, 48, 16, 16);
+					break;
+				case Grid::Tile::GroundType::House10:
+					srcRect = Maths::IRect(32, 48, 16, 16);
+					break;
+				case Grid::Tile::GroundType::House11:
+					srcRect = Maths::IRect(48, 48, 16, 16);
+					break;
+				case Grid::Tile::GroundType::House12:
+					srcRect = Maths::IRect(0, 64, 16, 16);
+					break;
+				case Grid::Tile::GroundType::House13:
+					srcRect = Maths::IRect(16, 64, 16, 16);
+					break;
+				case Grid::Tile::GroundType::House14:
+					srcRect = Maths::IRect(32, 64, 16, 16);
+					break;
+				case Grid::Tile::GroundType::House15:
+					srcRect = Maths::IRect(48, 64, 16, 16);
+					break;
 				default:
 					break;
 				}
@@ -381,15 +476,17 @@ void Grid::Draw()
 
 bool Grid::PlayerTriggersFight()
 {
-	if (Maths::IVec2D(int(currentPlayerXPos / tileWidth), int(currentPlayerYPos / tileHeight)) != Maths::IVec2D(int(lastPlayerXPos / tileWidth), int(lastPlayerYPos / tileHeight))) {
-		for (auto& tile : tiles) {
-			if (tile.second.GetGroundType() == Grid::Tile::GroundType::Grass) {
-				return tile.second.PlayerTriggersFight(int((xOffset + 400) / tileWidth), int((yOffset + 300) / tileHeight));
-			}
-		}
-	}
+	//New version
+	Maths::IVec2D currentPlayerPos = Maths::IVec2D(int(currentPlayerXPos / tileWidth), int(currentPlayerYPos / tileHeight));
+	Maths::IVec2D lastPlayerPos = Maths::IVec2D(int(lastPlayerXPos / tileWidth), int(lastPlayerYPos / tileHeight));
 	lastPlayerXPos = currentPlayerXPos;
 	lastPlayerYPos = currentPlayerYPos;
+	if (currentPlayerPos != lastPlayerPos) {
+		auto itr = tiles.find(currentPlayerPos);
+		if (itr != tiles.end()) {
+			return itr->second.PlayerTriggersFight();
+		}
+	}
 	return false;
 }
 

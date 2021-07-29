@@ -21,6 +21,22 @@ private:
 			Grass,
 			Rocks,
 			Sand,
+			House0,
+			House1,
+			House2,
+			House3,
+			House4,
+			House5,
+			House6,
+			House7,
+			House8,
+			House9,
+			House10,
+			House11,
+			House12,
+			House13,
+			House14,
+			House15,
 			None
 		};
 		enum class EventType {
@@ -39,20 +55,17 @@ private:
 
 		Tile::GroundType GetGroundType() const;
 		Tile::EventType GetEventType() const;
-		Maths::IVec2D GetWorldPosition() const;
 
-		bool PlayerTriggersFight(int player_x_pos, int player_y_pos);
+		bool IsObstacle() const;
+		bool PlayerTriggersFight();
 	private:
-		void InitFromJSON(int x_pos, int y_pos, Tile::GroundType g_type, Tile::EventType e_type);
+		void InitFromJSON(Tile::GroundType g_type, Tile::EventType e_type);
 
-		uint32_t Lehmer32();
+		uint32_t Lehmer32(uint32_t nLehmer);
 
-		int rndInt(int min, int max);
+		int rndInt(int min, int max, uint32_t nLehmer);
 
 	private:
-		uint32_t nLehmer = 0;
-
-		Maths::IVec2D worldPos;
 		Tile::GroundType groundType = Tile::GroundType::None;
 		Tile::EventType eventType = Tile::EventType::None;
 	};
@@ -69,6 +82,7 @@ public:
 
 private:
 	void GenerateGrid();
+	void CreateHouseAt(const Maths::IVec2D& pos);
 
 	bool TileIsObstacleAt(const Maths::IVec2D& pos);
 
@@ -100,6 +114,13 @@ private:
 	int generationSeed;
 	//New version
 	std::unordered_map<Maths::IVec2D, Tile, Maths::IVec2D::Hash> tiles;
+
+	///tests
+	std::unordered_map<Maths::IVec2D, int, Maths::IVec2D::Hash> test0;
+	std::unordered_map<Maths::IVec2D, float, Maths::IVec2D::Hash> test1;
+	std::unordered_map<Maths::IVec2D, double, Maths::IVec2D::Hash> test2;
+	std::unordered_map<Maths::IVec2D, char, Maths::IVec2D::Hash> test3;
+	std::unordered_map<Maths::IVec2D, bool, Maths::IVec2D::Hash> test4;
 
 	std::vector<std::shared_ptr<Item>> itemList;
 	std::unordered_map<Maths::IVec2D, std::shared_ptr<Item>, Maths::IVec2D::Hash> items;

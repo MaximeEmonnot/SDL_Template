@@ -35,6 +35,7 @@
     <ClCompile Include="Engine\GameFiles\ExplorationScene.cpp" />
     <ClCompile Include="Engine\GameFiles\FightingScene.cpp" />
     <ClCompile Include="Engine\GameFiles\Grid.cpp" />
+    <ClCompile Include="Engine\GameFiles\House.cpp" />
     <ClCompile Include="Engine\GameFiles\Item.cpp" />
     <ClCompile Include="Engine\GameFiles\ItemInventoryMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\ItemTypeMenu.cpp" />
@@ -80,6 +81,7 @@
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\Graphics.h" />
     <ClInclude Include="include\Grid.h" />
+    <ClInclude Include="include\House.h" />
     <ClInclude Include="include\Item.h" />
     <ClInclude Include="include\ItemInventoryMenu.h" />
     <ClInclude Include="include\ItemMenu.h" />

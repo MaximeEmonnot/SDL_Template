@@ -1,6 +1,7 @@
 #pragma once
 #include "Scene.h"
 #include "Grid.h"
+#include "House.h"
 #include "Font.h"
 
 #include "ExplorationMenu.h"
@@ -43,6 +44,7 @@ private:
 	std::unique_ptr<AMenu> itemInventoryMenu;
 	std::unique_ptr<AMenu> pokemonInventoryMenu;
 
+	House house;
 	std::shared_ptr<Grid> pGrid;
 	std::shared_ptr<Player> pPlayer;
 	std::shared_ptr<CoreSystem::Timer> pTimer;

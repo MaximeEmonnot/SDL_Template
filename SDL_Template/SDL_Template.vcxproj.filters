@@ -195,6 +195,9 @@
     <ClCompile Include="Engine\GameFiles\ItemInventoryMenu.cpp">
       <Filter>Fichiers sources\GameFiles\Menu</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GameFiles\House.cpp">
+      <Filter>Fichiers sources\GameFiles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\JSONParser.h">
@@ -343,6 +346,9 @@
     </ClInclude>
     <ClInclude Include="include\Item.h">
       <Filter>Fichiers d%27en-tête\GameFiles\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="include\House.h">
+      <Filter>Fichiers d%27en-tête\GameFiles</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

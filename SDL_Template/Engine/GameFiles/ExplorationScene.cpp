@@ -63,6 +63,7 @@ void ExplorationScene::Update()
 	case MenuState::None:
 		pPlayer->Move();
 		pGrid->Update();
+		//house.Update();
 		break;
 	case MenuState::ShowingMenu:
 		explorationMenu->Update(output, pMouse);
@@ -154,6 +155,7 @@ void ExplorationScene::Update()
 void ExplorationScene::Draw()
 {
 	pGrid->Draw();
+	//house.Draw();
 	pPlayer->Draw();
 
 	switch (state) {

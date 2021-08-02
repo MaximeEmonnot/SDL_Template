@@ -77,9 +77,6 @@ public:
 
 	bool PlayerTriggersFight();
 
-	void SetWorldPosition(Maths::IVec2D pos);
-	Maths::IVec2D GetWorldPosition();
-
 private:
 	void GenerateGrid();
 	void CreateHouseAt(const Maths::IVec2D& pos);
@@ -114,13 +111,6 @@ private:
 	int generationSeed;
 	//New version
 	std::unordered_map<Maths::IVec2D, Tile, Maths::IVec2D::Hash> tiles;
-
-	///tests
-	std::unordered_map<Maths::IVec2D, int, Maths::IVec2D::Hash> test0;
-	std::unordered_map<Maths::IVec2D, float, Maths::IVec2D::Hash> test1;
-	std::unordered_map<Maths::IVec2D, double, Maths::IVec2D::Hash> test2;
-	std::unordered_map<Maths::IVec2D, char, Maths::IVec2D::Hash> test3;
-	std::unordered_map<Maths::IVec2D, bool, Maths::IVec2D::Hash> test4;
 
 	std::vector<std::shared_ptr<Item>> itemList;
 	std::unordered_map<Maths::IVec2D, std::shared_ptr<Item>, Maths::IVec2D::Hash> items;

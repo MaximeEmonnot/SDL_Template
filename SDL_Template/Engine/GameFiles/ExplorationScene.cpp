@@ -173,7 +173,7 @@ void ExplorationScene::Draw()
 	default:
 		break;
 	}
-	pFont->DrawText(Maths::IVec2D(10, 10), (std::string("X     ") + std::to_string(pGrid->GetWorldPosition().x) + "\n" + std::string("Y     ") + std::to_string(pGrid->GetWorldPosition().y)).c_str(), RED);
+	pFont->DrawText(Maths::IVec2D(10, 10), (std::string("X     ") + std::to_string(pGrid->xOffset) + "\n" + std::string("Y     ") + std::to_string(pGrid->yOffset)).c_str(), RED);
 }
 
 void ExplorationScene::SaveToJSON()

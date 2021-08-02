@@ -489,14 +489,3 @@ bool Grid::PlayerTriggersFight()
 	}
 	return false;
 }
-
-void Grid::SetWorldPosition(Maths::IVec2D pos)
-{
-	xOffset = pos.x;
-	yOffset = pos.y;
-}
-
-Maths::IVec2D Grid::GetWorldPosition()
-{
-	return Maths::IVec2D(xOffset, yOffset);
-}

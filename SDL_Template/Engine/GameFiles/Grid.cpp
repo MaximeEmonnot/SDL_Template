@@ -472,11 +472,16 @@ void Grid::Draw()
 
 }
 
+void Grid::BlendSpriteTo(GraphicsEngine::Color c)
+{
+	tileSprite.BlendColor(c);
+}
+
 bool Grid::PlayerTriggersFight()
 {
 	//New version
-	Maths::IVec2D currentPlayerPos = Maths::IVec2D(int(currentPlayerXPos / tileWidth), int(currentPlayerYPos / tileHeight));
-	Maths::IVec2D lastPlayerPos = Maths::IVec2D(int(lastPlayerXPos / tileWidth), int(lastPlayerYPos / tileHeight));
+	Maths::IVec2D currentPlayerPos = Maths::IVec2D(int((currentPlayerXPos + 400)/ tileWidth), int((currentPlayerYPos + 300) / tileHeight));
+	Maths::IVec2D lastPlayerPos = Maths::IVec2D(int((lastPlayerXPos + 400) / tileWidth), int((lastPlayerYPos + 300) / tileHeight));
 	lastPlayerXPos = currentPlayerXPos;
 	lastPlayerYPos = currentPlayerYPos;
 	if (currentPlayerPos != lastPlayerPos) {

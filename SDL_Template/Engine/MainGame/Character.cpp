@@ -12,6 +12,11 @@ void Character::Draw()
 	mAnimations[miCurSequence].Draw(mRect);
 }
 
+void Character::BlendSpriteTo(GraphicsEngine::Color c)
+{
+	mSprite.BlendColor(c);
+}
+
 void Character::Update(float dt)
 {
 	mAnimations[miCurSequence].Update(dt);

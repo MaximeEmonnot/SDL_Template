@@ -187,11 +187,19 @@ void ExplorationScene::Update()
 
 void ExplorationScene::Draw()
 {
-	if(bIsInsideHouse) house.Draw();
-	else pGrid->Draw();
-	pPlayer->Draw();
+	pGrid->BlendSpriteTo(GraphicsEngine::Color(255, 255, 255, 255));
+	pPlayer->BlendSpriteTo(GraphicsEngine::Color(255, 255, 255, 255));
 
-	if (pTimer->IsNightTime()) pGfx->BlendScreenTo(GraphicsEngine::Color(64, 64, 128, 128));
+	if(bIsInsideHouse) house.Draw();
+	else {
+		if (!pTimer->IsNightTime())
+		{
+			pGrid->BlendSpriteTo(GraphicsEngine::Color(64, 64, 128, 128));
+			pPlayer->BlendSpriteTo(GraphicsEngine::Color(64, 64, 128, 128));
+		}
+		pGrid->Draw();
+	}
+	pPlayer->Draw();
 
 	if (bInTransition) {
 		pGfx->FadeOutScreen(transitionTimer.GetTimer() / 1.5f);

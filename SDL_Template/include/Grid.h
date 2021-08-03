@@ -75,6 +75,8 @@ public:
 	void Update();
 	void Draw();
 
+	void BlendSpriteTo(GraphicsEngine::Color c);
+
 	bool PlayerTriggersFight();
 	bool GoInside() const;
 private:

@@ -7,8 +7,10 @@ public:
 	Character(Maths::IRect rect);
 	virtual ~Character() = default;
 
-	void					Draw();
 	void					Update(float dt);
+	void					Draw();
+
+	void                    BlendSpriteTo(GraphicsEngine::Color c);
 
 	Maths::IRect			GetRect() const;
 

@@ -5,6 +5,7 @@
 #include "TImerManager.h"
 
 #include "PokemonMenu.h"
+#include "AbilityMenu.h"
 #include "ItemTypeMenu.h"
 #include "ItemMenu.h"
 #include "ActionMenu.h"

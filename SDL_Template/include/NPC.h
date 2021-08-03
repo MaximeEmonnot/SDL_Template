@@ -17,6 +17,7 @@ private:
 public:
 	NPC() = default;
 	NPC(Maths::IRect rect, const std::string& animFile, std::unique_ptr<AI> AI);
+	~NPC() override;
 
 	void Move(int newXOffset, int newYOffset);
 

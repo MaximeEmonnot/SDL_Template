@@ -26,6 +26,10 @@ NPC::NPC(Maths::IRect rect, const std::string& animFile, std::unique_ptr<AI> AI)
 	miCurSequence = (int)AnimationList::StandingRight;
 }
 
+NPC::~NPC()
+{
+}
+
 void NPC::Move(int newXOffset, int newYOffset)
 {
 	mRect.rect.x += newXOffset;

@@ -16,6 +16,7 @@ GraphicsEngine::Graphics::Graphics()
 
 GraphicsEngine::Graphics::~Graphics()
 {
+	SDL_DestroyTexture(mpTextureTarget);
 	SDL_DestroyRenderer(mpRenderer);
 }
 

@@ -215,25 +215,25 @@ void FightingScene::Draw()
 		pokemonMenu->Draw();
 		break;
 	case FightingState::PlayerFighting:
-		text.Draw("You attacked the enemy Pokemon!", WHITE, WHITE);
+		text.Draw("You attacked the enemy Pokemon!", BLACK, GRAY, WHITE);
 		break;
 	case FightingState::PlayerHealing:
-		text.Draw("You healed your pokemon!", WHITE, WHITE);
+		text.Draw("You healed your pokemon!", BLACK, GRAY, WHITE);
 		break;
 	case FightingState::PlayerSwitching:
-		text.Draw("You changed your lead pokemon!", WHITE, WHITE);
+		text.Draw("You changed your lead pokemon!", BLACK, GRAY, WHITE);
 		break;
 	case FightingState::PlayerCatching:
-		text.Draw("You threw a pokeball!", WHITE, WHITE);
+		text.Draw("You threw a pokeball!", BLACK, GRAY, WHITE);
 		break;
 	case FightingState::PlayerFleeing:
-		text.Draw("You are fleeing!", WHITE, WHITE);
+		text.Draw("You are fleeing!", BLACK, GRAY, WHITE);
 		break;
 	case FightingState::EnemyAttacking:
-		text.Draw("The enemy pokemon attacked you!", WHITE, WHITE);
+		text.Draw("The enemy pokemon attacked you!", BLACK, GRAY, WHITE);
 		break;
 	case FightingState::EnemyCatched:
-		text.Draw("You catched the enemy Pokemon!", WHITE, WHITE);
+		text.Draw("You catched the enemy Pokemon!", BLACK, GRAY, WHITE);
 		break;
 	default:
 		break;

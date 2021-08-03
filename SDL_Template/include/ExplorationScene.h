@@ -57,4 +57,7 @@ private:
 	std::shared_ptr<SoundEngine::SoundSystem> pSoundSystem;
 
 	TimerManager transitionTimer;
+	TimerManager saveTimer;
+
+	TextBox text;
 };

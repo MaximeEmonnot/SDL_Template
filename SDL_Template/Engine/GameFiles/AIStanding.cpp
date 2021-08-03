@@ -10,6 +10,10 @@ AIStanding::AIStanding()
 	timer.ResetTimer(dist(rng));
 }
 
+AIStanding::~AIStanding()
+{
+}
+
 void AIStanding::Update(NPC& npc)
 {
 	timer.Update();

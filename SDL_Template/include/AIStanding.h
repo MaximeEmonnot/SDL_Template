@@ -8,6 +8,7 @@
 class AIStanding : public AI {
 public:
 	AIStanding();
+	~AIStanding() override;
 
 	void Update(class NPC& npc) override;
 private:

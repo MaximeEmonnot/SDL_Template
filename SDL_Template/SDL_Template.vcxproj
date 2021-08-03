@@ -25,6 +25,7 @@
     <ClCompile Include="Engine\CoreSystem\ThreadPool.cpp" />
     <ClCompile Include="Engine\CoreSystem\Timer.cpp" />
     <ClCompile Include="Engine\CoreSystem\Window.cpp" />
+    <ClCompile Include="Engine\GameFiles\AbilityMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\ActionMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\AIStanding.cpp" />
     <ClCompile Include="Engine\GameFiles\Ball.cpp" />
@@ -65,6 +66,7 @@
     <ClCompile Include="Engine\SoundManager\SoundSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\AbilityMenu.h" />
     <ClInclude Include="include\AI.h" />
     <ClInclude Include="include\AIStanding.h" />
     <ClInclude Include="include\AMenu.h" />

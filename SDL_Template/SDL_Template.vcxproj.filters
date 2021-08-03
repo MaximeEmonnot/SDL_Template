@@ -204,6 +204,9 @@
     <ClCompile Include="Engine\GameFiles\AIStanding.cpp">
       <Filter>Fichiers sources\GameFiles\Entity</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GameFiles\AbilityMenu.cpp">
+      <Filter>Fichiers sources\GameFiles\Menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\JSONParser.h">
@@ -364,6 +367,9 @@
     </ClInclude>
     <ClInclude Include="include\AIStanding.h">
       <Filter>Fichiers d%27en-tête\GameFiles\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AbilityMenu.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

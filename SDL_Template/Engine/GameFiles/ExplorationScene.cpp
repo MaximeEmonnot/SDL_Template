@@ -12,7 +12,8 @@ ExplorationScene::ExplorationScene()
 	pMouse(CoreSystem::Mouse::GetInstance()),
 	pWnd(CoreSystem::Window::GetInstance()),
 	pKbd(CoreSystem::Keyboard::GetInstance()),
-	pSoundSystem(SoundEngine::SoundSystem::GetInstance())
+	pSoundSystem(SoundEngine::SoundSystem::GetInstance()),
+	text(Maths::IRect(25, 500, 200, 75))
 {
 }
 
@@ -41,6 +42,10 @@ void ExplorationScene::Update()
 		}
 	}
 
+	//Update Timers
+	transitionTimer.Update();
+	saveTimer.Update();
+
 	//Update menus
 	itemInventoryMenu = nullptr;
 	pokemonInventoryMenu = nullptr;
@@ -61,7 +66,6 @@ void ExplorationScene::Update()
 
 	switch (state) {
 	case MenuState::None:
-		transitionTimer.Update();
 		if (transitionTimer.IsTimerDown()) pPlayer->Move();
 		if (bIsInsideHouse) {
 			if (transitionTimer.IsTimerDown()) house.Update();
@@ -109,6 +113,7 @@ void ExplorationScene::Update()
 			state = MenuState::ShowingPokemonInventory;
 			break;
 		case 3:
+			saveTimer.ResetTimer(2.5f);
 			pPlayer->SaveToJSON();
 			SaveToJSON();
 			break;
@@ -226,6 +231,10 @@ void ExplorationScene::Draw()
 		break;
 	}
 	pFont->DrawText(Maths::IVec2D(10, 10), (std::string("X     ") + std::to_string(pGrid->xOffset) + "\n" + std::string("Y     ") + std::to_string(pGrid->yOffset)).c_str(), RED);
+
+	if (!saveTimer.IsTimerDown()) {
+		text.Draw("Game  saved  !", BLACK, GRAY, WHITE);
+	}
 }
 
 void ExplorationScene::SaveToJSON()

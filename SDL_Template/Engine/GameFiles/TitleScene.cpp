@@ -52,5 +52,5 @@ void TitleScene::Update()
 void TitleScene::Draw()
 {
 	titleMenu->Draw();
-	title.Draw("Game title text", WHITE, GRAY);
+	title.Draw("Game title text", BLACK, GRAY, WHITE);
 }

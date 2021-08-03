@@ -17,30 +17,39 @@ House::House()
 	auto& tileInfo = jsonReader.GetValueOf("Tiles");
 	for (auto itr = tileInfo.MemberBegin(); itr != tileInfo.MemberEnd(); ++itr) {
 		tiles.insert(std::pair<Maths::IVec2D, TileTypes>(Maths::IVec2D(itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt()), TileTypes(itr->value.GetArray()[2].GetInt())));
+		if ((itr->value.GetArray()[2].GetInt() & TileTypes::NPCTile) == TileTypes::NPCTile) {
+			pNpc = std::make_unique<NPC>(Maths::IRect(itr->value.GetArray()[0].GetInt() * tileWidth - xOffset + 400, itr->value.GetArray()[1].GetInt() * tileHeight - yOffset + 282, 32, 44), "json/npc.json", std::make_unique<AIStanding>());
+		}
 	}
 }
 
 void House::Update()
 {
+	pNpc->UpdateAI();
+
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_UP)) {
 		if (!IsObstacle(Maths::IVec2D(0, -18)))
 		{
 			yOffset -= 2;
+			pNpc->Move(0, 2);
 		}
 	}
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_RIGHT)) {
 		if (!IsObstacle(Maths::IVec2D(18, 0)) && !IsChair(Maths::IVec2D(18, 0))) {
 			xOffset += 2;
+			pNpc->Move(-2, 0);
 		}
 	}
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_DOWN)) {
 		if (!IsObstacle(Maths::IVec2D(0, 18))) {
 			yOffset += 2;
+			pNpc->Move(0, -2);
 		}
 	}
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_LEFT)) {
 		if (!IsObstacle(Maths::IVec2D(-18, 0)) && !IsChair(Maths::IVec2D(-18, 0))) {
 			xOffset -= 2;
+			pNpc->Move(2, 0);
 		}
 	}
 }
@@ -54,6 +63,7 @@ void House::Draw()
 			if (itr != tiles.end()) {
 				int tileType = itr->second & (~House::TileTypes::Flower);
 				tileType &= (~House::TileTypes::FlowerPot);
+				tileType &= (~House::TileTypes::NPCTile);
 				Maths::IRect srcRect = Maths::IRect((tileType % 6) * 16, (int(tileType / 6)) * 16, 16, 16);
 				pGfx->DrawSprite(Maths::IRect(itr->first.x * tileWidth - xOffset + 400, itr->first.y * tileHeight - yOffset + 300, tileWidth, tileHeight),srcRect, sprite);
 				if ((itr->second & House::TileTypes::FlowerPot) == House::TileTypes::FlowerPot) {
@@ -65,6 +75,7 @@ void House::Draw()
 			}
 		}
 	}
+	pNpc->Draw();
 }
 
 bool House::GoOutside() const
@@ -93,6 +104,7 @@ bool House::IsObstacle(Maths::IVec2D nextPos) const
 	if (itr != tiles.end()) {
 		return (itr->second & House::TileTypes::FlowerPot) == House::TileTypes::FlowerPot ||
 			(itr->second & House::TileTypes::Flower) == House::TileTypes::Flower ||
+			(itr->second & House::TileTypes::NPCTile) == House::TileTypes::NPCTile ||
 			!((itr->second == House::TileTypes::ChairL) ||
 			(itr->second == House::TileTypes::ChairR) ||
 			(itr->second == House::TileTypes::Carpet0) ||

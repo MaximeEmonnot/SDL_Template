@@ -26,6 +26,7 @@
     <ClCompile Include="Engine\CoreSystem\Timer.cpp" />
     <ClCompile Include="Engine\CoreSystem\Window.cpp" />
     <ClCompile Include="Engine\GameFiles\ActionMenu.cpp" />
+    <ClCompile Include="Engine\GameFiles\AIStanding.cpp" />
     <ClCompile Include="Engine\GameFiles\Ball.cpp" />
     <ClCompile Include="Engine\GameFiles\BasicMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\ChoiceMenu.cpp" />
@@ -41,6 +42,7 @@
     <ClCompile Include="Engine\GameFiles\ItemTypeMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\MenuListDecorator.cpp" />
     <ClCompile Include="Engine\GameFiles\LeftMenu.cpp" />
+    <ClCompile Include="Engine\GameFiles\NPC.cpp" />
     <ClCompile Include="Engine\GameFiles\TitleMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\Player.cpp" />
     <ClCompile Include="Engine\GameFiles\Pokemon.cpp" />
@@ -63,6 +65,8 @@
     <ClCompile Include="Engine\SoundManager\SoundSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\AI.h" />
+    <ClInclude Include="include\AIStanding.h" />
     <ClInclude Include="include\AMenu.h" />
     <ClInclude Include="include\Animation.h" />
     <ClInclude Include="include\Ball.h" />
@@ -89,6 +93,7 @@
     <ClInclude Include="include\JSONParser.h" />
     <ClInclude Include="include\Keyboard.h" />
     <ClInclude Include="include\MenuListDecorator.h" />
+    <ClInclude Include="include\NPC.h" />
     <ClInclude Include="include\TitleMenu.h" />
     <ClInclude Include="include\Mouse.h" />
     <ClInclude Include="include\Music.h" />

@@ -61,8 +61,6 @@ private:
 
 	std::vector<Pokemon> pokemon;
 
-	Maths::IVec2D worldPosition;
-
 	std::map<std::shared_ptr<Item>, int> items;
 	std::shared_ptr<CoreSystem::Keyboard> pKbd;
 	Maths::IVec2D velocity;

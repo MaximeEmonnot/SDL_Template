@@ -198,6 +198,12 @@
     <ClCompile Include="Engine\GameFiles\House.cpp">
       <Filter>Fichiers sources\GameFiles</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GameFiles\NPC.cpp">
+      <Filter>Fichiers sources\GameFiles\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameFiles\AIStanding.cpp">
+      <Filter>Fichiers sources\GameFiles\Entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\JSONParser.h">
@@ -349,6 +355,15 @@
     </ClInclude>
     <ClInclude Include="include\House.h">
       <Filter>Fichiers d%27en-tête\GameFiles</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NPC.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AI.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AIStanding.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Entity</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -3,6 +3,7 @@
 
 #include "Graphics.h"
 #include "Player.h"
+#include "NPC.h"
 
 class House {
 private:
@@ -41,7 +42,8 @@ private:
 		Floor1 = 31,
 		Floor2 = 32,
 		FlowerPot = 64,
-		Flower = 128
+		Flower = 128,
+		NPCTile = 256
 	};
 public:
 	House();
@@ -59,6 +61,7 @@ private:
 	GraphicsEngine::Sprite sprite;
 	std::shared_ptr<GraphicsEngine::Graphics> pGfx;
 	std::shared_ptr<CoreSystem::Keyboard> pKbd;
+	std::unique_ptr<NPC> pNpc;
 
 	std::unordered_map<Maths::IVec2D, TileTypes, Maths::IVec2D::Hash> tiles;
 

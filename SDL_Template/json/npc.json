@@ -1,0 +1,9 @@
+{
+  "filename" : "Images/npc.png",
+  "animations" : {
+      "StandingLeft" : [0, 0, 16, 22, 1, 1],
+      "StandingUp" : [16, 0, 16, 22, 1, 1],
+      "StandingRight" : [32, 0, 16, 22, 1, 1],
+      "StandingDown" : [48, 0, 16, 22, 1, 1]
+   }
+}

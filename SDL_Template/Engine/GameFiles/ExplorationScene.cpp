@@ -192,7 +192,7 @@ void ExplorationScene::Draw()
 
 	if(bIsInsideHouse) house.Draw();
 	else {
-		if (!pTimer->IsNightTime())
+		if (pTimer->IsNightTime())
 		{
 			pGrid->BlendSpriteTo(GraphicsEngine::Color(64, 64, 128, 128));
 			pPlayer->BlendSpriteTo(GraphicsEngine::Color(64, 64, 128, 128));

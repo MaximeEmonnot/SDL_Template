@@ -461,7 +461,6 @@ void Grid::Draw()
 				default:
 					break;
 				}
-				if (pTimer->IsNightTime()) tileSprite.BlendColor(GraphicsEngine::Color(64, 64, 128, 128));
 				pGfx->DrawSprite(Maths::IRect(itr->first.x * tileWidth - xOffset, itr->first.y * tileHeight - yOffset, tileWidth, tileHeight), srcRect, tileSprite);
 			
 				if (itr->second.GetEventType() == Tile::EventType::Item) {
@@ -487,4 +486,18 @@ bool Grid::PlayerTriggersFight()
 		}
 	}
 	return false;
+}
+
+bool Grid::GoInside() const
+{
+	Maths::IVec2D lookingAtPos = Maths::IVec2D(xOffset + 400, yOffset + 300);
+	lookingAtPos += pPlayer->GetLookingDirection() * 18;
+	lookingAtPos.x /= tileWidth;
+	lookingAtPos.y /= tileHeight;
+
+	auto itr = tiles.find(lookingAtPos);
+	if (itr != tiles.end() && itr->second.GetGroundType() == Tile::GroundType::House13) {
+		return pKbd->KeyIsPressed(SDL_SCANCODE_UP);
+	}
+ 	return false;
 }

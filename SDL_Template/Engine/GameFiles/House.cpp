@@ -18,29 +18,28 @@ House::House()
 	for (auto itr = tileInfo.MemberBegin(); itr != tileInfo.MemberEnd(); ++itr) {
 		tiles.insert(std::pair<Maths::IVec2D, TileTypes>(Maths::IVec2D(itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt()), TileTypes(itr->value.GetArray()[2].GetInt())));
 	}
-	printf("flowerpot value : %d", House::TileTypes::Flower);
 }
 
 void House::Update()
 {
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_UP)) {
-		if (!IsObstacle(Maths::IVec2D(400, 282)))
+		if (!IsObstacle(Maths::IVec2D(0, -18)))
 		{
 			yOffset -= 2;
 		}
 	}
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_RIGHT)) {
-		if (!IsObstacle(Maths::IVec2D(418, 300)) && !IsChair(Maths::IVec2D(418, 300))) {
+		if (!IsObstacle(Maths::IVec2D(18, 0)) && !IsChair(Maths::IVec2D(18, 0))) {
 			xOffset += 2;
 		}
 	}
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_DOWN)) {
-		if (!IsObstacle(Maths::IVec2D(400, 318))) {
+		if (!IsObstacle(Maths::IVec2D(0, 18))) {
 			yOffset += 2;
 		}
 	}
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_LEFT)) {
-		if (!IsObstacle(Maths::IVec2D(382, 300)) && !IsChair(Maths::IVec2D(382, 300))) {
+		if (!IsObstacle(Maths::IVec2D(-18, 0)) && !IsChair(Maths::IVec2D(-18, 0))) {
 			xOffset -= 2;
 		}
 	}
@@ -68,9 +67,28 @@ void House::Draw()
 	}
 }
 
-bool House::IsObstacle(Maths::IVec2D nextPos)
+bool House::GoOutside() const
 {
-	Maths::IVec2D pos = Maths::IVec2D(int((nextPos.x + xOffset - 400) / tileWidth), int((nextPos.y + yOffset - 300) / tileHeight));
+	House::TileTypes currentTile = GetCurrentTile();
+	if ((currentTile == House::TileTypes::Carpet0 ||
+		currentTile == House::TileTypes::Carpet1) && tiles.find(Maths::IVec2D(int(xOffset / tileWidth), int((yOffset + 18) / tileHeight))) == tiles.end()) {
+		return pKbd->KeyIsPressed(SDL_SCANCODE_DOWN);
+	}
+	return false;
+}
+
+House::TileTypes House::GetCurrentTile() const
+{
+	auto itr = tiles.find(Maths::IVec2D(int(xOffset / tileWidth), int(yOffset / tileHeight)));
+	if (itr != tiles.end()) {
+		return itr->second;
+	}
+	return TileTypes();
+}
+
+bool House::IsObstacle(Maths::IVec2D nextPos) const
+{
+	Maths::IVec2D pos = Maths::IVec2D(int((nextPos.x + xOffset) / tileWidth), int((nextPos.y + yOffset) / tileHeight));
 	auto itr = tiles.find(pos);
 	if (itr != tiles.end()) {
 		return (itr->second & House::TileTypes::FlowerPot) == House::TileTypes::FlowerPot ||
@@ -86,9 +104,9 @@ bool House::IsObstacle(Maths::IVec2D nextPos)
 	return true;
 }
 
-bool House::IsChair(Maths::IVec2D nextPos)
+bool House::IsChair(Maths::IVec2D nextPos) const
 {
-	Maths::IVec2D pos = Maths::IVec2D((nextPos.x + xOffset - 400) / tileWidth, (nextPos.y + yOffset - 300) / tileHeight);
+	Maths::IVec2D pos = Maths::IVec2D((nextPos.x + xOffset) / tileWidth, (nextPos.y + yOffset) / tileHeight);
 	auto itr = tiles.find(pos);
 	if (itr != tiles.end()) {
 		switch (itr->second) {

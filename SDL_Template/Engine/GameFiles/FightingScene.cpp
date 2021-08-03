@@ -7,6 +7,7 @@ FightingScene::FightingScene()
 	Scene(Scene::SceneType::FightingScene),
 	pPlayer(Player::GetInstance(Maths::IRect(384, 267, 32, 44), "json/player.json")),
 	pMouse(CoreSystem::Mouse::GetInstance()),
+	pKbd(CoreSystem::Keyboard::GetInstance()),
 	actionMenu(std::make_unique<ActionMenu>(std::make_unique<BasicMenu>())),
 	itemTypeMenu(std::make_unique<ItemTypeMenu>(std::make_unique<BasicMenu>())),
 	consumableMenu(std::make_unique<ItemMenu<Consumable>>(std::make_unique<BasicMenu>())),
@@ -29,6 +30,10 @@ FightingScene::~FightingScene()
 
 void FightingScene::Update()
 {
+	//Clear kbd queue
+	pKbd->ReadKey();
+	pKbd->ReadChar();
+
 	abilityMenu = nullptr;
 	pokemonMenu = nullptr;
 	consumableMenu = nullptr;

@@ -49,9 +49,12 @@ public:
 	void Update();
 	void Draw();
 
+	bool GoOutside() const;
+
 private:
-	bool IsObstacle(Maths::IVec2D nextPos);
-	bool IsChair(Maths::IVec2D nextPos);
+	TileTypes GetCurrentTile() const;
+	bool IsObstacle(Maths::IVec2D nextPos) const;
+	bool IsChair(Maths::IVec2D nextPos) const;
 private:
 	GraphicsEngine::Sprite sprite;
 	std::shared_ptr<GraphicsEngine::Graphics> pGfx;
@@ -65,5 +68,5 @@ private:
 	const int gridWidth = 25;
 
 	short xOffset = 160;
-	short yOffset = 224;
+	short yOffset = 242;
 };

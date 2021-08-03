@@ -76,7 +76,7 @@ public:
 	void Draw();
 
 	bool PlayerTriggersFight();
-
+	bool GoInside() const;
 private:
 	void GenerateGrid();
 	void CreateHouseAt(const Maths::IVec2D& pos);

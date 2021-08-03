@@ -61,9 +61,40 @@ void ExplorationScene::Update()
 
 	switch (state) {
 	case MenuState::None:
-		pPlayer->Move();
-		pGrid->Update();
-		//house.Update();
+		transitionTimer.Update();
+		if (transitionTimer.IsTimerDown()) pPlayer->Move();
+		if (bIsInsideHouse) {
+			if (transitionTimer.IsTimerDown()) house.Update();
+
+			//New
+			if (house.GoOutside()) {
+				transitionTimer.ResetTimer(0.75f);
+				bInTransition = true;
+			}
+			if (bInTransition)
+			{
+				if (transitionTimer.IsTimerDown()) {
+					bInTransition = false;
+					bIsInsideHouse = false;
+					transitionTimer.ResetTimer(1.0f);
+				}
+			}
+		}
+		else {
+			if (transitionTimer.IsTimerDown()) pGrid->Update();
+
+			if (pGrid->GoInside()) {
+				transitionTimer.ResetTimer(0.75f);
+				bInTransition = true;
+			}
+			if (bInTransition) {
+				if (transitionTimer.IsTimerDown()) {
+					bInTransition = false;
+					bIsInsideHouse = true;
+					transitionTimer.ResetTimer(1.0f);
+				}
+			}
+		}
 		break;
 	case MenuState::ShowingMenu:
 		explorationMenu->Update(output, pMouse);
@@ -131,32 +162,43 @@ void ExplorationScene::Update()
 
 	auto e = pKbd->ReadKey();
 
-	if (e.keycode == SDL_SCANCODE_ESCAPE && e.type == CoreSystem::Keyboard::Event::Type::Pressed) {
-		switch (state)
-		{
-		case ExplorationScene::MenuState::ShowingMenu:
-			state = MenuState::None;
-			break;
-		case ExplorationScene::MenuState::ShowingItemInventory:
-		case ExplorationScene::MenuState::ShowingPokemonInventory:
-		case ExplorationScene::MenuState::None:
-			state = MenuState::ShowingMenu;
-			break;
-		case MenuState::HealingPokemon:
-			state = MenuState::ShowingItemInventory;
-			break;
-		default:
-			break;
-		}
+	if (transitionTimer.IsTimerDown()) {
+		if (e.keycode == SDL_SCANCODE_ESCAPE && e.type == CoreSystem::Keyboard::Event::Type::Pressed) {
+			switch (state)
+			{
+			case ExplorationScene::MenuState::ShowingMenu:
+				state = MenuState::None;
+				break;
+			case ExplorationScene::MenuState::ShowingItemInventory:
+			case ExplorationScene::MenuState::ShowingPokemonInventory:
+			case ExplorationScene::MenuState::None:
+				state = MenuState::ShowingMenu;
+				break;
+			case MenuState::HealingPokemon:
+				state = MenuState::ShowingItemInventory;
+				break;
+			default:
+				break;
+			}
 
+		}
 	}
 }
 
 void ExplorationScene::Draw()
 {
-	pGrid->Draw();
-	//house.Draw();
+	if(bIsInsideHouse) house.Draw();
+	else pGrid->Draw();
 	pPlayer->Draw();
+
+	if (pTimer->IsNightTime()) pGfx->BlendScreenTo(GraphicsEngine::Color(64, 64, 128, 128));
+
+	if (bInTransition) {
+		pGfx->FadeOutScreen(transitionTimer.GetTimer() / 1.5f);
+	}
+	else if (!transitionTimer.IsTimerDown()) {
+		pGfx->FadeInScreen(transitionTimer.GetTimer() / 1.5f);
+	}
 
 	switch (state) {
 	case MenuState::ShowingMenu:

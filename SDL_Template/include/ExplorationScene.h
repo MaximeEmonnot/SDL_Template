@@ -8,6 +8,7 @@
 #include "PokemonInventoryMenu.h"
 #include "ItemInventoryMenu.h"
 
+#include "TImerManager.h"
 #include "SoundSystem.h"
 
 class ExplorationScene : public Scene
@@ -39,6 +40,8 @@ private:
 
 	bool bIsPlayingSong = false;
 	bool bCurrentDayState = false;
+	bool bIsInsideHouse = false;
+	bool bInTransition = false;
 
 	std::unique_ptr<AMenu> explorationMenu;
 	std::unique_ptr<AMenu> itemInventoryMenu;
@@ -52,4 +55,6 @@ private:
 	std::shared_ptr<CoreSystem::Window> pWnd;
 	std::shared_ptr<CoreSystem::Keyboard> pKbd;
 	std::shared_ptr<SoundEngine::SoundSystem> pSoundSystem;
+
+	TimerManager transitionTimer;
 };

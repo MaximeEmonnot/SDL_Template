@@ -63,7 +63,15 @@ namespace GraphicsEngine {
 		}
 		void						DrawSprite(Maths::IRect destRect, Maths::IRect srcRect, const Sprite& rSprite);
 
+		// Fades current screen
+		void                        FadeOutScreen(float percentage);
+		void                        FadeInScreen(float percentage);
+
+		// Blend current screen to a defined color
+		void                        BlendScreenTo(Color c);
+
 	private:
+		SDL_Texture*				mpTextureTarget;
 		SDL_Renderer*				mpRenderer;
 		Maths::IRect				mScreenRect;
 	};

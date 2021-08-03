@@ -44,7 +44,7 @@ public:
 
 	void TEST_PickUpItem(std::shared_ptr<Item> item);
 	void TEST_UseItem(int indexItem) {
-		TEST_UseItem(indexItem, selectedPokemon - pokemon.begin());
+		TEST_UseItem(indexItem, int(selectedPokemon - pokemon.begin()));
 	}
 	void TEST_UseItem(int indexItem, int indexPkmn);
 

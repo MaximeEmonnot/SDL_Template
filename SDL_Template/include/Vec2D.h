@@ -10,7 +10,7 @@ namespace Maths {
 		class Hash {
 		public:
 			size_t operator()(const Vec2D& vect) const {
-				std::hash<int> hasher;
+				std::hash<long long> hasher;
 				return (hasher(vect.x) ^ (hasher(vect.y) << 1)) >> 1;
 			}
 		};
@@ -107,6 +107,7 @@ namespace Maths {
 	};
 
 	typedef Vec2D<int> IVec2D;
+	typedef Vec2D<long long> LLVec2D;
 	typedef Vec2D<float> FVec2D;
 
 	template<typename T>

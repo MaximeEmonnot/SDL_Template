@@ -226,9 +226,12 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\includes\SDL2\SDL2_base\lib\x64\;..\includes\SDL2\SDL2_image\lib\x64\;..\includes\SDL2\SDL2_mixer\lib\x64\;..\includes\SDL2\SDL2_ttf\lib\x64\;..\includes\SDL2\SDL2_net\lib\x64\;..\includes\ICUE\lib\x64\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\includes\SDL2\SDL2_base\lib\x64\;..\includes\SDL2\SDL2_image\lib\x64\;..\includes\SDL2\SDL2_mixer\lib\x64\;..\includes\SDL2\SDL2_ttf\lib\x64\;..\includes\SDL2\SDL2_net\lib\x64\;..\includes\ICUE\lib\x64\;.\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;SDL2_net.lib;CUESDK.x64_2017.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y /d ".\lib\" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -246,11 +249,18 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\includes\SDL2\SDL2_base\lib\x64\;..\includes\SDL2\SDL2_image\lib\x64\;..\includes\SDL2\SDL2_mixer\lib\x64\;..\includes\SDL2\SDL2_ttf\lib\x64\;..\includes\SDL2\SDL2_net\lib\x64\;..\includes\ICUE\lib\x64\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\includes\SDL2\SDL2_base\lib\x64\;..\includes\SDL2\SDL2_image\lib\x64\;..\includes\SDL2\SDL2_mixer\lib\x64\;..\includes\SDL2\SDL2_ttf\lib\x64\;..\includes\SDL2\SDL2_net\lib\x64\;..\includes\ICUE\lib\x64\;.\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;SDL2_net.lib;CUESDK.x64_2017.lib;%(AdditionalDependencies)kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>
       </DelayLoadDLLs>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y /d ".\lib\" "$(OutDir)"
+xcopy /y /d ".\Images\" "$(OutDir)\Images\"
+xcopy /y /d ".\json\" "$(OutDir)\json\"
+xcopy /y /d ".\ttf\" "$(OutDir)\ttf\"
+xcopy /y /d ".\music\" "$(OutDir)\music\"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -13,5 +13,5 @@ public:
 
 private:
 	std::shared_ptr<CoreSystem::Timer> pTimer = CoreSystem::Timer::GetInstance();
-	float timer;
+	float timer = 0.0f;
 };

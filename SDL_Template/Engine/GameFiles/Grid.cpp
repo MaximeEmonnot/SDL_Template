@@ -8,7 +8,7 @@ Grid::Tile::Tile(int x_world_pos, int y_world_pos, int seed, const Grid& grid)
 	int probaGrass = 0;
 	int probaRocks = 0;
 
-	Maths::IVec2D worldPos = Maths::IVec2D(x_world_pos, y_world_pos);
+	Maths::LLVec2D worldPos = Maths::LLVec2D(x_world_pos, y_world_pos);
 
 	switch (grid.GetNeighbourGroundType(worldPos, Tile::GroundType::Grass)) {
 	case 1:
@@ -219,7 +219,7 @@ void Grid::GenerateGrid()
 	//New version : updates only if you see a new tile
 	for (int i = -1; i <= gridHeight; i++) {
 		for (int j = -1; j <= gridWidth; j++) {
-			Maths::IVec2D pos = Maths::IVec2D(j + int(xOffset / tileWidth), i + int(yOffset / tileHeight));
+			Maths::LLVec2D pos = Maths::LLVec2D(j + int(xOffset / tileWidth), i + int(yOffset / tileHeight));
 			auto itr = tiles.find(pos);
 			if (itr == tiles.end()) {
 				Tile tile = Tile(j + int(xOffset / tileWidth), i + int(yOffset / tileHeight), generationSeed, *this);
@@ -236,11 +236,11 @@ void Grid::GenerateGrid()
 
 }
 
-void Grid::CreateHouseAt(const Maths::IVec2D& pos)
+void Grid::CreateHouseAt(const Maths::LLVec2D& pos)
 {
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
-			Maths::IVec2D tilePos = Maths::IVec2D(i, j) + pos;
+			Maths::LLVec2D tilePos = Maths::LLVec2D(i, j) + pos;
 			if (tilePos != pos) {
 				Tile tile;
 				tile.groundType = Grid::Tile::GroundType(int(Grid::Tile::GroundType::House0) + j * 4 + i);
@@ -250,9 +250,9 @@ void Grid::CreateHouseAt(const Maths::IVec2D& pos)
 	}
 }
 
-bool Grid::TileIsObstacleAt(const Maths::IVec2D& pos)
+bool Grid::TileIsObstacleAt(const Maths::LLVec2D& pos)
 {
-	Maths::IVec2D adaptatedPos = Maths::IVec2D(int((xOffset + pos.x) / tileWidth), int((yOffset + pos.y) / tileWidth));
+	Maths::LLVec2D adaptatedPos = Maths::LLVec2D(int((xOffset + pos.x) / tileWidth), int((yOffset + pos.y) / tileWidth));
 
 	//New version
 	auto itr = tiles.find(adaptatedPos);
@@ -328,12 +328,12 @@ void Grid::SaveToJSON()
 	jsonWriter.SaveJsonAt("json/mapCoords.json");
 }
 
-int Grid::GetNeighbourGroundType(const Maths::IVec2D& pos, Grid::Tile::GroundType g_type) const
+int Grid::GetNeighbourGroundType(const Maths::LLVec2D& pos, Grid::Tile::GroundType g_type) const
 {
 	int ground = 0;
 	for (int i = -1; i <= 1; i++) {
 		for (int j = -1; j <= 1; j++) {
-			Maths::IVec2D neighbourPos = Maths::IVec2D(pos.x + i, pos.y + j);
+			Maths::LLVec2D neighbourPos = Maths::LLVec2D(pos.x + i, pos.y + j);
 			if (neighbourPos != pos) {
 				auto itr = tiles.find(neighbourPos);
 				if (itr != tiles.end() && itr->second.GetGroundType() == g_type) {
@@ -349,33 +349,33 @@ void Grid::Update()
 {
 	GenerateGrid();
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_UP)) {
-		if (!TileIsObstacleAt(Maths::IVec2D(400, 282))) {
+		if (!TileIsObstacleAt(Maths::LLVec2D(400, 282))) {
 			yOffset -= 2;
 			currentPlayerYPos -= 2;
 		}
 	}
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_RIGHT)) {
-		if (!TileIsObstacleAt(Maths::IVec2D(418, 300))) {
+		if (!TileIsObstacleAt(Maths::LLVec2D(418, 300))) {
 			xOffset += 2;
 			currentPlayerXPos += 2;
 		}
 	}
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_DOWN)) {
-		if (!TileIsObstacleAt(Maths::IVec2D(400, 318))) {
+		if (!TileIsObstacleAt(Maths::LLVec2D(400, 318))) {
 			yOffset += 2;
 			currentPlayerYPos += 2;
 		}
 	}
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_LEFT)) {
-		if (!TileIsObstacleAt(Maths::IVec2D(382, 300))) {
+		if (!TileIsObstacleAt(Maths::LLVec2D(382, 300))) {
 			xOffset -= 2;
 			currentPlayerXPos -= 2;
 		}
 	}
 	
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_LCTRL)) {
-		Maths::IVec2D lookingAtPos = Maths::IVec2D(xOffset + 400, yOffset + 300);
-		lookingAtPos += pPlayer->GetLookingDirection() * 18;
+		Maths::LLVec2D lookingAtPos = Maths::LLVec2D(xOffset + 400, yOffset + 300);
+		lookingAtPos += Maths::LLVec2D(pPlayer->GetLookingDirection() * 18);
 		lookingAtPos.x /= tileWidth;
 		lookingAtPos.y /= tileHeight;
 
@@ -396,7 +396,7 @@ void Grid::Draw()
 	//Draw Tiles (new version)
 	for (int i = -1; i <= gridHeight; i++) {
 		for (int j = -1; j <= gridWidth; j++) {
-			Maths::IVec2D pos = Maths::IVec2D(j + int(xOffset / tileWidth), i + int(yOffset / tileHeight));
+			Maths::LLVec2D pos = Maths::LLVec2D(j + int(xOffset / tileWidth), i + int(yOffset / tileHeight));
 			auto itr = tiles.find(pos);
 			if (itr != tiles.end()) {
 				Maths::IRect srcRect;
@@ -461,10 +461,10 @@ void Grid::Draw()
 				default:
 					break;
 				}
-				pGfx->DrawSprite(Maths::IRect(itr->first.x * tileWidth - xOffset, itr->first.y * tileHeight - yOffset, tileWidth, tileHeight), srcRect, tileSprite);
+				pGfx->DrawSprite(Maths::IRect(int(itr->first.x * tileWidth - xOffset), int(itr->first.y * tileHeight - yOffset), tileWidth, tileHeight), srcRect, tileSprite);
 			
 				if (itr->second.GetEventType() == Tile::EventType::Item) {
-					pGfx->DrawSprite(Maths::IRect(itr->first.x * tileWidth - xOffset, itr->first.y * tileHeight - yOffset, tileWidth, tileHeight), Maths::IRect(48, 0, 16, 16), tileSprite);
+					pGfx->DrawSprite(Maths::IRect(int(itr->first.x * tileWidth - xOffset), int(itr->first.y * tileHeight - yOffset), tileWidth, tileHeight), Maths::IRect(48, 0, 16, 16), tileSprite);
 				}
 			}
 		}
@@ -480,8 +480,8 @@ void Grid::BlendSpriteTo(GraphicsEngine::Color c)
 bool Grid::PlayerTriggersFight()
 {
 	//New version
-	Maths::IVec2D currentPlayerPos = Maths::IVec2D(int((currentPlayerXPos + 400)/ tileWidth), int((currentPlayerYPos + 300) / tileHeight));
-	Maths::IVec2D lastPlayerPos = Maths::IVec2D(int((lastPlayerXPos + 400) / tileWidth), int((lastPlayerYPos + 300) / tileHeight));
+	Maths::LLVec2D currentPlayerPos = Maths::LLVec2D(int((currentPlayerXPos + 400)/ tileWidth), int((currentPlayerYPos + 300) / tileHeight));
+	Maths::LLVec2D lastPlayerPos = Maths::LLVec2D(int((lastPlayerXPos + 400) / tileWidth), int((lastPlayerYPos + 300) / tileHeight));
 	lastPlayerXPos = currentPlayerXPos;
 	lastPlayerYPos = currentPlayerYPos;
 	if (currentPlayerPos != lastPlayerPos) {
@@ -495,8 +495,8 @@ bool Grid::PlayerTriggersFight()
 
 bool Grid::GoInside() const
 {
-	Maths::IVec2D lookingAtPos = Maths::IVec2D(xOffset + 400, yOffset + 300);
-	lookingAtPos += pPlayer->GetLookingDirection() * 18;
+	Maths::LLVec2D lookingAtPos = Maths::LLVec2D(xOffset + 400, yOffset + 300);
+	lookingAtPos += Maths::LLVec2D(pPlayer->GetLookingDirection() * 18);
 	lookingAtPos.x /= tileWidth;
 	lookingAtPos.y /= tileHeight;
 

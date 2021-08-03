@@ -81,14 +81,14 @@ public:
 	bool GoInside() const;
 private:
 	void GenerateGrid();
-	void CreateHouseAt(const Maths::IVec2D& pos);
+	void CreateHouseAt(const Maths::LLVec2D& pos);
 
-	bool TileIsObstacleAt(const Maths::IVec2D& pos);
+	bool TileIsObstacleAt(const Maths::LLVec2D& pos);
 
 	void InitFromJSON();
 	void SaveToJSON();
 
-	int GetNeighbourGroundType(const Maths::IVec2D& pos, Grid::Tile::GroundType g_type) const;
+	int GetNeighbourGroundType(const Maths::LLVec2D& pos, Grid::Tile::GroundType g_type) const;
 
 private:
 	GraphicsEngine::Sprite tileSprite;
@@ -112,8 +112,8 @@ private:
 	
 	int generationSeed;
 	//New version
-	std::unordered_map<Maths::IVec2D, Tile, Maths::IVec2D::Hash> tiles;
+	std::unordered_map<Maths::LLVec2D, Tile, Maths::LLVec2D::Hash> tiles;
 
 	std::vector<std::shared_ptr<Item>> itemList;
-	std::unordered_map<Maths::IVec2D, std::shared_ptr<Item>, Maths::IVec2D::Hash> items;
+	std::unordered_map<Maths::LLVec2D, std::shared_ptr<Item>, Maths::LLVec2D::Hash> items;
 };

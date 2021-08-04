@@ -66,7 +66,7 @@ void ExplorationScene::Update()
 
 	switch (state) {
 	case MenuState::None:
-		if (transitionTimer.IsTimerDown()) pPlayer->Move();
+		if (transitionTimer.IsTimerDown() && !pPlayer->IsTalking()) pPlayer->Move();
 		if (bIsInsideHouse) {
 			if (transitionTimer.IsTimerDown()) house.Update();
 
@@ -167,7 +167,7 @@ void ExplorationScene::Update()
 
 	auto e = pKbd->ReadKey();
 
-	if (transitionTimer.IsTimerDown()) {
+	if (transitionTimer.IsTimerDown() && !pPlayer->IsTalking()) {
 		if (e.keycode == SDL_SCANCODE_ESCAPE && e.type == CoreSystem::Keyboard::Event::Type::Pressed) {
 			switch (state)
 			{
@@ -231,6 +231,8 @@ void ExplorationScene::Draw()
 		break;
 	}
 	pFont->DrawText(Maths::IVec2D(10, 10), (std::string("X     ") + std::to_string(pGrid->xOffset) + "\n" + std::string("Y     ") + std::to_string(pGrid->yOffset)).c_str(), RED);
+	
+	pFont->DrawText(Maths::IVec2D(700, 10), (std::string("FPS   : ") + std::to_string(int(1 / pTimer->DeltaTime()))).c_str(), GREEN);
 
 	if (!saveTimer.IsTimerDown()) {
 		text.Draw("Game  saved  !", BLACK, GRAY, WHITE);

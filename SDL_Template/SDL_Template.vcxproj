@@ -28,6 +28,7 @@
     <ClCompile Include="Engine\GameFiles\AbilityMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\ActionMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\AIStanding.cpp" />
+    <ClCompile Include="Engine\GameFiles\AIWalking.cpp" />
     <ClCompile Include="Engine\GameFiles\Ball.cpp" />
     <ClCompile Include="Engine\GameFiles\BasicMenu.cpp" />
     <ClCompile Include="Engine\GameFiles\ChoiceMenu.cpp" />
@@ -69,6 +70,7 @@
     <ClInclude Include="include\AbilityMenu.h" />
     <ClInclude Include="include\AI.h" />
     <ClInclude Include="include\AIStanding.h" />
+    <ClInclude Include="include\AIWalking.h" />
     <ClInclude Include="include\AMenu.h" />
     <ClInclude Include="include\Animation.h" />
     <ClInclude Include="include\Ball.h" />

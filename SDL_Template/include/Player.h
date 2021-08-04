@@ -40,6 +40,11 @@ public:
 
 	void DrawPokemon();
 
+	void Talk();
+	void StopTalking();
+
+	bool IsTalking() const;
+
 	bool TEST_CapturePokemon(int index, Pokemon& pkmn);
 
 	void TEST_PickUpItem(std::shared_ptr<Item> item);
@@ -56,6 +61,7 @@ public:
 	bool TEST_bInitFromJSON = false;
 
 private:
+	bool bIsTalking = false;
 
 	std::vector<Pokemon>::iterator selectedPokemon;
 

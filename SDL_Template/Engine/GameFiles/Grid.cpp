@@ -150,13 +150,17 @@ bool Grid::Tile::IsObstacle() const
 	return eventType == EventType::Item;
 }
 
-bool Grid::Tile::PlayerTriggersFight()
+bool Grid::Tile::PlayerTriggersFight(const Grid& grid)
 {
 	if (groundType == Tile::GroundType::Grass) {
 		std::mt19937 rng(std::random_device{}());
 		std::uniform_int_distribution<int> dist(0, 20);
-		if (dist(rng) == 1)
-			return true;
+		if (grid.pTimer->IsNightTime()) {
+			return (dist(rng) <= 4);
+		}
+		else {
+			return (dist(rng) == 1);
+		}
 	}
 	return false;
 }
@@ -487,7 +491,7 @@ bool Grid::PlayerTriggersFight()
 	if (currentPlayerPos != lastPlayerPos) {
 		auto itr = tiles.find(currentPlayerPos);
 		if (itr != tiles.end()) {
-			return itr->second.PlayerTriggersFight();
+			return itr->second.PlayerTriggersFight(*this);
 		}
 	}
 	return false;

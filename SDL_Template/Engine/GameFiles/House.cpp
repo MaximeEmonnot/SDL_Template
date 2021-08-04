@@ -3,7 +3,10 @@
 House::House()
 	:
 	pGfx(GraphicsEngine::Graphics::GetInstance()),
-	pKbd(CoreSystem::Keyboard::GetInstance())
+	pKbd(CoreSystem::Keyboard::GetInstance()),
+	pTimer(CoreSystem::Timer::GetInstance()),
+	pPlayer(Player::GetInstance(Maths::IRect(384, 267, 32, 44), "json/player.json")),
+	text(Maths::IRect(Maths::IRect(25, 500, 200, 75)))
 {
 	//Sprite initialisation
 	sprite.InitSurface("Images/houseTileSheet.png");
@@ -16,40 +19,65 @@ House::House()
 
 	auto& tileInfo = jsonReader.GetValueOf("Tiles");
 	for (auto itr = tileInfo.MemberBegin(); itr != tileInfo.MemberEnd(); ++itr) {
-		tiles.insert(std::pair<Maths::IVec2D, TileTypes>(Maths::IVec2D(itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt()), TileTypes(itr->value.GetArray()[2].GetInt())));
+		int tileValue = (itr->value.GetArray()[2].GetInt() & (~TileTypes::NPCTile));
+		tiles.insert(std::pair<Maths::IVec2D, TileTypes>(Maths::IVec2D(itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt()), TileTypes(tileValue)));
 		if ((itr->value.GetArray()[2].GetInt() & TileTypes::NPCTile) == TileTypes::NPCTile) {
-			pNpc = std::make_unique<NPC>(Maths::IRect(itr->value.GetArray()[0].GetInt() * tileWidth - xOffset + 400, itr->value.GetArray()[1].GetInt() * tileHeight - yOffset + 282, 32, 44), "json/npc.json", std::make_unique<AIStanding>());
+			pNpc = std::make_unique<NPC>(Maths::IRect(itr->value.GetArray()[0].GetInt() * tileWidth - xOffset + 400, itr->value.GetArray()[1].GetInt() * tileHeight - yOffset + 282, 32, 44), Maths::IVec2D(itr->value.GetArray()[0].GetInt() * tileWidth, itr->value.GetArray()[1].GetInt() * tileHeight), "json/npc.json", std::make_unique<AIWalking>(tiles));
 		}
 	}
 }
 
 void House::Update()
 {
+	pNpc->Update(pTimer->DeltaTime());
 	pNpc->UpdateAI();
 
-	if (pKbd->KeyIsPressed(SDL_SCANCODE_UP)) {
-		if (!IsObstacle(Maths::IVec2D(0, -18)))
-		{
-			yOffset -= 2;
-			pNpc->Move(0, 2);
+	if (!pPlayer->IsTalking()) {
+		if (pKbd->KeyIsPressed(SDL_SCANCODE_UP)) {
+			if (!IsObstacle(Maths::IVec2D(0, -18)) &&
+				!IsOccupedByNPC(Maths::IVec2D(0, -18)))
+			{
+				yOffset -= 2;
+				pNpc->Move(0, 2);
+			}
+		}
+		if (pKbd->KeyIsPressed(SDL_SCANCODE_RIGHT)) {
+			if (!IsObstacle(Maths::IVec2D(18, 0)) &&
+				!IsChair(Maths::IVec2D(18, 0)) &&
+				!IsOccupedByNPC(Maths::IVec2D(18, 0))) {
+				xOffset += 2;
+				pNpc->Move(-2, 0);
+			}
+		}
+		if (pKbd->KeyIsPressed(SDL_SCANCODE_DOWN)) {
+			if (!IsObstacle(Maths::IVec2D(0, 18)) &&
+				!IsOccupedByNPC(Maths::IVec2D(0, 18))) {
+				yOffset += 2;
+				pNpc->Move(0, -2);
+			}
+		}
+		if (pKbd->KeyIsPressed(SDL_SCANCODE_LEFT)) {
+			if (!IsObstacle(Maths::IVec2D(-18, 0)) &&
+				!IsChair(Maths::IVec2D(-18, 0)) &&
+				!IsOccupedByNPC(Maths::IVec2D(-18, 0))) {
+				xOffset -= 2;
+				pNpc->Move(2, 0);
+			}
+		}
+
+		if (pKbd->KeyIsPressed(SDL_SCANCODE_LCTRL)) {
+			if (IsOccupedByNPC(pPlayer->GetLookingDirection() * 18)) {
+				pPlayer->Talk();
+				pNpc->Talk(-pPlayer->GetLookingDirection());
+				talkTimer.ResetTimer(1.5f);
+			}
 		}
 	}
-	if (pKbd->KeyIsPressed(SDL_SCANCODE_RIGHT)) {
-		if (!IsObstacle(Maths::IVec2D(18, 0)) && !IsChair(Maths::IVec2D(18, 0))) {
-			xOffset += 2;
-			pNpc->Move(-2, 0);
-		}
-	}
-	if (pKbd->KeyIsPressed(SDL_SCANCODE_DOWN)) {
-		if (!IsObstacle(Maths::IVec2D(0, 18))) {
-			yOffset += 2;
-			pNpc->Move(0, -2);
-		}
-	}
-	if (pKbd->KeyIsPressed(SDL_SCANCODE_LEFT)) {
-		if (!IsObstacle(Maths::IVec2D(-18, 0)) && !IsChair(Maths::IVec2D(-18, 0))) {
-			xOffset -= 2;
-			pNpc->Move(2, 0);
+	else {
+		talkTimer.Update();
+		if (talkTimer.IsTimerDown()) {
+			pPlayer->StopTalking();
+			pNpc->StopTalking();
 		}
 	}
 }
@@ -76,6 +104,9 @@ void House::Draw()
 		}
 	}
 	pNpc->Draw();
+	if (pPlayer->IsTalking()) {
+		text.Draw("Hello  !", BLACK, GRAY, WHITE);
+	}
 }
 
 bool House::GoOutside() const
@@ -92,7 +123,7 @@ House::TileTypes House::GetCurrentTile() const
 {
 	auto itr = tiles.find(Maths::IVec2D(int(xOffset / tileWidth), int(yOffset / tileHeight)));
 	if (itr != tiles.end()) {
-		return itr->second;
+		return House::TileTypes(itr->second);
 	}
 	return TileTypes();
 }
@@ -104,7 +135,6 @@ bool House::IsObstacle(Maths::IVec2D nextPos) const
 	if (itr != tiles.end()) {
 		return (itr->second & House::TileTypes::FlowerPot) == House::TileTypes::FlowerPot ||
 			(itr->second & House::TileTypes::Flower) == House::TileTypes::Flower ||
-			(itr->second & House::TileTypes::NPCTile) == House::TileTypes::NPCTile ||
 			!((itr->second == House::TileTypes::ChairL) ||
 			(itr->second == House::TileTypes::ChairR) ||
 			(itr->second == House::TileTypes::Carpet0) ||
@@ -130,4 +160,11 @@ bool House::IsChair(Maths::IVec2D nextPos) const
 		}
 	}
 	return false;
+}
+
+bool House::IsOccupedByNPC(Maths::IVec2D nextPos) const
+{
+	Maths::IVec2D pos = Maths::IVec2D((nextPos.x + xOffset) / tileWidth, (nextPos.y + yOffset) / tileHeight);
+	Maths::IVec2D npcPos = Maths::IVec2D((pNpc->GetRect().GetCenterOfRect().x - 400 + xOffset) / tileWidth, (pNpc->GetRect().GetCenterOfRect().y - 282 + yOffset) / tileHeight);
+	return pos == npcPos;
 }

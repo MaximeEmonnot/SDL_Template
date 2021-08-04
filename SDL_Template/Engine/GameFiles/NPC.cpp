@@ -1,11 +1,14 @@
 #include "NPC.h"
 
-NPC::NPC(Maths::IRect rect, const std::string& animFile, std::unique_ptr<AI> AI)
+NPC::NPC(Maths::IRect rect, Maths::IVec2D pos, const std::string& animFile, std::unique_ptr<AI> AI)
 	:
 	Character(rect),
-	pAI(std::move(AI))
+	pAI(std::move(AI)),
+	localPos(pos)
 {
-
+	localPos.x += 16;
+	localPos.y += 16;
+	printf("pos npc x: %d , pos npc y: %d\n", localPos.x, localPos.y);
 	//Read json
 	JSONParser::Reader jsonParse;
 	jsonParse.ReadFile(animFile);
@@ -36,7 +39,30 @@ void NPC::Move(int newXOffset, int newYOffset)
 	mRect.rect.y += newYOffset;
 }
 
+void NPC::Talk(Maths::IVec2D lookingDir)
+{
+	bIsControlledByAI = false;
+
+	if (lookingDir == Maths::IVec2D(1, 0)) {
+		miCurSequence = int(AnimationList::StandingRight);
+	}
+	else if (lookingDir == Maths::IVec2D(-1, 0)) {
+		miCurSequence = int(AnimationList::StandingLeft);
+	}
+	else if (lookingDir == Maths::IVec2D(0, 1)) {
+		miCurSequence = int(AnimationList::StandingDown);
+	}
+	else if (lookingDir == Maths::IVec2D(0, -1)) {
+		miCurSequence = int(AnimationList::StandingUp);
+	}
+}
+
+void NPC::StopTalking()
+{
+	bIsControlledByAI = true;
+}
+
 void NPC::UpdateAI()
 {
-	pAI->Update(*this);
+	if (bIsControlledByAI) pAI->Update(*this);
 }

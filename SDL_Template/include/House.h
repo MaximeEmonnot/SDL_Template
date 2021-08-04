@@ -2,11 +2,12 @@
 #include <unordered_map>
 
 #include "Graphics.h"
+#include "TextBox.h"
 #include "Player.h"
 #include "NPC.h"
 
 class House {
-private:
+public:
 	enum TileTypes {
 		Table00 = 0,
 		Table01 = 1,
@@ -57,13 +58,19 @@ private:
 	TileTypes GetCurrentTile() const;
 	bool IsObstacle(Maths::IVec2D nextPos) const;
 	bool IsChair(Maths::IVec2D nextPos) const;
+	bool IsOccupedByNPC(Maths::IVec2D nextPos) const;
 private:
 	GraphicsEngine::Sprite sprite;
 	std::shared_ptr<GraphicsEngine::Graphics> pGfx;
 	std::shared_ptr<CoreSystem::Keyboard> pKbd;
+	std::shared_ptr<CoreSystem::Timer> pTimer;
+	std::shared_ptr<Player> pPlayer;
 	std::unique_ptr<NPC> pNpc;
 
-	std::unordered_map<Maths::IVec2D, TileTypes, Maths::IVec2D::Hash> tiles;
+	std::unordered_map<Maths::IVec2D, int, Maths::IVec2D::Hash> tiles;
+
+	TimerManager talkTimer;
+	TextBox text;
 
 	const int tileWidth = 32;
 	const int tileHeight = 32;

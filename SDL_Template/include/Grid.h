@@ -57,7 +57,7 @@ private:
 		Tile::EventType GetEventType() const;
 
 		bool IsObstacle() const;
-		bool PlayerTriggersFight();
+		bool PlayerTriggersFight(const Grid& grid);
 	private:
 		void InitFromJSON(Tile::GroundType g_type, Tile::EventType e_type);
 

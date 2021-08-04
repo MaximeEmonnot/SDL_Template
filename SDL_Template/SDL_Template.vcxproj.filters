@@ -70,6 +70,12 @@
     <Filter Include="Fichiers d%27en-tête\GameFiles\Items">
       <UniqueIdentifier>{d0e978c3-dba6-4752-b0bf-532a1a0de7ce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\GameFiles\Entity\AI">
+      <UniqueIdentifier>{6d983f0e-7be8-4528-b1dc-79740869ace5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\GameFiles\Entity\AI">
+      <UniqueIdentifier>{e97dfc60-d3df-4741-8e83-e508efd5c981}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\main.cpp">
@@ -201,11 +207,14 @@
     <ClCompile Include="Engine\GameFiles\NPC.cpp">
       <Filter>Fichiers sources\GameFiles\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameFiles\AIStanding.cpp">
-      <Filter>Fichiers sources\GameFiles\Entity</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\GameFiles\AbilityMenu.cpp">
       <Filter>Fichiers sources\GameFiles\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameFiles\AIStanding.cpp">
+      <Filter>Fichiers sources\GameFiles\Entity\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameFiles\AIWalking.cpp">
+      <Filter>Fichiers sources\GameFiles\Entity\AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -362,14 +371,17 @@
     <ClInclude Include="include\NPC.h">
       <Filter>Fichiers d%27en-tête\GameFiles\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\AI.h">
-      <Filter>Fichiers d%27en-tête\GameFiles\Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="include\AIStanding.h">
-      <Filter>Fichiers d%27en-tête\GameFiles\Entity</Filter>
-    </ClInclude>
     <ClInclude Include="include\AbilityMenu.h">
       <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AIWalking.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Entity\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AI.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Entity\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AIStanding.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Entity\AI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -236,6 +236,34 @@ void Player::DrawPokemon()
 	}
 }
 
+void Player::Talk()
+{
+	bIsTalking = true;
+
+	if (lookingDirection == Maths::IVec2D(0, -1)) {
+		miCurSequence = int(AnimationList::StandingUp);
+	}
+	if (lookingDirection == Maths::IVec2D(1, 0)) {
+		miCurSequence = int(AnimationList::StandingRight);
+	}
+	if (lookingDirection == Maths::IVec2D(0, 1)) {
+		miCurSequence = int(AnimationList::StandingDown);
+	}
+	if (lookingDirection == Maths::IVec2D(-1, 0)) {
+		miCurSequence = int(AnimationList::StandingLeft);
+	}
+}
+
+void Player::StopTalking()
+{
+	bIsTalking = false;
+}
+
+bool Player::IsTalking() const
+{
+	return bIsTalking;
+}
+
 bool Player::TEST_CapturePokemon(int index, Pokemon& pkmn)
 {
 	auto itr = std::find_if(items.begin(), items.end(), [&](std::pair<std::shared_ptr<Item>, int> item) {return index == item.first->GetID(); });

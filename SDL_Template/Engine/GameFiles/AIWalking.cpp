@@ -29,6 +29,21 @@ void AIWalking::Update(NPC& npc)
 		while (animSequence == npc.miCurSequence) {
 			animSequence = npc.miCurSequence;
 			npc.miCurSequence = animDist(rng);
+
+			switch (NPC::AnimationList(npc.miCurSequence)) {
+			case NPC::AnimationList::WalkingLeft:
+				if (NextTileIsObstacle(Maths::IVec2D(-16, 0), npc)) animSequence = npc.miCurSequence;
+				break;
+			case NPC::AnimationList::WalkingUp:
+				if (NextTileIsObstacle(Maths::IVec2D(0, -20), npc)) animSequence = npc.miCurSequence;
+				break;
+			case NPC::AnimationList::WalkingRight:
+				if (NextTileIsObstacle(Maths::IVec2D(16, 0), npc)) animSequence = npc.miCurSequence;
+				break;
+			case NPC::AnimationList::WalkingDown:
+				if (NextTileIsObstacle(Maths::IVec2D(0, 20), npc)) animSequence = npc.miCurSequence;
+				break;
+			}
 		}
 		bWillBeColliding = false;
 		if (npc.miCurSequence < 4) {

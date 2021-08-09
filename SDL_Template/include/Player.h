@@ -26,9 +26,6 @@ public:
 	Player(Maths::IRect rect, const std::string& animFile);
 	~Player() override;
 
-	void InitFromJSON();
-	void SaveToJSON();
-
 	void Move();
 
 	void AddPokemon(Pokemon& pkmn);
@@ -56,6 +53,11 @@ public:
 	bool TEST_CanUseItem(int index);
 
 	std::map<std::shared_ptr<Item>, int> GetItemList() const;
+
+private:
+
+	void InitFromJSON();
+	void SaveToJSON();
 
 public:
 	bool TEST_bInitFromJSON = false;

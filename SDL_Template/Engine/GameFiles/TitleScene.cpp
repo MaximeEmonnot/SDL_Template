@@ -3,11 +3,8 @@
 TitleScene::TitleScene()
 	:
 	Scene(Scene::SceneType::TitleScene),
-	pWnd(CoreSystem::Window::GetInstance()),
-	pMouse(CoreSystem::Mouse::GetInstance()),
 	titleMenu(std::make_unique<TitleMenu>(std::make_unique<BasicMenu>())),
-	title(Maths::IRect(150, 25, 200, 100)),
-	pPlayer(Player::GetInstance(Maths::IRect(384, 267, 32, 44), "json/player.json"))
+	title(Maths::IRect(150, 25, 200, 100))
 {
 }
 

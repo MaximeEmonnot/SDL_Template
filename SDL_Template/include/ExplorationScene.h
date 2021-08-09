@@ -48,13 +48,7 @@ private:
 	std::unique_ptr<AMenu> pokemonInventoryMenu;
 
 	House house;
-	std::shared_ptr<Grid> pGrid;
-	std::shared_ptr<Player> pPlayer;
-	std::shared_ptr<CoreSystem::Timer> pTimer;
-	std::shared_ptr<CoreSystem::Mouse> pMouse;
-	std::shared_ptr<CoreSystem::Window> pWnd;
-	std::shared_ptr<CoreSystem::Keyboard> pKbd;
-	std::shared_ptr<SoundEngine::SoundSystem> pSoundSystem;
+	std::shared_ptr<World> pWorld;
 
 	TimerManager transitionTimer;
 	TimerManager saveTimer;

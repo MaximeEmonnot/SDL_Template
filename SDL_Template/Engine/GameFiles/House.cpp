@@ -22,7 +22,7 @@ House::House()
 		int tileValue = (itr->value.GetArray()[2].GetInt() & (~TileTypes::NPCTile));
 		tiles.insert(std::pair<Maths::IVec2D, TileTypes>(Maths::IVec2D(itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt()), TileTypes(tileValue)));
 		if ((itr->value.GetArray()[2].GetInt() & TileTypes::NPCTile) == TileTypes::NPCTile) {
-			pNpc = std::make_unique<NPC>(Maths::IRect(itr->value.GetArray()[0].GetInt() * tileWidth - xOffset + 400, itr->value.GetArray()[1].GetInt() * tileHeight - yOffset + 282, 32, 44), Maths::IVec2D(itr->value.GetArray()[0].GetInt() * tileWidth, itr->value.GetArray()[1].GetInt() * tileHeight), "json/npc.json", std::make_unique<AIWalking>(tiles));
+			pNpc = std::make_unique<NPC>(Maths::IRect(itr->value.GetArray()[0].GetInt() * tileWidth - xOffset + 400, itr->value.GetArray()[1].GetInt() * tileHeight - yOffset + 282, 32, 44), Maths::IVec2D(itr->value.GetArray()[0].GetInt() * tileWidth, itr->value.GetArray()[1].GetInt() * tileHeight), "json/npc.json", std::make_unique<AIStanding>());
 		}
 	}
 }
@@ -134,7 +134,7 @@ bool House::IsObstacle(Maths::IVec2D nextPos) const
 	auto itr = tiles.find(pos);
 	if (itr != tiles.end()) {
 		return (itr->second & House::TileTypes::FlowerPot) == House::TileTypes::FlowerPot ||
-			(itr->second & House::TileTypes::Flower) == House::TileTypes::Flower ||
+			//(itr->second & House::TileTypes::Flower) == House::TileTypes::Flower ||
 			!((itr->second == House::TileTypes::ChairL) ||
 			(itr->second == House::TileTypes::ChairR) ||
 			(itr->second == House::TileTypes::Carpet0) ||

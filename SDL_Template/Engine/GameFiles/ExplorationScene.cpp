@@ -6,20 +6,14 @@ ExplorationScene::ExplorationScene()
 	explorationMenu(std::make_unique<ExplorationMenu>(std::make_unique<BasicMenu>())),
 	itemInventoryMenu(std::make_unique<ItemInventoryMenu>(std::make_unique<BasicMenu>())),
 	pokemonInventoryMenu(std::make_unique<PokemonInventoryMenu>(std::make_unique<BasicMenu>())),
-	pGrid(Grid::GetInstance()),
-	pPlayer(Player::GetInstance(Maths::IRect(384, 267, 32, 44), "json/player.json")),
-	pTimer(CoreSystem::Timer::GetInstance()),
-	pMouse(CoreSystem::Mouse::GetInstance()),
-	pWnd(CoreSystem::Window::GetInstance()),
-	pKbd(CoreSystem::Keyboard::GetInstance()),
-	pSoundSystem(SoundEngine::SoundSystem::GetInstance()),
+	pWorld(World::GetInstance()),
 	text(Maths::IRect(25, 500, 200, 75))
 {
 }
 
 ExplorationScene::~ExplorationScene()
 {
-	pGrid->Kill();
+	pWorld->Kill();
 }
 
 void ExplorationScene::Update()
@@ -85,9 +79,9 @@ void ExplorationScene::Update()
 			}
 		}
 		else {
-			if (transitionTimer.IsTimerDown()) pGrid->Update();
+			if (transitionTimer.IsTimerDown()) pWorld->Update();
 
-			if (pGrid->GoInside()) {
+			if (pWorld->GoInside()) {
 				transitionTimer.ResetTimer(0.75f);
 				bInTransition = true;
 			}
@@ -158,7 +152,7 @@ void ExplorationScene::Update()
 		break;
 	}
 
-	if (pGrid->PlayerTriggersFight() && !pPlayer->GetPokemon().IsDead()) {
+	if (pWorld->PlayerTriggersFight() && !pPlayer->GetPokemon().IsDead()) {
 		bWillChangeScene = true;
 		bIsPlayingSong = false;
 		pSoundSystem->StopSounds();
@@ -192,17 +186,17 @@ void ExplorationScene::Update()
 
 void ExplorationScene::Draw()
 {
-	pGrid->BlendSpriteTo(GraphicsEngine::Color(255, 255, 255, 255));
+	pWorld->BlendSpriteTo(GraphicsEngine::Color(255, 255, 255, 255));
 	pPlayer->BlendSpriteTo(GraphicsEngine::Color(255, 255, 255, 255));
 
 	if(bIsInsideHouse) house.Draw();
 	else {
 		if (pTimer->IsNightTime())
 		{
-			pGrid->BlendSpriteTo(GraphicsEngine::Color(64, 64, 128, 128));
+			pWorld->BlendSpriteTo(GraphicsEngine::Color(64, 64, 128, 128));
 			pPlayer->BlendSpriteTo(GraphicsEngine::Color(64, 64, 128, 128));
 		}
-		pGrid->Draw();
+		pWorld->Draw();
 	}
 	pPlayer->Draw();
 
@@ -230,7 +224,7 @@ void ExplorationScene::Draw()
 	default:
 		break;
 	}
-	pFont->DrawText(Maths::IVec2D(10, 10), (std::string("X     ") + std::to_string(pGrid->xOffset) + "\n" + std::string("Y     ") + std::to_string(pGrid->yOffset)).c_str(), RED);
+	pFont->DrawText(Maths::IVec2D(10, 10), (std::string("X     ") + std::to_string(pWorld->xOffset) + "\n" + std::string("Y     ") + std::to_string(pWorld->yOffset)).c_str(), RED);
 	
 	pFont->DrawText(Maths::IVec2D(700, 10), (std::string("FPS   : ") + std::to_string(int(1 / pTimer->DeltaTime()))).c_str(), GREEN);
 
@@ -241,12 +235,12 @@ void ExplorationScene::Draw()
 
 void ExplorationScene::SaveToJSON()
 {
-	pGrid->SaveToJSON();
+	pWorld->SaveToJSON();
 	pPlayer->SaveToJSON();
 }
 
 void ExplorationScene::InitFromJSON()
 {
-	pGrid->InitFromJSON();
+	pWorld->InitFromJSON();
 	pPlayer->InitFromJSON();	
 }

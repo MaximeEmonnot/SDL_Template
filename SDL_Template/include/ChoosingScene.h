@@ -8,7 +8,6 @@
 class ChoosingScene : public Scene {
 public:
 	ChoosingScene();
-	~ChoosingScene();
 
 	void Update() override;
 	void Draw() override;
@@ -17,8 +16,6 @@ private:
 	Pokemon& GetChoice(int choice);
 
 private:
-	std::shared_ptr<Player> pPlayer;
-	std::shared_ptr <CoreSystem::Mouse> pMouse; 
 	Pokemon choice0;
 	Pokemon choice1;
 	Pokemon choice2;

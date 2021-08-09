@@ -1,7 +1,7 @@
 #include "Grid.h"
 #include <iostream>
 
-Grid::Tile::Tile(int x_world_pos, int y_world_pos, int seed, const Grid& grid)
+World::Tile::Tile(int x_world_pos, int y_world_pos, int seed, const World& grid)
 {
 	uint32_t nLehmer = (x_world_pos & 0xFFFF) << seed | (y_world_pos & 0xFFFF);
 
@@ -83,7 +83,7 @@ Grid::Tile::Tile(int x_world_pos, int y_world_pos, int seed, const Grid& grid)
 	}
 }
 
-std::shared_ptr<Item> Grid::Tile::CreateItem(std::vector<std::shared_ptr<Item>> items)
+std::shared_ptr<Item> World::Tile::CreateItem(std::vector<std::shared_ptr<Item>> items)
 {
 	std::mt19937 rng(std::random_device{}());
 	std::uniform_int_distribution<int> dist(0, 100);
@@ -106,42 +106,42 @@ std::shared_ptr<Item> Grid::Tile::CreateItem(std::vector<std::shared_ptr<Item>> 
 	}
 }
 
-void Grid::Tile::ClearEventType()
+void World::Tile::ClearEventType()
 {
-	eventType = Grid::Tile::EventType::None;
+	eventType = World::Tile::EventType::None;
 }
 
-Grid::Tile::EventType Grid::Tile::GetEventType() const
+World::Tile::EventType World::Tile::GetEventType() const
 {
 	return eventType;
 }
 
-Grid::Tile::GroundType Grid::Tile::GetGroundType() const
+World::Tile::GroundType World::Tile::GetGroundType() const
 {
 	return groundType;
 }
 
-bool Grid::Tile::IsObstacle() const
+bool World::Tile::IsObstacle() const
 {
 	switch (groundType)
 	{
-	case Grid::Tile::GroundType::Rocks:
-	case Grid::Tile::GroundType::House0:
-	case Grid::Tile::GroundType::House1:
-	case Grid::Tile::GroundType::House2:
-	case Grid::Tile::GroundType::House3:
-	case Grid::Tile::GroundType::House4:
-	case Grid::Tile::GroundType::House5:
-	case Grid::Tile::GroundType::House6:
-	case Grid::Tile::GroundType::House7:
-	case Grid::Tile::GroundType::House8:
-	case Grid::Tile::GroundType::House9:
-	case Grid::Tile::GroundType::House10:
-	case Grid::Tile::GroundType::House11:
-	case Grid::Tile::GroundType::House12:
-	case Grid::Tile::GroundType::House13:
-	case Grid::Tile::GroundType::House14:
-	case Grid::Tile::GroundType::House15:
+	case World::Tile::GroundType::Rocks:
+	case World::Tile::GroundType::House0:
+	case World::Tile::GroundType::House1:
+	case World::Tile::GroundType::House2:
+	case World::Tile::GroundType::House3:
+	case World::Tile::GroundType::House4:
+	case World::Tile::GroundType::House5:
+	case World::Tile::GroundType::House6:
+	case World::Tile::GroundType::House7:
+	case World::Tile::GroundType::House8:
+	case World::Tile::GroundType::House9:
+	case World::Tile::GroundType::House10:
+	case World::Tile::GroundType::House11:
+	case World::Tile::GroundType::House12:
+	case World::Tile::GroundType::House13:
+	case World::Tile::GroundType::House14:
+	case World::Tile::GroundType::House15:
 		return true;
 		break;
 	default:
@@ -150,7 +150,7 @@ bool Grid::Tile::IsObstacle() const
 	return eventType == EventType::Item;
 }
 
-bool Grid::Tile::PlayerTriggersFight(const Grid& grid)
+bool World::Tile::PlayerTriggersFight(const World& grid)
 {
 	if (groundType == Tile::GroundType::Grass) {
 		std::mt19937 rng(std::random_device{}());
@@ -165,13 +165,13 @@ bool Grid::Tile::PlayerTriggersFight(const Grid& grid)
 	return false;
 }
 
-void Grid::Tile::InitFromJSON(Tile::GroundType g_type, Tile::EventType e_type)
+void World::Tile::InitFromJSON(Tile::GroundType g_type, Tile::EventType e_type)
 {
 	groundType = g_type;
 	eventType = e_type;
 }
 
-uint32_t Grid::Tile::Lehmer32(uint32_t nLehmer)
+uint32_t World::Tile::Lehmer32(uint32_t nLehmer)
 {
 	nLehmer += 0xe120fc15;
 	uint64_t tmp;
@@ -182,12 +182,12 @@ uint32_t Grid::Tile::Lehmer32(uint32_t nLehmer)
 	return m2;
 }
 
-int Grid::Tile::rndInt(int min, int max, uint32_t nLehmer)
+int World::Tile::rndInt(int min, int max, uint32_t nLehmer)
 {
 	return (Lehmer32(nLehmer) % (max - min)) + min;
 }
 
-Grid::Grid()
+World::World()
 	:
 	pGfx(GraphicsEngine::Graphics::GetInstance()),
 	pKbd(CoreSystem::Keyboard::GetInstance()),
@@ -195,6 +195,8 @@ Grid::Grid()
 	currentPlayerXPos(400),
 	currentPlayerYPos(300)
 {
+	//461 168 601 842 738 790
+
 	//Init generation seed
 	std::mt19937 rng(std::random_device{}());
 	std::uniform_int_distribution<int> dist(-20, 20);
@@ -218,7 +220,7 @@ Grid::Grid()
 	}
 }
 
-void Grid::GenerateGrid()
+void World::GenerateGrid()
 {
 	//New version : updates only if you see a new tile
 	for (int i = -1; i <= gridHeight; i++) {
@@ -240,21 +242,21 @@ void Grid::GenerateGrid()
 
 }
 
-void Grid::CreateHouseAt(const Maths::LLVec2D& pos)
+void World::CreateHouseAt(const Maths::LLVec2D& pos)
 {
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
 			Maths::LLVec2D tilePos = Maths::LLVec2D(i, j) + pos;
 			if (tilePos != pos) {
 				Tile tile;
-				tile.groundType = Grid::Tile::GroundType(int(Grid::Tile::GroundType::House0) + j * 4 + i);
+				tile.groundType = World::Tile::GroundType(int(World::Tile::GroundType::House0) + j * 4 + i);
 				tiles.insert(std::pair<Maths::IVec2D, Tile>(tilePos, tile));
 			}
 		}
 	}
 }
 
-bool Grid::TileIsObstacleAt(const Maths::LLVec2D& pos)
+bool World::TileIsObstacleAt(const Maths::LLVec2D& pos)
 {
 	Maths::LLVec2D adaptatedPos = Maths::LLVec2D(int((xOffset + pos.x) / tileWidth), int((yOffset + pos.y) / tileWidth));
 
@@ -265,7 +267,7 @@ bool Grid::TileIsObstacleAt(const Maths::LLVec2D& pos)
 	}
 }
 
-void Grid::InitFromJSON()
+void World::InitFromJSON()
 {
 	JSONParser::Reader jsonReader;
 	jsonReader.ReadFile("json/mapCoords.json");
@@ -302,7 +304,7 @@ void Grid::InitFromJSON()
 	generationSeed = jsonReader.GetValueOf("Seed").GetInt();
 }
 
-void Grid::SaveToJSON()
+void World::SaveToJSON()
 {
 	JSONParser::Writer jsonWriter;
 	//Save generation seed
@@ -332,7 +334,7 @@ void Grid::SaveToJSON()
 	jsonWriter.SaveJsonAt("json/mapCoords.json");
 }
 
-int Grid::GetNeighbourGroundType(const Maths::LLVec2D& pos, Grid::Tile::GroundType g_type) const
+int World::GetNeighbourGroundType(const Maths::LLVec2D& pos, World::Tile::GroundType g_type) const
 {
 	int ground = 0;
 	for (int i = -1; i <= 1; i++) {
@@ -349,7 +351,7 @@ int Grid::GetNeighbourGroundType(const Maths::LLVec2D& pos, Grid::Tile::GroundTy
 	return ground;
 }
 
-void Grid::Update()
+void World::Update()
 {
 	GenerateGrid();
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_UP)) {
@@ -395,7 +397,7 @@ void Grid::Update()
 	}
 }
 
-void Grid::Draw()
+void World::Draw()
 { 
 	//Draw Tiles (new version)
 	for (int i = -1; i <= gridHeight; i++) {
@@ -405,61 +407,61 @@ void Grid::Draw()
 			if (itr != tiles.end()) {
 				Maths::IRect srcRect;
 				switch (itr->second.GetGroundType()) {
-				case Grid::Tile::GroundType::Grass:
+				case World::Tile::GroundType::Grass:
 					srcRect = Maths::IRect(0, 0, 16, 16);
 					break;
-				case Grid::Tile::GroundType::Sand:
+				case World::Tile::GroundType::Sand:
 					srcRect = Maths::IRect(16, 0, 16, 16);
 					break;
-				case Grid::Tile::GroundType::Rocks:
+				case World::Tile::GroundType::Rocks:
 					srcRect = Maths::IRect(32, 0, 16, 16);
 					break;
-				case Grid::Tile::GroundType::House0:
+				case World::Tile::GroundType::House0:
 					srcRect = Maths::IRect(0, 16, 16, 16);
 					break;
-				case Grid::Tile::GroundType::House1:
+				case World::Tile::GroundType::House1:
 					srcRect = Maths::IRect(16, 16, 16, 16);
 					break;
-				case Grid::Tile::GroundType::House2:
+				case World::Tile::GroundType::House2:
 					srcRect = Maths::IRect(32, 16, 16, 16);
 					break;
-				case Grid::Tile::GroundType::House3:
+				case World::Tile::GroundType::House3:
 					srcRect = Maths::IRect(48, 16, 16, 16);
 					break;
-				case Grid::Tile::GroundType::House4:
+				case World::Tile::GroundType::House4:
 					srcRect = Maths::IRect(0, 32, 16, 16);
 					break;
-				case Grid::Tile::GroundType::House5:
+				case World::Tile::GroundType::House5:
 					srcRect = Maths::IRect(16, 32, 16, 16);
 					break;
-				case Grid::Tile::GroundType::House6:
+				case World::Tile::GroundType::House6:
 					srcRect = Maths::IRect(32, 32, 16, 16);
 					break;
-				case Grid::Tile::GroundType::House7:
+				case World::Tile::GroundType::House7:
 					srcRect = Maths::IRect(48, 32, 16, 16);
 					break;
-				case Grid::Tile::GroundType::House8:
+				case World::Tile::GroundType::House8:
 					srcRect = Maths::IRect(0, 48, 16, 16);
 					break;
-				case Grid::Tile::GroundType::House9:
+				case World::Tile::GroundType::House9:
 					srcRect = Maths::IRect(16, 48, 16, 16);
 					break;
-				case Grid::Tile::GroundType::House10:
+				case World::Tile::GroundType::House10:
 					srcRect = Maths::IRect(32, 48, 16, 16);
 					break;
-				case Grid::Tile::GroundType::House11:
+				case World::Tile::GroundType::House11:
 					srcRect = Maths::IRect(48, 48, 16, 16);
 					break;
-				case Grid::Tile::GroundType::House12:
+				case World::Tile::GroundType::House12:
 					srcRect = Maths::IRect(0, 64, 16, 16);
 					break;
-				case Grid::Tile::GroundType::House13:
+				case World::Tile::GroundType::House13:
 					srcRect = Maths::IRect(16, 64, 16, 16);
 					break;
-				case Grid::Tile::GroundType::House14:
+				case World::Tile::GroundType::House14:
 					srcRect = Maths::IRect(32, 64, 16, 16);
 					break;
-				case Grid::Tile::GroundType::House15:
+				case World::Tile::GroundType::House15:
 					srcRect = Maths::IRect(48, 64, 16, 16);
 					break;
 				default:
@@ -476,12 +478,12 @@ void Grid::Draw()
 
 }
 
-void Grid::BlendSpriteTo(GraphicsEngine::Color c)
+void World::BlendSpriteTo(GraphicsEngine::Color c)
 {
 	tileSprite.BlendColor(c);
 }
 
-bool Grid::PlayerTriggersFight()
+bool World::PlayerTriggersFight()
 {
 	//New version
 	Maths::LLVec2D currentPlayerPos = Maths::LLVec2D(int((currentPlayerXPos + 400)/ tileWidth), int((currentPlayerYPos + 300) / tileHeight));
@@ -497,7 +499,7 @@ bool Grid::PlayerTriggersFight()
 	return false;
 }
 
-bool Grid::GoInside() const
+bool World::GoInside() const
 {
 	Maths::LLVec2D lookingAtPos = Maths::LLVec2D(xOffset + 400, yOffset + 300);
 	lookingAtPos += Maths::LLVec2D(pPlayer->GetLookingDirection() * 18);

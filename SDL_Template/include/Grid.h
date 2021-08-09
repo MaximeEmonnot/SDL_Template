@@ -8,13 +8,13 @@
 #include "Consumable.h"
 #include "Ball.h"
 
-class Grid : public CoreSystem::SingletonMaker<Grid> {
+class World : public CoreSystem::SingletonMaker<World> {
 private:
 	friend class ExplorationScene;
 private:
 	class Tile {
 	private:
-		friend class Grid;
+		friend class World;
 	public:
 		enum class GroundType
 		{
@@ -47,7 +47,7 @@ private:
 		};
 	public:
 		Tile() = default;
-		Tile(int x_world_pos, int y_world_pos, int seed, const Grid& grid);
+		Tile(int x_world_pos, int y_world_pos, int seed, const World& grid);
 
 		std::shared_ptr<Item> CreateItem(std::vector<std::shared_ptr<Item>> items);
 
@@ -57,7 +57,7 @@ private:
 		Tile::EventType GetEventType() const;
 
 		bool IsObstacle() const;
-		bool PlayerTriggersFight(const Grid& grid);
+		bool PlayerTriggersFight(const World& grid);
 	private:
 		void InitFromJSON(Tile::GroundType g_type, Tile::EventType e_type);
 
@@ -70,7 +70,7 @@ private:
 		Tile::EventType eventType = Tile::EventType::None;
 	};
 public:
-	Grid();
+	World();
 	
 	void Update();
 	void Draw();
@@ -88,7 +88,7 @@ private:
 	void InitFromJSON();
 	void SaveToJSON();
 
-	int GetNeighbourGroundType(const Maths::LLVec2D& pos, Grid::Tile::GroundType g_type) const;
+	int GetNeighbourGroundType(const Maths::LLVec2D& pos, World::Tile::GroundType g_type) const;
 
 private:
 	GraphicsEngine::Sprite tileSprite;

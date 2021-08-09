@@ -347,9 +347,6 @@
     <ClInclude Include="include\TitleMenu.h">
       <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
     </ClInclude>
-    <ClInclude Include="include\PokemonInventoryMenu.h">
-      <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
-    </ClInclude>
     <ClInclude Include="include\ActionMenu.h">
       <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
     </ClInclude>
@@ -382,6 +379,9 @@
     </ClInclude>
     <ClInclude Include="include\AIStanding.h">
       <Filter>Fichiers d%27en-tête\GameFiles\Entity\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\PokemonInventoryMenu.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

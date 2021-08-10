@@ -20,7 +20,11 @@ private:
 		StandingLeft,
 		StandingUp,
 		StandingRight,
-		StandingDown
+		StandingDown,
+		RunningLeft,
+		RunningUp,
+		RunningRight,
+		RunningDown
 	};
 public:
 	Player(Maths::IRect rect, const std::string& animFile);
@@ -64,6 +68,7 @@ public:
 
 private:
 	bool bIsTalking = false;
+	bool bIsRunning = false;
 
 	std::vector<Pokemon>::iterator selectedPokemon;
 

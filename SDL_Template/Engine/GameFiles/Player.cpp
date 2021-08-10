@@ -156,24 +156,30 @@ void Player::Move()
 	//mRect += dir * (int)speed;
 	
 	//Animation
+	bIsRunning = pKbd->KeyIsPressed(SDL_SCANCODE_LSHIFT);
+
 	if (dir != Maths::IVec2D(0,0)) {
 		if (dir.y != 0) {
 			if (dir.y > 0) {
-				miCurSequence = (int)AnimationList::WalkingDown;
+				if (bIsRunning) miCurSequence = (int)AnimationList::RunningDown;
+				else miCurSequence = (int)AnimationList::WalkingDown;
 				lookingDirection = Maths::IVec2D(0, 1);
 			}
 			else {
-				miCurSequence = (int)AnimationList::WalkingUp;
+				if (bIsRunning) miCurSequence = (int)AnimationList::RunningUp;
+				else miCurSequence = (int)AnimationList::WalkingUp;
 				lookingDirection = Maths::IVec2D(0, -1);
 			}
 		}
 		else {
 			if (dir.x > 0) {
-				miCurSequence = (int)AnimationList::WalkingRight;
+				if (bIsRunning) miCurSequence = (int)AnimationList::RunningRight;
+				else miCurSequence = (int)AnimationList::WalkingRight;
 				lookingDirection = Maths::IVec2D(1, 0);
 			}
 			else {
-				miCurSequence = (int)AnimationList::WalkingLeft;
+				if (bIsRunning) miCurSequence = (int)AnimationList::RunningLeft;
+				else miCurSequence = (int)AnimationList::WalkingLeft;
 				lookingDirection = Maths::IVec2D(-1, 0);
 			}
 		}

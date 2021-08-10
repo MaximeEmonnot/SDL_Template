@@ -33,36 +33,39 @@ void House::Update()
 	pNpc->Update(pTimer->DeltaTime());
 	pNpc->UpdateAI();
 
+	float speed = 1.0f;
+	if (pKbd->KeyIsPressed(SDL_SCANCODE_LSHIFT)) speed = 1.5f;
+
 	if (!pPlayer->IsTalking()) {
 		if (pKbd->KeyIsPressed(SDL_SCANCODE_UP)) {
 			if (!IsObstacle(Maths::IVec2D(0, -18)) &&
 				!IsOccupedByNPC(Maths::IVec2D(0, -18)))
 			{
-				yOffset -= 2;
-				pNpc->Move(0, 2);
+				yOffset -= 2 * speed;
+				pNpc->Move(0, 2 * speed);
 			}
 		}
 		if (pKbd->KeyIsPressed(SDL_SCANCODE_RIGHT)) {
 			if (!IsObstacle(Maths::IVec2D(18, 0)) &&
 				!IsChair(Maths::IVec2D(18, 0)) &&
 				!IsOccupedByNPC(Maths::IVec2D(18, 0))) {
-				xOffset += 2;
-				pNpc->Move(-2, 0);
+				xOffset += 2 * speed;
+				pNpc->Move(-2 * speed, 0);
 			}
 		}
 		if (pKbd->KeyIsPressed(SDL_SCANCODE_DOWN)) {
 			if (!IsObstacle(Maths::IVec2D(0, 18)) &&
 				!IsOccupedByNPC(Maths::IVec2D(0, 18))) {
-				yOffset += 2;
-				pNpc->Move(0, -2);
+				yOffset += 2 * speed;
+				pNpc->Move(0, -2 * speed);
 			}
 		}
 		if (pKbd->KeyIsPressed(SDL_SCANCODE_LEFT)) {
 			if (!IsObstacle(Maths::IVec2D(-18, 0)) &&
 				!IsChair(Maths::IVec2D(-18, 0)) &&
 				!IsOccupedByNPC(Maths::IVec2D(-18, 0))) {
-				xOffset -= 2;
-				pNpc->Move(2, 0);
+				xOffset -= 2 * speed;
+				pNpc->Move(2 * speed, 0);
 			}
 		}
 

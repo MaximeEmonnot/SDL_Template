@@ -203,9 +203,6 @@ World::World()
 	std::uniform_int_distribution<int> dist(-20, 20);
 	generationSeed = dist(rng);
 
-	//Init sprites
-	//tileSprite.InitSurface("Images/tileSheet.png");
-
 	//Init item list
 	JSONParser::Reader jsonReader;
 	jsonReader.ReadFile("json/itemList.json");
@@ -355,28 +352,31 @@ int World::GetNeighbourGroundType(const Maths::LLVec2D& pos, World::Tile::Ground
 void World::Update()
 {
 	GenerateGrid();
+	float speed = 1.0f;
+	if (pKbd->KeyIsPressed(SDL_SCANCODE_LSHIFT)) speed = 1.5f;
+
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_UP)) {
 		if (!TileIsObstacleAt(Maths::LLVec2D(400, 282))) {
-			yOffset -= 2;
-			currentPlayerYPos -= 2;
+			yOffset -= 2 * speed;
+			currentPlayerYPos -= 2 * speed;
 		}
 	}
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_RIGHT)) {
 		if (!TileIsObstacleAt(Maths::LLVec2D(418, 300))) {
-			xOffset += 2;
-			currentPlayerXPos += 2;
+			xOffset += 2 * speed;
+			currentPlayerXPos += 2 * speed;
 		}
 	}
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_DOWN)) {
 		if (!TileIsObstacleAt(Maths::LLVec2D(400, 318))) {
-			yOffset += 2;
-			currentPlayerYPos += 2;
+			yOffset += 2 * speed;
+			currentPlayerYPos += 2 * speed;
 		}
 	}
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_LEFT)) {
 		if (!TileIsObstacleAt(Maths::LLVec2D(382, 300))) {
-			xOffset -= 2;
-			currentPlayerXPos -= 2;
+			xOffset -= 2 * speed;
+			currentPlayerXPos -= 2 * speed;
 		}
 	}
 	

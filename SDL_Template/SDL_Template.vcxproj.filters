@@ -82,6 +82,18 @@
     <Filter Include="Fichiers d%27en-tête\Engine\CoreSystem">
       <UniqueIdentifier>{fb174f4d-0948-4ee8-8d35-7c793982371f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\GameFiles\Scenes\Environment">
+      <UniqueIdentifier>{9692f780-de11-45d4-8198-8c468d0ad912}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\GameFiles\Scenes\Timer">
+      <UniqueIdentifier>{841622de-d0ff-4f2c-a0cf-e182d0815250}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\GameFiles\Scenes\Environment">
+      <UniqueIdentifier>{25f898a3-94ef-49b3-bcd1-00c8bfc4b25e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\GameFiles\Scenes\Timer">
+      <UniqueIdentifier>{abc18567-16fe-4810-8557-e8da275e4e45}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\main.cpp">
@@ -168,9 +180,6 @@
     <ClCompile Include="Engine\GameFiles\Pokemon.cpp">
       <Filter>Fichiers sources\GameFiles\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameFiles\TimerManager.cpp">
-      <Filter>Fichiers sources\GameFiles</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\GameFiles\PokemonMenu.cpp">
       <Filter>Fichiers sources\GameFiles\Menu</Filter>
     </ClCompile>
@@ -204,9 +213,6 @@
     <ClCompile Include="Engine\GameFiles\ItemInventoryMenu.cpp">
       <Filter>Fichiers sources\GameFiles\Menu</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameFiles\House.cpp">
-      <Filter>Fichiers sources\GameFiles</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\GameFiles\NPC.cpp">
       <Filter>Fichiers sources\GameFiles\Entity</Filter>
     </ClCompile>
@@ -219,8 +225,14 @@
     <ClCompile Include="Engine\GameFiles\AIWalking.cpp">
       <Filter>Fichiers sources\GameFiles\Entity\AI</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GameFiles\TimerManager.cpp">
+      <Filter>Fichiers sources\GameFiles\Scenes\Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameFiles\House.cpp">
+      <Filter>Fichiers sources\GameFiles\Scenes\Environment</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\GameFiles\World.cpp">
-      <Filter>Fichiers sources\GameFiles</Filter>
+      <Filter>Fichiers sources\GameFiles\Scenes\Environment</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -329,9 +341,6 @@
     <ClInclude Include="include\Pokemon.h">
       <Filter>Fichiers d%27en-tête\GameFiles\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\TImerManager.h">
-      <Filter>Fichiers d%27en-tête\GameFiles</Filter>
-    </ClInclude>
     <ClInclude Include="include\PokemonMenu.h">
       <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
     </ClInclude>
@@ -365,9 +374,6 @@
     <ClInclude Include="include\Item.h">
       <Filter>Fichiers d%27en-tête\GameFiles\Items</Filter>
     </ClInclude>
-    <ClInclude Include="include\House.h">
-      <Filter>Fichiers d%27en-tête\GameFiles</Filter>
-    </ClInclude>
     <ClInclude Include="include\NPC.h">
       <Filter>Fichiers d%27en-tête\GameFiles\Entity</Filter>
     </ClInclude>
@@ -387,7 +393,13 @@
       <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
     </ClInclude>
     <ClInclude Include="include\World.h">
-      <Filter>Fichiers d%27en-tête\GameFiles</Filter>
+      <Filter>Fichiers d%27en-tête\GameFiles\Scenes\Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="include\House.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Scenes\Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="include\TImerManager.h">
+      <Filter>Fichiers d%27en-tête\GameFiles\Scenes\Timer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

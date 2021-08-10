@@ -186,9 +186,6 @@
     <ClCompile Include="Engine\GameFiles\ActionMenu.cpp">
       <Filter>Fichiers sources\GameFiles\Menu</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\GameFiles\Grid.cpp">
-      <Filter>Fichiers sources\GameFiles</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\GameFiles\Ball.cpp">
       <Filter>Fichiers sources\GameFiles\Items</Filter>
     </ClCompile>
@@ -215,6 +212,9 @@
     </ClCompile>
     <ClCompile Include="Engine\GameFiles\AIWalking.cpp">
       <Filter>Fichiers sources\GameFiles\Entity\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameFiles\World.cpp">
+      <Filter>Fichiers sources\GameFiles</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -323,9 +323,6 @@
     <ClInclude Include="include\Pokemon.h">
       <Filter>Fichiers d%27en-tête\GameFiles\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\Grid.h">
-      <Filter>Fichiers d%27en-tête\GameFiles</Filter>
-    </ClInclude>
     <ClInclude Include="include\TImerManager.h">
       <Filter>Fichiers d%27en-tête\GameFiles</Filter>
     </ClInclude>
@@ -382,6 +379,9 @@
     </ClInclude>
     <ClInclude Include="include\PokemonInventoryMenu.h">
       <Filter>Fichiers d%27en-tête\GameFiles\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="include\World.h">
+      <Filter>Fichiers d%27en-tête\GameFiles</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

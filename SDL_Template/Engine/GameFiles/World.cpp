@@ -1,4 +1,4 @@
-#include "Grid.h"
+#include "World.h"
 #include <iostream>
 
 World::Tile::Tile(int x_world_pos, int y_world_pos, int seed, const World& grid)

@@ -9,17 +9,17 @@ namespace CoreSystem {
 	public:
 		Timer();
 
-		void Update();
+		void			Update();
 
-		Maths::IVec2D GetCurrentTime();
+		Maths::IVec2D	GetCurrentTime();
 
-		bool IsNightTime();
+		bool			IsNightTime();
 
 		//Returns elapsed time since last frame. Can be used in Updates functions. 
-		float DeltaTime();
+		float			DeltaTime();
 
 	private:
-		float deltaTime;
-		std::chrono::steady_clock::time_point mLast;
+		float									deltaTime;
+		std::chrono::steady_clock::time_point	mLast;
 	};
 }

@@ -193,7 +193,8 @@ World::World()
 	pKbd(CoreSystem::Keyboard::GetInstance()),
 	pPlayer(Player::GetInstance(Maths::IRect(384, 267, 32, 44), "json/player.json")),
 	currentPlayerXPos(400),
-	currentPlayerYPos(300)
+	currentPlayerYPos(300),
+	tileSprite("Images/tileSheet.png")
 {
 	//461 168 601 842 738 790
 
@@ -203,7 +204,7 @@ World::World()
 	generationSeed = dist(rng);
 
 	//Init sprites
-	tileSprite.InitSurface("Images/tileSheet.png");
+	//tileSprite.InitSurface("Images/tileSheet.png");
 
 	//Init item list
 	JSONParser::Reader jsonReader;

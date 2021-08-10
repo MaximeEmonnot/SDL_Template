@@ -48,7 +48,7 @@ namespace CoreSystem {
 		void                            SetKeyColorByRect(Maths::IRect rect, GraphicsEngine::Color c);
 		void                            FadeKeyColorTo(Maths::IRect rect, GraphicsEngine::Color c, float alpha = .5f);
 
-		GraphicsEngine::Color                       GetKeyColorByPosition(Maths::IRect rect);
+		GraphicsEngine::Color           GetKeyColorByPosition(Maths::IRect rect);
 		Maths::IRect                    GetKeyRect(SDL_Scancode kCode);
 		std::vector<Maths::IRect>       GetKeyboardRect() const;
 		CorsairLedId                    GetLedIdFrom(Maths::IRect rect) const;
@@ -70,10 +70,10 @@ namespace CoreSystem {
 		CorsairLedId					SDLKeyToCorsairId(SDL_Scancode kCode);
 
 	private:
-		const unsigned int				mBufferSize = 4u;
-		std::bitset<SDL_NUM_SCANCODES>	mKeystates;
-		std::queue<Event>				mBufferEvents;
-		std::queue<char>				mBufferChar;
+		const unsigned int													mBufferSize = 4u;
+		std::bitset<SDL_NUM_SCANCODES>										mKeystates;
+		std::queue<Event>													mBufferEvents;
+		std::queue<char>													mBufferChar;
 
 		//CORSAIR
 		std::unordered_map<Maths::IRect, CorsairLedId, Maths::IRect::Hash>	mLedPositions;

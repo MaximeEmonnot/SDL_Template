@@ -9,29 +9,26 @@ namespace GraphicsEngine {
 	class Sprite
 	{
 	public:
-		Sprite();
+		Sprite() = default;
 		Sprite(const std::string& path);
-		Sprite(SDL_Surface* surf, int width, int height);
+		Sprite(std::shared_ptr<SDL_Surface> surf, int width, int height);
 		Sprite(const Sprite&);
 
 		Sprite& operator= (const Sprite& rhs);
 		~Sprite() = default;
 
-		// Initializes the sprite.
-		void			InitSurface(const std::string& path);
-
-		void            BlendColor(const GraphicsEngine::Color& c);
+		void							BlendColor(const GraphicsEngine::Color& c);
 
 		// Returns the saved Texture.
-		SDL_Texture*    GetTexture() const;
+		std::shared_ptr<SDL_Texture>    GetTexture() const;
 		// Returns the saved Texture's width.
-		int				GetWidth() const;
+		int								GetWidth() const;
 		// Returns the savec Texture's height.
-		int				GetHeight() const;
+		int								GetHeight() const;
 
 	private:
 		std::shared_ptr<SDL_Texture>    mpTex;
-		int				mWidth = 0;
-		int				mHeight = 0;
+		int								mWidth = 0;
+		int								mHeight = 0;
 	};
 }

@@ -9,7 +9,7 @@ Player::Player(Maths::IRect rect, const std::string& animFile)
 	JSONParser::Reader jsonParse;
 	jsonParse.ReadFile(animFile);
 
-	mSprite.InitSurface(jsonParse.GetValueOf("filename").GetString());
+	mSprite = GraphicsEngine::Sprite(jsonParse.GetValueOf("filename").GetString());
 
 	auto& v = jsonParse.GetValueOf("animations");
 	for (auto itr = v.MemberBegin(); itr != v.MemberEnd(); ++itr) {
@@ -70,15 +70,15 @@ void Player::InitFromJSON()
 			{
 			case 1:
 				newPkmn.type = Pokemon::Type::Grass;
-				newPkmn.sprite.InitSurface("Images/bulbasaur.png");
+				newPkmn.sprite = GraphicsEngine::Sprite("Images/bulbasaur.png");
 				break;
 			case 2:
 				newPkmn.type = Pokemon::Type::Fire;
-				newPkmn.sprite.InitSurface("Images/charmander.png");
+				newPkmn.sprite = GraphicsEngine::Sprite("Images/charmander.png");
 				break;
 			case 3:
 				newPkmn.type = Pokemon::Type::Water;
-				newPkmn.sprite.InitSurface("Images/squirttle.png");
+				newPkmn.sprite = GraphicsEngine::Sprite("Images/squirttle.png");
 				break;
 			default:
 				break;

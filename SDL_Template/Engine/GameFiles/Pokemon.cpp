@@ -10,9 +10,9 @@ Pokemon::Pokemon(const std::string& spritePath, const std::string& name, int id,
 	def(3),
 	lvl(1),
 	id(id),
-	type(type)
+	type(type),
+	sprite(spritePath)
 {
-	sprite.InitSurface(spritePath.c_str());
 }
 
 Pokemon& Pokemon::operator=(const Pokemon& rhs)

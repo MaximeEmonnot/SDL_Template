@@ -13,7 +13,7 @@ NPC::NPC(Maths::IRect rect, Maths::IVec2D pos, const std::string& animFile, std:
 	JSONParser::Reader jsonParse;
 	jsonParse.ReadFile(animFile);
 
-	mSprite.InitSurface(jsonParse.GetValueOf("filename").GetString());
+	mSprite = GraphicsEngine::Sprite(jsonParse.GetValueOf("filename").GetString());
 
 	auto& v = jsonParse.GetValueOf("animations");
 	for (auto itr = v.MemberBegin(); itr != v.MemberEnd(); ++itr) {

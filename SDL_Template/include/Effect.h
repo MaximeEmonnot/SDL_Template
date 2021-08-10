@@ -6,9 +6,9 @@ namespace SoundEngine {
 	public:
 		Effect(const std::string& path);
 
-		void Play(int loops) override;
-		void Stop() override;
+		void						Play(int loops) override;
+		void						Stop() override;
 	private:
-		std::shared_ptr<Mix_Chunk> pEffect;
+		std::shared_ptr<Mix_Chunk>	pEffect;
 	};
 }

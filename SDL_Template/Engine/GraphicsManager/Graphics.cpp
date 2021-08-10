@@ -83,7 +83,7 @@ void GraphicsEngine::Graphics::DrawFilledRect(Maths::IRect rect, Color c, int pr
 void GraphicsEngine::Graphics::DrawSprite(Maths::IRect destRect, Maths::IRect srcRect, const Sprite& s, int priority)
 {
 	auto func = [=]{
-		SDL_RenderCopy(mpRenderer.get(), s.GetTexture(), &srcRect.rect, &destRect.rect);
+		SDL_RenderCopy(mpRenderer.get(), s.GetTexture().get(), &srcRect.rect, &destRect.rect);
 	};
 	renderQueue.insert(std::pair<int, std::function<void()>>(priority, func));
 }

@@ -12,15 +12,15 @@ namespace GraphicsEngine {
 	public:
 		Animation(Maths::IRect rect, int count, Sprite& rSprite, float holdTime);
 
-		void					Draw(Maths::IRect rect, int priority = 0);
+		void						Draw(Maths::IRect rect, int priority = 0);
 
-		void					Update(float dt);
-		void					ResetAnimation();
+		void						Update(float dt);
+		void						ResetAnimation();
 
-		int						GetWidth() const;
-		int						GetHeight() const;
+		int							GetWidth() const;
+		int							GetHeight() const;
 	private:
-		void					Advance();
+		void						Advance();
 	private:
 		std::shared_ptr<Graphics>	mpGfx;
 		const Sprite&				mrSprite;

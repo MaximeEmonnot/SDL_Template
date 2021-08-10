@@ -12,13 +12,13 @@ namespace CoreSystem {
 		ThreadPool(size_t numThreads);
 		~ThreadPool();
 
-		void Enqueue(std::function<void()> task);
+		void								Enqueue(std::function<void()> task);
 
 	private:
-		std::vector<std::thread> mThreads;
-		std::queue<std::function<void()>> mTasks;
-		std::condition_variable mEventVar;
-		std::mutex mEventMutex;
-		bool mbStopping = false;
+		std::vector<std::thread>			mThreads;
+		std::queue<std::function<void()>>	mTasks;
+		std::condition_variable				mEventVar;
+		std::mutex							mEventMutex;
+		bool								mbStopping = false;
 	};
 }

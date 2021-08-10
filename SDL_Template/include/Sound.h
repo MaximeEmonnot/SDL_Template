@@ -53,10 +53,10 @@ namespace SoundEngine {
 		inline bool operator==(const ASound& rhs) const {
 			return path == rhs.path;
 		}
-		inline std::string GetPath() const {
+		inline std::string	GetPath() const {
 			return path;
 		}
 	protected:
-		std::string path = "";
+		std::string			path = "";
 	};
 }

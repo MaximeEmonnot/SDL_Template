@@ -6,9 +6,9 @@ namespace SoundEngine {
 	public:
 		Music(const std::string& path);
 
-		void Play(int loops) override;
-		void Stop() override;
+		void						Play(int loops) override;
+		void						Stop() override;
 	private:
-		std::shared_ptr<Mix_Music> pMusic;
+		std::shared_ptr<Mix_Music>	pMusic;
 	};
 }

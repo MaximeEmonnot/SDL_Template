@@ -6,10 +6,11 @@ House::House()
 	pKbd(CoreSystem::Keyboard::GetInstance()),
 	pTimer(CoreSystem::Timer::GetInstance()),
 	pPlayer(Player::GetInstance(Maths::IRect(384, 267, 32, 44), "json/player.json")),
-	text(Maths::IRect(Maths::IRect(25, 500, 200, 75)))
+	text(Maths::IRect(Maths::IRect(25, 500, 200, 75))),
+	sprite("Images/houseTileSheet.png")
 {
 	//Sprite initialisation
-	sprite.InitSurface("Images/houseTileSheet.png");
+	//sprite.InitSurface("Images/houseTileSheet.png");
 
 	//Init Tiles
 

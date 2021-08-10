@@ -26,11 +26,11 @@ private:
 
 	// ***************** END USER FUNCTIONS ************* //
 private:
-	std::shared_ptr<CoreSystem::Window> mpWnd;
-	std::shared_ptr<GraphicsEngine::Graphics> mpGfx;
+	std::shared_ptr<CoreSystem::Window>				mpWnd;
+	std::shared_ptr<GraphicsEngine::Graphics>		mpGfx;
 	// ***************** USER VARIABLES ******************//
-	std::vector<std::shared_ptr<Scene>> scenes;
-	std::vector<std::shared_ptr<Scene>>::iterator currentScene;
+	std::vector<std::shared_ptr<Scene>>				scenes;
+	std::vector<std::shared_ptr<Scene>>::iterator	currentScene;
 	// ***************** END USER VARIABLES ************* //
 };
 

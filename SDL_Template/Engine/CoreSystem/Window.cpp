@@ -133,7 +133,7 @@ const int CoreSystem::Window::GetHeight() const
 
 const Maths::IRect CoreSystem::Window::GetScreenRect() const
 {
-	return screenRect;
+	return mScreenRect;
 }
 
 bool CoreSystem::Window::IsMinimized() const

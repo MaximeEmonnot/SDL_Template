@@ -4,12 +4,11 @@
 namespace SoundEngine {
 	class Effect : public ASound{
 	public:
-		Effect(const char* path);
-		~Effect();
+		Effect(const std::string& path);
 
 		void Play(int loops) override;
 		void Stop() override;
 	private:
-		Mix_Chunk* pEffect;
+		std::shared_ptr<Mix_Chunk> pEffect;
 	};
 }

@@ -23,7 +23,7 @@ void SoundEngine::SoundSystem::StopSounds()
 	}
 }
 
-std::shared_ptr<SoundEngine::ASound> SoundEngine::SoundSystem::ConstructNewSong(const char* path, bool type)
+std::shared_ptr<SoundEngine::ASound> SoundEngine::SoundSystem::ConstructNewSong(const std::string& path, bool type)
 {
 	auto itr = std::find_if(mSoundList.begin(), mSoundList.end(), [&](const std::shared_ptr<ASound>& sound) { return sound->GetPath() == path; });
 	if (itr != mSoundList.end())

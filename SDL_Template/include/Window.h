@@ -18,7 +18,7 @@ namespace CoreSystem {
 
 		void        ExitGame();
 
-		SDL_Window* pGetWindow();
+		std::shared_ptr<SDL_Window> pGetWindow();
 		const int	GetWidth() const;
 		const int   GetHeight() const;
 		const Maths::IRect GetScreenRect() const;
@@ -33,7 +33,7 @@ namespace CoreSystem {
 		std::shared_ptr<SoundEngine::SoundSystem> pSoundSystem;
 
 	private:
-		SDL_Window* mpWindow;
+		std::shared_ptr<SDL_Window> mpWindow;
 		SDL_Event	mEvent;
 		bool        mbIsRunning;
 		bool		mbIsMinimized;

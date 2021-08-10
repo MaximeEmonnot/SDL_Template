@@ -15,7 +15,7 @@ namespace GraphicsEngine {
 		void										BeginRender();
 		void										EndRender();
 
-		SDL_Renderer*								GetRenderer();
+		std::shared_ptr<SDL_Renderer>				GetRenderer();
 
 		// Draws a colored pixel at a given position. 
 		void										DrawPixel(Maths::IVec2D pos, Color c, int priority = 0);
@@ -73,8 +73,8 @@ namespace GraphicsEngine {
 		void										BlendScreenTo(Color c);
 
 	private:
-		SDL_Texture*								mpTextureTarget;
-		SDL_Renderer*								mpRenderer;
+		std::shared_ptr<SDL_Texture>				mpTextureTarget;
+		std::shared_ptr<SDL_Renderer>				mpRenderer;
 		Maths::IRect								mScreenRect;
 		std::multimap<int, std::function<void()>>	renderQueue;
 	};

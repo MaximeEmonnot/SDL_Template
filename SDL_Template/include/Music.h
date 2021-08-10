@@ -4,12 +4,11 @@
 namespace SoundEngine {
 	class Music : public ASound{
 	public:
-		Music(const char* path);
-		~Music();
+		Music(const std::string& path);
 
 		void Play(int loops) override;
 		void Stop() override;
 	private:
-		Mix_Music* pMusic = NULL;
+		std::shared_ptr<Mix_Music> pMusic;
 	};
 }

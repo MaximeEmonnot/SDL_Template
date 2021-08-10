@@ -10,15 +10,15 @@ namespace GraphicsEngine {
 	{
 	public:
 		Sprite();
-		Sprite(const char* path);
+		Sprite(const std::string& path);
 		Sprite(SDL_Surface* surf, int width, int height);
 		Sprite(const Sprite&);
 
 		Sprite& operator= (const Sprite& rhs);
-		~Sprite();
+		~Sprite() = default;
 
 		// Initializes the sprite.
-		void			InitSurface(const char* path);
+		void			InitSurface(const std::string& path);
 
 		void            BlendColor(const GraphicsEngine::Color& c);
 
@@ -30,8 +30,6 @@ namespace GraphicsEngine {
 		int				GetHeight() const;
 
 	private:
-		std::string     texPath;
-		
 		std::shared_ptr<SDL_Texture>    mpTex;
 		int				mWidth = 0;
 		int				mHeight = 0;

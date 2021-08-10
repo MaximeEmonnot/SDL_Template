@@ -15,7 +15,7 @@ CoreSystem::Window::Window()
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		throw EngineException("SDL Window Exception caught", __FILE__, "An error has been caught during SDL Initialisation.", __LINE__);
 	}
-	mpWindow = SDL_CreateWindow("Template SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, mWidth, mHeight, SDL_WINDOW_OPENGL);
+	mpWindow.reset(SDL_CreateWindow("Template SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, mWidth, mHeight, SDL_WINDOW_OPENGL), SDL_DestroyWindow);
 	if (mpWindow == NULL) {
 		throw EngineException("SDL Window Exception caught", __FILE__, "An error has been caught during Window Creation.", __LINE__);
 	}
@@ -23,7 +23,7 @@ CoreSystem::Window::Window()
 	if (surf == nullptr) {
 		throw EngineException("SDL Window Exception caught", __FILE__, "An error has been caught during Icon loading.\nPlease check filename (MUST be \"icon.png\").", __LINE__);
 	}
-	SDL_SetWindowIcon(mpWindow, surf);
+	SDL_SetWindowIcon(mpWindow.get(), surf);
 	SDL_ShowCursor(1);
 }
 
@@ -34,7 +34,6 @@ CoreSystem::Window::~Window()
 	pMouse->Kill();
 	pKbd->Kill();
 	pTimer->Kill();
-	SDL_DestroyWindow(mpWindow);
 	SDL_Quit();
 }
 
@@ -117,7 +116,7 @@ void CoreSystem::Window::ExitGame()
 	mbIsRunning = false;
 }
 
-SDL_Window* CoreSystem::Window::pGetWindow()
+std::shared_ptr<SDL_Window> CoreSystem::Window::pGetWindow()
 {
 	return mpWindow;
 }

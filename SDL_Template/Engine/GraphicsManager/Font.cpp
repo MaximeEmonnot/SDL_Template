@@ -21,6 +21,6 @@ void GraphicsEngine::Font::DrawText(Maths::IVec2D pos, const char* text, Graphic
 {
 	SDL_Surface* textSurf = TTF_RenderText_Solid(pFont, text, c.c);
 	Sprite tSprite = Sprite(textSurf, textSurf->w, textSurf->h);
-	pGfx->DrawSprite({ pos.x, pos.y, textSurf->w, textSurf->h }, tSprite);
+	pGfx->DrawSprite(Maths::IRect(pos.x, pos.y, textSurf->w, textSurf->h), tSprite, 10);
 	SDL_FreeSurface(textSurf);
 }

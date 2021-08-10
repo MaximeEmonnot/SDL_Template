@@ -13,9 +13,9 @@ GraphicsEngine::Animation::Animation(Maths::IRect rect, int count, Sprite& sprit
 	}
 }
 
-void GraphicsEngine::Animation::Draw(Maths::IRect rect)
+void GraphicsEngine::Animation::Draw(Maths::IRect rect, int priority)
 {
-	mpGfx->DrawSprite(rect, mFrames[miCurFrame], mrSprite);
+	mpGfx->DrawSprite(rect, mFrames[miCurFrame], mrSprite, priority);
 }
 
 void GraphicsEngine::Animation::Update(float dt)

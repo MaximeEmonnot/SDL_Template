@@ -3,6 +3,7 @@
 #include <SDL_image.h>
 #include "DColors.h"
 #include "EngineException.h"
+#include <memory>
 
 namespace GraphicsEngine {
 	class Sprite
@@ -31,7 +32,7 @@ namespace GraphicsEngine {
 	private:
 		std::string     texPath;
 		
-		SDL_Texture*    mpTex;
+		std::shared_ptr<SDL_Texture>    mpTex;
 		int				mWidth = 0;
 		int				mHeight = 0;
 	};

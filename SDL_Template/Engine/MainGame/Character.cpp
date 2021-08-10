@@ -9,7 +9,7 @@ Character::Character(Maths::IRect rect)
 
 void Character::Draw()
 {
-	mAnimations[miCurSequence].Draw(mRect);
+	mAnimations[miCurSequence].Draw(mRect, drawPriority);
 }
 
 void Character::BlendSpriteTo(GraphicsEngine::Color c)

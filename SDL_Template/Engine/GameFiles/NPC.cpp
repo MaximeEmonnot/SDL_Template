@@ -37,6 +37,9 @@ void NPC::Move(int newXOffset, int newYOffset)
 {
 	mRect.rect.x += newXOffset;
 	mRect.rect.y += newYOffset;
+
+	if (mRect.rect.y >= 280) drawPriority = 3;
+	else drawPriority = 2;
 }
 
 void NPC::Talk(Maths::IVec2D lookingDir)

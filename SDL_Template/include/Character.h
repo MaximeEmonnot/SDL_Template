@@ -19,4 +19,5 @@ protected:
 	GraphicsEngine::Sprite					mSprite;
 	std::vector<GraphicsEngine::Animation>	mAnimations;
 	int										miCurSequence = 0;
+	int                                     drawPriority = 2;
 };

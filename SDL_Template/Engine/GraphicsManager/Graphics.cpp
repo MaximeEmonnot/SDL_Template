@@ -22,6 +22,7 @@ GraphicsEngine::Graphics::~Graphics()
 
 void GraphicsEngine::Graphics::BeginRender()
 {
+	renderQueue.clear();
 	SDL_SetRenderTarget(mpRenderer, mpTextureTarget);
 	SDL_SetTextureColorMod(mpTextureTarget, 255, 255, 255);
 	SDL_SetRenderDrawColor(mpRenderer, 0, 0, 0, 255);
@@ -30,6 +31,11 @@ void GraphicsEngine::Graphics::BeginRender()
 
 void GraphicsEngine::Graphics::EndRender()
 {
+	//Render Texture Target depending on priority
+	for (auto& entry : renderQueue) {
+		entry.second();
+	}
+	//Actual Draw
 	SDL_SetRenderTarget(mpRenderer, NULL);
 	SDL_RenderCopy(mpRenderer, mpTextureTarget, NULL, NULL);
 	SDL_RenderPresent(mpRenderer);
@@ -40,35 +46,50 @@ SDL_Renderer* GraphicsEngine::Graphics::GetRenderer()
 	return mpRenderer;
 }
 
-void GraphicsEngine::Graphics::DrawPixel(Maths::IVec2D pos, Color c)
+void GraphicsEngine::Graphics::DrawPixel(Maths::IVec2D pos, Color c, int priority)
 {
-	SDL_SetRenderDrawColor(mpRenderer, c.c.r, c.c.g, c.c.b, c.c.a);
-	SDL_RenderDrawPoint(mpRenderer, pos.x, pos.y);
+	auto func = [renderer = mpRenderer, red = c.c.r, green = c.c.g, blue = c.c.b, alpha = c.c.a, x = pos.x, y = pos.y] {
+		SDL_SetRenderDrawColor(renderer, red, green, blue, alpha);
+		SDL_RenderDrawPoint(renderer, x, y);
+	};
+	renderQueue.insert(std::pair<int, std::function<void()>>(priority, func));
 }
 
-void GraphicsEngine::Graphics::SetBackgroundColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+void GraphicsEngine::Graphics::SetBackgroundColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a, int priority)
 {
-	SDL_SetRenderDrawColor(mpRenderer, r, g, b, a);
-	SDL_RenderFillRect(mpRenderer, &mScreenRect.rect);
+	auto func = [renderer = mpRenderer, red = r, green = g, blue = b, alpha = a, rect = mScreenRect.rect] {
+		SDL_SetRenderDrawColor(renderer, red, green, blue, alpha);
+		SDL_RenderFillRect(renderer, &rect);
+	};
+	renderQueue.insert(std::pair<int, std::function<void()>>(priority, func));
 }
 
-void GraphicsEngine::Graphics::DrawRect(Maths::IRect rect, Color c)
+void GraphicsEngine::Graphics::DrawRect(Maths::IRect rect, Color c, int priority)
 {
-	SDL_SetRenderDrawColor(mpRenderer, c.c.r, c.c.g, c.c.b, c.c.a);
-	SDL_RenderDrawRect(mpRenderer, &rect.rect);
+	auto func = [renderer = mpRenderer, red = c.c.r, green = c.c.g, blue = c.c.b, alpha = c.c.a, rect = rect.rect] {
+		SDL_SetRenderDrawColor(renderer, red, green, blue, alpha);
+		SDL_RenderDrawRect(renderer, &rect);
+	};
+	renderQueue.insert(std::pair<int, std::function<void()>>(priority, func));
 }
 
-void GraphicsEngine::Graphics::DrawFilledRect(Maths::IRect rect, Color c)
+void GraphicsEngine::Graphics::DrawFilledRect(Maths::IRect rect, Color c, int priority)
 {
-	SDL_SetRenderDrawColor(mpRenderer, c.c.r, c.c.g, c.c.b, c.c.a);
-	SDL_RenderFillRect(mpRenderer, &rect.rect);
+	auto func = [renderer = mpRenderer, red = c.c.r, green = c.c.g, blue = c.c.b, alpha = c.c.a, rect = rect.rect]{
+		SDL_SetRenderDrawColor(renderer, red, green, blue, alpha);
+		SDL_RenderFillRect(renderer, &rect);
+	};
+	renderQueue.insert(std::pair<int, std::function<void()>>(priority, func));
 }
 
-void GraphicsEngine::Graphics::DrawSprite(Maths::IRect destRect, Maths::IRect srcRect, const Sprite& s)
+void GraphicsEngine::Graphics::DrawSprite(Maths::IRect destRect, Maths::IRect srcRect, const Sprite& s, int priority)
 {
-	SDL_RenderCopy(mpRenderer, s.GetTexture(), &srcRect.rect, &destRect.rect);
+	auto func = [=]{
+		SDL_RenderCopy(mpRenderer, s.GetTexture(), &srcRect.rect, &destRect.rect);
+	};
+	renderQueue.insert(std::pair<int, std::function<void()>>(priority, func));
 }
-
+ 
 void GraphicsEngine::Graphics::FadeOutScreen(float percentage)
 {
 	Uint8 red, green, blue;

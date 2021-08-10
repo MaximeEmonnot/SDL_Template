@@ -2,8 +2,6 @@
 #include "Graphics.h"
 
 GraphicsEngine::Sprite::Sprite()
-    :
-    mpTex(nullptr)
 {
 }
 
@@ -15,7 +13,7 @@ GraphicsEngine::Sprite::Sprite(const char* path)
     SDL_Surface* surf = IMG_Load(path);
     if (surf == nullptr)
         throw EngineException("SDL Sprite Exception", __FILE__, "An error has been caught during SDL Surface initialisation.\nPlease check sprite path.", __LINE__);
-    mpTex = SDL_CreateTextureFromSurface(gfx->GetRenderer(), surf);
+    mpTex.reset(SDL_CreateTextureFromSurface(gfx->GetRenderer(), surf), SDL_DestroyTexture);
     mWidth = surf->w, mHeight = surf->h;
     SDL_FreeSurface(surf);
 }
@@ -28,15 +26,16 @@ GraphicsEngine::Sprite::Sprite(SDL_Surface* surf, int width, int height)
     auto gfx = Graphics::GetInstance();
     if (surf == nullptr)
         throw EngineException("SDL Sprite Exception", __FILE__, "An error has been caught during SDL Surface initialisation.\nPlease check sprite path.", __LINE__);
-    mpTex = SDL_CreateTextureFromSurface(gfx->GetRenderer(), surf);
+    mpTex.reset(SDL_CreateTextureFromSurface(gfx->GetRenderer(), surf), SDL_DestroyTexture);
 }
 
 GraphicsEngine::Sprite::Sprite(const Sprite& newSurface)
     :
     mWidth(newSurface.mWidth),
-    mHeight(newSurface.mHeight)
+    mHeight(newSurface.mHeight),
+    mpTex(newSurface.mpTex)
 {
-    InitSurface(newSurface.texPath.c_str());
+    //InitSurface(newSurface.texPath.c_str());
 }
 
 GraphicsEngine::Sprite& GraphicsEngine::Sprite::operator=(const Sprite& rhs)
@@ -49,7 +48,6 @@ GraphicsEngine::Sprite& GraphicsEngine::Sprite::operator=(const Sprite& rhs)
 
 GraphicsEngine::Sprite::~Sprite()
 {
-    SDL_DestroyTexture(mpTex);
 }
 
 void GraphicsEngine::Sprite::InitSurface(const char* path)
@@ -59,19 +57,19 @@ void GraphicsEngine::Sprite::InitSurface(const char* path)
     SDL_Surface* surf = IMG_Load(path);
     if (surf == nullptr)
         throw EngineException("SDL Sprite Exception", __FILE__, "An error has been caught during SDL Surface initialisation.\nPlease check sprite path.", __LINE__);
-    mpTex = SDL_CreateTextureFromSurface(gfx->GetRenderer(), surf);
+    mpTex.reset(SDL_CreateTextureFromSurface(gfx->GetRenderer(), surf), SDL_DestroyTexture);
     mWidth = surf->w, mHeight = surf->h;
     SDL_FreeSurface(surf);
 }
 
 void GraphicsEngine::Sprite::BlendColor(const GraphicsEngine::Color& c)
 {
-    SDL_SetTextureColorMod(mpTex, c.c.r, c.c.g, c.c.b);
+    SDL_SetTextureColorMod(mpTex.get(), c.c.r, c.c.g, c.c.b);
 }
 
 SDL_Texture* GraphicsEngine::Sprite::GetTexture() const
 {
-    return mpTex;
+    return mpTex.get();
 }
 
 int GraphicsEngine::Sprite::GetWidth() const

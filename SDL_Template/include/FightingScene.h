@@ -72,5 +72,7 @@ private:
 	std::unique_ptr<AMenu> pokemonMenu;
 
 	TextBox text;
+	TextBox playerPkmnStatus;
+	TextBox enemyPkmnStatus;
 
 };

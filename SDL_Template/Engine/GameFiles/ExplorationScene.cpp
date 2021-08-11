@@ -60,9 +60,26 @@ void ExplorationScene::Update()
 
 	switch (state) {
 	case MenuState::None:
+	{
+		float speed = 1.0f;
+		switch (pPlayer->GetLocomotionState()) {
+		case Player::LocomotionState::Walking:
+			speed = 1.0f;
+			break;
+		case Player::LocomotionState::Running:
+			speed = 1.5f;
+			break;
+		case Player::LocomotionState::Biking:
+			speed = 2.0f;
+			break;
+		default:
+			break;
+		}
+
 		if (transitionTimer.IsTimerDown() && !pPlayer->IsTalking()) pPlayer->Move();
+
 		if (bIsInsideHouse) {
-			if (transitionTimer.IsTimerDown()) house.Update();
+			if (transitionTimer.IsTimerDown()) house.Update(speed);
 
 			//New
 			if (house.GoOutside()) {
@@ -79,7 +96,7 @@ void ExplorationScene::Update()
 			}
 		}
 		else {
-			if (transitionTimer.IsTimerDown()) pWorld->Update();
+			if (transitionTimer.IsTimerDown()) pWorld->Update(speed);
 
 			if (pWorld->GoInside()) {
 				transitionTimer.ResetTimer(0.75f);
@@ -93,6 +110,7 @@ void ExplorationScene::Update()
 				}
 			}
 		}
+	}
 		break;
 	case MenuState::ShowingMenu:
 		explorationMenu->Update(output, pMouse);
@@ -107,11 +125,15 @@ void ExplorationScene::Update()
 			state = MenuState::ShowingPokemonInventory;
 			break;
 		case 3:
+			pPlayer->UpdateBike();
+			state = MenuState::None;
+			break;
+		case 4:
 			saveTimer.ResetTimer(2.5f);
 			pPlayer->SaveToJSON();
 			SaveToJSON();
 			break;
-		case 4:
+		case 5:
 			bWillChangeScene = true;
 			state = MenuState::None;
 			bIsPlayingSong = false;
@@ -171,7 +193,7 @@ void ExplorationScene::Update()
 			case ExplorationScene::MenuState::ShowingItemInventory:
 			case ExplorationScene::MenuState::ShowingPokemonInventory:
 			case ExplorationScene::MenuState::None:
-				state = MenuState::ShowingMenu;
+				state = MenuState::ShowingMenu;	
 				break;
 			case MenuState::HealingPokemon:
 				state = MenuState::ShowingItemInventory;

@@ -24,7 +24,21 @@ private:
 		RunningLeft,
 		RunningUp,
 		RunningRight,
-		RunningDown
+		RunningDown,
+		BikingLeft,
+		BikingUp,
+		BikingRight,
+		BikingDown,
+		StandingBikeLeft,
+		StandingBikeUp,
+		StandingBikeRight,
+		StandingBikeDown
+	};
+
+	enum class LocomotionState {
+		Walking,
+		Running,
+		Biking
 	};
 public:
 	Player(Maths::IRect rect, const std::string& animFile);
@@ -43,6 +57,9 @@ public:
 
 	void Talk();
 	void StopTalking();
+
+	void UpdateBike();
+	LocomotionState GetLocomotionState() const;
 
 	bool IsTalking() const;
 
@@ -68,7 +85,8 @@ public:
 
 private:
 	bool bIsTalking = false;
-	bool bIsRunning = false;
+
+	LocomotionState locomotion = LocomotionState::Walking;
 
 	std::vector<Pokemon>::iterator selectedPokemon;
 

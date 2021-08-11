@@ -72,7 +72,7 @@ private:
 public:
 	World();
 	
-	void Update();
+	void Update(float speed);
 	void Draw();
 
 	void BlendSpriteTo(GraphicsEngine::Color c);

@@ -49,7 +49,7 @@ public:
 public:
 	House();
 
-	void Update();
+	void Update(float speed);
 	void Draw();
 
 	bool GoOutside() const;

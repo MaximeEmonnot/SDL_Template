@@ -11,9 +11,11 @@ FightingScene::FightingScene()
 	ballMenu(std::make_unique<ItemMenu<Ball>>(std::make_unique<BasicMenu>())),
 	abilityMenu(std::make_unique<AbilityMenu>(std::make_unique<BasicMenu>())),
 	pokemonMenu(std::make_unique<PokemonMenu>(std::make_unique<BasicMenu>())),
-	enemyPkmnRect(500, 50, 128, 128),
+	enemyPkmnRect(500, 100, 128, 128),
 	playerPkmnRect(200, 200, 128, 128),
-	text(Maths::IRect(25, 500, 200, 75))
+	text(Maths::IRect(25, 500, 200, 75)),
+	playerPkmnStatus(Maths::IRect(225, 350, 120, 50)),
+	enemyPkmnStatus(Maths::IRect(525, 50, 120, 50))
 {
 	InitializeAbilityList();
 	enemyPokemon = CreateRandomPokemon();
@@ -235,6 +237,9 @@ void FightingScene::Draw()
 	default:
 		break;
 	}
+	
+	playerPkmnStatus.Draw(std::to_string(pPlayer->GetPokemon().GetHP().x) + " / " + std::to_string(pPlayer->GetPokemon().GetHP().y) + " HP", BLACK, GRAY, WHITE);
+	enemyPkmnStatus.Draw(std::to_string(enemyPokemon->GetHP().x) + " / " + std::to_string(enemyPokemon->GetHP().y) + " HP", BLACK, GRAY, WHITE);
 }
 
 Pokemon* FightingScene::CreateRandomPokemon()

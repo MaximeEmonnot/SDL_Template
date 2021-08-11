@@ -151,35 +151,79 @@ void Player::Move()
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_DOWN)) {
 		dir.y += 1;
 	}
-
-	//Movement
-	//mRect += dir * (int)speed;
 	
 	//Animation
-	bIsRunning = pKbd->KeyIsPressed(SDL_SCANCODE_LSHIFT);
+	if (locomotion != LocomotionState::Biking) {
+		if (pKbd->KeyIsPressed(SDL_SCANCODE_LSHIFT)) locomotion = LocomotionState::Running;
+		else locomotion = LocomotionState::Walking;
+	}
 
 	if (dir != Maths::IVec2D(0,0)) {
 		if (dir.y != 0) {
 			if (dir.y > 0) {
-				if (bIsRunning) miCurSequence = (int)AnimationList::RunningDown;
-				else miCurSequence = (int)AnimationList::WalkingDown;
+				switch (locomotion) {
+				case LocomotionState::Walking:
+					miCurSequence = (int)AnimationList::WalkingDown;
+					break;
+				case LocomotionState::Running:
+					miCurSequence = (int)AnimationList::RunningDown;
+					break;
+				case LocomotionState::Biking:
+					miCurSequence = (int)AnimationList::BikingDown;
+					break;
+				default:
+					break;
+				}
 				lookingDirection = Maths::IVec2D(0, 1);
 			}
 			else {
-				if (bIsRunning) miCurSequence = (int)AnimationList::RunningUp;
-				else miCurSequence = (int)AnimationList::WalkingUp;
+				switch (locomotion) {
+				case LocomotionState::Walking:
+					miCurSequence = (int)AnimationList::WalkingUp;
+					break;
+				case LocomotionState::Running:
+					miCurSequence = (int)AnimationList::RunningUp;
+					break;
+				case LocomotionState::Biking:
+					miCurSequence = (int)AnimationList::BikingUp;
+					break;
+				default:
+					break;
+				}
 				lookingDirection = Maths::IVec2D(0, -1);
 			}
 		}
 		else {
 			if (dir.x > 0) {
-				if (bIsRunning) miCurSequence = (int)AnimationList::RunningRight;
-				else miCurSequence = (int)AnimationList::WalkingRight;
+				switch (locomotion) {
+				case LocomotionState::Walking:
+					miCurSequence = (int)AnimationList::WalkingRight;
+					break;
+				case LocomotionState::Running:
+					miCurSequence = (int)AnimationList::RunningRight;
+					break;
+				case LocomotionState::Biking:
+					miCurSequence = (int)AnimationList::BikingRight;
+					break;
+				default:
+					break;
+				}
 				lookingDirection = Maths::IVec2D(1, 0);
 			}
 			else {
-				if (bIsRunning) miCurSequence = (int)AnimationList::RunningLeft;
-				else miCurSequence = (int)AnimationList::WalkingLeft;
+				switch (locomotion) {
+				case LocomotionState::Walking:
+					miCurSequence = (int)AnimationList::WalkingLeft;
+					break;
+				case LocomotionState::Running:
+					miCurSequence = (int)AnimationList::RunningLeft;
+					break;
+				case LocomotionState::Biking:
+					miCurSequence = (int)AnimationList::BikingLeft;
+					break;
+				default:
+					break;
+				}
 				lookingDirection = Maths::IVec2D(-1, 0);
 			}
 		}
@@ -188,18 +232,58 @@ void Player::Move()
 		if (velocity != Maths::IVec2D(0, 0)) {
 			if (velocity.y != 0) {
 				if (velocity.y > 0) {
-					miCurSequence = (int)AnimationList::StandingDown;
+					switch (locomotion) {
+					case LocomotionState::Walking:
+					case LocomotionState::Running:
+						miCurSequence = (int)AnimationList::StandingDown;
+						break;
+					case LocomotionState::Biking:
+						miCurSequence = (int)AnimationList::StandingBikeDown;
+						break;
+					default:
+						break;
+					}
 				}
 				else {
-					miCurSequence = (int)AnimationList::StandingUp;
+					switch (locomotion) {
+					case LocomotionState::Walking:
+					case LocomotionState::Running:
+						miCurSequence = (int)AnimationList::StandingUp;
+						break;
+					case LocomotionState::Biking:
+						miCurSequence = (int)AnimationList::StandingBikeUp;
+						break;
+					default:
+						break;
+					}
 				}
 			}
 			else {
 				if (velocity.x > 0) {
-					miCurSequence = (int)AnimationList::StandingRight;
+					switch (locomotion) {
+					case LocomotionState::Walking:
+					case LocomotionState::Running:
+						miCurSequence = (int)AnimationList::StandingRight;
+						break;
+					case LocomotionState::Biking:
+						miCurSequence = (int)AnimationList::StandingBikeRight;
+						break;
+					default:
+						break;
+					}
 				}
 				else {
-					miCurSequence = (int)AnimationList::StandingLeft;
+					switch (locomotion) {
+					case LocomotionState::Walking:
+					case LocomotionState::Running:
+						miCurSequence = (int)AnimationList::StandingLeft;
+						break;
+					case LocomotionState::Biking:
+						miCurSequence = (int)AnimationList::StandingBikeLeft;
+						break;
+					default:
+						break;
+					}
 				}
 			}
 		}
@@ -245,6 +329,7 @@ void Player::DrawPokemon()
 void Player::Talk()
 {
 	bIsTalking = true;
+	locomotion = LocomotionState::Walking;
 
 	if (lookingDirection == Maths::IVec2D(0, -1)) {
 		miCurSequence = int(AnimationList::StandingUp);
@@ -263,6 +348,55 @@ void Player::Talk()
 void Player::StopTalking()
 {
 	bIsTalking = false;
+}
+
+void Player::UpdateBike()
+{
+	if (locomotion != LocomotionState::Biking) {
+		locomotion = LocomotionState::Biking;
+		mRect.rect.x -= 8;
+		mRect.rect.y -= 4;
+		mRect.rect.w = 48;
+		mRect.rect.h = 48;
+
+		if (lookingDirection == Maths::IVec2D(0, -1)) {
+			miCurSequence = int(AnimationList::StandingBikeUp);
+		}
+		if (lookingDirection == Maths::IVec2D(1, 0)) {
+			miCurSequence = int(AnimationList::StandingBikeRight);
+		}
+		if (lookingDirection == Maths::IVec2D(0, 1)) {
+			miCurSequence = int(AnimationList::StandingBikeDown);
+		}
+		if (lookingDirection == Maths::IVec2D(-1, 0)) {
+			miCurSequence = int(AnimationList::StandingBikeLeft);
+		}
+	}
+	else {
+		locomotion = LocomotionState::Walking;
+		mRect.rect.x += 8;
+		mRect.rect.y += 4;
+		mRect.rect.w = 32;
+		mRect.rect.h = 44;
+
+		if (lookingDirection == Maths::IVec2D(0, -1)) {
+			miCurSequence = int(AnimationList::StandingUp);
+		}
+		if (lookingDirection == Maths::IVec2D(1, 0)) {
+			miCurSequence = int(AnimationList::StandingRight);
+		}
+		if (lookingDirection == Maths::IVec2D(0, 1)) {
+			miCurSequence = int(AnimationList::StandingDown);
+		}
+		if (lookingDirection == Maths::IVec2D(-1, 0)) {
+			miCurSequence = int(AnimationList::StandingLeft);
+		}
+	}
+}
+
+Player::LocomotionState Player::GetLocomotionState() const
+{
+	return locomotion;
 }
 
 bool Player::IsTalking() const

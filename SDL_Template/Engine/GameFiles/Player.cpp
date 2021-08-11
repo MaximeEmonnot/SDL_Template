@@ -414,7 +414,7 @@ bool Player::TEST_CapturePokemon(int index, Pokemon& pkmn)
 			std::uniform_int_distribution<int> dist(0, 100);
 			if (dist(rng) < ball->GetProbability()) {
 				pokemon.push_back(pkmn);
-				selectedPokemon = pokemon.begin();
+				//selectedPokemon = pokemon.begin();
 				return true;
 			}
 		}

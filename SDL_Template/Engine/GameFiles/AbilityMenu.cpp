@@ -10,7 +10,7 @@ AbilityMenu::AbilityMenu(std::unique_ptr<AMenu> decoratedMenu)
 	if (pPlayer->GetPokemonList().size() != 0) {
 		int i = 0;
 		for (auto& attack : pPlayer->GetPokemon().GetAbilities()) {
-			buttonCharacteristics.insert(std::pair<Maths::IVec2D, std::pair<std::string, std::function<void(int&)>>>(Maths::IVec2D(675, 400 + i * 15), std::make_pair<std::string, std::function<void(int&)>>(attack.GetName() + "   " + std::to_string(attack.GetPP()) + " / " + std::to_string(attack.GetMaxPP()) + "PP", [attackName = attack.GetName(), id = i](int& out) {std::cout << attackName << "!\n"; out = id; })));
+			buttonCharacteristics.insert(std::pair<Maths::IVec2D, std::pair<std::string, std::function<void(int&)>>>(Maths::IVec2D(625, 400 + i * 15), std::make_pair<std::string, std::function<void(int&)>>(attack.GetName() + "   " + std::to_string(attack.GetPP()) + " / " + std::to_string(attack.GetMaxPP()) + "PP", [attackName = attack.GetName(), id = i](int& out) {std::cout << attackName << "!\n"; out = id; })));
 			i++;
 		}
 	}

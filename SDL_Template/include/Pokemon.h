@@ -24,6 +24,7 @@ public:
 			}
 		};
 	public:
+		Ability() = default;
 		Ability(const std::string& name, int pow, int PP, Type type);
 
 		Ability& operator=(const Ability& rhs);
@@ -52,6 +53,7 @@ public:
 	Pokemon& operator=(const Pokemon& rhs);
 
 	void LoadAbility(Pokemon::Ability ability);
+	void InitAbilities(std::map<int, Pokemon::Ability> abilityList);
 
 	void DrawFrontSprite(Maths::IRect destRect);
 	void DrawBackSprite(Maths::IRect destRect);

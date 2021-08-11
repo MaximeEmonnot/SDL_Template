@@ -48,7 +48,7 @@ private:
 
 private:
 	//Map with abilities and respective probabilities
-	std::unordered_map<Pokemon::Ability, int, Pokemon::Ability::Hash> abilityList;
+	std::map<int, Pokemon::Ability> abilityList;
 
 	TimerManager attackTimer;
 	TimerManager fleeTimer;

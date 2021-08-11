@@ -1,4 +1,5 @@
 #include "Pokemon.h"
+#include <random>
 
 Pokemon::Pokemon(const std::string& spritePath, const std::string& name, int id, Type type)
 	:
@@ -34,6 +35,27 @@ Pokemon& Pokemon::operator=(const Pokemon& rhs)
 void Pokemon::LoadAbility(Pokemon::Ability ability)
 {
 	abilities.push_back(ability);
+}
+
+void Pokemon::InitAbilities(std::map<int, Ability> abilityList)
+{
+	std::mt19937 rng(std::random_device{}());
+	std::uniform_int_distribution<int> nAttacks(2, 4);
+	std::uniform_int_distribution<int> probAttack(0, 100);
+
+	int maxAttacks = nAttacks(rng);
+	while (abilities.size() < maxAttacks) {
+		Ability newAbility;
+		for (auto& entry : abilityList) {
+			if (probAttack(rng) <= entry.first) {
+				newAbility = entry.second;
+				break;
+			}
+		}
+		if (std::find(abilities.begin(), abilities.end(), newAbility) == abilities.end()) {
+			abilities.push_back(newAbility);
+		}
+	}
 }
 
 void Pokemon::DrawFrontSprite(Maths::IRect destRect)

@@ -7,7 +7,7 @@ World::Tile::Tile(int x_world_pos, int y_world_pos, int seed, const World& grid)
 
 	int probaGrass = 0;
 	int probaRocks = 0;
-
+		
 	Maths::LLVec2D worldPos = Maths::LLVec2D(x_world_pos, y_world_pos);
 
 	switch (grid.GetNeighbourGroundType(worldPos, Tile::GroundType::Grass)) {
@@ -295,7 +295,7 @@ void World::InitFromJSON()
 	}
 	//Init Player
 	auto& value = jsonReader.GetValueOf("Player");
-	xOffset = value.GetArray()[0].GetInt(); 
+	xOffset = value.GetArray()[0].GetInt();
 	yOffset = value.GetArray()[1].GetInt();
 
 	//Init seed
@@ -356,28 +356,27 @@ void World::Update(float speed)
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_UP)) {
 		if (!TileIsObstacleAt(Maths::LLVec2D(400, 282))) {
 			yOffset -= int(2 * speed);
-			currentPlayerYPos -= int(2 * speed);
 		}
 	}
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_RIGHT)) {
 		if (!TileIsObstacleAt(Maths::LLVec2D(418, 300))) {
 			xOffset += int(2 * speed);
-			currentPlayerXPos += int(2 * speed);
 		}
 	}
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_DOWN)) {
 		if (!TileIsObstacleAt(Maths::LLVec2D(400, 318))) {
 			yOffset += int(2 * speed);
-			currentPlayerYPos += int(2 * speed);
 		}
 	}
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_LEFT)) {
 		if (!TileIsObstacleAt(Maths::LLVec2D(382, 300))) {
 			xOffset -= int(2 * speed);
-			currentPlayerXPos -= int(2 * speed);
 		}
 	}
-	
+	currentPlayerXPos = xOffset + 400;
+	currentPlayerYPos = yOffset + 300;
+
+
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_LCTRL)) {
 		Maths::LLVec2D lookingAtPos = Maths::LLVec2D(xOffset + 400, yOffset + 300);
 		lookingAtPos += Maths::LLVec2D(pPlayer->GetLookingDirection() * 18);
@@ -397,7 +396,7 @@ void World::Update(float speed)
 }
 
 void World::Draw()
-{ 
+{
 	//Draw Tiles (new version)
 	for (int i = -1; i <= gridHeight; i++) {
 		for (int j = -1; j <= gridWidth; j++) {
@@ -467,7 +466,7 @@ void World::Draw()
 					break;
 				}
 				pGfx->DrawSprite(Maths::IRect(int(itr->first.x * tileWidth - xOffset), int(itr->first.y * tileHeight - yOffset), tileWidth, tileHeight), srcRect, tileSprite);
-			
+
 				if (itr->second.GetEventType() == Tile::EventType::Item) {
 					pGfx->DrawSprite(Maths::IRect(int(itr->first.x * tileWidth - xOffset), int(itr->first.y * tileHeight - yOffset), tileWidth, tileHeight), Maths::IRect(48, 0, 16, 16), tileSprite);
 				}
@@ -485,8 +484,8 @@ void World::BlendSpriteTo(GraphicsEngine::Color c)
 bool World::PlayerTriggersFight()
 {
 	//New version
-	Maths::LLVec2D currentPlayerPos = Maths::LLVec2D(int((currentPlayerXPos + 400)/ tileWidth), int((currentPlayerYPos + 300) / tileHeight));
-	Maths::LLVec2D lastPlayerPos = Maths::LLVec2D(int((lastPlayerXPos + 400) / tileWidth), int((lastPlayerYPos + 300) / tileHeight));
+	Maths::LLVec2D currentPlayerPos = Maths::LLVec2D(int(currentPlayerXPos / tileWidth), int(currentPlayerYPos / tileHeight));
+	Maths::LLVec2D lastPlayerPos = Maths::LLVec2D(int(lastPlayerXPos / tileWidth), int(lastPlayerYPos / tileHeight));
 	lastPlayerXPos = currentPlayerXPos;
 	lastPlayerYPos = currentPlayerYPos;
 	if (currentPlayerPos != lastPlayerPos) {
@@ -509,5 +508,5 @@ bool World::GoInside() const
 	if (itr != tiles.end() && itr->second.GetGroundType() == Tile::GroundType::House13) {
 		return pKbd->KeyIsPressed(SDL_SCANCODE_UP);
 	}
- 	return false;
+	return false;
 }

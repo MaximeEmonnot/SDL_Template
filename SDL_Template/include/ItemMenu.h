@@ -15,7 +15,7 @@ public:
 		for (auto& entry : pPlayer->GetItemList()) {
 			std::shared_ptr<T> item = std::dynamic_pointer_cast<T, Item>(entry.first);
 			if (item != nullptr) {
-				buttonCharacteristics.insert(std::pair<Maths::IVec2D, std::pair<std::string, std::function<void(int&)>>>(Maths::IVec2D(675, 400 + 15 * i), std::make_pair<std::string, std::function<void(int&)>>(item->GetName() + "   x" + std::to_string(entry.second), [id = item->GetID()](int& out) {out = id; printf("%d", id); })));
+				buttonCharacteristics.insert(std::pair<Maths::IVec2D, std::pair<std::string, std::function<void(int&)>>>(Maths::IVec2D(625, 400 + 15 * i), std::make_pair<std::string, std::function<void(int&)>>(item->GetName() + "   x" + std::to_string(entry.second), [id = item->GetID()](int& out) {out = id; printf("%d", id); })));
 				i++;
 			}
 		}

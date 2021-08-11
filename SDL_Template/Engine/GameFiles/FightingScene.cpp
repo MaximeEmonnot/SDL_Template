@@ -268,20 +268,15 @@ Pokemon* FightingScene::CreateRandomPokemon()
 	default:
 		break;
 	}
-	for (size_t i = 0; i < 4; i++) {
-		if (distType(rng) < 1) {
-			auto ability = std::find_if(abilityList.begin(), abilityList.end(), [&](const std::pair<Pokemon::Ability, int> entry) { return (entry.first.GetType() == Pokemon::Type::Normal && distAbilities(rng) <= entry.second); });
-			if (ability != abilityList.end()) {
-				pkmn->LoadAbility(ability->first);
-			}
-		}
-		else {
-			auto ability = std::find_if(abilityList.begin(), abilityList.end(), [&](const std::pair<Pokemon::Ability, int> entry) { return (entry.first.GetType() == pkmn->GetType() && distAbilities(rng) <= entry.second); });
-			if (ability != abilityList.end()) {
-				pkmn->LoadAbility(ability->first);
-			}
+
+	//New version
+	std::map<int, Pokemon::Ability> pkmnPotentialAttacks;
+	for (auto& entry : abilityList) {
+		if (entry.second.GetType() == pkmn->GetType() || entry.second.GetType() == Pokemon::Type::Normal) {
+			pkmnPotentialAttacks.insert(entry);
 		}
 	}
+	pkmn->InitAbilities(pkmnPotentialAttacks);
 
 	return pkmn;
 }
@@ -294,25 +289,25 @@ void FightingScene::InitializeAbilityList()
 	//Read Normal abilities
 	auto& normalAbilities = jsonReader.GetValueOf("Normal");
 	for (auto itr = normalAbilities.MemberBegin(); itr != normalAbilities.MemberEnd(); ++itr) {
-		abilityList.insert(std::pair<Pokemon::Ability, int>(Pokemon::Ability(itr->name.GetString(), itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt(), Pokemon::Type::Normal), itr->value.GetArray()[2].GetInt()));
+		abilityList.insert(std::pair<int, Pokemon::Ability>(itr->value.GetArray()[2].GetInt(), Pokemon::Ability(itr->name.GetString(), itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt(), Pokemon::Type::Normal)));
 	}
 
 	//Read Fire Abilities
 	auto& fireAbilities = jsonReader.GetValueOf("Fire");
 	for (auto itr = fireAbilities.MemberBegin(); itr != fireAbilities.MemberEnd(); ++itr) {
-		abilityList.insert(std::pair<Pokemon::Ability, int>(Pokemon::Ability(itr->name.GetString(), itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt(), Pokemon::Type::Fire), itr->value.GetArray()[2].GetInt()));
+		abilityList.insert(std::pair<int, Pokemon::Ability>(itr->value.GetArray()[2].GetInt(), Pokemon::Ability(itr->name.GetString(), itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt(), Pokemon::Type::Fire)));
 	}
 
 	//Read Water Abilities
 	auto& waterAbilities = jsonReader.GetValueOf("Water");
 	for (auto itr = waterAbilities.MemberBegin(); itr != waterAbilities.MemberEnd(); ++itr) {
-		abilityList.insert(std::pair<Pokemon::Ability, int>(Pokemon::Ability(itr->name.GetString(), itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt(), Pokemon::Type::Water), itr->value.GetArray()[2].GetInt()));
+		abilityList.insert(std::pair<int, Pokemon::Ability>(itr->value.GetArray()[2].GetInt(), Pokemon::Ability(itr->name.GetString(), itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt(), Pokemon::Type::Water)));
 	}
 
 	//Read Grass Abilities
 	auto& grassAbilities = jsonReader.GetValueOf("Grass");
 	for (auto itr = grassAbilities.MemberBegin(); itr != grassAbilities.MemberEnd(); ++itr) {
-		abilityList.insert(std::pair<Pokemon::Ability, int>(Pokemon::Ability(itr->name.GetString(), itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt(), Pokemon::Type::Grass), itr->value.GetArray()[2].GetInt()));
+		abilityList.insert(std::pair<int, Pokemon::Ability>(itr->value.GetArray()[2].GetInt(), Pokemon::Ability(itr->name.GetString(), itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt(), Pokemon::Type::Grass)));
 	}
 }
 

@@ -37,7 +37,6 @@
     <ClCompile Include="Engine\GameFiles\Consumable.cpp" />
     <ClCompile Include="Engine\GameFiles\ExplorationScene.cpp" />
     <ClCompile Include="Engine\GameFiles\FightingScene.cpp" />
-    <ClCompile Include="Engine\GameFiles\World.cpp" />
     <ClCompile Include="Engine\GameFiles\House.cpp" />
     <ClCompile Include="Engine\GameFiles\Item.cpp" />
     <ClCompile Include="Engine\GameFiles\ItemInventoryMenu.cpp" />
@@ -55,6 +54,7 @@
     <ClCompile Include="Engine\GameFiles\TimerManager.cpp" />
     <ClCompile Include="Engine\GameFiles\TitleScene.cpp" />
     <ClCompile Include="Engine\GameFiles\ExplorationMenu.cpp" />
+    <ClCompile Include="Engine\GameFiles\World.cpp" />
     <ClCompile Include="Engine\GraphicsManager\Animation.cpp" />
     <ClCompile Include="Engine\GraphicsManager\Font.cpp" />
     <ClCompile Include="Engine\GraphicsManager\Graphics.cpp" />

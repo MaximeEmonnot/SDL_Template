@@ -11,9 +11,9 @@
 "Flamethrower" : [90, 15, 60],
 "Heat Wave" : [95, 10, 75],
 "Flame Wheel" : [60, 25, 85],
-"Inferno" : [100, 5, 95],
+"Inferno" : [100, 5, 93],
 "Sacred Fire" : [100, 5, 100],
-"Flame Charge" : [50, 20, 40]
+"Flame Charge" : [50, 20, 35]
 },
 "Water" : {
 "Water Pulse" : [60, 20, 35],
@@ -21,14 +21,14 @@
 "Hydro Cannon" : [150, 5, 100],
 "Bubble" : [40, 30, 75],
 "Bubble Beam" : [65, 20, 85],
-"Aqua Jet" : [40, 20, 95]
+"Aqua Jet" : [40, 20, 98]
 },
 "Grass" : {
 "Branch Poke" : [40, 40, 35],
 "Vine Whip" : [45, 25, 55],
 "Trop Kick" : [70, 15, 70],
-"Razor Leaf" : [55, 25, 90],
-"Frenzy Plant" : [150, 5, 95],
+"Razor Leaf" : [55, 25, 93],
+"Frenzy Plant" : [150, 5, 98],
 "Leaf Storm" : [130, 5, 100]
 }
 }

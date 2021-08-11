@@ -52,22 +52,64 @@ void Player::InitFromJSON()
 		}
 	}
 
-	//Init Pokemon list
-	if (jsonReaderSF.IsValueAvailable("Pokemons")) {
-		auto& pokemonValue = jsonReaderSF.GetValueOf("Pokemons");
-		for (auto itr = pokemonValue.MemberBegin(); itr != pokemonValue.MemberEnd(); ++itr) {
-			Pokemon newPkmn;
 
-			newPkmn.name = itr->name.GetString();
-			newPkmn.hp = itr->value.GetArray()[0].GetInt();
-			newPkmn.currentMaxHP = itr->value.GetArray()[1].GetInt();
-			newPkmn.att = itr->value.GetArray()[2].GetInt();
-			newPkmn.def = itr->value.GetArray()[3].GetInt();
-			newPkmn.lvl = itr->value.GetArray()[4].GetInt();
-			newPkmn.id = itr->value.GetArray()[5].GetInt();
+	// NEW
+	// Lead pkmn
+	{
+		auto& selectedPkmnValue = jsonReaderSF.GetValueOf("Pokemon0");
+		Pokemon newPkmn;
+		newPkmn.name = selectedPkmnValue.FindMember("Name")->value.GetString();
+		newPkmn.hp = selectedPkmnValue.FindMember("PokemonCharacteristics")->value.GetArray()[0].GetInt();
+		newPkmn.currentMaxHP = selectedPkmnValue.FindMember("PokemonCharacteristics")->value.GetArray()[1].GetInt();
+		newPkmn.att = selectedPkmnValue.FindMember("PokemonCharacteristics")->value.GetArray()[2].GetInt();
+		newPkmn.def = selectedPkmnValue.FindMember("PokemonCharacteristics")->value.GetArray()[3].GetInt();
+		newPkmn.lvl = selectedPkmnValue.FindMember("PokemonCharacteristics")->value.GetArray()[4].GetInt();
+		newPkmn.id = selectedPkmnValue.FindMember("PokemonCharacteristics")->value.GetArray()[5].GetInt();
+		newPkmn.pGfx = GraphicsEngine::Graphics::GetInstance();
+		switch (newPkmn.id) {
+		case 1:
+			newPkmn.type = Pokemon::Type::Grass;
+			newPkmn.sprite = GraphicsEngine::Sprite("Images/bulbasaur.png");
+			break;
+		case 2:
+			newPkmn.type = Pokemon::Type::Fire;
+			newPkmn.sprite = GraphicsEngine::Sprite("Images/charmander.png");
+			break;
+		case 3:
+			newPkmn.type = Pokemon::Type::Water;
+			newPkmn.sprite = GraphicsEngine::Sprite("Images/squirttle.png");
+			break;
+		default:
+			break;
+		}
+		for (int iAttack = 0; iAttack < 4; iAttack++) {
+			if (selectedPkmnValue.HasMember(("Ability" + std::to_string(iAttack) + "Name").c_str())) {
+				Pokemon::Ability ablty(
+					selectedPkmnValue.FindMember(("Ability" + std::to_string(iAttack) + "Name").c_str())->value.GetString(),
+					selectedPkmnValue.FindMember(("Ability" + std::to_string(iAttack) + "Characteristics").c_str())->value.GetArray()[0].GetInt(),
+					selectedPkmnValue.FindMember(("Ability" + std::to_string(iAttack) + "Characteristics").c_str())->value.GetArray()[1].GetInt(),
+					Pokemon::Type(selectedPkmnValue.FindMember(("Ability" + std::to_string(iAttack) + "Characteristics").c_str())->value.GetArray()[3].GetInt()));
+				ablty.SetPP(selectedPkmnValue.FindMember(("Ability" + std::to_string(iAttack) + "Characteristics").c_str())->value.GetArray()[2].GetInt());
+				newPkmn.LoadAbility(ablty);
+			}
+			else break;
+		}
+		AddPokemon(newPkmn);
+	}
+	//Other pkmns
+	for (int iPkmn = 1; iPkmn < 6; iPkmn++) {
+		if (jsonReaderSF.IsValueAvailable("Pokemon" + std::to_string(iPkmn))) {
+			auto& pkmnValue = jsonReaderSF.GetValueOf("Pokemon" + std::to_string(iPkmn));
+			Pokemon newPkmn;
+			newPkmn.name = pkmnValue.FindMember("Name")->value.GetString();
+			newPkmn.hp = pkmnValue.FindMember("PokemonCharacteristics")->value.GetArray()[0].GetInt();
+			newPkmn.currentMaxHP = pkmnValue.FindMember("PokemonCharacteristics")->value.GetArray()[1].GetInt();
+			newPkmn.att = pkmnValue.FindMember("PokemonCharacteristics")->value.GetArray()[2].GetInt();
+			newPkmn.def = pkmnValue.FindMember("PokemonCharacteristics")->value.GetArray()[3].GetInt();
+			newPkmn.lvl = pkmnValue.FindMember("PokemonCharacteristics")->value.GetArray()[4].GetInt();
+			newPkmn.id = pkmnValue.FindMember("PokemonCharacteristics")->value.GetArray()[5].GetInt();
 			newPkmn.pGfx = GraphicsEngine::Graphics::GetInstance();
-			switch (newPkmn.id)
-			{
+			switch (newPkmn.id) {
 			case 1:
 				newPkmn.type = Pokemon::Type::Grass;
 				newPkmn.sprite = GraphicsEngine::Sprite("Images/bulbasaur.png");
@@ -83,19 +125,22 @@ void Player::InitFromJSON()
 			default:
 				break;
 			}
-
+			for (int iAttack = 0; iAttack < 4; iAttack++) {
+				if (pkmnValue.HasMember(("Ability" + std::to_string(iAttack) + "Name").c_str())) {
+					Pokemon::Ability ablty(
+						pkmnValue.FindMember(("Ability" + std::to_string(iAttack) + "Name").c_str())->value.GetString(),
+						pkmnValue.FindMember(("Ability" + std::to_string(iAttack) + "Characteristics").c_str())->value.GetArray()[0].GetInt(),
+						pkmnValue.FindMember(("Ability" + std::to_string(iAttack) + "Characteristics").c_str())->value.GetArray()[1].GetInt(),
+						Pokemon::Type(pkmnValue.FindMember(("Ability" + std::to_string(iAttack) + "Characteristics").c_str())->value.GetArray()[3].GetInt()));
+					ablty.SetPP(pkmnValue.FindMember(("Ability" + std::to_string(iAttack) + "Characteristics").c_str())->value.GetArray()[2].GetInt());
+					newPkmn.LoadAbility(ablty);
+				}
+				else break;
+			}
 			AddPokemon(newPkmn);
 		}
+		else break;
 	}
-
-	//Init Pokemons abilities
-	for (auto& pkmn : pokemon) {
-		auto& pokemonValue = jsonReaderSF.GetValueOf(pkmn.name);
-		for (auto itr = pokemonValue.MemberBegin(); itr != pokemonValue.MemberEnd(); ++itr) {
-			pkmn.LoadAbility(Pokemon::Ability(itr->name.GetString(), itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt(), pkmn.type));
-		}
-	}
-
 }
 
 void Player::SaveToJSON()
@@ -117,22 +162,32 @@ void Player::SaveToJSON()
 		}
 	}
 
-	//Save selected pkmn
-	jsonWriter.AddObjectMember("Pokemons", selectedPokemon->name , selectedPokemon->hp, selectedPokemon->currentMaxHP, selectedPokemon->att, selectedPokemon->def, selectedPokemon->lvl, selectedPokemon->id);
-	for (auto& ability : selectedPokemon->GetAbilities()) {
-		jsonWriter.AddObjectMember(selectedPokemon->name, ability.GetName(), ability.GetPower(), ability.GetMaxPP());
+	// NEW
+	// Save selected pkmn
+	jsonWriter.AddObjectStringMember("Pokemon0", "Name", selectedPokemon->name); 
+	jsonWriter.AddObjectMember("Pokemon0", "PokemonCharacteristics", selectedPokemon->hp, selectedPokemon->currentMaxHP, selectedPokemon->att, selectedPokemon->def, selectedPokemon->lvl, selectedPokemon->id);
+	int iAttack = 0;
+	for (auto attack : selectedPokemon->GetAbilities()) {
+		jsonWriter.AddObjectStringMember("Pokemon0", "Ability" + std::to_string(iAttack) + "Name", attack.GetName());
+		jsonWriter.AddObjectMember("Pokemon0", "Ability" + std::to_string(iAttack) + "Characteristics", attack.GetPower(), attack.GetPP(), attack.GetMaxPP(), int(attack.GetType()));
+		iAttack++;
 	}
 
 	//Save Pokemons
+	int iPkmn = 1;
 	for (auto& pkmn : pokemon) {
+		iAttack = 0;
 		if (pkmn != *selectedPokemon) {
-			jsonWriter.AddObjectMember("Pokemons", pkmn.GetName(), pkmn.hp, pkmn.currentMaxHP, pkmn.att, pkmn.def, pkmn.lvl, pkmn.id);
-			for (auto& ability : pkmn.GetAbilities()) {
-				jsonWriter.AddObjectMember(pkmn.name, ability.GetName(), ability.GetPower(), ability.GetMaxPP());
+			jsonWriter.AddObjectStringMember("Pokemon" + std::to_string(iPkmn), "Name", pkmn.name);
+			jsonWriter.AddObjectMember("Pokemon" + std::to_string(iPkmn), "PokemonCharacteristics", pkmn.hp, pkmn.currentMaxHP, pkmn.att, pkmn.def, pkmn.lvl, pkmn.id);
+			for (auto attack : pkmn.GetAbilities()) {
+				jsonWriter.AddObjectStringMember("Pokemon" + std::to_string(iPkmn), "Ability" + std::to_string(iAttack) + "Name", attack.GetName());
+				jsonWriter.AddObjectMember("Pokemon" + std::to_string(iPkmn), "Ability" + std::to_string(iAttack) + "Characteristics", attack.GetPower(), attack.GetPP(), attack.GetMaxPP(), int(attack.GetType()));
+				iAttack++;
 			}
+			iPkmn++;
 		}
 	}
-
 	jsonWriter.SaveJsonAt("json/saveFile.json");
 }
 
@@ -414,7 +469,7 @@ bool Player::TEST_CapturePokemon(int index, Pokemon& pkmn)
 			std::uniform_int_distribution<int> dist(0, 100);
 			if (dist(rng) < ball->GetProbability()) {
 				pokemon.push_back(pkmn);
-				//selectedPokemon = pokemon.begin();
+				selectedPokemon = pokemon.begin();
 				return true;
 			}
 		}

@@ -30,6 +30,7 @@ public:
 		Ability& operator=(const Ability& rhs);
 
 		void UseAbility();
+		void SetPP(int pp);
 
 		Pokemon::Type GetType() const;
 		std::string GetName() const;

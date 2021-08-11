@@ -165,6 +165,11 @@ void Pokemon::Ability::UseAbility()
 	currentPP--;
 }
 
+void Pokemon::Ability::SetPP(int pp)
+{
+	currentPP = pp;
+}
+
 Pokemon::Type Pokemon::Ability::GetType() const
 {
 	return type;

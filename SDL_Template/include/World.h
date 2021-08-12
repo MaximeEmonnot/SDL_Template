@@ -61,6 +61,7 @@ private:
 	private:
 		void InitFromJSON(Tile::GroundType g_type, Tile::EventType e_type);
 
+		float PerlinNoise(float x, float y);
 		uint32_t Lehmer32(uint32_t nLehmer);
 
 		int rndInt(int min, int max, uint32_t nLehmer);
@@ -81,6 +82,7 @@ public:
 	bool GoInside() const;
 private:
 	void GenerateGrid();
+
 	void CreateHouseAt(const Maths::LLVec2D& pos);
 
 	bool TileIsObstacleAt(const Maths::LLVec2D& pos);

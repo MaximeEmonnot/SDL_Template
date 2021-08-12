@@ -171,6 +171,29 @@ void World::Tile::InitFromJSON(Tile::GroundType g_type, Tile::EventType e_type)
 	eventType = e_type;
 }
 
+float World::Tile::PerlinNoise(float x_in, float y_in)
+{
+	int x = int(x_in) & 255;
+	int y = int(y_in) & 255;
+	float xf = x_in - int(x_in);
+	float yf = y_in - int(y_in);
+
+	Maths::FVec2D topRight = Maths::FVec2D(xf - 1.0f, yf - 1.0f);
+	Maths::FVec2D topLeft = Maths::FVec2D(xf, yf - 1.0f);
+	Maths::FVec2D bottomRight = Maths::FVec2D(xf - 1.0f, yf);
+	Maths::FVec2D bottomLeft = Maths::FVec2D(xf, yf);
+
+	std::vector<int> P;
+	for (size_t i = 0; i < 256; i++) {
+		P.push_back(i);
+	}
+
+
+
+
+	return 0.0f;
+}
+
 uint32_t World::Tile::Lehmer32(uint32_t nLehmer)
 {
 	nLehmer += 0xe120fc15;

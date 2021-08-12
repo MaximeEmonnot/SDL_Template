@@ -7,78 +7,91 @@ World::Tile::Tile(int x_world_pos, int y_world_pos, int seed, const World& grid)
 
 	int probaGrass = 0;
 	int probaRocks = 0;
-		
+	
+
 	Maths::LLVec2D worldPos = Maths::LLVec2D(x_world_pos, y_world_pos);
+	float perlin = PerlinNoise(x_world_pos * 0.1f, y_world_pos * 0.1f, seed, grid.permutationArray, 3);
 
-	switch (grid.GetNeighbourGroundType(worldPos, Tile::GroundType::Grass)) {
-	case 1:
-		probaGrass = 20;
-	case 2:
-	case 3:
-		probaGrass = 40;
-		break;
-	case 4:
-	case 5:
-		probaGrass = 55;
-		break;
-	case 6:
-	case 7:
-		probaGrass = 75;
-		break;
-	case 8:
-		probaGrass = 80;
-	default:
-		break;
-	}
-	switch (grid.GetNeighbourGroundType(worldPos, Tile::GroundType::Rocks))
-	{
-	case 1:
-	case 2:
-		probaRocks = 15;
-	case 3:
-	case 4:
-	case 5:
-		probaRocks = 10;
-	case 6:
-	case 7:
-	case 8:
-		probaRocks = 5;
-	default:
-		break;
-	}
+	printf("perlin : %lF\n", perlin);
 
-	if (rndInt(0, 1000, nLehmer) < 1) {
-		groundType = GroundType::House0;
-	}
-	else {
-		if (rndInt(0, 100, nLehmer) < probaRocks) {
-			groundType = GroundType::Rocks;
+	if (perlin > 0.0f) {
+		switch (grid.GetNeighbourGroundType(worldPos, Tile::GroundType::Grass)) {
+		case 1:
+			probaGrass = 20;
+		case 2:
+		case 3:
+			probaGrass = 40;
+			break;
+		case 4:
+		case 5:
+			probaGrass = 55;
+			break;
+		case 6:
+		case 7:
+			probaGrass = 75;
+			break;
+		case 8:
+			probaGrass = 80;
+		default:
+			break;
 		}
-		else if (rndInt(0, 100, nLehmer) < probaGrass) {
-			groundType = GroundType::Grass;
-			if (rndInt(0, 200, nLehmer) < 1) {
-				eventType = EventType::Item;
-			}
+		switch (grid.GetNeighbourGroundType(worldPos, Tile::GroundType::Rocks))
+		{
+		case 1:
+		case 2:
+			probaRocks = 15;
+		case 3:
+		case 4:
+		case 5:
+			probaRocks = 10;
+		case 6:
+		case 7:
+		case 8:
+			probaRocks = 5;
+		default:
+			break;
+		}
+		if (rndInt(0, 1000, nLehmer) < 1) {
+			groundType = GroundType::House0;
 		}
 		else {
-			// 50% grass 25% Forest 15% water 8% Rocks 2% Sand
-			if (rndInt(0, 10, nLehmer) < 8) {
-				groundType = GroundType::Sand;
-				if (rndInt(0, 100, nLehmer) < 1) {
+			if (rndInt(0, 100, nLehmer) < probaRocks) {
+				groundType = GroundType::Rocks;
+			}
+			else if (rndInt(0, 100, nLehmer) < probaGrass) {
+				groundType = GroundType::Grass;
+				if (rndInt(0, 200, nLehmer) < 1) {
 					eventType = EventType::Item;
 				}
 			}
 			else {
-				if (rndInt(0, 4, nLehmer) < 3) {
-					groundType = GroundType::Grass;
-					if (rndInt(0, 250, nLehmer) < 1) {
+				// 50% grass 25% Forest 15% water 8% Rocks 2% Sand
+				if (rndInt(0, 10, nLehmer) < 8) {
+					groundType = GroundType::Dirt;
+					if (rndInt(0, 100, nLehmer) < 1) {
 						eventType = EventType::Item;
 					}
 				}
 				else {
-					groundType = GroundType::Rocks;
+					if (rndInt(0, 4, nLehmer) < 3) {
+						groundType = GroundType::Grass;
+						if (rndInt(0, 250, nLehmer) < 1) {
+							eventType = EventType::Item;
+						}
+					}
+					else {
+						groundType = GroundType::Rocks;
+					}
 				}
 			}
+		}
+	}
+	else {
+		if (perlin > -0.45f) {
+			groundType = GroundType::Sand;
+		}
+		else {
+			groundType = GroundType::Water;
 		}
 	}
 }
@@ -152,6 +165,7 @@ bool World::Tile::IsObstacle() const
 
 bool World::Tile::PlayerTriggersFight(const World& grid)
 {
+	return false;
 	if (groundType == Tile::GroundType::Grass) {
 		std::mt19937 rng(std::random_device{}());
 		std::uniform_int_distribution<int> dist(0, 20);
@@ -162,7 +176,6 @@ bool World::Tile::PlayerTriggersFight(const World& grid)
 			return (dist(rng) == 1);
 		}
 	}
-	return false;
 }
 
 void World::Tile::InitFromJSON(Tile::GroundType g_type, Tile::EventType e_type)
@@ -171,7 +184,7 @@ void World::Tile::InitFromJSON(Tile::GroundType g_type, Tile::EventType e_type)
 	eventType = e_type;
 }
 
-float World::Tile::PerlinNoise(float x_in, float y_in)
+float World::Tile::PerlinNoise(float x_in, float y_in, int seed, std::vector<int> p, int nOctaves)
 {
 	int x = int(x_in) & 255;
 	int y = int(y_in) & 255;
@@ -183,15 +196,51 @@ float World::Tile::PerlinNoise(float x_in, float y_in)
 	Maths::FVec2D bottomRight = Maths::FVec2D(xf - 1.0f, yf);
 	Maths::FVec2D bottomLeft = Maths::FVec2D(xf, yf);
 
-	std::vector<int> P;
-	for (size_t i = 0; i < 256; i++) {
-		P.push_back(i);
+	int valueTopRight = p.at(p.at(x + 1) + y + 1);
+	int valueTopLeft = p.at(p.at(x) + y + 1);
+	int valueBottomRight = p.at(p.at(x + 1) + y);
+	int valueBottomLeft = p.at(p.at(x) + y);
+
+	float dotTopRight = topRight.DotProduct(GetConstantVector(valueTopRight));
+	float dotTopLeft = topLeft.DotProduct(GetConstantVector(valueTopLeft));
+	float dotBottomRight = bottomRight.DotProduct(GetConstantVector(valueBottomRight));
+	float dotBottomLeft = bottomLeft.DotProduct(GetConstantVector(valueBottomLeft));
+
+	float u = Fade(xf);
+	float v = Fade(yf);
+
+	float output = Lerp(Lerp(dotBottomLeft, dotTopLeft, v),
+		Lerp(dotBottomRight, dotTopRight, v),
+		u);
+
+	if (nOctaves > 0) return Lerp(output, PerlinNoise(x_in * 0.1f, y_in * 0.1f, seed, p, nOctaves - 1), 0.5f);
+
+	return output;
+}
+
+Maths::FVec2D World::Tile::GetConstantVector(int value)
+{
+	int h = value & 3;
+	switch (h) {
+	case 0:
+		return Maths::FVec2D(1.0f, 1.0f);
+	case 1:
+		return Maths::FVec2D(-1.0f, 1.0f);
+	case 2:
+		return Maths::FVec2D(-1.0f, -1.0f);
+	default:
+		return Maths::FVec2D(1.0f, -1.0f);
 	}
+}
 
+float World::Tile::Fade(float t)
+{
+	return ((6*t - 15)*t + 10)*t*t*t;
+}
 
-
-
-	return 0.0f;
+float World::Tile::Lerp(float val0, float val1, float alpha)
+{
+	return val0 + (val1 - val0) * alpha;
 }
 
 uint32_t World::Tile::Lehmer32(uint32_t nLehmer)
@@ -225,6 +274,9 @@ World::World()
 	std::mt19937 rng(std::random_device{}());
 	std::uniform_int_distribution<int> dist(-20, 20);
 	generationSeed = dist(rng);
+
+	//Init permutation array for perlin noise
+	MakePermutation(); 
 
 	//Init item list
 	JSONParser::Reader jsonReader;
@@ -261,6 +313,18 @@ void World::GenerateGrid()
 		}
 	}
 
+}
+
+void World::MakePermutation()
+{
+	for (size_t i = 0; i < 256; i++) {
+		permutationArray.push_back(i);
+	}
+	std::mt19937 rng(generationSeed);
+	std::shuffle(permutationArray.begin(), permutationArray.end(), rng);
+	for (size_t i = 0; i < 256; i++) {
+		permutationArray.push_back(i);
+	}
 }
 
 void World::CreateHouseAt(const Maths::LLVec2D& pos)
@@ -431,11 +495,17 @@ void World::Draw()
 				case World::Tile::GroundType::Grass:
 					srcRect = Maths::IRect(0, 0, 16, 16);
 					break;
-				case World::Tile::GroundType::Sand:
+				case World::Tile::GroundType::Dirt:
 					srcRect = Maths::IRect(16, 0, 16, 16);
 					break;
 				case World::Tile::GroundType::Rocks:
 					srcRect = Maths::IRect(32, 0, 16, 16);
+					break;
+				case World::Tile::GroundType::Sand:
+					srcRect = Maths::IRect(64, 16, 16, 16);
+					break;
+				case World::Tile::GroundType::Water:
+					srcRect = Maths::IRect(64, 0, 16, 16);
 					break;
 				case World::Tile::GroundType::House0:
 					srcRect = Maths::IRect(0, 16, 16, 16);

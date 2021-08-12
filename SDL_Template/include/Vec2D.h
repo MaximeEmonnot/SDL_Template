@@ -89,15 +89,23 @@ namespace Maths {
 			return sqrtf(x * x + y * y);
 		}
 
-		Vec2D GetNormalized() {
+		Vec2D GetNormalized() const {
+			Vec2D v = *this;
 			float magnitude = 1 / GetLength();
-			x *= magnitude;
-			y *= magnitude;
-			return *this;
+			v.x *= magnitude;
+			v.y *= magnitude;
+			return v;
 		}
 
 		void Normalize() {
 			*this = GetNormalized();
+		}
+
+		float DotProduct(const Vec2D& rhs) {
+			Vec2D v0 = this->GetNormalized();
+			Vec2D v1 = rhs.GetNormalized();
+
+			return v0.x * v1.x + v0.y * v1.y;
 		}
 
 	public:

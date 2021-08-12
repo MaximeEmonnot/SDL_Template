@@ -20,7 +20,9 @@ private:
 		{
 			Grass,
 			Rocks,
+			Dirt,
 			Sand,
+			Water,
 			House0,
 			House1,
 			House2,
@@ -61,7 +63,11 @@ private:
 	private:
 		void InitFromJSON(Tile::GroundType g_type, Tile::EventType e_type);
 
-		float PerlinNoise(float x, float y);
+		float PerlinNoise(float x, float y, int seed, std::vector<int> p, int nOctaves);
+		Maths::FVec2D GetConstantVector(int value);
+		float Fade(float t);
+		float Lerp(float val0, float val1, float alpha);
+
 		uint32_t Lehmer32(uint32_t nLehmer);
 
 		int rndInt(int min, int max, uint32_t nLehmer);
@@ -82,6 +88,8 @@ public:
 	bool GoInside() const;
 private:
 	void GenerateGrid();
+
+	void MakePermutation();
 
 	void CreateHouseAt(const Maths::LLVec2D& pos);
 
@@ -115,6 +123,8 @@ private:
 	int generationSeed;
 	//New version
 	std::unordered_map<Maths::LLVec2D, Tile, Maths::LLVec2D::Hash> tiles;
+
+	std::vector<int> permutationArray;
 
 	std::vector<std::shared_ptr<Item>> itemList;
 	std::unordered_map<Maths::LLVec2D, std::shared_ptr<Item>, Maths::LLVec2D::Hash> items;

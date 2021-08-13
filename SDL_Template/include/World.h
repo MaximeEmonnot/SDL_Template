@@ -47,6 +47,12 @@ private:
 			 Boulder,
 			 None
 		};
+		enum class BiomeType {
+			Forest,
+			Desert,
+			Toundra,
+			None
+		};
 	public:
 		Tile() = default;
 		Tile(int x_world_pos, int y_world_pos, int seed, const World& grid);
@@ -57,6 +63,7 @@ private:
 
 		Tile::GroundType GetGroundType() const;
 		Tile::EventType GetEventType() const;
+		Tile::BiomeType GetBiomeType() const;
 
 		bool IsObstacle() const;
 		bool PlayerTriggersFight(const World& grid);
@@ -75,6 +82,7 @@ private:
 	private:
 		Tile::GroundType groundType = Tile::GroundType::None;
 		Tile::EventType eventType = Tile::EventType::None;
+		Tile::BiomeType biomeType = Tile::BiomeType::None;
 	};
 public:
 	World();
@@ -89,6 +97,8 @@ public:
 private:
 	void GenerateGrid();
 
+	void GenerateNewBiomePlaces();
+
 	void MakePermutation();
 
 	void CreateHouseAt(const Maths::LLVec2D& pos);
@@ -100,8 +110,13 @@ private:
 
 	int GetNeighbourGroundType(const Maths::LLVec2D& pos, World::Tile::GroundType g_type) const;
 
+	Maths::IVec2D GetPlayerDirection() const;
+
 private:
-	GraphicsEngine::Sprite tileSprite;
+	GraphicsEngine::Sprite tileSpriteForest;
+	GraphicsEngine::Sprite tileSpriteDesert;
+	GraphicsEngine::Sprite tileSpriteToundra;
+
 	std::shared_ptr<GraphicsEngine::Graphics> pGfx;
 	std::shared_ptr<CoreSystem::Keyboard> pKbd;
 	std::shared_ptr<CoreSystem::Timer> pTimer;
@@ -120,9 +135,14 @@ private:
 	long long xOffset = 0;
 	long long yOffset = 0;
 	
+	Maths::IVec2D playerDirection;
+
 	int generationSeed;
 	//New version
 	std::unordered_map<Maths::LLVec2D, Tile, Maths::LLVec2D::Hash> tiles;
+
+	//Voronoi
+	std::unordered_map<Maths::LLVec2D, Tile::BiomeType, Maths::LLVec2D::Hash> biomePlaces;
 
 	std::vector<int> permutationArray;
 

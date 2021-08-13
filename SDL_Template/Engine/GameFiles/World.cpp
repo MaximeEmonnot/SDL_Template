@@ -3,95 +3,121 @@
 
 World::Tile::Tile(int x_world_pos, int y_world_pos, int seed, const World& grid)
 {
-	uint32_t nLehmer = (x_world_pos & 0xFFFF) << seed | (y_world_pos & 0xFFFF);
-
-	int probaGrass = 0;
-	int probaRocks = 0;
-	
-
-	Maths::LLVec2D worldPos = Maths::LLVec2D(x_world_pos, y_world_pos);
-	float perlin = PerlinNoise(x_world_pos * 0.1f, y_world_pos * 0.1f, seed, grid.permutationArray, 3);
-
-	printf("perlin : %lF\n", perlin);
-
-	if (perlin > 0.0f) {
-		switch (grid.GetNeighbourGroundType(worldPos, Tile::GroundType::Grass)) {
-		case 1:
-			probaGrass = 20;
-		case 2:
-		case 3:
-			probaGrass = 40;
-			break;
-		case 4:
-		case 5:
-			probaGrass = 55;
-			break;
-		case 6:
-		case 7:
-			probaGrass = 75;
-			break;
-		case 8:
-			probaGrass = 80;
-		default:
-			break;
+	//Biome Determination
+	std::pair<Maths::LLVec2D, Tile::BiomeType> nearestPoint;
+	for (auto& biomePoint : grid.biomePlaces) {
+		int smalledDist = 100000;
+		int manhattanDistPoint = (abs(biomePoint.first.x - x_world_pos) + abs(biomePoint.first.y - y_world_pos));
+		if (smalledDist > manhattanDistPoint) {
+			smalledDist = manhattanDistPoint;
+			nearestPoint = biomePoint;
 		}
-		switch (grid.GetNeighbourGroundType(worldPos, Tile::GroundType::Rocks))
-		{
-		case 1:
-		case 2:
-			probaRocks = 15;
-		case 3:
-		case 4:
-		case 5:
-			probaRocks = 10;
-		case 6:
-		case 7:
-		case 8:
-			probaRocks = 5;
-		default:
-			break;
-		}
-		if (rndInt(0, 1000, nLehmer) < 1) {
-			groundType = GroundType::House0;
-		}
-		else {
-			if (rndInt(0, 100, nLehmer) < probaRocks) {
-				groundType = GroundType::Rocks;
+	}
+	biomeType = nearestPoint.second;
+
+	if (x_world_pos <= 0 || y_world_pos <= 0) {
+		groundType = GroundType::Rocks;
+	}
+	else {
+		uint32_t nLehmer = (x_world_pos & 0xFFFF) << seed | (y_world_pos & 0xFFFF);
+
+		int probaGrass = 0;
+		int probaRocks = 0;
+
+		Maths::LLVec2D worldPos = Maths::LLVec2D(x_world_pos, y_world_pos);
+		float perlin = PerlinNoise(x_world_pos * 0.1f, y_world_pos * 0.1f, seed, grid.permutationArray, 3);
+
+		printf("perlin : %lF\n", perlin);
+
+		if (perlin > 0.0f || (x_world_pos < 15 && y_world_pos < 15)) {
+			switch (grid.GetNeighbourGroundType(worldPos, Tile::GroundType::Grass)) {
+			case 1:
+				probaGrass = 20;
+			case 2:
+			case 3:
+				probaGrass = 40;
+				break;
+			case 4:
+			case 5:
+				probaGrass = 55;
+				break;
+			case 6:
+			case 7:
+				probaGrass = 75;
+				break;
+			case 8:
+				probaGrass = 80;
+			default:
+				break;
 			}
-			else if (rndInt(0, 100, nLehmer) < probaGrass) {
-				groundType = GroundType::Grass;
-				if (rndInt(0, 200, nLehmer) < 1) {
-					eventType = EventType::Item;
-				}
+			switch (grid.GetNeighbourGroundType(worldPos, Tile::GroundType::Rocks))
+			{
+			case 1:
+			case 2:
+				probaRocks = 15;
+			case 3:
+			case 4:
+			case 5:
+				probaRocks = 10;
+			case 6:
+			case 7:
+			case 8:
+				probaRocks = 5;
+			default:
+				break;
+			}
+			if (rndInt(0, 1000, nLehmer) < 1) {
+
+				groundType = GroundType::House0;
 			}
 			else {
-				// 50% grass 25% Forest 15% water 8% Rocks 2% Sand
-				if (rndInt(0, 10, nLehmer) < 8) {
-					groundType = GroundType::Dirt;
-					if (rndInt(0, 100, nLehmer) < 1) {
+				if (rndInt(0, 100, nLehmer) < probaRocks) {
+					groundType = GroundType::Rocks;
+				}
+				else if (rndInt(0, 100, nLehmer) < probaGrass) {
+					groundType = GroundType::Grass;
+					if (rndInt(0, 200, nLehmer) < 1) {
 						eventType = EventType::Item;
 					}
 				}
 				else {
-					if (rndInt(0, 4, nLehmer) < 3) {
-						groundType = GroundType::Grass;
-						if (rndInt(0, 250, nLehmer) < 1) {
+					// 50% grass 25% Forest 15% water 8% Rocks 2% Sand
+					if (rndInt(0, 10, nLehmer) < 8) {
+						groundType = GroundType::Dirt;
+						if (rndInt(0, 100, nLehmer) < 1) {
 							eventType = EventType::Item;
+						}
+						else if (rndInt(0, 150, nLehmer) < 1) {
+							eventType = EventType::Boulder;
+						}
+						else if (rndInt(0, 200, nLehmer) < 1) {
+							eventType = EventType::Tree;
 						}
 					}
 					else {
-						groundType = GroundType::Rocks;
+						if (rndInt(0, 4, nLehmer) < 3) {
+							groundType = GroundType::Grass;
+							if (rndInt(0, 250, nLehmer) < 1) {
+								eventType = EventType::Item;
+							}
+						}
+						else {
+							groundType = GroundType::Rocks;
+						}
 					}
 				}
 			}
 		}
-	}
-	else {
-		if (perlin > -0.45f) {
-			groundType = GroundType::Sand;
-		}
-		else {
-			groundType = GroundType::Water;
+		else if (x_world_pos >= 15 || y_world_pos >= 15) {
+			if (perlin > -0.15f) {
+				groundType = GroundType::Sand;
+				if (rndInt(0, 125, nLehmer) < 1) {
+					eventType = EventType::Boulder;
+				}
+			}
+			else {
+				groundType = GroundType::Water;
+			}
 		}
 	}
 }
@@ -129,6 +155,11 @@ World::Tile::EventType World::Tile::GetEventType() const
 	return eventType;
 }
 
+World::Tile::BiomeType World::Tile::GetBiomeType() const
+{
+	return biomeType;
+}
+
 World::Tile::GroundType World::Tile::GetGroundType() const
 {
 	return groundType;
@@ -139,6 +170,7 @@ bool World::Tile::IsObstacle() const
 	switch (groundType)
 	{
 	case World::Tile::GroundType::Rocks:
+	case World::Tile::GroundType::Water:
 	case World::Tile::GroundType::House0:
 	case World::Tile::GroundType::House1:
 	case World::Tile::GroundType::House2:
@@ -160,7 +192,8 @@ bool World::Tile::IsObstacle() const
 	default:
 		break;
 	}
-	return eventType == EventType::Item;
+
+	return eventType != EventType::None;
 }
 
 bool World::Tile::PlayerTriggersFight(const World& grid)
@@ -266,7 +299,9 @@ World::World()
 	pPlayer(Player::GetInstance(Maths::IRect(384, 267, 32, 44), "json/player.json")),
 	currentPlayerXPos(400),
 	currentPlayerYPos(300),
-	tileSprite("Images/tileSheet.png")
+	tileSpriteForest("Images/tileSheetForest.png"),
+	tileSpriteDesert("Images/tileSheetDesert.png"),
+	tileSpriteToundra("Images/tileSheetToundra.png")
 {
 	//461 168 601 842 738 790
 
@@ -296,6 +331,7 @@ World::World()
 void World::GenerateGrid()
 {
 	//New version : updates only if you see a new tile
+
 	for (int i = -1; i <= gridHeight; i++) {
 		for (int j = -1; j <= gridWidth; j++) {
 			Maths::LLVec2D pos = Maths::LLVec2D(j + int(xOffset / tileWidth), i + int(yOffset / tileHeight));
@@ -311,6 +347,23 @@ void World::GenerateGrid()
 				}
 			}
 		}
+	}
+
+}
+
+void World::GenerateNewBiomePlaces()
+{
+	Maths::LLVec2D currentOffset = Maths::LLVec2D(long long(xOffset / tileWidth), long long(yOffset / tileHeight));
+
+	std::mt19937 rng(generationSeed + currentOffset.x + currentOffset.y);
+	std::uniform_int_distribution<int> distBiomeType(0, 2);
+
+
+	if (currentOffset.x % 45 == 0 ||
+		currentOffset.y % 30 == 0) {
+		std::uniform_int_distribution<int> distX(currentOffset.x, currentOffset.x + 70);
+		std::uniform_int_distribution<int> distY(currentOffset.y, currentOffset.y + 50);
+		biomePlaces.insert(std::pair<Maths::LLVec2D, Tile::BiomeType>(Maths::LLVec2D(distX(rng), distY(rng)), Tile::BiomeType(distBiomeType(rng))));
 	}
 
 }
@@ -332,11 +385,9 @@ void World::CreateHouseAt(const Maths::LLVec2D& pos)
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
 			Maths::LLVec2D tilePos = Maths::LLVec2D(i, j) + pos;
-			if (tilePos != pos) {
-				Tile tile;
-				tile.groundType = World::Tile::GroundType(int(World::Tile::GroundType::House0) + j * 4 + i);
-				tiles.insert(std::pair<Maths::IVec2D, Tile>(tilePos, tile));
-			}
+			Tile tile;
+			tile.groundType = World::Tile::GroundType(int(World::Tile::GroundType::House0) + j * 4 + i);
+			tiles.insert(std::pair<Maths::IVec2D, Tile>(tilePos, tile));
 		}
 	}
 }
@@ -436,28 +487,40 @@ int World::GetNeighbourGroundType(const Maths::LLVec2D& pos, World::Tile::Ground
 	return ground;
 }
 
+Maths::IVec2D World::GetPlayerDirection() const
+{
+	return playerDirection;
+}
+
 void World::Update(float speed)
 {
+	GenerateNewBiomePlaces();
 	GenerateGrid();
+
+	playerDirection = Maths::IVec2D(0, 0);
 
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_UP)) {
 		if (!TileIsObstacleAt(Maths::LLVec2D(400, 282))) {
 			yOffset -= int(2 * speed);
+			playerDirection.y--;
 		}
 	}
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_RIGHT)) {
 		if (!TileIsObstacleAt(Maths::LLVec2D(418, 300))) {
 			xOffset += int(2 * speed);
+			playerDirection.x++;
 		}
 	}
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_DOWN)) {
 		if (!TileIsObstacleAt(Maths::LLVec2D(400, 318))) {
 			yOffset += int(2 * speed);
+			playerDirection.y++;
 		}
 	}
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_LEFT)) {
 		if (!TileIsObstacleAt(Maths::LLVec2D(382, 300))) {
 			xOffset -= int(2 * speed);
+			playerDirection.x--;
 		}
 	}
 	currentPlayerXPos = xOffset + 400;
@@ -491,6 +554,22 @@ void World::Draw()
 			auto itr = tiles.find(pos);
 			if (itr != tiles.end()) {
 				Maths::IRect srcRect;
+				GraphicsEngine::Sprite tileSprite;
+
+				switch (itr->second.GetBiomeType()) {
+				case World::Tile::BiomeType::Forest:
+					tileSprite = tileSpriteForest;
+					break;
+				case World::Tile::BiomeType::Desert:
+					tileSprite = tileSpriteDesert;
+					break;
+				case World::Tile::BiomeType::Toundra:
+					tileSprite = tileSpriteToundra;
+					break;
+				default:
+					break;
+				}
+
 				switch (itr->second.GetGroundType()) {
 				case World::Tile::GroundType::Grass:
 					srcRect = Maths::IRect(0, 0, 16, 16);
@@ -502,7 +581,7 @@ void World::Draw()
 					srcRect = Maths::IRect(32, 0, 16, 16);
 					break;
 				case World::Tile::GroundType::Sand:
-					srcRect = Maths::IRect(64, 16, 16, 16);
+					srcRect = Maths::IRect(48, 0, 16, 16);
 					break;
 				case World::Tile::GroundType::Water:
 					srcRect = Maths::IRect(64, 0, 16, 16);
@@ -560,8 +639,18 @@ void World::Draw()
 				}
 				pGfx->DrawSprite(Maths::IRect(int(itr->first.x * tileWidth - xOffset), int(itr->first.y * tileHeight - yOffset), tileWidth, tileHeight), srcRect, tileSprite);
 
-				if (itr->second.GetEventType() == Tile::EventType::Item) {
-					pGfx->DrawSprite(Maths::IRect(int(itr->first.x * tileWidth - xOffset), int(itr->first.y * tileHeight - yOffset), tileWidth, tileHeight), Maths::IRect(48, 0, 16, 16), tileSprite);
+				switch (itr->second.GetEventType()) {
+				case World::Tile::EventType::Item:
+					pGfx->DrawSprite(Maths::IRect(int(itr->first.x * tileWidth - xOffset), int(itr->first.y * tileHeight - yOffset), tileWidth, tileHeight), Maths::IRect(64, 16, 16, 16), tileSprite);
+					break;
+				case World::Tile::EventType::Boulder:
+					pGfx->DrawSprite(Maths::IRect(int(itr->first.x * tileWidth - xOffset), int(itr->first.y * tileHeight - yOffset), tileWidth, tileHeight), Maths::IRect(64, 32, 16, 16), tileSprite);
+					break;
+				case World::Tile::EventType::Tree:
+					pGfx->DrawSprite(Maths::IRect(int(itr->first.x * tileWidth - xOffset), int(itr->first.y * tileHeight - yOffset), tileWidth, tileHeight), Maths::IRect(64, 48, 16, 16), tileSprite);
+					break;
+				default:
+					break;
 				}
 			}
 		}
@@ -571,7 +660,9 @@ void World::Draw()
 
 void World::BlendSpriteTo(GraphicsEngine::Color c)
 {
-	tileSprite.BlendColor(c);
+	tileSpriteForest.BlendColor(c);
+	tileSpriteDesert.BlendColor(c);
+	tileSpriteToundra.BlendColor(c);
 }
 
 bool World::PlayerTriggersFight()

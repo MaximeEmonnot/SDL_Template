@@ -18,6 +18,11 @@ void GraphicsEngine::Animation::Draw(Maths::IRect rect, int priority)
 	mpGfx->DrawSprite(rect, mFrames[miCurFrame], mrSprite, priority);
 }
 
+void GraphicsEngine::Animation::DrawReflection(Maths::IRect rect)
+{
+	mpGfx->DrawInvertedSprite(rect, mFrames[miCurFrame], mrSprite, -1);
+}
+
 void GraphicsEngine::Animation::Update(float dt)
 {
 	mCurFrameTime += dt;

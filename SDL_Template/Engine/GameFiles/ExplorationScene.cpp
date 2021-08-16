@@ -219,6 +219,7 @@ void ExplorationScene::Draw()
 			pPlayer->BlendSpriteTo(GraphicsEngine::Color(64, 64, 128, 128));
 		}
 		pWorld->Draw();
+		pPlayer->DrawReflection();
 	}
 	pPlayer->Draw();
 

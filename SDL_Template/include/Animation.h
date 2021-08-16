@@ -13,6 +13,7 @@ namespace GraphicsEngine {
 		Animation(Maths::IRect rect, int count, Sprite& rSprite, float holdTime);
 
 		void						Draw(Maths::IRect rect, int priority = 0);
+		void                        DrawReflection(Maths::IRect rect);
 
 		void						Update(float dt);
 		void						ResetAnimation();

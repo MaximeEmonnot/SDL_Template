@@ -7,10 +7,10 @@ World::Tile::Tile(int x_world_pos, int y_world_pos, int seed, const World& grid)
 	std::pair<Maths::LLVec2D, Tile::BiomeType> nearestPoint;
 	for (auto& biomePoint : grid.biomePlaces) {
 		int smalledDist = 100000;
-		int manhattanDistPoint = (abs(biomePoint.first.x - x_world_pos) + abs(biomePoint.first.y - y_world_pos));
+		int manhattanDistPoint = (abs(biomePoint.second.first.x - x_world_pos) + abs(biomePoint.second.first.y - y_world_pos));
 		if (smalledDist > manhattanDistPoint) {
 			smalledDist = manhattanDistPoint;
-			nearestPoint = biomePoint;
+			nearestPoint = biomePoint.second;
 		}
 	}
 	biomeType = nearestPoint.second;
@@ -67,8 +67,13 @@ World::Tile::Tile(int x_world_pos, int y_world_pos, int seed, const World& grid)
 				break;
 			}
 			if (rndInt(0, 1000, nLehmer) < 1) {
+				if (grid.GetPlayerDirection().x >= 0) {
+					groundType = Tile::GroundType::House0;
+				}
+				else {
+					groundType = Tile::GroundType::House3;
+				}
 
-				groundType = GroundType::House0;
 			}
 			else {
 				if (rndInt(0, 100, nLehmer) < probaRocks) {
@@ -296,19 +301,30 @@ World::World()
 	:
 	pGfx(GraphicsEngine::Graphics::GetInstance()),
 	pKbd(CoreSystem::Keyboard::GetInstance()),
+	pTimer(CoreSystem::Timer::GetInstance()),
 	pPlayer(Player::GetInstance(Maths::IRect(384, 267, 32, 44), "json/player.json")),
 	currentPlayerXPos(400),
 	currentPlayerYPos(300),
 	tileSpriteForest("Images/tileSheetForest.png"),
 	tileSpriteDesert("Images/tileSheetDesert.png"),
-	tileSpriteToundra("Images/tileSheetToundra.png")
+	tileSpriteToundra("Images/tileSheetToundra.png"),
+	tempestSprite("Images/tempest.png"),
+	tempestForest(Maths::IRect(0, 0, 32, 32), 13, tempestSprite, 0.01f),
+	tempestDesert(Maths::IRect(0, 32, 32, 32), 13, tempestSprite, 0.05f),
+	tempestToundra(Maths::IRect(0, 64, 32, 32), 13, tempestSprite, 0.15f)
 {
 	//461 168 601 842 738 790
+
+
 
 	//Init generation seed
 	std::mt19937 rng(std::random_device{}());
 	std::uniform_int_distribution<int> dist(-20, 20);
 	generationSeed = dist(rng);
+
+	//Init weather timer
+	std::uniform_real_distribution<float> distTime(40.0f, 100.0f);
+	weatherTimer.ResetTimer(distTime(rng));
 
 	//Init permutation array for perlin noise
 	MakePermutation(); 
@@ -332,8 +348,8 @@ void World::GenerateGrid()
 {
 	//New version : updates only if you see a new tile
 
-	for (int i = -1; i <= gridHeight; i++) {
-		for (int j = -1; j <= gridWidth; j++) {
+	for (int i = -4; i < gridHeight + 4; i++) {
+		for (int j = -4; j < gridWidth + 4; j++) {
 			Maths::LLVec2D pos = Maths::LLVec2D(j + int(xOffset / tileWidth), i + int(yOffset / tileHeight));
 			auto itr = tiles.find(pos);
 			if (itr == tiles.end()) {
@@ -359,13 +375,19 @@ void World::GenerateNewBiomePlaces()
 	std::uniform_int_distribution<int> distBiomeType(0, 2);
 
 
-	if (currentOffset.x % 45 == 0 ||
-		currentOffset.y % 30 == 0) {
+	if (int(sqrt(currentOffset.x * currentOffset.x + currentOffset.y * currentOffset.y)) % 70 == 0 && biomePlaces.find(currentOffset) == biomePlaces.end()) {
 		std::uniform_int_distribution<int> distX(currentOffset.x, currentOffset.x + 70);
 		std::uniform_int_distribution<int> distY(currentOffset.y, currentOffset.y + 50);
-		biomePlaces.insert(std::pair<Maths::LLVec2D, Tile::BiomeType>(Maths::LLVec2D(distX(rng), distY(rng)), Tile::BiomeType(distBiomeType(rng))));
+		biomePlaces.insert(std::pair<Maths::LLVec2D, std::pair<Maths::LLVec2D, Tile::BiomeType>>(currentOffset,std::pair<Maths::LLVec2D, Tile::BiomeType>(Maths::LLVec2D(distX(rng), distY(rng)), Tile::BiomeType(distBiomeType(rng)))));
 	}
 
+}
+
+void World::UpdateTempest()
+{
+	tempestForest.Update(pTimer->DeltaTime());
+	tempestDesert.Update(pTimer->DeltaTime());
+	tempestToundra.Update(pTimer->DeltaTime());
 }
 
 void World::MakePermutation()
@@ -382,12 +404,39 @@ void World::MakePermutation()
 
 void World::CreateHouseAt(const Maths::LLVec2D& pos)
 {
+	auto itr = tiles.find(pos);
+	int xDir = 1;
+	int yDir = 1;
+
+	switch (itr->second.GetGroundType()) {
+	case World::Tile::GroundType::House0:
+		break;
+	case World::Tile::GroundType::House3:
+		xDir = -1;
+		break;
+	case World::Tile::GroundType::House12:
+		yDir = -1;
+		break;
+	case World::Tile::GroundType::House15:
+		xDir = -1;
+		yDir = -1;
+		break;
+	}
+
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
-			Maths::LLVec2D tilePos = Maths::LLVec2D(i, j) + pos;
-			Tile tile;
-			tile.groundType = World::Tile::GroundType(int(World::Tile::GroundType::House0) + j * 4 + i);
-			tiles.insert(std::pair<Maths::IVec2D, Tile>(tilePos, tile));
+			Maths::LLVec2D tilePos = Maths::LLVec2D(i * xDir, j * yDir) + pos;
+			auto tile = tiles.find(tilePos);
+			if (tiles.find(tilePos) == tiles.end()) {
+				Tile newTile;
+				newTile.groundType = World::Tile::GroundType(int(itr->second.GetGroundType()) + j * 4 * yDir + i * xDir);
+				newTile.biomeType = itr->second.biomeType;
+				tiles.insert(std::pair<Maths::IVec2D, Tile>(tilePos, newTile));
+			}
+			else {
+				tile->second.groundType = World::Tile::GroundType(int(itr->second.GetGroundType()) + j * 4 * yDir + i * xDir);
+				tile->second.ClearEventType();
+			}
 		}
 	}
 }
@@ -492,10 +541,34 @@ Maths::IVec2D World::GetPlayerDirection() const
 	return playerDirection;
 }
 
+Maths::LLVec2D World::GetPlayerPosition() const
+{
+	return Maths::LLVec2D(int((xOffset + 400) / tileWidth), int((yOffset + 300) / tileHeight));
+}
+
+World::Tile::BiomeType World::GetCurrentBiome() const
+{
+	auto playerPos = tiles.find(GetPlayerPosition());
+	if (playerPos != tiles.end()) {
+		return playerPos->second.GetBiomeType();
+	}
+	return World::Tile::BiomeType::None;
+}
+
 void World::Update(float speed)
 {
 	GenerateNewBiomePlaces();
 	GenerateGrid();
+	UpdateTempest();
+
+	//Weather update
+	weatherTimer.Update();
+	if (weatherTimer.IsTimerDown()) {
+		bTempestOn = !bTempestOn;
+		std::mt19937 rng(std::random_device{}());
+		std::uniform_real_distribution<float> distTimer(40.0f, 100.0f);
+		weatherTimer.ResetTimer(distTimer(rng));
+	}
 
 	playerDirection = Maths::IVec2D(0, 0);
 
@@ -555,15 +628,19 @@ void World::Draw()
 			if (itr != tiles.end()) {
 				Maths::IRect srcRect;
 				GraphicsEngine::Sprite tileSprite;
+				int layer = 0;
 
 				switch (itr->second.GetBiomeType()) {
 				case World::Tile::BiomeType::Forest:
+					if (bTempestOn) tempestForest.Draw(Maths::IRect(int(itr->first.x * tileWidth - xOffset), int(itr->first.y * tileHeight - yOffset), tileWidth, tileHeight), 7);
 					tileSprite = tileSpriteForest;
 					break;
 				case World::Tile::BiomeType::Desert:
+					if (bTempestOn) tempestDesert.Draw(Maths::IRect(int(itr->first.x * tileWidth - xOffset), int(itr->first.y * tileHeight - yOffset), tileWidth, tileHeight), 7);
 					tileSprite = tileSpriteDesert;
 					break;
 				case World::Tile::BiomeType::Toundra:
+					if (bTempestOn) tempestToundra.Draw(Maths::IRect(int(itr->first.x * tileWidth - xOffset), int(itr->first.y * tileHeight - yOffset), tileWidth, tileHeight), 7);
 					tileSprite = tileSpriteToundra;
 					break;
 				default:
@@ -585,6 +662,7 @@ void World::Draw()
 					break;
 				case World::Tile::GroundType::Water:
 					srcRect = Maths::IRect(64, 0, 16, 16);
+					layer = -2;
 					break;
 				case World::Tile::GroundType::House0:
 					srcRect = Maths::IRect(0, 16, 16, 16);
@@ -637,8 +715,9 @@ void World::Draw()
 				default:
 					break;
 				}
-				pGfx->DrawSprite(Maths::IRect(int(itr->first.x * tileWidth - xOffset), int(itr->first.y * tileHeight - yOffset), tileWidth, tileHeight), srcRect, tileSprite);
+				pGfx->DrawSprite(Maths::IRect(int(itr->first.x * tileWidth - xOffset), int(itr->first.y * tileHeight - yOffset), tileWidth, tileHeight), srcRect, tileSprite, layer);
 
+				layer = 1;
 				switch (itr->second.GetEventType()) {
 				case World::Tile::EventType::Item:
 					pGfx->DrawSprite(Maths::IRect(int(itr->first.x * tileWidth - xOffset), int(itr->first.y * tileHeight - yOffset), tileWidth, tileHeight), Maths::IRect(64, 16, 16, 16), tileSprite);
@@ -655,7 +734,6 @@ void World::Draw()
 			}
 		}
 	}
-
 }
 
 void World::BlendSpriteTo(GraphicsEngine::Color c)

@@ -5,6 +5,8 @@
 #include "Graphics.h"
 #include "Player.h"
 
+#include "TImerManager.h"
+
 #include "Consumable.h"
 #include "Ball.h"
 
@@ -96,8 +98,9 @@ public:
 	bool GoInside() const;
 private:
 	void GenerateGrid();
-
 	void GenerateNewBiomePlaces();
+
+	void UpdateTempest();
 
 	void MakePermutation();
 
@@ -111,11 +114,23 @@ private:
 	int GetNeighbourGroundType(const Maths::LLVec2D& pos, World::Tile::GroundType g_type) const;
 
 	Maths::IVec2D GetPlayerDirection() const;
+	Maths::LLVec2D GetPlayerPosition() const;
+
+	Tile::BiomeType GetCurrentBiome() const;
 
 private:
 	GraphicsEngine::Sprite tileSpriteForest;
 	GraphicsEngine::Sprite tileSpriteDesert;
 	GraphicsEngine::Sprite tileSpriteToundra;
+
+	GraphicsEngine::Sprite tempestSprite;
+
+	GraphicsEngine::Animation tempestForest;
+	GraphicsEngine::Animation tempestDesert;
+	GraphicsEngine::Animation tempestToundra;
+
+	TimerManager weatherTimer;
+	bool bTempestOn = false;
 
 	std::shared_ptr<GraphicsEngine::Graphics> pGfx;
 	std::shared_ptr<CoreSystem::Keyboard> pKbd;
@@ -142,7 +157,7 @@ private:
 	std::unordered_map<Maths::LLVec2D, Tile, Maths::LLVec2D::Hash> tiles;
 
 	//Voronoi
-	std::unordered_map<Maths::LLVec2D, Tile::BiomeType, Maths::LLVec2D::Hash> biomePlaces;
+	std::unordered_map<Maths::LLVec2D, std::pair<Maths::LLVec2D, Tile::BiomeType>, Maths::LLVec2D::Hash> biomePlaces;
 
 	std::vector<int> permutationArray;
 

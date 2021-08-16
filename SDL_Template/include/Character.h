@@ -9,6 +9,7 @@ public:
 
 	void					Update(float dt);
 	void					Draw();
+	void                    DrawReflection();
 
 	void                    BlendSpriteTo(GraphicsEngine::Color c);
 
@@ -16,6 +17,7 @@ public:
 
 protected:
 	Maths::IRect							mRect;
+	Maths::IRect							mReflectionRect;
 	GraphicsEngine::Sprite					mSprite;
 	std::vector<GraphicsEngine::Animation>	mAnimations;
 	int										miCurSequence = 0;

@@ -413,6 +413,10 @@ void Player::UpdateBike()
 		mRect.rect.y -= 4;
 		mRect.rect.w = 48;
 		mRect.rect.h = 48;
+		mReflectionRect.rect.x -= 8;
+		mReflectionRect.rect.y -= 4;
+		mReflectionRect.rect.w = 48;
+		mReflectionRect.rect.h = 48;
 
 		if (lookingDirection == Maths::IVec2D(0, -1)) {
 			miCurSequence = int(AnimationList::StandingBikeUp);
@@ -433,6 +437,10 @@ void Player::UpdateBike()
 		mRect.rect.y += 4;
 		mRect.rect.w = 32;
 		mRect.rect.h = 44;
+		mReflectionRect.rect.x += 8;
+		mReflectionRect.rect.y += 4;
+		mReflectionRect.rect.w = 32;
+		mReflectionRect.rect.h = 44;
 
 		if (lookingDirection == Maths::IVec2D(0, -1)) {
 			miCurSequence = int(AnimationList::StandingUp);

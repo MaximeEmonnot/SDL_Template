@@ -65,6 +65,16 @@ namespace GraphicsEngine {
 		}
 		void										DrawSprite(Maths::IRect destRect, Maths::IRect srcRect, const Sprite& rSprite, int priority = 0);
 
+		// Draws a given sprite and inverts it before
+		void DrawInvertedSprite(const Sprite& rSprite, int priority = 0) {
+			DrawInvertedSprite(mScreenRect, rSprite, priority);
+		}
+		void DrawInvertedSprite(Maths::IRect destRect, const Sprite& rSprite, int priority = 0) {
+			DrawInvertedSprite(destRect, Maths::IRect(0, 0, rSprite.GetWidth(), rSprite.GetHeight()), rSprite, priority);
+		}
+		void DrawInvertedSprite(Maths::IRect destRect, Maths::IRect srcRect, const Sprite& rSprite, int priority = 0);
+
+
 		// Fades current screen
 		void										FadeOutScreen(float percentage);
 		void										FadeInScreen(float percentage);

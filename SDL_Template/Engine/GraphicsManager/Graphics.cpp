@@ -88,6 +88,17 @@ void GraphicsEngine::Graphics::DrawSprite(Maths::IRect destRect, Maths::IRect sr
 	renderQueue.insert(std::pair<int, std::function<void()>>(priority, func));
 }
  
+void GraphicsEngine::Graphics::DrawInvertedSprite(Maths::IRect destRect, Maths::IRect srcRect, const Sprite& rSprite, int priority)
+{
+	auto func = [=] {
+		Sprite s = rSprite;
+		s.BlendColor(Color(95, 153, 153, 255));
+		SDL_RenderCopyEx(mpRenderer.get(), s.GetTexture().get(), &srcRect.rect, &destRect.rect, 0, NULL, SDL_FLIP_VERTICAL);
+		s.BlendColor(WHITE);
+	};
+	renderQueue.insert(std::pair<int, std::function<void()>>(priority, func));
+}
+
 void GraphicsEngine::Graphics::FadeOutScreen(float percentage)
 {
 	Uint8 red, green, blue;

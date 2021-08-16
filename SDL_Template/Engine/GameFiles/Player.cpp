@@ -22,7 +22,7 @@ Player::Player(Maths::IRect rect, const std::string& animFile)
 			itr->value.GetArray()[5].GetFloat()));
 	}
 
-	miCurSequence = (int)AnimationList::StandingRight;
+	miCurSequence = static_cast<int>(AnimationList::StandingRight);
 }
 
 Player::~Player()
@@ -88,7 +88,7 @@ void Player::InitFromJSON()
 					selectedPkmnValue.FindMember(("Ability" + std::to_string(iAttack) + "Name").c_str())->value.GetString(),
 					selectedPkmnValue.FindMember(("Ability" + std::to_string(iAttack) + "Characteristics").c_str())->value.GetArray()[0].GetInt(),
 					selectedPkmnValue.FindMember(("Ability" + std::to_string(iAttack) + "Characteristics").c_str())->value.GetArray()[1].GetInt(),
-					Pokemon::Type(selectedPkmnValue.FindMember(("Ability" + std::to_string(iAttack) + "Characteristics").c_str())->value.GetArray()[3].GetInt()));
+					static_cast<Pokemon::Type>(selectedPkmnValue.FindMember(("Ability" + std::to_string(iAttack) + "Characteristics").c_str())->value.GetArray()[3].GetInt()));
 				ablty.SetPP(selectedPkmnValue.FindMember(("Ability" + std::to_string(iAttack) + "Characteristics").c_str())->value.GetArray()[2].GetInt());
 				newPkmn.LoadAbility(ablty);
 			}
@@ -131,7 +131,7 @@ void Player::InitFromJSON()
 						pkmnValue.FindMember(("Ability" + std::to_string(iAttack) + "Name").c_str())->value.GetString(),
 						pkmnValue.FindMember(("Ability" + std::to_string(iAttack) + "Characteristics").c_str())->value.GetArray()[0].GetInt(),
 						pkmnValue.FindMember(("Ability" + std::to_string(iAttack) + "Characteristics").c_str())->value.GetArray()[1].GetInt(),
-						Pokemon::Type(pkmnValue.FindMember(("Ability" + std::to_string(iAttack) + "Characteristics").c_str())->value.GetArray()[3].GetInt()));
+						static_cast<Pokemon::Type>(pkmnValue.FindMember(("Ability" + std::to_string(iAttack) + "Characteristics").c_str())->value.GetArray()[3].GetInt()));
 					ablty.SetPP(pkmnValue.FindMember(("Ability" + std::to_string(iAttack) + "Characteristics").c_str())->value.GetArray()[2].GetInt());
 					newPkmn.LoadAbility(ablty);
 				}
@@ -169,7 +169,7 @@ void Player::SaveToJSON()
 	int iAttack = 0;
 	for (auto attack : selectedPokemon->GetAbilities()) {
 		jsonWriter.AddObjectStringMember("Pokemon0", "Ability" + std::to_string(iAttack) + "Name", attack.GetName());
-		jsonWriter.AddObjectMember("Pokemon0", "Ability" + std::to_string(iAttack) + "Characteristics", attack.GetPower(), attack.GetPP(), attack.GetMaxPP(), int(attack.GetType()));
+		jsonWriter.AddObjectMember("Pokemon0", "Ability" + std::to_string(iAttack) + "Characteristics", attack.GetPower(), attack.GetPP(), attack.GetMaxPP(), static_cast<int>(attack.GetType()));
 		iAttack++;
 	}
 
@@ -182,7 +182,7 @@ void Player::SaveToJSON()
 			jsonWriter.AddObjectMember("Pokemon" + std::to_string(iPkmn), "PokemonCharacteristics", pkmn.hp, pkmn.currentMaxHP, pkmn.att, pkmn.def, pkmn.lvl, pkmn.id);
 			for (auto attack : pkmn.GetAbilities()) {
 				jsonWriter.AddObjectStringMember("Pokemon" + std::to_string(iPkmn), "Ability" + std::to_string(iAttack) + "Name", attack.GetName());
-				jsonWriter.AddObjectMember("Pokemon" + std::to_string(iPkmn), "Ability" + std::to_string(iAttack) + "Characteristics", attack.GetPower(), attack.GetPP(), attack.GetMaxPP(), int(attack.GetType()));
+				jsonWriter.AddObjectMember("Pokemon" + std::to_string(iPkmn), "Ability" + std::to_string(iAttack) + "Characteristics", attack.GetPower(), attack.GetPP(), attack.GetMaxPP(), static_cast<int>(attack.GetType()));
 				iAttack++;
 			}
 			iPkmn++;
@@ -218,13 +218,13 @@ void Player::Move()
 			if (dir.y > 0) {
 				switch (locomotion) {
 				case LocomotionState::Walking:
-					miCurSequence = (int)AnimationList::WalkingDown;
+					miCurSequence = static_cast<int>(AnimationList::WalkingDown);
 					break;
 				case LocomotionState::Running:
-					miCurSequence = (int)AnimationList::RunningDown;
+					miCurSequence = static_cast<int>(AnimationList::RunningDown);
 					break;
 				case LocomotionState::Biking:
-					miCurSequence = (int)AnimationList::BikingDown;
+					miCurSequence = static_cast<int>(AnimationList::BikingDown);
 					break;
 				default:
 					break;
@@ -234,13 +234,13 @@ void Player::Move()
 			else {
 				switch (locomotion) {
 				case LocomotionState::Walking:
-					miCurSequence = (int)AnimationList::WalkingUp;
+					miCurSequence = static_cast<int>(AnimationList::WalkingUp);
 					break;
 				case LocomotionState::Running:
-					miCurSequence = (int)AnimationList::RunningUp;
+					miCurSequence = static_cast<int>(AnimationList::RunningUp);
 					break;
 				case LocomotionState::Biking:
-					miCurSequence = (int)AnimationList::BikingUp;
+					miCurSequence = static_cast<int>(AnimationList::BikingUp);
 					break;
 				default:
 					break;
@@ -252,13 +252,13 @@ void Player::Move()
 			if (dir.x > 0) {
 				switch (locomotion) {
 				case LocomotionState::Walking:
-					miCurSequence = (int)AnimationList::WalkingRight;
+					miCurSequence = static_cast<int>(AnimationList::WalkingRight);
 					break;
 				case LocomotionState::Running:
-					miCurSequence = (int)AnimationList::RunningRight;
+					miCurSequence = static_cast<int>(AnimationList::RunningRight);
 					break;
 				case LocomotionState::Biking:
-					miCurSequence = (int)AnimationList::BikingRight;
+					miCurSequence = static_cast<int>(AnimationList::BikingRight);
 					break;
 				default:
 					break;
@@ -268,13 +268,13 @@ void Player::Move()
 			else {
 				switch (locomotion) {
 				case LocomotionState::Walking:
-					miCurSequence = (int)AnimationList::WalkingLeft;
+					miCurSequence = static_cast<int>(AnimationList::WalkingLeft);
 					break;
 				case LocomotionState::Running:
-					miCurSequence = (int)AnimationList::RunningLeft;
+					miCurSequence = static_cast<int>(AnimationList::RunningLeft);
 					break;
 				case LocomotionState::Biking:
-					miCurSequence = (int)AnimationList::BikingLeft;
+					miCurSequence = static_cast<int>(AnimationList::BikingLeft);
 					break;
 				default:
 					break;
@@ -290,10 +290,10 @@ void Player::Move()
 					switch (locomotion) {
 					case LocomotionState::Walking:
 					case LocomotionState::Running:
-						miCurSequence = (int)AnimationList::StandingDown;
+						miCurSequence = static_cast<int>(AnimationList::StandingDown);
 						break;
 					case LocomotionState::Biking:
-						miCurSequence = (int)AnimationList::StandingBikeDown;
+						miCurSequence = static_cast<int>(AnimationList::StandingBikeDown);
 						break;
 					default:
 						break;
@@ -303,10 +303,10 @@ void Player::Move()
 					switch (locomotion) {
 					case LocomotionState::Walking:
 					case LocomotionState::Running:
-						miCurSequence = (int)AnimationList::StandingUp;
+						miCurSequence = static_cast<int>(AnimationList::StandingUp);
 						break;
 					case LocomotionState::Biking:
-						miCurSequence = (int)AnimationList::StandingBikeUp;
+						miCurSequence = static_cast<int>(AnimationList::StandingBikeUp);
 						break;
 					default:
 						break;
@@ -318,10 +318,10 @@ void Player::Move()
 					switch (locomotion) {
 					case LocomotionState::Walking:
 					case LocomotionState::Running:
-						miCurSequence = (int)AnimationList::StandingRight;
+						miCurSequence = static_cast<int>(AnimationList::StandingRight);
 						break;
 					case LocomotionState::Biking:
-						miCurSequence = (int)AnimationList::StandingBikeRight;
+						miCurSequence = static_cast<int>(AnimationList::StandingBikeRight);
 						break;
 					default:
 						break;
@@ -331,10 +331,10 @@ void Player::Move()
 					switch (locomotion) {
 					case LocomotionState::Walking:
 					case LocomotionState::Running:
-						miCurSequence = (int)AnimationList::StandingLeft;
+						miCurSequence = static_cast<int>(AnimationList::StandingLeft);
 						break;
 					case LocomotionState::Biking:
-						miCurSequence = (int)AnimationList::StandingBikeLeft;
+						miCurSequence = static_cast<int>(AnimationList::StandingBikeLeft);
 						break;
 					default:
 						break;
@@ -387,16 +387,16 @@ void Player::Talk()
 	locomotion = LocomotionState::Walking;
 
 	if (lookingDirection == Maths::IVec2D(0, -1)) {
-		miCurSequence = int(AnimationList::StandingUp);
+		miCurSequence = static_cast<int>(AnimationList::StandingUp);
 	}
 	if (lookingDirection == Maths::IVec2D(1, 0)) {
-		miCurSequence = int(AnimationList::StandingRight);
+		miCurSequence = static_cast<int>(AnimationList::StandingRight);
 	}
 	if (lookingDirection == Maths::IVec2D(0, 1)) {
-		miCurSequence = int(AnimationList::StandingDown);
+		miCurSequence = static_cast<int>(AnimationList::StandingDown);
 	}
 	if (lookingDirection == Maths::IVec2D(-1, 0)) {
-		miCurSequence = int(AnimationList::StandingLeft);
+		miCurSequence = static_cast<int>(AnimationList::StandingLeft);
 	}
 }
 
@@ -419,16 +419,16 @@ void Player::UpdateBike()
 		mReflectionRect.rect.h = 48;
 
 		if (lookingDirection == Maths::IVec2D(0, -1)) {
-			miCurSequence = int(AnimationList::StandingBikeUp);
+			miCurSequence = static_cast<int>(AnimationList::StandingBikeUp);
 		}
 		if (lookingDirection == Maths::IVec2D(1, 0)) {
-			miCurSequence = int(AnimationList::StandingBikeRight);
+			miCurSequence = static_cast<int>(AnimationList::StandingBikeRight);
 		}
 		if (lookingDirection == Maths::IVec2D(0, 1)) {
-			miCurSequence = int(AnimationList::StandingBikeDown);
+			miCurSequence = static_cast<int>(AnimationList::StandingBikeDown);
 		}
 		if (lookingDirection == Maths::IVec2D(-1, 0)) {
-			miCurSequence = int(AnimationList::StandingBikeLeft);
+			miCurSequence = static_cast<int>(AnimationList::StandingBikeLeft);
 		}
 	}
 	else {
@@ -443,16 +443,16 @@ void Player::UpdateBike()
 		mReflectionRect.rect.h = 44;
 
 		if (lookingDirection == Maths::IVec2D(0, -1)) {
-			miCurSequence = int(AnimationList::StandingUp);
+			miCurSequence = static_cast<int>(AnimationList::StandingUp);
 		}
 		if (lookingDirection == Maths::IVec2D(1, 0)) {
-			miCurSequence = int(AnimationList::StandingRight);
+			miCurSequence = static_cast<int>(AnimationList::StandingRight);
 		}
 		if (lookingDirection == Maths::IVec2D(0, 1)) {
-			miCurSequence = int(AnimationList::StandingDown);
+			miCurSequence = static_cast<int>(AnimationList::StandingDown);
 		}
 		if (lookingDirection == Maths::IVec2D(-1, 0)) {
-			miCurSequence = int(AnimationList::StandingLeft);
+			miCurSequence = static_cast<int>(AnimationList::StandingLeft);
 		}
 	}
 }

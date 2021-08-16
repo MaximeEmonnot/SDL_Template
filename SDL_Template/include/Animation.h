@@ -14,6 +14,7 @@ namespace GraphicsEngine {
 
 		void						Draw(Maths::IRect rect, int priority = 0);
 		void                        DrawReflection(Maths::IRect rect);
+		void                        BlendColorTo(const Color& c);
 
 		void						Update(float dt);
 		void						ResetAnimation();
@@ -24,7 +25,7 @@ namespace GraphicsEngine {
 		void						Advance();
 	private:
 		std::shared_ptr<Graphics>	mpGfx;
-		const Sprite&				mrSprite;
+		Sprite&						mrSprite;
 		std::vector<Maths::IRect>	mFrames;
 		float						mCurFrameTime = 0.0f;
 		float						mHoldTime;

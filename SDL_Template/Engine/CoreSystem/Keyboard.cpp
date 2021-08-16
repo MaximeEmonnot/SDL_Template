@@ -21,11 +21,11 @@ CoreSystem::Keyboard::Keyboard()
 			auto pTemp = leds->pLedPosition[i];
 			if (pTemp.left + pTemp.width > maxX) maxX = pTemp.left + pTemp.width;
 			if (pTemp.top + pTemp.height > maxY) maxY = pTemp.top + pTemp.height;
-			Maths::IRect rTemp = { (int)pTemp.left, (int)pTemp.top, (int)pTemp.width, (int)pTemp.height };
+			Maths::IRect rTemp = { static_cast<int>(pTemp.left), static_cast<int>(pTemp.top), static_cast<int>(pTemp.width), static_cast<int>(pTemp.height) };
 			mRectKeys.push_back(rTemp);
 			mLedPositions.insert(std::pair<Maths::IRect, CorsairLedId>(rTemp, pTemp.ledId));
 		}
-		mKeyboardWidth = (int)maxX, mKeyboardHeight = (int)maxY;
+		mKeyboardWidth = static_cast<int>(maxX), mKeyboardHeight = static_cast<int>(maxY);
 	}
 }
 
@@ -109,7 +109,7 @@ void CoreSystem::Keyboard::FadeKeyColorTo(Maths::IRect rect, GraphicsEngine::Col
 	auto itr = mLedPositions.find(rect);
 	auto currentLedColor = CorsairLedColor{ itr->second, 0, 0, 0 };
 	CorsairGetLedsColors(1, &currentLedColor);
-	GraphicsEngine::Color newColor = GraphicsEngine::Color((Uint8)currentLedColor.r, (Uint8)currentLedColor.g, (Uint8)currentLedColor.b, 255).BlendColor(GraphicsEngine::Color(c.c.r, c.c.g, c.c.b, c.c.a), alpha);
+	GraphicsEngine::Color newColor = GraphicsEngine::Color(static_cast<Uint8>(currentLedColor.r), static_cast<Uint8>(currentLedColor.g), static_cast<Uint8>(currentLedColor.b), 255).BlendColor(GraphicsEngine::Color(c.c.r, c.c.g, c.c.b, c.c.a), alpha);
 	auto newLedColor = CorsairLedColor{ itr->second, newColor.c.r, newColor.c.g, newColor.c.b };
 	CorsairSetLedsColors(1, &newLedColor);
 }

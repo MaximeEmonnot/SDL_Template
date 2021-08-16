@@ -37,7 +37,7 @@ void Game::UpdateFrame()
 
 	(*currentScene)->Update();
 
-	if ((*currentScene)->ChangeScene()) currentScene += std::ptrdiff_t((int)(*currentScene)->GetNextScene() - (int)(*currentScene)->GetCurrentScene());
+	if ((*currentScene)->ChangeScene()) currentScene += std::ptrdiff_t(static_cast<long long>((*currentScene)->GetNextScene()) - static_cast<long long>((*currentScene)->GetCurrentScene()));
 }
 
 void Game::RenderFrame()

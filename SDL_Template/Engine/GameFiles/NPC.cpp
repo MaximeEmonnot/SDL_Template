@@ -26,7 +26,7 @@ NPC::NPC(Maths::IRect rect, Maths::IVec2D pos, const std::string& animFile, std:
 			itr->value.GetArray()[5].GetFloat()));
 	}
 
-	miCurSequence = (int)AnimationList::StandingRight;
+	miCurSequence = static_cast<int>(AnimationList::StandingRight);
 }
 
 NPC::~NPC()
@@ -47,16 +47,16 @@ void NPC::Talk(Maths::IVec2D lookingDir)
 	bIsControlledByAI = false;
 
 	if (lookingDir == Maths::IVec2D(1, 0)) {
-		miCurSequence = int(AnimationList::StandingRight);
+		miCurSequence = static_cast<int>(AnimationList::StandingRight);
 	}
 	else if (lookingDir == Maths::IVec2D(-1, 0)) {
-		miCurSequence = int(AnimationList::StandingLeft);
+		miCurSequence = static_cast<int>(AnimationList::StandingLeft);
 	}
 	else if (lookingDir == Maths::IVec2D(0, 1)) {
-		miCurSequence = int(AnimationList::StandingDown);
+		miCurSequence = static_cast<int>(AnimationList::StandingDown);
 	}
 	else if (lookingDir == Maths::IVec2D(0, -1)) {
-		miCurSequence = int(AnimationList::StandingUp);
+		miCurSequence = static_cast<int>(AnimationList::StandingUp);
 	}
 }
 

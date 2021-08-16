@@ -142,10 +142,11 @@ private:
 	const int gridHeight = 19;
 	const int gridWidth = 25;
 
-	int lastPlayerXPos;
-	int lastPlayerYPos;
-	int currentPlayerXPos;
-	int currentPlayerYPos;
+
+	long long lastPlayerXPos;
+	long long lastPlayerYPos;
+	long long currentPlayerXPos;
+	long long currentPlayerYPos;
 
 	long long xOffset = 0;
 	long long yOffset = 0;

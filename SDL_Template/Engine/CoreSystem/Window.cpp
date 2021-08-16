@@ -100,7 +100,7 @@ bool CoreSystem::Window::ListensToEvents() noexcept
 		}
 			break;
 		case SDL_MOUSEMOTION: 
-			pMouse->OnMouseMove((int)mEvent.button.x, (int)mEvent.button.y);
+			pMouse->OnMouseMove(static_cast<int>(mEvent.button.x), static_cast<int>(mEvent.button.y));
 			break;
 			// ****************** END MOUSE EVENTS ***************** //
 

@@ -249,7 +249,7 @@ void ExplorationScene::Draw()
 	}
 	pFont->DrawText(Maths::IVec2D(10, 10), (std::string("X     ") + std::to_string(pWorld->xOffset) + "\n" + std::string("Y     ") + std::to_string(pWorld->yOffset)).c_str(), RED);
 	
-	pFont->DrawText(Maths::IVec2D(700, 10), (std::string("FPS   : ") + std::to_string(int(1 / pTimer->DeltaTime()))).c_str(), GREEN);
+	pFont->DrawText(Maths::IVec2D(700, 10), (std::string("FPS   : ") + std::to_string(static_cast<int>(1 / pTimer->DeltaTime()))).c_str(), GREEN);
 
 	if (!saveTimer.IsTimerDown()) {
 		text.Draw("Game  saved  !", BLACK, GRAY, WHITE);

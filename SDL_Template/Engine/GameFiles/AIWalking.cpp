@@ -30,7 +30,7 @@ void AIWalking::Update(NPC& npc)
 			animSequence = npc.miCurSequence;
 			npc.miCurSequence = animDist(rng);
 
-			switch (NPC::AnimationList(npc.miCurSequence)) {
+			switch (static_cast<NPC::AnimationList>(npc.miCurSequence)) {
 			case NPC::AnimationList::WalkingLeft:
 				if (NextTileIsObstacle(Maths::IVec2D(-16, 0), npc)) animSequence = npc.miCurSequence;
 				break;
@@ -54,7 +54,7 @@ void AIWalking::Update(NPC& npc)
 		}
 	}
 
-	switch (NPC::AnimationList(npc.miCurSequence)) {
+	switch (static_cast<NPC::AnimationList>(npc.miCurSequence)) {
 	case NPC::AnimationList::WalkingLeft:
 		if (!NextTileIsObstacle(Maths::IVec2D(-16, 0), npc)) {
 			npc.localPos.x -= 2;
@@ -90,8 +90,8 @@ void AIWalking::Update(NPC& npc)
 
 bool AIWalking::NextTileIsObstacle(const Maths::IVec2D& nextPos, NPC& npc)
 {
-	Maths::IVec2D pos = Maths::IVec2D(int((npc.localPos.x + nextPos.x) / tileWidth), int((npc.localPos.y + nextPos.y) / tileHeight));
-	Maths::IVec2D nextWorldPos = Maths::IVec2D(int((npc.GetRect().GetCenterOfRect().x + nextPos.x) / tileWidth), int((npc.GetRect().GetCenterOfRect().y + nextPos.y) / tileHeight));
+	Maths::IVec2D pos = Maths::IVec2D(static_cast<int>((npc.localPos.x + nextPos.x) / tileWidth), static_cast<int>((npc.localPos.y + nextPos.y) / tileHeight));
+	Maths::IVec2D nextWorldPos = Maths::IVec2D(static_cast<int>((npc.GetRect().GetCenterOfRect().x + nextPos.x) / tileWidth), static_cast<int>((npc.GetRect().GetCenterOfRect().y + nextPos.y) / tileHeight));
 	auto itr = houseTiles.find(pos);
 	if (itr != houseTiles.end()) {
 		return (itr->second & House::TileTypes::FlowerPot) == House::TileTypes::FlowerPot ||

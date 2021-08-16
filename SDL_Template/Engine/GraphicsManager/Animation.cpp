@@ -23,6 +23,11 @@ void GraphicsEngine::Animation::DrawReflection(Maths::IRect rect)
 	mpGfx->DrawInvertedSprite(rect, mFrames[miCurFrame], mrSprite, -1);
 }
 
+void GraphicsEngine::Animation::BlendColorTo(const Color& c)
+{
+	mrSprite.BlendColor(c);
+}
+
 void GraphicsEngine::Animation::Update(float dt)
 {
 	mCurFrameTime += dt;

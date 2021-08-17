@@ -8,7 +8,7 @@
 
 class AIWalking : public AI {
 public:
-	AIWalking(std::unordered_map<Maths::IVec2D, int, Maths::IVec2D::Hash> tiles);
+	AIWalking(std::unordered_map <Maths::IVec2D, int, Maths::IVec2D::Hash > tiles);
 	~AIWalking() override;
 
 	void Update(class NPC& npc) override;

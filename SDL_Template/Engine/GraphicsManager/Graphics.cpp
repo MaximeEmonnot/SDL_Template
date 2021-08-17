@@ -53,10 +53,10 @@ void GraphicsEngine::Graphics::DrawPixel(Maths::IVec2D pos, Color c, int priorit
 	renderQueue.insert(std::pair<int, std::function<void()>>(priority, func));
 }
 
-void GraphicsEngine::Graphics::SetBackgroundColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a, int priority)
+void GraphicsEngine::Graphics::SetBackgroundColor(Color c, int priority)
 {
 	auto func = [=] {
-		SDL_SetRenderDrawColor(mpRenderer.get(), r, g, b, a);
+		SDL_SetRenderDrawColor(mpRenderer.get(), c.c.r, c.c.g, c.c.b, c.c.a);
 		SDL_RenderFillRect(mpRenderer.get(), &mScreenRect.rect);
 	};
 	renderQueue.insert(std::pair<int, std::function<void()>>(priority, func));

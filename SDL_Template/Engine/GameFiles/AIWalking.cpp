@@ -94,16 +94,15 @@ bool AIWalking::NextTileIsObstacle(const Maths::IVec2D& nextPos, NPC& npc)
 	Maths::IVec2D nextWorldPos = Maths::IVec2D(static_cast<int>((npc.GetRect().GetCenterOfRect().x + nextPos.x) / tileWidth), static_cast<int>((npc.GetRect().GetCenterOfRect().y + nextPos.y) / tileHeight));
 	auto itr = houseTiles.find(pos);
 	if (itr != houseTiles.end()) {
-		return (itr->second & House::TileTypes::FlowerPot) == House::TileTypes::FlowerPot ||
-			(itr->second & House::TileTypes::Flower) == House::TileTypes::Flower ||
+		return (itr->second & static_cast<int>(House::TileTypes::FlowerPot)) == static_cast<int>(House::TileTypes::FlowerPot) ||
 			nextWorldPos == center ||
-			!((itr->second == House::TileTypes::ChairL) ||
-			(itr->second == House::TileTypes::ChairR) ||
-			(itr->second == House::TileTypes::Carpet0) ||
-			(itr->second == House::TileTypes::Carpet1) ||
-			((itr->second & House::TileTypes::Floor0) == House::TileTypes::Floor0 ||
-			(itr->second & House::TileTypes::Floor1) == House::TileTypes::Floor1 ||
-			(itr->second & House::TileTypes::Floor2) == House::TileTypes::Floor2));
+			!((itr->second == static_cast<int>(House::TileTypes::ChairL)) ||
+			(itr->second == static_cast<int>(House::TileTypes::ChairR)) ||
+			(itr->second == static_cast<int>(House::TileTypes::Carpet0)) ||
+			(itr->second == static_cast<int>(House::TileTypes::Carpet1)) ||
+			((itr->second & static_cast<int>(House::TileTypes::Floor0)) == static_cast<int>(House::TileTypes::Floor0) ||
+			(itr->second & static_cast<int>(House::TileTypes::Floor1)) == static_cast<int>(House::TileTypes::Floor1) ||
+			(itr->second & static_cast<int>(House::TileTypes::Floor2)) == static_cast<int>(House::TileTypes::Floor2)));
 	}
 	return true;
 }

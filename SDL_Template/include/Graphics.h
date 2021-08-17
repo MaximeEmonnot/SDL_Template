@@ -27,9 +27,9 @@ namespace GraphicsEngine {
 		}
 
 		// Changes Background Color
-		void										SetBackgroundColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a, int priority = 0);
-		void										SetBackgroundColor(Color c, int priority = 0) {
-			SetBackgroundColor(c.c.r, c.c.g, c.c.b, c.c.a, priority);
+		void										SetBackgroundColor(Color c, int priority = 0);
+		void										SetBackgroundColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a, int priority = 0) {
+			SetBackgroundColor(Color(r, g, b, a), priority);
 		}
 
 		// Draws the border of a colored rectangle at a given position.
@@ -66,13 +66,13 @@ namespace GraphicsEngine {
 		void										DrawSprite(Maths::IRect destRect, Maths::IRect srcRect, const Sprite& rSprite, int priority = 0);
 
 		// Draws a given sprite and inverts it before
-		void DrawInvertedSprite(const Sprite& rSprite, int priority = 0) {
+		void										DrawInvertedSprite(const Sprite& rSprite, int priority = 0) {
 			DrawInvertedSprite(mScreenRect, rSprite, priority);
 		}
-		void DrawInvertedSprite(Maths::IRect destRect, const Sprite& rSprite, int priority = 0) {
+		void										DrawInvertedSprite(Maths::IRect destRect, const Sprite& rSprite, int priority = 0) {
 			DrawInvertedSprite(destRect, Maths::IRect(0, 0, rSprite.GetWidth(), rSprite.GetHeight()), rSprite, priority);
 		}
-		void DrawInvertedSprite(Maths::IRect destRect, Maths::IRect srcRect, const Sprite& rSprite, int priority = 0);
+		void										DrawInvertedSprite(Maths::IRect destRect, Maths::IRect srcRect, const Sprite& rSprite, int priority = 0);
 
 
 		// Fades current screen

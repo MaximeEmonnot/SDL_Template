@@ -8,7 +8,7 @@
 
 class House {
 public:
-	enum TileTypes {
+	enum class TileTypes {
 		Table00 = 0,
 		Table01 = 1,
 		Table10 = 2,

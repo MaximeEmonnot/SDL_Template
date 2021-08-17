@@ -20,9 +20,9 @@ House::House()
 
 	auto& tileInfo = jsonReader.GetValueOf("Tiles");
 	for (auto itr = tileInfo.MemberBegin(); itr != tileInfo.MemberEnd(); ++itr) {
-		int tileValue = (itr->value.GetArray()[2].GetInt() & (~TileTypes::NPCTile));
-		tiles.insert(std::pair<Maths::IVec2D, TileTypes>(Maths::IVec2D(itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt()), static_cast<TileTypes>(tileValue)));
-		if ((itr->value.GetArray()[2].GetInt() & TileTypes::NPCTile) == TileTypes::NPCTile) {
+		int tileValue = (itr->value.GetArray()[2].GetInt() & (~static_cast<int>(TileTypes::NPCTile)));
+		tiles.insert(std::pair<Maths::IVec2D, int>(Maths::IVec2D(itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt()), tileValue));
+		if ((itr->value.GetArray()[2].GetInt() & static_cast<int>(TileTypes::NPCTile)) == static_cast<int>(TileTypes::NPCTile)) {
 			pNpc = std::make_unique<NPC>(Maths::IRect(itr->value.GetArray()[0].GetInt() * tileWidth - xOffset + 400, itr->value.GetArray()[1].GetInt() * tileHeight - yOffset + 282, 32, 44), Maths::IVec2D(itr->value.GetArray()[0].GetInt() * tileWidth, itr->value.GetArray()[1].GetInt() * tileHeight), "json/npc.json", std::make_unique<AIWalking>(tiles));
 		}
 	}
@@ -90,15 +90,17 @@ void House::Draw()
 			Maths::IVec2D pos = Maths::IVec2D(i + static_cast<int>((xOffset - 400) / tileWidth), j + static_cast<int>((yOffset - 300) / tileHeight));
 			auto itr = tiles.find(pos);
 			if (itr != tiles.end()) {
-				int tileType = itr->second & (~House::TileTypes::Flower);
-				tileType &= (~House::TileTypes::FlowerPot);
-				tileType &= (~House::TileTypes::NPCTile);
+				int tileType = static_cast<int>(itr->second) & (~static_cast<int>(House::TileTypes::Flower));
+				tileType &= (~static_cast<int>(House::TileTypes::FlowerPot));
+				tileType &= (~static_cast<int>(House::TileTypes::NPCTile));
 				Maths::IRect srcRect = Maths::IRect((tileType % 6) * 16, (static_cast<int>(tileType / 6)) * 16, 16, 16);
-				pGfx->DrawSprite(Maths::IRect(itr->first.x * tileWidth - xOffset + 400, itr->first.y * tileHeight - yOffset + 300, tileWidth, tileHeight),srcRect, sprite);
-				if ((itr->second & House::TileTypes::FlowerPot) == House::TileTypes::FlowerPot) {
+				int layer = 0;
+				if (tileType == static_cast<int>(House::TileTypes::Table00) || tileType == static_cast<int>(House::TileTypes::Table01)) layer = 5;
+				pGfx->DrawSprite(Maths::IRect(itr->first.x * tileWidth - xOffset + 400, itr->first.y * tileHeight - yOffset + 300, tileWidth, tileHeight),srcRect, sprite, layer);
+				if ((static_cast<int>(itr->second) & static_cast<int>(House::TileTypes::FlowerPot)) == static_cast<int>(House::TileTypes::FlowerPot)) {
 					pGfx->DrawSprite(Maths::IRect(itr->first.x * tileWidth - xOffset + 400, itr->first.y * tileHeight - yOffset + 300, tileWidth, tileHeight), Maths::IRect(48, 80, 16, 16), sprite);
 				}
-				else if ((itr->second & House::TileTypes::Flower) == House::TileTypes::Flower) {
+				else if ((static_cast<int>(itr->second) & static_cast<int>(House::TileTypes::Flower)) == static_cast<int>(House::TileTypes::Flower)) {
 					pGfx->DrawSprite(Maths::IRect(itr->first.x * tileWidth - xOffset + 400, itr->first.y * tileHeight - yOffset + 300, tileWidth, tileHeight), Maths::IRect(64, 80, 16, 16), sprite, 5);
 				}
 			}
@@ -134,14 +136,14 @@ bool House::IsObstacle(Maths::IVec2D nextPos) const
 	Maths::IVec2D pos = Maths::IVec2D(static_cast<int>((nextPos.x + xOffset) / tileWidth), static_cast<int>((nextPos.y + yOffset) / tileHeight));
 	auto itr = tiles.find(pos);
 	if (itr != tiles.end()) {
-		return (itr->second & House::TileTypes::FlowerPot) == House::TileTypes::FlowerPot ||
-			!((itr->second == House::TileTypes::ChairL) ||
-			(itr->second == House::TileTypes::ChairR) ||
-			(itr->second == House::TileTypes::Carpet0) ||
-			(itr->second == House::TileTypes::Carpet1) ||
-			((itr->second & House::TileTypes::Floor0) == House::TileTypes::Floor0 ||
-			(itr->second & House::TileTypes::Floor1) == House::TileTypes::Floor1 ||
-			(itr->second & House::TileTypes::Floor2) == House::TileTypes::Floor2));
+		return (itr->second & static_cast<int>(House::TileTypes::FlowerPot)) == static_cast<int>(House::TileTypes::FlowerPot) ||
+			!((itr->second == static_cast<int>(House::TileTypes::ChairL)) ||
+			(itr->second == static_cast<int>(House::TileTypes::ChairR)) ||
+			(itr->second == static_cast<int>(House::TileTypes::Carpet0)) ||
+			(itr->second == static_cast<int>(House::TileTypes::Carpet1)) ||
+			((itr->second & static_cast<int>(House::TileTypes::Floor0)) == static_cast<int>(House::TileTypes::Floor0) ||
+			(itr->second & static_cast<int>(House::TileTypes::Floor1)) == static_cast<int>(House::TileTypes::Floor1) ||
+			(itr->second & static_cast<int>(House::TileTypes::Floor2)) == static_cast<int>(House::TileTypes::Floor2)));
 	}
 	return true;
 }
@@ -151,7 +153,7 @@ bool House::IsChair(Maths::IVec2D nextPos) const
 	Maths::IVec2D pos = Maths::IVec2D(static_cast<int>((nextPos.x + xOffset) / tileWidth), static_cast<int>((nextPos.y + yOffset) / tileHeight));
 	auto itr = tiles.find(pos);
 	if (itr != tiles.end()) {
-		switch (itr->second) {
+		switch (static_cast<House::TileTypes>(itr->second)) {
 		case House::TileTypes::ChairL:
 		case House::TileTypes::ChairR:
 			return true;

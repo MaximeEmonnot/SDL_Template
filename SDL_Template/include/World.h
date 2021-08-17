@@ -107,6 +107,8 @@ private:
 	void CreateHouseAt(const Maths::LLVec2D& pos);
 
 	bool TileIsObstacleAt(const Maths::LLVec2D& pos);
+	bool NextTileIsWater() const;
+	bool NextTileHas(World::Tile::EventType e_type) const;
 
 	void InitFromJSON();
 	void SaveToJSON();

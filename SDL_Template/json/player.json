@@ -20,6 +20,10 @@
     "StandingBikeLeft" : [64, 72, 24, 24, 1, 1],
     "StandingBikeUp" : [64, 24, 24, 24, 1, 1],
     "StandingBikeRight" : [64, 48, 24, 24, 1, 1],
-    "StandingBikeDown" : [64, 0, 24, 24, 1, 1]
+    "StandingBikeDown" : [64, 0, 24, 24, 1, 1],
+    "OnWaterLeft" : [90, 125, 26, 29, 1, 1],
+    "OnWaterUp" : [90, 96, 26, 29, 1, 1],
+    "OnWaterRight" : [64, 125, 26, 29, 1, 1],
+    "OnWaterDown" : [64, 96, 26, 29, 1, 1]
   }
 }

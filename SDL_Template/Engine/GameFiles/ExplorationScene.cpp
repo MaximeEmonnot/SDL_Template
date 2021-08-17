@@ -66,6 +66,7 @@ void ExplorationScene::Update()
 		case Player::LocomotionState::Walking:
 			speed = 1.0f;
 			break;
+		case Player::LocomotionState::OnWater:
 		case Player::LocomotionState::Running:
 			speed = 1.5f;
 			break;
@@ -160,6 +161,8 @@ void ExplorationScene::Update()
 	case MenuState::ShowingPokemonInventory:
 		pokemonInventoryMenu->Update(output, pMouse);
 		if (output != -1) {
+			pPlayer->UsePokemon(output);
+			state = MenuState::None;
 			printf("Pokemon clicked!\n");
 		}
 		break;

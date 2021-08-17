@@ -208,7 +208,7 @@ void Player::Move()
 	}
 	
 	//Animation
-	if (locomotion != LocomotionState::Biking) {
+	if (locomotion != LocomotionState::Biking && locomotion != LocomotionState::OnWater) {
 		if (pKbd->KeyIsPressed(SDL_SCANCODE_LSHIFT)) locomotion = LocomotionState::Running;
 		else locomotion = LocomotionState::Walking;
 	}
@@ -226,6 +226,9 @@ void Player::Move()
 				case LocomotionState::Biking:
 					miCurSequence = static_cast<int>(AnimationList::BikingDown);
 					break;
+				case LocomotionState::OnWater:
+					miCurSequence = static_cast<int>(AnimationList::OnWaterDown);
+					break;
 				default:
 					break;
 				}
@@ -241,6 +244,9 @@ void Player::Move()
 					break;
 				case LocomotionState::Biking:
 					miCurSequence = static_cast<int>(AnimationList::BikingUp);
+					break;
+				case LocomotionState::OnWater:
+					miCurSequence = static_cast<int>(AnimationList::OnWaterUp);
 					break;
 				default:
 					break;
@@ -260,6 +266,9 @@ void Player::Move()
 				case LocomotionState::Biking:
 					miCurSequence = static_cast<int>(AnimationList::BikingRight);
 					break;
+				case LocomotionState::OnWater:
+					miCurSequence = static_cast<int>(AnimationList::OnWaterRight);
+					break;
 				default:
 					break;
 				}
@@ -275,6 +284,9 @@ void Player::Move()
 					break;
 				case LocomotionState::Biking:
 					miCurSequence = static_cast<int>(AnimationList::BikingLeft);
+					break;
+				case LocomotionState::OnWater:
+					miCurSequence = static_cast<int>(AnimationList::OnWaterLeft);
 					break;
 				default:
 					break;
@@ -295,6 +307,9 @@ void Player::Move()
 					case LocomotionState::Biking:
 						miCurSequence = static_cast<int>(AnimationList::StandingBikeDown);
 						break;
+					case LocomotionState::OnWater:
+						miCurSequence = static_cast<int>(AnimationList::OnWaterDown);
+						break;
 					default:
 						break;
 					}
@@ -307,6 +322,9 @@ void Player::Move()
 						break;
 					case LocomotionState::Biking:
 						miCurSequence = static_cast<int>(AnimationList::StandingBikeUp);
+						break;
+					case LocomotionState::OnWater:
+						miCurSequence = static_cast<int>(AnimationList::OnWaterUp);
 						break;
 					default:
 						break;
@@ -323,6 +341,9 @@ void Player::Move()
 					case LocomotionState::Biking:
 						miCurSequence = static_cast<int>(AnimationList::StandingBikeRight);
 						break;
+					case LocomotionState::OnWater:
+						miCurSequence = static_cast<int>(AnimationList::OnWaterRight);
+						break;
 					default:
 						break;
 					}
@@ -335,6 +356,9 @@ void Player::Move()
 						break;
 					case LocomotionState::Biking:
 						miCurSequence = static_cast<int>(AnimationList::StandingBikeLeft);
+						break;
+					case LocomotionState::OnWater:
+						miCurSequence = static_cast<int>(AnimationList::OnWaterLeft);
 						break;
 					default:
 						break;
@@ -457,6 +481,62 @@ void Player::UpdateBike()
 	}
 }
 
+void Player::OnWater(bool value)
+{
+	if (value) {
+		locomotion = Player::LocomotionState::OnWater;
+		mRect.rect.x -= 10;
+		mRect.rect.y -= 7;
+		mRect.rect.w = 52;
+		mRect.rect.h = 58;
+		mReflectionRect.rect.x -= 10;
+		mReflectionRect.rect.y -= 7;
+		mReflectionRect.rect.w = 52;
+		mReflectionRect.rect.h = 58;
+
+		if (lookingDirection == Maths::IVec2D(0, -1)) {
+			miCurSequence = static_cast<int>(AnimationList::OnWaterUp);
+		}
+		if (lookingDirection == Maths::IVec2D(1, 0)) {
+			miCurSequence = static_cast<int>(AnimationList::OnWaterRight);
+		}
+		if (lookingDirection == Maths::IVec2D(0, 1)) {
+			miCurSequence = static_cast<int>(AnimationList::OnWaterDown);
+		}
+		if (lookingDirection == Maths::IVec2D(-1, 0)) {
+			miCurSequence = static_cast<int>(AnimationList::OnWaterLeft);
+		}
+	}
+	else {
+		locomotion = Player::LocomotionState::Walking;
+		mRect.rect.x += 10;
+		mRect.rect.y += 7;
+		mRect.rect.w = 32;
+		mRect.rect.h = 44;
+		mReflectionRect.rect.x += 10;
+		mReflectionRect.rect.y += 7;
+		mReflectionRect.rect.w = 32;
+		mReflectionRect.rect.h = 44;
+		if (lookingDirection == Maths::IVec2D(0, -1)) {
+			miCurSequence = static_cast<int>(AnimationList::StandingUp);
+		}
+		if (lookingDirection == Maths::IVec2D(1, 0)) {
+			miCurSequence = static_cast<int>(AnimationList::StandingRight);
+		}
+		if (lookingDirection == Maths::IVec2D(0, 1)) {
+			miCurSequence = static_cast<int>(AnimationList::StandingDown);
+		}
+		if (lookingDirection == Maths::IVec2D(-1, 0)) {
+			miCurSequence = static_cast<int>(AnimationList::StandingLeft);
+		}
+	}
+}
+
+bool Player::IsOnWater() const
+{
+	return locomotion == Player::LocomotionState::OnWater;
+}
+
 Player::LocomotionState Player::GetLocomotionState() const
 {
 	return locomotion;
@@ -465,6 +545,18 @@ Player::LocomotionState Player::GetLocomotionState() const
 bool Player::IsTalking() const
 {
 	return bIsTalking;
+}
+
+void Player::UsePokemon(int index)
+{
+	Pokemon pkmn = pokemon.at(index);
+	bIsUsingSpecial = true;
+	usedPkmnType = pkmn.GetType();
+}
+
+void Player::OnUseSuccess(bool value)
+{
+	bSpecialIsSuccessful = value;
 }
 
 bool Player::TEST_CapturePokemon(int index, Pokemon& pkmn)
@@ -523,6 +615,23 @@ bool Player::TEST_CanUseItem(int index)
 		return (std::dynamic_pointer_cast<Consumable, Item>(itr->first) != nullptr);
 	}
 	return false;
+}
+
+bool Player::IsUsingSpecial() const
+{
+	return bIsUsingSpecial;
+}
+
+bool Player::SpecialIsSuccessful() const
+{
+	return bSpecialIsSuccessful;
+}
+
+Pokemon::Type Player::GetUsedPokemonType()
+{
+	Pokemon::Type output = usedPkmnType;
+	usedPkmnType = Pokemon::Type::Normal;
+	return output;
 }
 
 std::map<std::shared_ptr<Item>, int> Player::GetItemList() const

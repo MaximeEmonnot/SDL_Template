@@ -89,14 +89,15 @@ World::Tile::Tile(int x_world_pos, int y_world_pos, int seed, const World& grid)
 					// 50% grass 25% Forest 15% water 8% Rocks 2% Sand
 					if (rndInt(0, 10, nLehmer) < 8) {
 						groundType = GroundType::Dirt;
+
 						if (rndInt(0, 100, nLehmer) < 1) {
+							eventType = EventType::Tree;
+						}
+						else if (rndInt(0, 125, nLehmer) < 1) {
 							eventType = EventType::Item;
 						}
 						else if (rndInt(0, 150, nLehmer) < 1) {
 							eventType = EventType::Boulder;
-						}
-						else if (rndInt(0, 200, nLehmer) < 1) {
-							eventType = EventType::Tree;
 						}
 					}
 					else {
@@ -203,7 +204,6 @@ bool World::Tile::IsObstacle() const
 
 bool World::Tile::PlayerTriggersFight(const World& grid)
 {
-	return false;
 	if (groundType == Tile::GroundType::Grass) {
 		std::mt19937 rng(std::random_device{}());
 		std::uniform_int_distribution<int> dist(0, 20);
@@ -214,6 +214,7 @@ bool World::Tile::PlayerTriggersFight(const World& grid)
 			return (dist(rng) == 1);
 		}
 	}
+	return false;
 }
 
 void World::Tile::InitFromJSON(Tile::GroundType g_type, Tile::EventType e_type)
@@ -441,12 +442,33 @@ void World::CreateHouseAt(const Maths::LLVec2D& pos)
 
 bool World::TileIsObstacleAt(const Maths::LLVec2D& pos)
 {
-	Maths::LLVec2D adaptatedPos = Maths::LLVec2D(static_cast<long long>((xOffset + pos.x) / tileWidth), static_cast<long long>((yOffset + pos.y) / tileWidth));
+	Maths::LLVec2D adaptatedPos = Maths::LLVec2D(static_cast<long long>((xOffset + pos.x) / tileWidth), static_cast<long long>((yOffset + pos.y) / tileHeight));
 
 	//New version
 	auto itr = tiles.find(adaptatedPos);
 	if (itr != tiles.end()) {
+		if (pPlayer->IsOnWater()) return itr->second.GetGroundType() != World::Tile::GroundType::Water;
 		return itr->second.IsObstacle();
+	}
+	return false;
+}
+
+bool World::NextTileIsWater() const
+{
+	Maths::LLVec2D nextTilePos = Maths::LLVec2D(static_cast<long long>((xOffset + 400 + static_cast<long long>(pPlayer->GetLookingDirection().x) * 18) / tileWidth), static_cast<long long>((yOffset + 300 + static_cast<long long>(pPlayer->GetLookingDirection().y) * 22) / tileHeight));
+	auto itr = tiles.find(nextTilePos);
+	if (itr != tiles.end()) {
+		return itr->second.GetGroundType() == World::Tile::GroundType::Water;
+	}
+	return false;
+}
+
+bool World::NextTileHas(World::Tile::EventType e_type) const
+{
+	Maths::LLVec2D nextTilePos = Maths::LLVec2D(static_cast<long long>((xOffset + 400 + static_cast<long long>(pPlayer->GetLookingDirection().x) * 18) / tileWidth), static_cast<long long>((yOffset + 300 + static_cast<long long>(pPlayer->GetLookingDirection().y) * 22) / tileHeight));
+	auto itr = tiles.find(nextTilePos);
+	if (itr != tiles.end()) {
+		return itr->second.GetEventType() == e_type;
 	}
 	return false;
 }
@@ -613,6 +635,65 @@ void World::Update(float speed)
 				items.erase(itemToPick);
 				itr->second.ClearEventType();
 			}
+		}
+	}
+	if (pPlayer->IsUsingSpecial()) {
+		switch (pPlayer->GetUsedPokemonType())
+		{
+		case Pokemon::Type::Fire:
+			if (NextTileHas(World::Tile::EventType::Boulder)) {
+				Maths::LLVec2D lookingAtPos = Maths::LLVec2D(xOffset + 400, yOffset + 300);
+				lookingAtPos += static_cast<Maths::LLVec2D>(pPlayer->GetLookingDirection() * 18);
+				lookingAtPos.x /= tileWidth;
+				lookingAtPos.y /= tileHeight;
+				auto itr = tiles.find(lookingAtPos);
+				itr->second.ClearEventType();
+				pPlayer->OnUseSuccess(true);
+			}
+			else {
+				pPlayer->OnUseSuccess(false);
+			}
+			break;
+		case Pokemon::Type::Water:
+			if (NextTileIsWater()) {
+				if (pPlayer->IsOnWater()) {
+					pPlayer->OnUseSuccess(false);
+				}
+				else {
+					pPlayer->OnUseSuccess(true);
+					xOffset += static_cast<long long>(pPlayer->GetLookingDirection().x) * 18;
+					yOffset += static_cast<long long>(pPlayer->GetLookingDirection().y) * 22;
+					pPlayer->OnWater(true);
+				}
+			}
+			else {
+				if (pPlayer->IsOnWater()) {
+					pPlayer->OnUseSuccess(true);
+					xOffset += static_cast<long long>(pPlayer->GetLookingDirection().x) * 18;
+					yOffset += static_cast<long long>(pPlayer->GetLookingDirection().y) * 22;
+					pPlayer->OnWater(false);
+				}
+				else {
+					pPlayer->OnUseSuccess(false);
+				}
+			}
+			break;
+		case Pokemon::Type::Grass:
+			if (NextTileHas(World::Tile::EventType::Tree)) {
+				Maths::LLVec2D lookingAtPos = Maths::LLVec2D(xOffset + 400, yOffset + 300);
+				lookingAtPos += static_cast<Maths::LLVec2D>(pPlayer->GetLookingDirection() * 18);
+				lookingAtPos.x /= tileWidth;
+				lookingAtPos.y /= tileHeight;
+				auto itr = tiles.find(lookingAtPos);
+				itr->second.ClearEventType();
+				pPlayer->OnUseSuccess(true);
+			}
+			else {
+				pPlayer->OnUseSuccess(false);
+			}
+			break;
+		default:
+			break;
 		}
 	}
 }

@@ -32,13 +32,18 @@ private:
 		StandingBikeLeft,
 		StandingBikeUp,
 		StandingBikeRight,
-		StandingBikeDown
+		StandingBikeDown,
+		OnWaterLeft,
+		OnWaterUp,
+		OnWaterRight,
+		OnWaterDown
 	};
 
 	enum class LocomotionState {
 		Walking,
 		Running,
-		Biking
+		Biking,
+		OnWater
 	};
 public:
 	Player(Maths::IRect rect, const std::string& animFile);
@@ -59,9 +64,14 @@ public:
 	void StopTalking();
 
 	void UpdateBike();
+	void OnWater(bool value);
+	bool IsOnWater() const;
 	LocomotionState GetLocomotionState() const;
 
 	bool IsTalking() const;
+
+	void UsePokemon(int index);
+	void OnUseSuccess(bool value);
 
 	bool TEST_CapturePokemon(int index, Pokemon& pkmn);
 
@@ -72,6 +82,10 @@ public:
 	void TEST_UseItem(int indexItem, int indexPkmn);
 
 	bool TEST_CanUseItem(int index);
+
+	bool IsUsingSpecial() const;
+	bool SpecialIsSuccessful() const;
+	Pokemon::Type GetUsedPokemonType();
 
 	std::map<std::shared_ptr<Item>, int> GetItemList() const;
 
@@ -84,6 +98,10 @@ public:
 	bool TEST_bInitFromJSON = false;
 
 private:
+
+	Pokemon::Type usedPkmnType = Pokemon::Type::Normal;
+	bool bIsUsingSpecial = false;
+	bool bSpecialIsSuccessful = false;
 	bool bIsTalking = false;
 
 	LocomotionState locomotion = LocomotionState::Walking;

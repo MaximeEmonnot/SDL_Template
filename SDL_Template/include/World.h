@@ -20,28 +20,28 @@ private:
 	public:
 		enum class GroundType
 		{
-			Grass,
-			Rocks,
-			Dirt,
-			Sand,
-			Water,
-			House0,
-			House1,
-			House2,
-			House3,
-			House4,
-			House5,
-			House6,
-			House7,
-			House8,
-			House9,
-			House10,
-			House11,
-			House12,
-			House13,
-			House14,
-			House15,
-			None
+			Grass = 0,
+			Dirt = 1,
+			Rocks = 2,
+			Sand = 3,
+			House0 = 4,
+			House1 = 5,
+			House2 = 6,
+			House3 = 7,
+			House4 = 8,
+			House5 = 9,
+			House6 = 10,
+			House7 = 11,
+			House8 = 12,
+			House9 = 13,
+			House10 = 14,
+			House11 = 15,
+			House12 = 16,
+			House13 = 17,
+			House14 = 18,
+			House15 = 19,
+			Water = 20,
+			None = -1
 		};
 		enum class EventType {
 			 Item,
@@ -70,7 +70,7 @@ private:
 		bool IsObstacle() const;
 		bool PlayerTriggersFight(const World& grid);
 	private:
-		void InitFromJSON(Tile::GroundType g_type, Tile::EventType e_type);
+		void InitFromJSON(Tile::GroundType g_type, Tile::EventType e_type, Tile::BiomeType b_type);
 
 		float PerlinNoise(float x, float y, int seed, std::vector<int> p, int nOctaves);
 		Maths::FVec2D GetConstantVector(int value);

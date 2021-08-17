@@ -36,7 +36,7 @@ void Button::ComputeFunction(int& output) const
 
 void Button::Draw(GraphicsEngine::Color buttonColor)
 {
-	pGfx->DrawFilledRect(rect, buttonColor);
+	pGfx->DrawFilledRect(rect, buttonColor, 9);
 	pFont->DrawText(rect.GetVec2DFrom(), text.c_str(), BLACK);
 }
 

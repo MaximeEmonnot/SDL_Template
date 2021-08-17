@@ -10,7 +10,7 @@ TextBox::TextBox(const Maths::IRect& rect)
 
 void TextBox::Draw(const std::string& text, const GraphicsEngine::Color& textColor, const GraphicsEngine::Color& boxColor, const GraphicsEngine::Color& backgroundColor)
 {
-	pGfx->DrawFilledRect(rect, backgroundColor);
-	pGfx->DrawRect(rect, boxColor);
+	pGfx->DrawFilledRect(rect, backgroundColor, 9);
+	pGfx->DrawRect(rect, boxColor, 9);
 	pFont->DrawText(rect.GetVec2DFrom(), text.c_str(), textColor);
 }

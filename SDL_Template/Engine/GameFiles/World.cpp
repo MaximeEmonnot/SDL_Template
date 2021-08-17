@@ -217,10 +217,11 @@ bool World::Tile::PlayerTriggersFight(const World& grid)
 	return false;
 }
 
-void World::Tile::InitFromJSON(Tile::GroundType g_type, Tile::EventType e_type)
+void World::Tile::InitFromJSON(Tile::GroundType g_type, Tile::EventType e_type, Tile::BiomeType b_type)
 {
 	groundType = g_type;
 	eventType = e_type;
+	biomeType = b_type;
 }
 
 float World::Tile::PerlinNoise(float x_in, float y_in, int seed, std::vector<int> p, int nOctaves)
@@ -482,8 +483,13 @@ void World::InitFromJSON()
 	auto& tileInfos = jsonReader.GetValueOf("Tiles");
 	for (auto itr = tileInfos.MemberBegin(); itr != tileInfos.MemberEnd(); ++itr) {
 		Tile tile;
-		tile.InitFromJSON(static_cast<Tile::GroundType>(itr->value.GetArray()[2].GetInt()), static_cast<Tile::EventType>(itr->value.GetArray()[3].GetInt()));
+		tile.InitFromJSON(static_cast<Tile::GroundType>(itr->value.GetArray()[2].GetInt()), static_cast<Tile::EventType>(itr->value.GetArray()[3].GetInt()), static_cast<Tile::BiomeType>(itr->value.GetArray()[4].GetInt()));
 		tiles.insert(std::pair<Maths::IVec2D, Tile>(Maths::IVec2D(itr->value.GetArray()[0].GetInt(), itr->value.GetArray()[1].GetInt()), tile));
+	}
+	//Init biomes
+	auto& biomeInfos = jsonReader.GetValueOf("Biomes");
+	for (auto itr = biomeInfos.MemberBegin(); itr != biomeInfos.MemberEnd(); ++itr) {
+		biomePlaces.insert(std::pair<Maths::LLVec2D, std::pair<Maths::IVec2D, Tile::BiomeType>>(Maths::LLVec2D(static_cast<long long>(itr->value.GetArray()[0].GetInt()), static_cast<long long>(itr->value.GetArray()[1].GetInt())), std::pair<Maths::LLVec2D, Tile::BiomeType>(Maths::LLVec2D(static_cast<long long>(itr->value.GetArray()[2].GetInt()), static_cast<long long>(itr->value.GetArray()[3].GetInt())), static_cast<Tile::BiomeType>(itr->value.GetArray()[4].GetInt()))));
 	}
 
 	//Init consumables
@@ -523,6 +529,13 @@ void World::SaveToJSON()
 		jsonWriter.AddObjectMember("Tiles", "tile" + std::to_string(i), entry.first.x, entry.first.y, static_cast<int>(entry.second.GetGroundType()), static_cast<int>(entry.second.GetEventType()), static_cast<int>(entry.second.GetBiomeType()));
 		i++;
 	}
+	//Save biomes sites
+	i = 0;
+	for (auto& entry : biomePlaces) {
+		jsonWriter.AddObjectMember("Biomes", "biome" + std::to_string(i), entry.first.x, entry.first.y, entry.second.first.x, entry.second.first.y, static_cast<int>(entry.second.second));
+		i++;
+	}
+
 	//Save items
 	for (auto& entry : items) {
 		std::shared_ptr<Consumable> consumable = std::dynamic_pointer_cast<Consumable, Item>(entry.second);
@@ -707,106 +720,52 @@ void World::Draw()
 			auto itr = tiles.find(pos);
 			if (itr != tiles.end()) {
 				Maths::IRect srcRect;
+				Maths::IRect destRect = Maths::IRect(static_cast<int>(itr->first.x * tileWidth - xOffset), static_cast<int>(itr->first.y * tileHeight - yOffset), tileWidth, tileHeight);
 				GraphicsEngine::Sprite tileSprite;
 				int layer = 0;
 
 				switch (itr->second.GetBiomeType()) {
 				case World::Tile::BiomeType::Forest:
-					if (bTempestOn) tempestForest.Draw(Maths::IRect(static_cast<int>(itr->first.x * tileWidth - xOffset), static_cast<int>(itr->first.y * tileHeight - yOffset), tileWidth, tileHeight), 7);
+					if (bTempestOn) tempestForest.Draw(destRect, 7);
 					tileSprite = tileSpriteForest;
 					break;
 				case World::Tile::BiomeType::Desert:
-					if (bTempestOn) tempestDesert.Draw(Maths::IRect(static_cast<int>(itr->first.x * tileWidth - xOffset), static_cast<int>(itr->first.y * tileHeight - yOffset), tileWidth, tileHeight), 7);
+					if (bTempestOn) tempestDesert.Draw(destRect, 7);
 					tileSprite = tileSpriteDesert;
 					break;
 				case World::Tile::BiomeType::Toundra:
-					if (bTempestOn) tempestToundra.Draw(Maths::IRect(static_cast<int>(itr->first.x * tileWidth - xOffset), static_cast<int>(itr->first.y * tileHeight - yOffset), tileWidth, tileHeight), 7);
+					if (bTempestOn) tempestToundra.Draw(destRect, 7);
 					tileSprite = tileSpriteToundra;
 					break;
 				default:
 					break;
 				}
 
+				//SrcRect is calculated from the value of the tile. Each tile sheet is made out of rows of 4 tiles of size 16x16. The x value is given from the modulo, the y value is given from the division 
+				srcRect = Maths::IRect(16 * (static_cast<int>(itr->second.GetGroundType()) % 4), 16 * (static_cast<int>(itr->second.GetGroundType()) / 4), 16, 16);
+				
+				//Specific draw operation for some tiles
 				switch (itr->second.GetGroundType()) {
-				case World::Tile::GroundType::Grass:
-					srcRect = Maths::IRect(0, 0, 16, 16);
-					break;
-				case World::Tile::GroundType::Dirt:
-					srcRect = Maths::IRect(16, 0, 16, 16);
-					break;
-				case World::Tile::GroundType::Rocks:
-					srcRect = Maths::IRect(32, 0, 16, 16);
-					break;
-				case World::Tile::GroundType::Sand:
-					srcRect = Maths::IRect(48, 0, 16, 16);
-					break;
 				case World::Tile::GroundType::Water:
-					srcRect = Maths::IRect(64, 0, 16, 16);
 					layer = -2;
-					break;
-				case World::Tile::GroundType::House0:
-					srcRect = Maths::IRect(0, 16, 16, 16);
-					break;
-				case World::Tile::GroundType::House1:
-					srcRect = Maths::IRect(16, 16, 16, 16);
-					break;
-				case World::Tile::GroundType::House2:
-					srcRect = Maths::IRect(32, 16, 16, 16);
-					break;
-				case World::Tile::GroundType::House3:
-					srcRect = Maths::IRect(48, 16, 16, 16);
-					break;
-				case World::Tile::GroundType::House4:
-					srcRect = Maths::IRect(0, 32, 16, 16);
-					break;
-				case World::Tile::GroundType::House5:
-					srcRect = Maths::IRect(16, 32, 16, 16);
-					break;
-				case World::Tile::GroundType::House6:
-					srcRect = Maths::IRect(32, 32, 16, 16);
-					break;
-				case World::Tile::GroundType::House7:
-					srcRect = Maths::IRect(48, 32, 16, 16);
-					break;
-				case World::Tile::GroundType::House8:
-					srcRect = Maths::IRect(0, 48, 16, 16);
-					break;
-				case World::Tile::GroundType::House9:
-					srcRect = Maths::IRect(16, 48, 16, 16);
-					break;
-				case World::Tile::GroundType::House10:
-					srcRect = Maths::IRect(32, 48, 16, 16);
-					break;
-				case World::Tile::GroundType::House11:
-					srcRect = Maths::IRect(48, 48, 16, 16);
-					break;
-				case World::Tile::GroundType::House12:
-					srcRect = Maths::IRect(0, 64, 16, 16);
-					break;
-				case World::Tile::GroundType::House13:
-					srcRect = Maths::IRect(16, 64, 16, 16);
-					break;
-				case World::Tile::GroundType::House14:
-					srcRect = Maths::IRect(32, 64, 16, 16);
-					break;
-				case World::Tile::GroundType::House15:
-					srcRect = Maths::IRect(48, 64, 16, 16);
 					break;
 				default:
 					break;
 				}
-				pGfx->DrawSprite(Maths::IRect(static_cast<int>(itr->first.x * tileWidth - xOffset), static_cast<int>(itr->first.y * tileHeight - yOffset), tileWidth, tileHeight), srcRect, tileSprite, layer);
+
+				pGfx->DrawSprite(destRect, srcRect, tileSprite, layer);
 
 				layer = 1;
+
 				switch (itr->second.GetEventType()) {
 				case World::Tile::EventType::Item:
-					pGfx->DrawSprite(Maths::IRect(static_cast<int>(itr->first.x * tileWidth - xOffset), static_cast<int>(itr->first.y * tileHeight - yOffset), tileWidth, tileHeight), Maths::IRect(64, 16, 16, 16), tileSprite);
+					pGfx->DrawSprite(destRect, Maths::IRect(16, 80, 16, 16), tileSprite, layer);
 					break;
 				case World::Tile::EventType::Boulder:
-					pGfx->DrawSprite(Maths::IRect(static_cast<int>(itr->first.x * tileWidth - xOffset), static_cast<int>(itr->first.y * tileHeight - yOffset), tileWidth, tileHeight), Maths::IRect(64, 32, 16, 16), tileSprite);
+					pGfx->DrawSprite(destRect, Maths::IRect(32, 80, 16, 16), tileSprite, layer);
 					break;
 				case World::Tile::EventType::Tree:
-					pGfx->DrawSprite(Maths::IRect(static_cast<int>(itr->first.x * tileWidth - xOffset), static_cast<int>(itr->first.y * tileHeight - yOffset), tileWidth, tileHeight), Maths::IRect(64, 48, 16, 16), tileSprite);
+					pGfx->DrawSprite(destRect, Maths::IRect(48, 80, 16, 16), tileSprite, layer);
 					break;
 				default:
 					break;

@@ -1,4 +1,6 @@
 #include "ThreadPool.h"
+#include <SDL.h>
+#include "EngineException.h"
 
 CoreSystem::ThreadPool::ThreadPool(size_t numThreads)
 {
@@ -14,7 +16,18 @@ CoreSystem::ThreadPool::ThreadPool(size_t numThreads)
 					task = std::move(mTasks.front());
 					mTasks.pop();
 				}
-				task();
+				try {
+					task();
+				}
+				catch (const EngineException& e) {
+					SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, e.GetType().c_str(), e.GetMessage().c_str(), NULL);
+				}
+				catch (const std::exception& e) {
+					SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "STL Exception caught", (std::string("A STL Exception has been caught during Game Routine.\nDetails:\n") + std::string(e.what())).c_str(), NULL);
+				}
+				catch (...) {
+					SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Unknown error caught", "An unknown error has been caught during Game Routine.", NULL);
+				}
 			}
 			});
 	}

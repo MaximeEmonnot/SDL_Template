@@ -52,6 +52,116 @@ void ExplorationScene::Update()
 		InitFromJSON();
 	}
 
+	//Init online
+	if (pPlayer->pNet != nullptr && !bHasInitOnline)
+	{
+		bHasInitOnline = true;
+		//Host player online routine
+		if (pPlayer->bIsHost) {
+			//Send
+			pThread->Enqueue([&] {
+				while (pWnd->ListensToEvents()) {
+					Uint8 seed = pWorld->GetWorldSeed();
+					long long xPlayerPos = pWorld->GetPlayerPosition().x;
+					long long yPlayerPos = pWorld->GetPlayerPosition().y;
+
+					std::vector<Uint8> dataOut;
+
+					//generation seed packaging
+					dataOut.push_back(seed);
+
+					//xPlayerPos data packaging
+					for (int i = 0; i < 8; i++) {
+						dataOut.push_back(static_cast<Uint8>(xPlayerPos >> 56));
+						xPlayerPos <<= 8;
+					}
+					//yPlayerPos data packaging
+					for (int i = 0; i < 8; i++) {
+						dataOut.push_back(static_cast<Uint8>(yPlayerPos >> 56));
+						yPlayerPos <<= 8;
+					}
+					pPlayer->GetNetSystem()->SendPackage(dataOut);
+				}
+				});
+			//Recieve
+			pThread->Enqueue([&] {
+				while (pWnd->ListensToEvents()) {
+					std::vector<Uint8> dataIn = pPlayer->GetNetSystem()->RecievePackage();
+					if (!dataIn.empty()) {
+						//xGuestPos reading
+						long long xGuestPos = 0;
+						for (size_t i = 0; i < 8; i++) {
+							xGuestPos <<= 8;
+							xGuestPos += dataIn.at(i);
+						}
+
+						//yGuestPos reading
+						long long yGuestPos = 0;
+						for (size_t i = 8; i < 16; i++) {
+							yGuestPos <<= 8;
+							yGuestPos += dataIn.at(i);
+						}
+
+						//Set Guest Position in World
+						pWorld->SetGuestPostion(Maths::LLVec2D(xGuestPos, yGuestPos));
+					}
+				}
+				});
+		}
+		//Guest player online routine
+		else {
+			//Send
+			pThread->Enqueue([&] {
+				while (pWnd->ListensToEvents()) {
+					long long xPlayerPos = pWorld->GetPlayerPosition().x;
+					long long yPlayerPos = pWorld->GetPlayerPosition().y;
+
+					std::vector<Uint8> dataOut;
+
+					//xPlayerPos data packaging
+					for (int i = 0; i < 8; i++) {
+						dataOut.push_back(static_cast<Uint8>(xPlayerPos >> 56));
+						xPlayerPos <<= 8;
+					}
+					//yPlayerPos data packaging
+					for (int i = 0; i < 8; i++) {
+						dataOut.push_back(static_cast<Uint8>(yPlayerPos >> 56));
+						yPlayerPos <<= 8;
+					}
+					pPlayer->GetNetSystem()->SendPackage(dataOut);
+				}
+				});
+			//Recieve
+			pThread->Enqueue([&] {
+				while(pWnd->ListensToEvents()){
+				std::vector<Uint8> dataIn = pPlayer->GetNetSystem()->RecievePackage();
+
+				if (!dataIn.empty()) {
+					//seed reading
+					pWorld->SetWorldSeed(dataIn.at(0));
+
+					//xGuestPos reading
+					long long xGuestPos = 0;
+					for (size_t i = 1; i <= 8; i++) {
+						xGuestPos <<= 8;
+						xGuestPos += dataIn.at(i);
+					}
+
+					//yGuestPos reading
+					long long yGuestPos = 0;
+					for (size_t i = 9; i <= 16; i++) {
+						yGuestPos <<= 8;
+						yGuestPos += dataIn.at(i);
+					}
+
+					//Set Guest Position in World
+					pWorld->SetGuestPostion(Maths::LLVec2D(xGuestPos, yGuestPos));
+				}
+				}
+				});
+		}
+	}
+
 	bWillChangeScene = false;
 
 	pPlayer->Update(pTimer->DeltaTime());
@@ -130,11 +240,15 @@ void ExplorationScene::Update()
 			state = MenuState::None;
 			break;
 		case 4:
+			pPlayer->ConnectAs(SERVER);
+			state = MenuState::None;
+			break;
+		case 5:
 			saveTimer.ResetTimer(2.5f);
 			pPlayer->SaveToJSON();
 			SaveToJSON();
 			break;
-		case 5:
+		case 6:
 			bWillChangeScene = true;
 			state = MenuState::None;
 			bIsPlayingSong = false;

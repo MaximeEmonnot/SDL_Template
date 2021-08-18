@@ -13,15 +13,15 @@ CoreSystem::Window::Window()
 	mEvent.type = SDL_FIRSTEVENT;
 	mbIsRunning = true;
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-		throw EngineException("SDL Window Exception caught", __FILE__, "An error has been caught during SDL Initialisation.", __LINE__);
+		throw EngineException("SDL Window Exception caught", __FILE__, "An error has been caught during SDL Initialisation.\nMore informations: " + std::string(SDL_GetError()), __LINE__);
 	}
 	mpWindow.reset(SDL_CreateWindow("Template SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, mWidth, mHeight, SDL_WINDOW_OPENGL), SDL_DestroyWindow);
 	if (mpWindow == NULL) {
-		throw EngineException("SDL Window Exception caught", __FILE__, "An error has been caught during Window Creation.", __LINE__);
+		throw EngineException("SDL Window Exception caught", __FILE__, "An error has been caught during Window Creation.\nMore informations: " + std::string(SDL_GetError()), __LINE__);
 	}
 	SDL_Surface* surf = IMG_Load("Images\\icon.png");
 	if (surf == nullptr) {
-		throw EngineException("SDL Window Exception caught", __FILE__, "An error has been caught during Icon loading.\nPlease check filename (MUST be \"icon.png\").", __LINE__);
+		throw EngineException("SDL Window Exception caught", __FILE__, "An error has been caught during Icon loading.\nPlease check filename (MUST be \"icon.png\").\nMore informations: " + std::string(SDL_GetError()), __LINE__);
 	}
 	SDL_SetWindowIcon(mpWindow.get(), surf);
 	SDL_ShowCursor(1);

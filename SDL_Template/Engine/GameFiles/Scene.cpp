@@ -8,6 +8,7 @@ Scene::Scene(Scene::SceneType type)
 	pKbd(CoreSystem::Keyboard::GetInstance()),
 	pTimer(CoreSystem::Timer::GetInstance()),
 	pWnd(CoreSystem::Window::GetInstance()),
+	pThread(CoreSystem::ThreadPool::GetInstance(30)),
 	pSoundSystem(SoundEngine::SoundSystem::GetInstance()),
 	pPlayer(Player::GetInstance(Maths::IRect(384, 267, 32, 44), "json/player.json")),
 	currentScene(type)

@@ -27,8 +27,6 @@ World::Tile::Tile(int x_world_pos, int y_world_pos, int seed, const World& grid)
 		Maths::LLVec2D worldPos = Maths::LLVec2D(x_world_pos, y_world_pos);
 		float perlin = PerlinNoise(x_world_pos * 0.1f, y_world_pos * 0.1f, seed, grid.permutationArray, 3);
 
-		printf("perlin : %lF\n", perlin);
-
 		if (perlin > 0.0f || (x_world_pos < 15 && y_world_pos < 15)) {
 			switch (grid.GetNeighbourGroundType(worldPos, Tile::GroundType::Grass)) {
 			case 1:
@@ -319,7 +317,7 @@ World::World()
 
 	//Init generation seed
 	std::mt19937 rng(std::random_device{}());
-	std::uniform_int_distribution<int> dist(-20, 20);
+	std::uniform_int_distribution<int> dist(0, 40);
 	generationSeed = dist(rng);
 
 	//Init weather timer
@@ -580,6 +578,23 @@ Maths::LLVec2D World::GetPlayerPosition() const
 	return Maths::LLVec2D(static_cast<int>((xOffset + 400) / tileWidth), static_cast<int>((yOffset + 300) / tileHeight));
 }
 
+void World::SetGuestPostion(const Maths::LLVec2D& pos)
+{
+	if (pos != Maths::LLVec2D(0, 0)) {
+		guestPosition = pos;
+	}
+}
+
+Uint8 World::GetWorldSeed() const
+{
+	return generationSeed;
+}
+
+void World::SetWorldSeed(Uint8 seed)
+{
+	generationSeed = seed;
+}
+
 World::Tile::BiomeType World::GetCurrentBiome() const
 {
 	auto playerPos = tiles.find(GetPlayerPosition());
@@ -773,6 +788,9 @@ void World::Draw()
 			}
 		}
 	}
+
+	//Draw guest (test)
+	pGfx->DrawFilledRect(Maths::IRect(Maths::IVec2D(static_cast<int>(guestPosition.x * tileWidth - xOffset), static_cast<int>(guestPosition.y * tileHeight - yOffset)), tileWidth, tileHeight), RED, 3);
 }
 
 void World::BlendSpriteTo(GraphicsEngine::Color c)
@@ -787,6 +805,7 @@ void World::BlendSpriteTo(GraphicsEngine::Color c)
 
 bool World::PlayerTriggersFight()
 {
+	return false;
 	//New version
 	Maths::LLVec2D currentPlayerPos = Maths::LLVec2D(static_cast<long long>(currentPlayerXPos / tileWidth), static_cast<long long>(currentPlayerYPos / tileHeight));
 	Maths::LLVec2D lastPlayerPos = Maths::LLVec2D(static_cast<long long>(lastPlayerXPos / tileWidth), static_cast<long long>(lastPlayerYPos / tileHeight));
@@ -798,7 +817,6 @@ bool World::PlayerTriggersFight()
 			return itr->second.PlayerTriggersFight(*this);
 		}
 	}
-	return false;
 }
 
 bool World::GoInside() const

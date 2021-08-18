@@ -69,6 +69,9 @@ private:
 
 		bool IsObstacle() const;
 		bool PlayerTriggersFight(const World& grid);
+
+		
+
 	private:
 		void InitFromJSON(Tile::GroundType g_type, Tile::EventType e_type, Tile::BiomeType b_type);
 
@@ -96,6 +99,13 @@ public:
 
 	bool PlayerTriggersFight();
 	bool GoInside() const;
+
+	Maths::LLVec2D GetPlayerPosition() const;
+	void SetGuestPostion(const Maths::LLVec2D& pos);
+
+	Uint8 GetWorldSeed() const;
+	void SetWorldSeed(Uint8 seed);
+
 private:
 	void GenerateGrid();
 	void GenerateNewBiomePlaces();
@@ -116,11 +126,13 @@ private:
 	int GetNeighbourGroundType(const Maths::LLVec2D& pos, World::Tile::GroundType g_type) const;
 
 	Maths::IVec2D GetPlayerDirection() const;
-	Maths::LLVec2D GetPlayerPosition() const;
 
 	Tile::BiomeType GetCurrentBiome() const;
 
 private:
+
+	Maths::LLVec2D guestPosition = Maths::LLVec2D(-100, -100);
+
 	GraphicsEngine::Sprite tileSpriteForest;
 	GraphicsEngine::Sprite tileSpriteDesert;
 	GraphicsEngine::Sprite tileSpriteToundra;
@@ -155,7 +167,7 @@ private:
 	
 	Maths::IVec2D playerDirection;
 
-	int generationSeed;
+	Uint8 generationSeed;
 	//New version
 	std::unordered_map<Maths::LLVec2D, Tile, Maths::LLVec2D::Hash> tiles;
 

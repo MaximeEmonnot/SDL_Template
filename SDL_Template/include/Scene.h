@@ -33,6 +33,7 @@ protected:
 	std::shared_ptr<CoreSystem::Keyboard> pKbd;
 	std::shared_ptr<CoreSystem::Timer> pTimer;
 	std::shared_ptr<CoreSystem::Window> pWnd;
+	std::shared_ptr<CoreSystem::ThreadPool> pThread;
 	std::shared_ptr<SoundEngine::SoundSystem> pSoundSystem;
 	std::shared_ptr<Player> pPlayer;
 	SceneType currentScene;

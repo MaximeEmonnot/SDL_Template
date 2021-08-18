@@ -1,4 +1,5 @@
 #pragma once
+#include "NetworkSystem.h"
 #include "Character.h"
 #include "Keyboard.h"
 #include "Pokemon.h"
@@ -51,6 +52,9 @@ public:
 
 	void Move();
 
+	void ConnectAs(bool type);
+	std::shared_ptr<Network::NetworkSystem> GetNetSystem();
+
 	void AddPokemon(Pokemon& pkmn);
 	void SetFirstPokemon(int index);
 	Pokemon& GetPokemon();
@@ -98,6 +102,8 @@ public:
 	bool TEST_bInitFromJSON = false;
 
 private:
+	std::shared_ptr<Network::NetworkSystem> pNet;
+	bool bIsHost = false;
 
 	Pokemon::Type usedPkmnType = Pokemon::Type::Normal;
 	bool bIsUsingSpecial = false;

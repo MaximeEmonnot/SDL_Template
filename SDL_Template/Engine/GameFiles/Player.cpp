@@ -372,6 +372,22 @@ void Player::Move()
 	velocity = dir;
 }
 
+void Player::ConnectAs(bool bIsClient)
+{	
+	if (bIsClient) {
+		pNet = Network::NetworkSystem::GetInstance("M4xH3rO3s", 222, 333);
+	}
+	else {
+		bIsHost = true;
+		pNet = Network::NetworkSystem::GetInstance("M4xH3rO3s", 333, 222);
+	}
+}
+
+std::shared_ptr<Network::NetworkSystem> Player::GetNetSystem()
+{
+	return pNet;
+}
+
 void Player::AddPokemon(Pokemon& pkmn)
 {
 	pokemon.push_back(pkmn);

@@ -94,6 +94,12 @@
     <Filter Include="Fichiers sources\GameFiles\Scenes\Timer">
       <UniqueIdentifier>{abc18567-16fe-4810-8557-e8da275e4e45}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\Engine\NetworkManager">
+      <UniqueIdentifier>{ab7e5292-933f-48f4-9d24-407ecd441de2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Engine\NetworkManager">
+      <UniqueIdentifier>{10c53413-d593-4784-9a5a-df9c29f5c566}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\main.cpp">
@@ -233,6 +239,9 @@
     </ClCompile>
     <ClCompile Include="Engine\GameFiles\World.cpp">
       <Filter>Fichiers sources\GameFiles\Scenes\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\NetworkManager\NetworkSystem.cpp">
+      <Filter>Fichiers sources\Engine\NetworkManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -400,6 +409,9 @@
     </ClInclude>
     <ClInclude Include="include\TImerManager.h">
       <Filter>Fichiers d%27en-tête\GameFiles\Scenes\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\NetworkSystem.h">
+      <Filter>Fichiers d%27en-tête\Engine\NetworkManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

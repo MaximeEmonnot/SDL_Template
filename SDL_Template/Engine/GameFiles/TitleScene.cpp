@@ -22,6 +22,8 @@ void TitleScene::Update()
 		pWnd->ExitGame();
 		break;
 	case 1:
+		pPlayer->ConnectAs(CLIENT);
+	case 2:
 	{
 		bWillChangeScene = true;
 		std::ifstream inSF("json/saveFile.json");
@@ -36,8 +38,8 @@ void TitleScene::Update()
 			printf("No save file found!\n");
 		}
 	}
-		break;
-	case 2:
+	break;
+	case 3:
 		std::remove("json/saveFile.json");
 		std::remove("json/mapCoords.json");
 		break;

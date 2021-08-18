@@ -62,6 +62,7 @@
     <ClCompile Include="Engine\main.cpp" />
     <ClCompile Include="Engine\MainGame\Character.cpp" />
     <ClCompile Include="Engine\MainGame\Game.cpp" />
+    <ClCompile Include="Engine\NetworkManager\NetworkSystem.cpp" />
     <ClCompile Include="Engine\SoundManager\Effect.cpp" />
     <ClCompile Include="Engine\SoundManager\Music.cpp" />
     <ClCompile Include="Engine\SoundManager\SoundSystem.cpp" />
@@ -88,6 +89,7 @@
     <ClInclude Include="include\Font.h" />
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\Graphics.h" />
+    <ClInclude Include="include\NetworkSystem.h" />
     <ClInclude Include="include\World.h" />
     <ClInclude Include="include\House.h" />
     <ClInclude Include="include\Item.h" />

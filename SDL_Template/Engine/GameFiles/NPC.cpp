@@ -29,6 +29,30 @@ NPC::NPC(Maths::IRect rect, Maths::IVec2D pos, const std::string& animFile, std:
 	miCurSequence = static_cast<int>(AnimationList::StandingRight);
 }
 
+NPC::NPC(Maths::IRect rect, const std::string& animFile)
+	:
+	Character(rect)
+{
+	//Read json
+	JSONParser::Reader jsonParse;
+	jsonParse.ReadFile(animFile);
+
+	mSprite = GraphicsEngine::Sprite(jsonParse.GetValueOf("filename").GetString());
+
+	auto& v = jsonParse.GetValueOf("animations");
+	for (auto itr = v.MemberBegin(); itr != v.MemberEnd(); ++itr) {
+		mAnimations.push_back(GraphicsEngine::Animation({ itr->value.GetArray()[0].GetInt(),
+												itr->value.GetArray()[1].GetInt(),
+												itr->value.GetArray()[2].GetInt(),
+												itr->value.GetArray()[3].GetInt() },
+			itr->value.GetArray()[4].GetInt(),
+			mSprite,
+			itr->value.GetArray()[5].GetFloat()));
+	}
+
+	miCurSequence = static_cast<int>(AnimationList::StandingRight);
+}
+
 NPC::~NPC()
 {
 }
@@ -68,4 +92,23 @@ void NPC::StopTalking()
 void NPC::UpdateAI()
 {
 	if (bIsControlledByAI) pAI->Update(*this);
+}
+
+void NPC::SetPosition(const Maths::IVec2D& pos)
+{
+	mRect.rect.x = pos.x;
+	mRect.rect.y = pos.y;
+	mRect.rect.x -= mRect.rect.w / 2;
+	mRect.rect.y -= mRect.rect.h * 3/4;
+
+	mReflectionRect.rect.x = pos.x;
+	mReflectionRect.rect.y = pos.y + mReflectionRect.rect.w;
+	mReflectionRect.rect.x -= mReflectionRect.rect.w / 2;
+	mReflectionRect.rect.y -= mReflectionRect.rect.h * 3/4;
+
+}
+
+void NPC::SetAnimation(int anim)
+{
+	miCurSequence = anim;
 }

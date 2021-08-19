@@ -71,6 +71,7 @@ public:
 	void OnWater(bool value);
 	bool IsOnWater() const;
 	LocomotionState GetLocomotionState() const;
+	int GetAnimation() const;
 
 	bool IsTalking() const;
 

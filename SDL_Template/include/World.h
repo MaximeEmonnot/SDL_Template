@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include "Graphics.h"
 #include "Player.h"
+#include "NPC.h"
 
 #include "TImerManager.h"
 
@@ -13,7 +14,7 @@
 class World : public CoreSystem::SingletonMaker<World> {
 private:
 	friend class ExplorationScene;
-private:
+public:
 	class Tile {
 	private:
 		friend class World;
@@ -57,9 +58,12 @@ private:
 		};
 	public:
 		Tile() = default;
+		//Generation constructor
 		Tile(int x_world_pos, int y_world_pos, int seed, const World& grid);
+		//Arbitrary types constructor
+		Tile(GroundType g_type, EventType e_type, BiomeType b_type);
 
-		std::shared_ptr<Item> CreateItem(std::vector<std::shared_ptr<Item>> items);
+		std::shared_ptr<Item> CreateItem(std::vector<std::shared_ptr<Item>> items) const;
 
 		void ClearEventType();
 
@@ -70,19 +74,16 @@ private:
 		bool IsObstacle() const;
 		bool PlayerTriggersFight(const World& grid);
 
-		
+		bool operator==(const Tile& rhs) const;
+		bool operator!=(const Tile& rhs) const;
 
 	private:
 		void InitFromJSON(Tile::GroundType g_type, Tile::EventType e_type, Tile::BiomeType b_type);
 
-		float PerlinNoise(float x, float y, int seed, std::vector<int> p, int nOctaves);
+		float PerlinNoise(float x, float y, std::vector<int> p, int nOctaves);
 		Maths::FVec2D GetConstantVector(int value);
 		float Fade(float t);
 		float Lerp(float val0, float val1, float alpha);
-
-		uint32_t Lehmer32(uint32_t nLehmer);
-
-		int rndInt(int min, int max, uint32_t nLehmer);
 
 	private:
 		Tile::GroundType groundType = Tile::GroundType::None;
@@ -101,14 +102,22 @@ public:
 	bool GoInside() const;
 
 	Maths::LLVec2D GetPlayerPosition() const;
-	void SetGuestPostion(const Maths::LLVec2D& pos);
+	void SetGuestPositionAndAnimation(const Maths::LLVec2D& pos, int anim);
 
 	Uint8 GetWorldSeed() const;
 	void SetWorldSeed(Uint8 seed);
 
+	Maths::LLVec2D GetLastTileToUpdate();
+	void AddTilesToUpdate(const Maths::LLVec2D& pos);
+
 private:
 	void GenerateGrid();
 	void GenerateNewBiomePlaces();
+	void UpdateTiles();
+
+	uint32_t Lehmer32(uint32_t nLehmer) const;
+
+	int rndInt(int min, int max, uint32_t nLehmer) const;
 
 	void UpdateTempest();
 
@@ -127,11 +136,8 @@ private:
 
 	Maths::IVec2D GetPlayerDirection() const;
 
-	Tile::BiomeType GetCurrentBiome() const;
-
 private:
-
-	Maths::LLVec2D guestPosition = Maths::LLVec2D(-100, -100);
+	std::shared_ptr<NPC> pGuest;
 
 	GraphicsEngine::Sprite tileSpriteForest;
 	GraphicsEngine::Sprite tileSpriteDesert;
@@ -145,6 +151,8 @@ private:
 
 	TimerManager weatherTimer;
 	bool bTempestOn = false;
+
+	bool bTilesAreWriting = false;
 
 	std::shared_ptr<GraphicsEngine::Graphics> pGfx;
 	std::shared_ptr<CoreSystem::Keyboard> pKbd;
@@ -170,6 +178,9 @@ private:
 	Uint8 generationSeed;
 	//New version
 	std::unordered_map<Maths::LLVec2D, Tile, Maths::LLVec2D::Hash> tiles;
+
+	std::vector<Maths::LLVec2D> tilesToUpdate;
+	Maths::LLVec2D lastTileToUpdate;
 
 	//Voronoi
 	std::unordered_map<Maths::LLVec2D, std::pair<Maths::LLVec2D, Tile::BiomeType>, Maths::LLVec2D::Hash> biomePlaces;

@@ -25,7 +25,7 @@ World::Tile::Tile(int x_world_pos, int y_world_pos, int seed, const World& grid)
 		int probaRocks = 0;
 
 		Maths::LLVec2D worldPos = Maths::LLVec2D(x_world_pos, y_world_pos);
-		float perlin = PerlinNoise(x_world_pos * 0.1f, y_world_pos * 0.1f, seed, grid.permutationArray, 3);
+		float perlin = PerlinNoise(x_world_pos * 0.1f, y_world_pos * 0.1f, grid.permutationArray, 3);
 
 		if (perlin > 0.0f || (x_world_pos < 15 && y_world_pos < 15)) {
 			switch (grid.GetNeighbourGroundType(worldPos, Tile::GroundType::Grass)) {
@@ -64,7 +64,7 @@ World::Tile::Tile(int x_world_pos, int y_world_pos, int seed, const World& grid)
 			default:
 				break;
 			}
-			if (rndInt(0, 1000, nLehmer) < 1) {
+			if (grid.rndInt(0, 1000, nLehmer) < 1) {
 				if (grid.GetPlayerDirection().x >= 0) {
 					groundType = Tile::GroundType::House0;
 				}
@@ -74,34 +74,34 @@ World::Tile::Tile(int x_world_pos, int y_world_pos, int seed, const World& grid)
 
 			}
 			else {
-				if (rndInt(0, 100, nLehmer) < probaRocks) {
+				if (grid.rndInt(0, 100, nLehmer) < probaRocks) {
 					groundType = GroundType::Rocks;
 				}
-				else if (rndInt(0, 100, nLehmer) < probaGrass) {
+				else if (grid.rndInt(0, 100, nLehmer) < probaGrass) {
 					groundType = GroundType::Grass;
-					if (rndInt(0, 200, nLehmer) < 1) {
+					if (grid.rndInt(0, 200, nLehmer) < 1) {
 						eventType = EventType::Item;
 					}
 				}
 				else {
 					// 50% grass 25% Forest 15% water 8% Rocks 2% Sand
-					if (rndInt(0, 10, nLehmer) < 8) {
+					if (grid.rndInt(0, 10, nLehmer) < 8) {
 						groundType = GroundType::Dirt;
 
-						if (rndInt(0, 100, nLehmer) < 1) {
+						if (grid.rndInt(0, 100, nLehmer) < 1) {
 							eventType = EventType::Tree;
 						}
-						else if (rndInt(0, 125, nLehmer) < 1) {
+						else if (grid.rndInt(0, 125, nLehmer) < 1) {
 							eventType = EventType::Item;
 						}
-						else if (rndInt(0, 150, nLehmer) < 1) {
+						else if (grid.rndInt(0, 150, nLehmer) < 1) {
 							eventType = EventType::Boulder;
 						}
 					}
 					else {
-						if (rndInt(0, 4, nLehmer) < 3) {
+						if (grid.rndInt(0, 4, nLehmer) < 3) {
 							groundType = GroundType::Grass;
-							if (rndInt(0, 250, nLehmer) < 1) {
+							if (grid.rndInt(0, 250, nLehmer) < 1) {
 								eventType = EventType::Item;
 							}
 						}
@@ -115,7 +115,7 @@ World::Tile::Tile(int x_world_pos, int y_world_pos, int seed, const World& grid)
 		else if (x_world_pos >= 15 || y_world_pos >= 15) {
 			if (perlin > -0.15f) {
 				groundType = GroundType::Sand;
-				if (rndInt(0, 125, nLehmer) < 1) {
+				if (grid.rndInt(0, 125, nLehmer) < 1) {
 					eventType = EventType::Boulder;
 				}
 			}
@@ -126,7 +126,15 @@ World::Tile::Tile(int x_world_pos, int y_world_pos, int seed, const World& grid)
 	}
 }
 
-std::shared_ptr<Item> World::Tile::CreateItem(std::vector<std::shared_ptr<Item>> items)
+World::Tile::Tile(GroundType g_type, EventType e_type, BiomeType b_type)
+	:
+	groundType(g_type),
+	eventType(e_type),
+	biomeType(b_type)
+{
+}
+
+std::shared_ptr<Item> World::Tile::CreateItem(std::vector<std::shared_ptr<Item>> items) const
 {
 	std::mt19937 rng(std::random_device{}());
 	std::uniform_int_distribution<int> dist(0, 100);
@@ -215,6 +223,16 @@ bool World::Tile::PlayerTriggersFight(const World& grid)
 	return false;
 }
 
+bool World::Tile::operator==(const Tile& rhs) const
+{
+	return groundType == rhs.groundType && eventType == rhs.eventType && biomeType == rhs.biomeType;
+}
+
+bool World::Tile::operator!=(const Tile& rhs) const
+{
+	return !(*this == rhs);
+}
+
 void World::Tile::InitFromJSON(Tile::GroundType g_type, Tile::EventType e_type, Tile::BiomeType b_type)
 {
 	groundType = g_type;
@@ -222,7 +240,7 @@ void World::Tile::InitFromJSON(Tile::GroundType g_type, Tile::EventType e_type, 
 	biomeType = b_type;
 }
 
-float World::Tile::PerlinNoise(float x_in, float y_in, int seed, std::vector<int> p, int nOctaves)
+float World::Tile::PerlinNoise(float x_in, float y_in, std::vector<int> p, int nOctaves)
 {
 	size_t x = static_cast<int>(x_in) & 255;
 	size_t y = static_cast<int>(y_in) & 255;
@@ -251,7 +269,7 @@ float World::Tile::PerlinNoise(float x_in, float y_in, int seed, std::vector<int
 		Lerp(dotBottomRight, dotTopRight, v),
 		u);
 
-	if (nOctaves > 0) return Lerp(output, PerlinNoise(x_in * 0.1f, y_in * 0.1f, seed, p, nOctaves - 1), 0.5f);
+	if (nOctaves > 0) return Lerp(output, PerlinNoise(x_in * 0.1f, y_in * 0.1f, p, nOctaves - 1), 0.5f);
 
 	return output;
 }
@@ -281,7 +299,7 @@ float World::Tile::Lerp(float val0, float val1, float alpha)
 	return val0 + (val1 - val0) * alpha;
 }
 
-uint32_t World::Tile::Lehmer32(uint32_t nLehmer)
+uint32_t World::Lehmer32(uint32_t nLehmer) const
 {
 	nLehmer += 0xe120fc15;
 	uint64_t tmp;
@@ -292,7 +310,7 @@ uint32_t World::Tile::Lehmer32(uint32_t nLehmer)
 	return m2;
 }
 
-int World::Tile::rndInt(int min, int max, uint32_t nLehmer)
+int World::rndInt(int min, int max, uint32_t nLehmer) const
 {
 	return (Lehmer32(nLehmer) % (max - min)) + min;
 }
@@ -344,41 +362,49 @@ World::World()
 
 void World::GenerateGrid()
 {
+	bTilesAreWriting = false;
 	//New version : updates only if you see a new tile
-
 	for (int i = -4; i < gridHeight + 4; i++) {
 		for (int j = -4; j < gridWidth + 4; j++) {
 			Maths::LLVec2D pos = Maths::LLVec2D(j + static_cast<long long>(xOffset / tileWidth), i + static_cast<long long>(yOffset / tileHeight));
 			auto itr = tiles.find(pos);
 			if (itr == tiles.end()) {
+				bTilesAreWriting = true;
 				Tile tile = Tile(j + static_cast<int>(xOffset / tileWidth), i + static_cast<int>(yOffset / tileHeight), generationSeed, *this);
-				tiles.insert(std::pair<Maths::IVec2D, Tile>(pos, tile));
+				tiles.insert(std::pair<Maths::LLVec2D, Tile>(pos, tile));
 				if (tile.GetEventType() == Tile::EventType::Item) {
 					items.insert(std::pair<Maths::IVec2D, std::shared_ptr<Item>>(pos, tile.CreateItem(itemList)));
 				}
-				if (tile.GetGroundType() == Tile::GroundType::House0) {
+				if (tile.GetGroundType() == Tile::GroundType::House0 || tile.GetGroundType() == Tile::GroundType::House3) {
 					CreateHouseAt(pos);
 				}
 			}
 		}
 	}
-
 }
 
 void World::GenerateNewBiomePlaces()
 {
 	Maths::LLVec2D currentOffset = Maths::LLVec2D(long long(xOffset / tileWidth), long long(yOffset / tileHeight));
-
-	std::mt19937 rng(static_cast<unsigned int>(generationSeed + currentOffset.x + currentOffset.y));
-	std::uniform_int_distribution<int> distBiomeType(0, 2);
-
-
+	uint32_t nLehmer = (currentOffset.x & 0xFFFF) << generationSeed | (currentOffset.y & 0xFFFF);
 	if (static_cast<int>(sqrt(currentOffset.x * currentOffset.x + currentOffset.y * currentOffset.y)) % 70 == 0 && biomePlaces.find(currentOffset) == biomePlaces.end()) {
-		std::uniform_int_distribution<long long> distX(currentOffset.x, currentOffset.x + 70);
-		std::uniform_int_distribution<long long> distY(currentOffset.y, currentOffset.y + 50);
-		biomePlaces.insert(std::pair<Maths::LLVec2D, std::pair<Maths::LLVec2D, Tile::BiomeType>>(currentOffset,std::pair<Maths::LLVec2D, Tile::BiomeType>(Maths::LLVec2D(distX(rng), distY(rng)), Tile::BiomeType(distBiomeType(rng)))));
+		biomePlaces.insert(std::pair<Maths::LLVec2D, std::pair<Maths::LLVec2D, Tile::BiomeType>>(currentOffset,std::pair<Maths::LLVec2D, Tile::BiomeType>(Maths::LLVec2D(rndInt(currentOffset.x, currentOffset.x + 70, nLehmer), rndInt(currentOffset.y, currentOffset.y + 50, nLehmer)), static_cast<Tile::BiomeType>(rndInt(0, 2, nLehmer)))));
 	}
 
+}
+
+void World::UpdateTiles()
+{
+	for (auto t : tilesToUpdate) {
+		auto itr = tiles.find(t);
+		if (itr != tiles.end()) {
+			if (itr->second.GetEventType() == Tile::EventType::Item) {
+				auto itemPicked = items.find(t);
+				items.erase(itemPicked);
+			}
+			itr->second.ClearEventType();
+		}
+	}
 }
 
 void World::UpdateTempest()
@@ -393,8 +419,16 @@ void World::MakePermutation()
 	for (int i = 0; i < 256; i++) {
 		permutationArray.push_back(i);
 	}
-	std::mt19937 rng(generationSeed);
-	std::shuffle(permutationArray.begin(), permutationArray.end(), rng);
+
+	uint32_t nLehmer = (0 & 0xFFFF) << generationSeed | (0 & 0xFFFF);
+
+	for (int i = 0; i < 128; i++) {
+		int iSwap = rndInt(128, 255, nLehmer);
+		int temp = permutationArray.at(i);
+		permutationArray.at(i) = permutationArray.at(iSwap);
+		permutationArray.at(iSwap) = temp;
+	}
+
 	for (int i = 0; i < 256; i++) {
 		permutationArray.push_back(i);
 	}
@@ -575,13 +609,18 @@ Maths::IVec2D World::GetPlayerDirection() const
 
 Maths::LLVec2D World::GetPlayerPosition() const
 {
-	return Maths::LLVec2D(static_cast<int>((xOffset + 400) / tileWidth), static_cast<int>((yOffset + 300) / tileHeight));
+	return Maths::LLVec2D(xOffset + 400, yOffset + 300);
 }
 
-void World::SetGuestPostion(const Maths::LLVec2D& pos)
+void World::SetGuestPositionAndAnimation(const Maths::LLVec2D& pos, int anim)
 {
-	if (pos != Maths::LLVec2D(0, 0)) {
-		guestPosition = pos;
+	if (pGuest != nullptr) {
+		pGuest->SetPosition(Maths::IVec2D(pos.x - xOffset, pos.y - yOffset));
+		pGuest->SetAnimation(anim);
+	}
+	else {
+		pGuest = std::make_unique<NPC>(Maths::IRect(pos.x - xOffset, pos.y - yOffset, 32, 44), "json/npc.json");
+		pGuest->SetAnimation(anim);
 	}
 }
 
@@ -595,20 +634,29 @@ void World::SetWorldSeed(Uint8 seed)
 	generationSeed = seed;
 }
 
-World::Tile::BiomeType World::GetCurrentBiome() const
+Maths::LLVec2D World::GetLastTileToUpdate()
 {
-	auto playerPos = tiles.find(GetPlayerPosition());
-	if (playerPos != tiles.end()) {
-		return playerPos->second.GetBiomeType();
+	if (lastTileToUpdate != Maths::LLVec2D(0, 0)) {
+		Maths::LLVec2D output = lastTileToUpdate;
+		lastTileToUpdate = Maths::LLVec2D(0, 0);
+		return output;
 	}
-	return World::Tile::BiomeType::None;
+	return Maths::LLVec2D();
+}
+
+void World::AddTilesToUpdate(const Maths::LLVec2D& pos)
+{
+	tilesToUpdate.push_back(pos);
 }
 
 void World::Update(float speed)
 {
 	GenerateNewBiomePlaces();
 	GenerateGrid();
+	UpdateTiles();
 	UpdateTempest();
+
+	if (pGuest != nullptr) pGuest->Update(pTimer->DeltaTime());
 
 	//Weather update
 	weatherTimer.Update();
@@ -624,24 +672,40 @@ void World::Update(float speed)
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_UP)) {
 		if (!TileIsObstacleAt(Maths::LLVec2D(400, 282))) {
 			yOffset -= static_cast<int>(2 * static_cast<double>(speed));
+			if (pGuest != nullptr) {
+				pGuest->mRect.rect.y += static_cast<int>(2 * static_cast<double>(speed));
+				pGuest->mReflectionRect.rect.y += static_cast<int>(2 * static_cast<double>(speed));
+			}
 			playerDirection.y--;
 		}
 	}
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_RIGHT)) {
 		if (!TileIsObstacleAt(Maths::LLVec2D(418, 300))) {
 			xOffset += static_cast<int>(2 * static_cast<double>(speed));
+			if (pGuest != nullptr) {
+				pGuest->mRect.rect.x -= static_cast<int>(2 * static_cast<double>(speed));
+				pGuest->mReflectionRect.rect.x -= static_cast<int>(2 * static_cast<double>(speed));
+			}
 			playerDirection.x++;
 		}
 	}
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_DOWN)) {
 		if (!TileIsObstacleAt(Maths::LLVec2D(400, 318))) {
 			yOffset += static_cast<int>(2 * static_cast<double>(speed));
+			if (pGuest != nullptr) {
+				pGuest->mRect.rect.y -= static_cast<int>(2 * static_cast<double>(speed));
+				pGuest->mReflectionRect.rect.y -= static_cast<int>(2 * static_cast<double>(speed));
+			}
 			playerDirection.y++;
 		}
 	}
 	if (pKbd->KeyIsPressed(SDL_SCANCODE_LEFT)) {
 		if (!TileIsObstacleAt(Maths::LLVec2D(382, 300))) {
 			xOffset -= static_cast<int>(2 * static_cast<double>(speed));
+			if (pGuest != nullptr) {
+				pGuest->mRect.rect.x += static_cast<int>(2 * static_cast<double>(speed));
+				pGuest->mReflectionRect.rect.x += static_cast<int>(2 * static_cast<double>(speed));
+			}
 			playerDirection.x--;
 		}
 	}
@@ -663,6 +727,7 @@ void World::Update(float speed)
 				items.erase(itemToPick);
 				itr->second.ClearEventType();
 			}
+			lastTileToUpdate = lookingAtPos;
 		}
 	}
 	if (pPlayer->IsUsingSpecial()) {
@@ -677,6 +742,7 @@ void World::Update(float speed)
 				auto itr = tiles.find(lookingAtPos);
 				itr->second.ClearEventType();
 				pPlayer->OnUseSuccess(true);
+				lastTileToUpdate = lookingAtPos;
 			}
 			else {
 				pPlayer->OnUseSuccess(false);
@@ -715,6 +781,7 @@ void World::Update(float speed)
 				auto itr = tiles.find(lookingAtPos);
 				itr->second.ClearEventType();
 				pPlayer->OnUseSuccess(true);
+				lastTileToUpdate = lookingAtPos;
 			}
 			else {
 				pPlayer->OnUseSuccess(false);
@@ -790,7 +857,10 @@ void World::Draw()
 	}
 
 	//Draw guest (test)
-	pGfx->DrawFilledRect(Maths::IRect(Maths::IVec2D(static_cast<int>(guestPosition.x * tileWidth - xOffset), static_cast<int>(guestPosition.y * tileHeight - yOffset)), tileWidth, tileHeight), RED, 3);
+	if (pGuest != nullptr) {
+		pGuest->Draw();
+		pGuest->DrawReflection();
+	}
 }
 
 void World::BlendSpriteTo(GraphicsEngine::Color c)

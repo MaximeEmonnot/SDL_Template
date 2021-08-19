@@ -16,7 +16,7 @@ Network::NetworkSystem::NetworkSystem(const std::string& ip, Uint16 localPort, U
 	if (SDLNet_UDP_Bind(udpSock, -1, &ipAdress) < 0) {
 		throw EngineException("SDL Net Exception caught", __FILE__, "An error has been caught during Client UDP Binding.\nMore informations: " + std::string(SDLNet_GetError()), __LINE__);
 	}
-	CreatePackets(512);
+	CreatePackets(65536);
 }
 
 Network::NetworkSystem::~NetworkSystem()
@@ -30,10 +30,10 @@ void Network::NetworkSystem::SendPackage(const std::vector<Uint8>& data)
 	std::copy(data.begin(), data.end(), pPacketOut->data);
 
 	pPacketOut->len = data.size();
-	if (SDLNet_UDP_Send(udpSock, -1, pPacketOut.get()) != 0)
+	if (SDLNet_UDP_Send(udpSock, -1, pPacketOut.get()) == 0)
 	{
+		throw EngineException("SDL Net Exception caught", __FILE__, "An error has been caught during SDL Net Packet Sending.\nMore informations: " + std::string(SDLNet_GetError()), __LINE__);
 	}
-		//throw EngineException("SDL Net Exception caught", __FILE__, "An error has been caught during SDL Net Packet Sending.\nMore informations: " + std::string(SDLNet_GetError()), __LINE__);
 }
 
 std::vector<Uint8> Network::NetworkSystem::RecievePackage()
@@ -51,9 +51,7 @@ std::vector<Uint8> Network::NetworkSystem::RecievePackage()
 	case 1:
 		for (size_t i = 0; i < pPacketIn->len; i++) {
 			output.emplace_back(pPacketIn->data[i]);
-			//printf("%d", static_cast<int>(pPacket->data[i]));
 		}
-		printf("\n");
 		break;
 	default:
 		break;

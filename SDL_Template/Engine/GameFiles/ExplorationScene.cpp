@@ -61,14 +61,13 @@ void ExplorationScene::Update()
 			//Send
 			pThread->Enqueue([&] {
 				while (pWnd->ListensToEvents()) {
-					Uint8 seed = pWorld->GetWorldSeed();
 					long long xPlayerPos = pWorld->GetPlayerPosition().x;
 					long long yPlayerPos = pWorld->GetPlayerPosition().y;
-
+					Maths::LLVec2D lastTileToUpdate = pWorld->GetLastTileToUpdate();
 					std::vector<Uint8> dataOut;
 
-					//generation seed packaging
-					dataOut.push_back(seed);
+					//World seed packaging
+					dataOut.push_back(pWorld->GetWorldSeed());
 
 					//xPlayerPos data packaging
 					for (int i = 0; i < 8; i++) {
@@ -80,6 +79,21 @@ void ExplorationScene::Update()
 						dataOut.push_back(static_cast<Uint8>(yPlayerPos >> 56));
 						yPlayerPos <<= 8;
 					}
+					//playerAnimation data packaging
+					dataOut.push_back(static_cast<Uint8>(pPlayer->GetAnimation()));
+					//xLastTileToUpdate data packaging
+					if (lastTileToUpdate != Maths::LLVec2D(0, 0)) {
+						for (int i = 0; i < 8; i++) {
+							dataOut.push_back(static_cast<Uint8>(lastTileToUpdate.x >> 56));
+							lastTileToUpdate.x <<= 8;
+						}
+						//yLastTileToUpdate data packaging
+						for (int i = 0; i < 8; i++) {
+							dataOut.push_back(static_cast<Uint8>(lastTileToUpdate.y >> 56));
+							lastTileToUpdate.y <<= 8;
+						}
+					}
+
 					pPlayer->GetNetSystem()->SendPackage(dataOut);
 				}
 				});
@@ -94,16 +108,33 @@ void ExplorationScene::Update()
 							xGuestPos <<= 8;
 							xGuestPos += dataIn.at(i);
 						}
-
 						//yGuestPos reading
 						long long yGuestPos = 0;
 						for (size_t i = 8; i < 16; i++) {
 							yGuestPos <<= 8;
 							yGuestPos += dataIn.at(i);
 						}
-
 						//Set Guest Position in World
-						pWorld->SetGuestPostion(Maths::LLVec2D(xGuestPos, yGuestPos));
+						pWorld->SetGuestPositionAndAnimation(Maths::LLVec2D(xGuestPos, yGuestPos), static_cast<int>(dataIn.at(16)));
+
+						if (dataIn.size() > 17) {
+							//xLastTileToUpdatePos reading
+							long long xLastTileToUpdate = 0;
+							for (size_t i = 17; i < 25; i++) {
+								xLastTileToUpdate <<= 8;
+								xLastTileToUpdate += dataIn.at(i);
+							}
+
+							//yLastTileToUpdatePos reading
+							long long yLastTileToUpdate = 0;
+							for (size_t i = 25; i < 33; i++) {
+								yLastTileToUpdate <<= 8;
+								yLastTileToUpdate += dataIn.at(i);
+							}
+
+							//Add Last tile to update to Tiles to Update list
+							pWorld->AddTilesToUpdate(Maths::LLVec2D(xLastTileToUpdate, yLastTileToUpdate));
+						}
 					}
 				}
 				});
@@ -115,7 +146,7 @@ void ExplorationScene::Update()
 				while (pWnd->ListensToEvents()) {
 					long long xPlayerPos = pWorld->GetPlayerPosition().x;
 					long long yPlayerPos = pWorld->GetPlayerPosition().y;
-
+					Maths::LLVec2D lastTileToUpdate = pWorld->GetLastTileToUpdate();
 					std::vector<Uint8> dataOut;
 
 					//xPlayerPos data packaging
@@ -128,34 +159,71 @@ void ExplorationScene::Update()
 						dataOut.push_back(static_cast<Uint8>(yPlayerPos >> 56));
 						yPlayerPos <<= 8;
 					}
+					//playerAnimation data packaging
+					dataOut.push_back(static_cast<Uint8>(pPlayer->GetAnimation()));
+
+					if (lastTileToUpdate != Maths::LLVec2D(0, 0)) {
+						//xLastTileToUpdate data packaging
+						for (int i = 0; i < 8; i++) {
+							dataOut.push_back(static_cast<Uint8>(lastTileToUpdate.x >> 56));
+							lastTileToUpdate.x <<= 8;
+						}
+						//yLastTileToUpdate data packaging
+						for (int i = 0; i < 8; i++) {
+							dataOut.push_back(static_cast<Uint8>(lastTileToUpdate.y >> 56));
+							lastTileToUpdate.y <<= 8;
+						}
+					}
+
 					pPlayer->GetNetSystem()->SendPackage(dataOut);
 				}
 				});
 			//Recieve
 			pThread->Enqueue([&] {
+				std::vector<Uint8> dataSeed = pPlayer->GetNetSystem()->RecievePackage();
+
+				//Set World Seed
+				pWorld->SetWorldSeed(dataSeed.at(0));
+
 				while(pWnd->ListensToEvents()){
 				std::vector<Uint8> dataIn = pPlayer->GetNetSystem()->RecievePackage();
 
 				if (!dataIn.empty()) {
-					//seed reading
-					pWorld->SetWorldSeed(dataIn.at(0));
-
 					//xGuestPos reading
 					long long xGuestPos = 0;
-					for (size_t i = 1; i <= 8; i++) {
+					for (size_t i = 1; i < 9; i++) {
 						xGuestPos <<= 8;
 						xGuestPos += dataIn.at(i);
 					}
 
 					//yGuestPos reading
 					long long yGuestPos = 0;
-					for (size_t i = 9; i <= 16; i++) {
+					for (size_t i = 9; i < 17; i++) {
 						yGuestPos <<= 8;
 						yGuestPos += dataIn.at(i);
 					}
 
 					//Set Guest Position in World
-					pWorld->SetGuestPostion(Maths::LLVec2D(xGuestPos, yGuestPos));
+					pWorld->SetGuestPositionAndAnimation(Maths::LLVec2D(xGuestPos, yGuestPos), static_cast<int>(dataIn.at(17)));
+				
+					if (dataIn.size() > 18) {
+						//xLastTileToUpdatePos reading
+						long long xLastTileToUpdate = 0;
+						for (size_t i = 18; i < 26; i++) {
+							xLastTileToUpdate <<= 8;
+							xLastTileToUpdate += dataIn.at(i);
+						}
+
+						//yLastTileToUpdatePos reading
+						long long yLastTileToUpdate = 0;
+						for (size_t i = 26; i < 34; i++) {
+							yLastTileToUpdate <<= 8;
+							yLastTileToUpdate += dataIn.at(i);
+						}
+
+						//Add Last tile to update to Tiles to Update list
+						pWorld->AddTilesToUpdate(Maths::LLVec2D(xLastTileToUpdate, yLastTileToUpdate));
+					}
 				}
 				}
 				});

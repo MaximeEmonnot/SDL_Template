@@ -375,11 +375,11 @@ void Player::Move()
 void Player::ConnectAs(bool bIsClient)
 {	
 	if (bIsClient) {
-		pNet = Network::NetworkSystem::GetInstance("M4xH3rO3s", 222, 333);
+		pNet = Network::NetworkSystem::GetInstance("127.0.0.1", 222, 333);
 	}
 	else {
 		bIsHost = true;
-		pNet = Network::NetworkSystem::GetInstance("M4xH3rO3s", 333, 222);
+		pNet = Network::NetworkSystem::GetInstance("127.0.0.1", 333, 222);
 	}
 }
 
@@ -556,6 +556,11 @@ bool Player::IsOnWater() const
 Player::LocomotionState Player::GetLocomotionState() const
 {
 	return locomotion;
+}
+
+int Player::GetAnimation() const
+{
+	return miCurSequence;
 }
 
 bool Player::IsTalking() const

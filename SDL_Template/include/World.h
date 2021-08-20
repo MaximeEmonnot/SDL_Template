@@ -102,7 +102,7 @@ public:
 	bool GoInside() const;
 
 	Maths::LLVec2D GetPlayerPosition() const;
-	void SetGuestPositionAndAnimation(const Maths::LLVec2D& pos, int anim);
+	void SetGuestPositionAndAnimation(const Maths::LLVec2D& pos, int anim, int locomotionState);
 
 	Uint8 GetWorldSeed() const;
 	void SetWorldSeed(Uint8 seed);

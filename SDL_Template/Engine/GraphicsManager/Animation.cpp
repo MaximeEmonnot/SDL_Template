@@ -18,9 +18,9 @@ void GraphicsEngine::Animation::Draw(Maths::IRect rect, int priority)
 	mpGfx->DrawSprite(rect, mFrames[miCurFrame], mrSprite, priority);
 }
 
-void GraphicsEngine::Animation::DrawReflection(Maths::IRect rect)
+void GraphicsEngine::Animation::DrawReflection(Maths::IRect rect, int priority)
 {
-	mpGfx->DrawInvertedSprite(rect, mFrames[miCurFrame], mrSprite, -1);
+	mpGfx->DrawInvertedSprite(rect, mFrames[miCurFrame], mrSprite, priority);
 }
 
 void GraphicsEngine::Animation::BlendColorTo(const Color& c)

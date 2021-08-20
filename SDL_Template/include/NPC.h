@@ -38,6 +38,12 @@ private:
 		OnWaterRight,
 		OnWaterDown
 	};
+	enum class LocomotionState {
+		Walking,
+		Running,
+		Biking,
+		OnWater
+	};
 public:
 	NPC() = default;
 	NPC(Maths::IRect rect, Maths::IVec2D pos, const std::string& animFile, std::unique_ptr<AI> AI);
@@ -51,7 +57,7 @@ public:
 	void UpdateAI();
 
 private:
-	void SetPosition(const Maths::IVec2D& pos);
+	void SetPosition(const Maths::IVec2D& pos, int locomotionState);
 	void SetAnimation(int anim);
 private:
 	bool bIsControlledByAI = true;

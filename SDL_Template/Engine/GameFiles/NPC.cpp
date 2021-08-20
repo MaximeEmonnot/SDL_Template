@@ -94,18 +94,52 @@ void NPC::UpdateAI()
 	if (bIsControlledByAI) pAI->Update(*this);
 }
 
-void NPC::SetPosition(const Maths::IVec2D& pos)
+void NPC::SetPosition(const Maths::IVec2D& pos, int locomotionState)
 {
-	mRect.rect.x = pos.x;
-	mRect.rect.y = pos.y;
-	mRect.rect.x -= mRect.rect.w / 2;
-	mRect.rect.y -= mRect.rect.h * 3/4;
+	float alphaTranslation = 0.0f;
+	int xAnimOffset = 0;
+	int yAnimOffset = 0;
+	int wAnim = 32;
+	int hAnim = 44;
+	switch (static_cast<LocomotionState>(locomotionState)) {
+	case LocomotionState::Walking:
+		alphaTranslation = 0.25f;
+		break;
+	case LocomotionState::Running:
+		alphaTranslation = 0.50f;
+		break;
+	case LocomotionState::OnWater:
+		alphaTranslation = 0.50f;
+		wAnim = 52;
+		hAnim = 58;
+		xAnimOffset = 10;
+		yAnimOffset = 7;
+		break;
+	case LocomotionState::Biking:
+		alphaTranslation = 0.75f;
+		wAnim = 48;
+		hAnim = 48;
+		xAnimOffset = 7;
+		yAnimOffset = 2;
+		break;
+	default:
+		break;
+	}
 
-	mReflectionRect.rect.x = pos.x;
-	mReflectionRect.rect.y = pos.y + mReflectionRect.rect.w;
-	mReflectionRect.rect.x -= mReflectionRect.rect.w / 2;
-	mReflectionRect.rect.y -= mReflectionRect.rect.h * 3/4;
 
+	mRect.rect.w = wAnim;
+	mRect.rect.h = hAnim;
+	mReflectionRect.rect.w = wAnim;
+	mReflectionRect.rect.h = hAnim;
+
+	mRect.rect.x += static_cast<int>((pos.x - mRect.rect.x - xAnimOffset - static_cast<int>(mRect.rect.w * 0.5f)) * alphaTranslation);
+	mRect.rect.y += static_cast<int>((pos.y - mRect.rect.y - yAnimOffset - static_cast<int>(mRect.rect.h * 0.75f)) * alphaTranslation);
+
+	mReflectionRect.rect.x += static_cast<int>((pos.x - mReflectionRect.rect.x - xAnimOffset - static_cast<int>(mReflectionRect.rect.w * 0.5f)) * alphaTranslation);
+	mReflectionRect.rect.y += static_cast<int>((pos.y - mReflectionRect.rect.y + mReflectionRect.rect.w - yAnimOffset - static_cast<int>(mReflectionRect.rect.h * 0.75f)) * alphaTranslation);
+	
+	if (pos.y > 300) drawPriority = 3;
+	else drawPriority = 2;
 }
 
 void NPC::SetAnimation(int anim)

@@ -15,7 +15,7 @@ void Character::Draw()
 
 void Character::DrawReflection()
 {
-	mAnimations[miCurSequence].DrawReflection(mReflectionRect);
+	mAnimations[miCurSequence].DrawReflection(mReflectionRect, drawPriority - 5);
 }
 
 void Character::BlendSpriteTo(GraphicsEngine::Color c)

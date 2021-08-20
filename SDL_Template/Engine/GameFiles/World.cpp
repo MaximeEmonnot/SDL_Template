@@ -321,6 +321,7 @@ World::World()
 	pKbd(CoreSystem::Keyboard::GetInstance()),
 	pTimer(CoreSystem::Timer::GetInstance()),
 	pPlayer(Player::GetInstance(Maths::IRect(384, 267, 32, 44), "json/player.json")),
+	pGuest(std::make_unique<NPC>(Maths::IRect(-1000, -1000, 32, 44), "json/npc.json")),
 	currentPlayerXPos(400),
 	currentPlayerYPos(300),
 	tileSpriteForest("Images/tileSheetForest.png"),
@@ -612,16 +613,10 @@ Maths::LLVec2D World::GetPlayerPosition() const
 	return Maths::LLVec2D(xOffset + 400, yOffset + 300);
 }
 
-void World::SetGuestPositionAndAnimation(const Maths::LLVec2D& pos, int anim)
+void World::SetGuestPositionAndAnimation(const Maths::LLVec2D& pos, int anim, int locomotionState)
 {
-	if (pGuest != nullptr) {
-		pGuest->SetPosition(Maths::IVec2D(pos.x - xOffset, pos.y - yOffset));
-		pGuest->SetAnimation(anim);
-	}
-	else {
-		pGuest = std::make_unique<NPC>(Maths::IRect(pos.x - xOffset, pos.y - yOffset, 32, 44), "json/npc.json");
-		pGuest->SetAnimation(anim);
-	}
+	pGuest->SetPosition(Maths::IVec2D(pos.x - xOffset, pos.y - yOffset), locomotionState);
+	pGuest->SetAnimation(anim);
 }
 
 Uint8 World::GetWorldSeed() const
@@ -656,7 +651,8 @@ void World::Update(float speed)
 	UpdateTiles();
 	UpdateTempest();
 
-	if (pGuest != nullptr) pGuest->Update(pTimer->DeltaTime());
+	//Update Guest
+	pGuest->Update(pTimer->DeltaTime());
 
 	//Weather update
 	weatherTimer.Update();
@@ -829,7 +825,7 @@ void World::Draw()
 				//Specific draw operation for some tiles
 				switch (itr->second.GetGroundType()) {
 				case World::Tile::GroundType::Water:
-					layer = -2;
+					layer = -5;
 					break;
 				default:
 					break;
@@ -857,10 +853,8 @@ void World::Draw()
 	}
 
 	//Draw guest (test)
-	if (pGuest != nullptr) {
-		pGuest->Draw();
-		pGuest->DrawReflection();
-	}
+	pGuest->Draw();
+	pGuest->DrawReflection();
 }
 
 void World::BlendSpriteTo(GraphicsEngine::Color c)

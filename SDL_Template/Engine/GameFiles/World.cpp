@@ -653,6 +653,7 @@ void World::Update(float speed)
 
 	//Update Guest
 	pGuest->Update(pTimer->DeltaTime());
+	pGuest->InterpolatePosition();
 
 	//Weather update
 	weatherTimer.Update();

@@ -94,13 +94,22 @@ void NPC::UpdateAI()
 	if (bIsControlledByAI) pAI->Update(*this);
 }
 
+void NPC::InterpolatePosition()
+{
+	mRect.rect.x += static_cast<int>((newPos.x - mRect.rect.x - xAnimOffset - static_cast<int>(mRect.rect.w * 0.5)) * alphaTranslation);
+	mRect.rect.y += static_cast<int>((newPos.y - mRect.rect.y - yAnimOffset - static_cast<int>(mRect.rect.h * 0.75)) * alphaTranslation);
+
+	mReflectionRect.rect.x += static_cast<int>((newPos.x - mReflectionRect.rect.x - xAnimOffset - static_cast<int>(mReflectionRect.rect.w * 0.5)) * alphaTranslation);
+	mReflectionRect.rect.y += static_cast<int>((newPos.y - mReflectionRect.rect.y + mReflectionRect.rect.w - yAnimOffset - static_cast<int>(mReflectionRect.rect.h * 0.75)) * alphaTranslation);
+
+	if (mRect.rect.y > 300) drawPriority = 3;
+	else drawPriority = 2;
+}
+
 void NPC::SetPosition(const Maths::IVec2D& pos, int locomotionState)
 {
-	float alphaTranslation = 0.0f;
-	int xAnimOffset = 0;
-	int yAnimOffset = 0;
-	int wAnim = 32;
-	int hAnim = 44;
+	newPos = static_cast<Maths::LLVec2D>(pos);
+
 	switch (static_cast<LocomotionState>(locomotionState)) {
 	case LocomotionState::Walking:
 		alphaTranslation = 0.25f;
@@ -126,20 +135,10 @@ void NPC::SetPosition(const Maths::IVec2D& pos, int locomotionState)
 		break;
 	}
 
-
 	mRect.rect.w = wAnim;
 	mRect.rect.h = hAnim;
 	mReflectionRect.rect.w = wAnim;
 	mReflectionRect.rect.h = hAnim;
-
-	mRect.rect.x += static_cast<int>((pos.x - mRect.rect.x - xAnimOffset - static_cast<int>(mRect.rect.w * 0.5f)) * alphaTranslation);
-	mRect.rect.y += static_cast<int>((pos.y - mRect.rect.y - yAnimOffset - static_cast<int>(mRect.rect.h * 0.75f)) * alphaTranslation);
-
-	mReflectionRect.rect.x += static_cast<int>((pos.x - mReflectionRect.rect.x - xAnimOffset - static_cast<int>(mReflectionRect.rect.w * 0.5f)) * alphaTranslation);
-	mReflectionRect.rect.y += static_cast<int>((pos.y - mReflectionRect.rect.y + mReflectionRect.rect.w - yAnimOffset - static_cast<int>(mReflectionRect.rect.h * 0.75f)) * alphaTranslation);
-	
-	if (pos.y > 300) drawPriority = 3;
-	else drawPriority = 2;
 }
 
 void NPC::SetAnimation(int anim)

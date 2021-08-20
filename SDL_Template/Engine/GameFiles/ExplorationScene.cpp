@@ -112,6 +112,7 @@ void ExplorationScene::Update()
 				int64_t lastPacketIndex = 0;
 				while (pWnd->ListensToEvents()) {
 					std::vector<Uint8> dataIn = pPlayer->GetNetSystem()->RecievePackage();
+
 					if (!dataIn.empty()) {
 
 						//PacketIndexReading

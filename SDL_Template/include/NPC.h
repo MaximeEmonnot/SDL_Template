@@ -56,11 +56,21 @@ public:
 
 	void UpdateAI();
 
+	void InterpolatePosition();
+
 private:
 	void SetPosition(const Maths::IVec2D& pos, int locomotionState);
 	void SetAnimation(int anim);
 private:
 	bool bIsControlledByAI = true;
+
+	float alphaTranslation = 0.0f;
+	int xAnimOffset = 0;
+	int yAnimOffset = 0;
+	int wAnim = 32;
+	int hAnim = 44;
+
 	Maths::IVec2D localPos;
+	Maths::LLVec2D newPos = Maths::LLVec2D(0, 0);
 	std::unique_ptr<AI> pAI;
 };

@@ -49,8 +49,7 @@ void ExplorationScene::Update()
 	}
 
 	//Init online
-	/*
-	if (bHasInitOnline)
+	if (pPlayer->IsOnline() && !bHasInitOnline)
 	{
 		bHasInitOnline = true;
 		//Host player online routine
@@ -101,14 +100,14 @@ void ExplorationScene::Update()
 							lastTileToUpdate.y <<= 8;
 						}
 					}
-					Network::NetworkSystem::GetInstance().SendPackage(dataOut);
+					Network::NetworkSystem::GetInstance("127.0.0.1", 333, 222).SendPackage(dataOut);
 				}
 				});
 			//Recieve
 			CoreSystem::ThreadPool::GetInstance(30).Enqueue([&] {
 				int64_t lastPacketIndex = 0;
 				while (CoreSystem::Window::GetInstance().ListensToEvents()) {
-					std::vector<Uint8> dataIn = Network::NetworkSystem::GetInstance().RecievePackage();
+					std::vector<Uint8> dataIn = Network::NetworkSystem::GetInstance("127.0.0.1", 333, 222).RecievePackage();
 
 					if (!dataIn.empty()) {
 
@@ -204,20 +203,20 @@ void ExplorationScene::Update()
 						}
 					}
 
-					pPlayer->GetNetSystem()->SendPackage(dataOut);
+					Network::NetworkSystem::GetInstance("127.0.0.1", 222, 333).SendPackage(dataOut);
 					packetIndex++;
 				}
 				});
 			//Recieve
 			CoreSystem::ThreadPool::GetInstance(30).Enqueue([&] {
 				int64_t lastPacketIndex = 0;
-				std::vector<Uint8> dataSeed = pPlayer->GetNetSystem()->RecievePackage();
+				std::vector<Uint8> dataSeed = Network::NetworkSystem::GetInstance("127.0.0.1", 222, 333).RecievePackage();
 
 				//Set World Seed
 				pWorld->SetWorldSeed(dataSeed.at(0));
 
 				while (CoreSystem::Window::GetInstance().ListensToEvents()) {
-					std::vector<Uint8> dataIn = pPlayer->GetNetSystem()->RecievePackage();
+					std::vector<Uint8> dataIn = Network::NetworkSystem::GetInstance("127.0.0.1", 222, 333).RecievePackage();
 
 					if (!dataIn.empty()) {
 						//PacketIndexReading
@@ -269,7 +268,6 @@ void ExplorationScene::Update()
 				});
 		}
 	}
-	*/
 
 	bWillChangeScene = false;
 

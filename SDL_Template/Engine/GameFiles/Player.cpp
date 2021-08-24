@@ -378,6 +378,12 @@ void Player::ConnectAs(bool bIsClient)
 		bIsHost = true;
 		Network::NetworkSystem::GetInstance("127.0.0.1", 333, 222);
 	}
+	bIsOnline = true;
+}
+
+bool Player::IsOnline() const
+{
+	return bIsOnline;
 }
 
 void Player::AddPokemon(Pokemon& pkmn)

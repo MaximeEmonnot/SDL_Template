@@ -112,9 +112,17 @@ void NPC::SetPosition(const Maths::IVec2D& pos, int locomotionState)
 
 	switch (static_cast<LocomotionState>(locomotionState)) {
 	case LocomotionState::Walking:
+		wAnim = 32;
+		hAnim = 44;
+		xAnimOffset = 0;
+		yAnimOffset = 0;
 		alphaTranslation = 0.25f;
 		break;
 	case LocomotionState::Running:
+		wAnim = 32;
+		hAnim = 44;
+		xAnimOffset = 0;
+		yAnimOffset = 0;
 		alphaTranslation = 0.50f;
 		break;
 	case LocomotionState::OnWater:

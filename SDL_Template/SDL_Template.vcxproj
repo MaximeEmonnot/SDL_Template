@@ -234,7 +234,11 @@
       <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;SDL2_net.lib;CUESDK.x64_2017.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d ".\lib\" "$(OutDir)"</Command>
+      <Command>xcopy /y /d ".\lib\" "$(OutDir)"
+xcopy /y /d ".\Images\" "$(OutDir)\Images\"
+xcopy /y /d ".\json\" "$(OutDir)\json\"
+xcopy /y /d ".\ttf\" "$(OutDir)\ttf\"
+xcopy /y /d ".\music\" "$(OutDir)\music\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

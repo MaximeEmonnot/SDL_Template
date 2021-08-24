@@ -53,7 +53,7 @@ public:
 	void Move();
 
 	void ConnectAs(bool type);
-	std::shared_ptr<Network::NetworkSystem> GetNetSystem();
+	bool IsOnline() const;
 
 	void AddPokemon(Pokemon& pkmn);
 	void SetFirstPokemon(int index);
@@ -103,6 +103,7 @@ public:
 	bool TEST_bInitFromJSON = false;
 
 private:
+	bool bIsOnline = false;
 	bool bIsHost = false;
 
 	Pokemon::Type usedPkmnType = Pokemon::Type::Normal;

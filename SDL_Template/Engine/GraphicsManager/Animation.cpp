@@ -2,7 +2,6 @@
 
 GraphicsEngine::Animation::Animation(Maths::IRect rect, int count, Sprite& sprite, float holdTime)
 	:
-	mpGfx(Graphics::GetInstance()),
 	mrSprite(sprite),
 	mHoldTime(holdTime),
 	mWidth(rect.rect.w),
@@ -15,12 +14,12 @@ GraphicsEngine::Animation::Animation(Maths::IRect rect, int count, Sprite& sprit
 
 void GraphicsEngine::Animation::Draw(Maths::IRect rect, int priority)
 {
-	mpGfx->DrawSprite(rect, mFrames[miCurFrame], mrSprite, priority);
+	Graphics::GetInstance().DrawSprite(rect, mFrames[miCurFrame], mrSprite, priority);
 }
 
 void GraphicsEngine::Animation::DrawReflection(Maths::IRect rect, int priority)
 {
-	mpGfx->DrawInvertedSprite(rect, mFrames[miCurFrame], mrSprite, priority);
+	Graphics::GetInstance().DrawInvertedSprite(rect, mFrames[miCurFrame], mrSprite, priority);
 }
 
 void GraphicsEngine::Animation::BlendColorTo(const Color& c)

@@ -4,27 +4,41 @@
 namespace CoreSystem {
 	template <typename T>
 	class SingletonMaker {
-	public:
-		static std::shared_ptr<T> GetInstance() {
-			if (mspSingleton == nullptr) {
-				mspSingleton = std::make_shared<T>();
+	public: 
+		class Deleter {
+		public:
+			void operator()(T* p) {
+				delete p;
 			}
-			return mspSingleton;
+		};
+	public:
+		SingletonMaker() = default;
+		~SingletonMaker() = default;
+		SingletonMaker(const SingletonMaker&) = delete;
+		SingletonMaker(SingletonMaker&&) = delete;
+		SingletonMaker& operator=(const SingletonMaker&) = delete;
+		SingletonMaker& operator=(SingletonMaker&&) = delete;
+
+		static inline T& GetInstance() {
+			if (mspSingleton == nullptr) {
+				mspSingleton = std::make_unique<T>();
+			}
+			return *mspSingleton;
 		}
 		template <typename ...Args>
-		static std::shared_ptr<T> GetInstance(Args... param) {
+		static inline T& GetInstance(Args... param) {
 			if (mspSingleton == nullptr) {
-				mspSingleton = std::make_shared<T>(param...);
+				mspSingleton = std::make_unique<T>(param...);
 			}
-			return mspSingleton;
+			return *mspSingleton;
 		}
 
-		static void Kill() {
+		static inline void Kill() {
 			mspSingleton = nullptr;
 		}
 
 	private:
-		static std::shared_ptr<T> mspSingleton;
+		static std::unique_ptr<T> mspSingleton;
 	};
-	template <typename T> std::shared_ptr<T> SingletonMaker<T>::mspSingleton = nullptr;
+	template <typename T> std::unique_ptr<T> SingletonMaker<T>::mspSingleton = nullptr;
 }

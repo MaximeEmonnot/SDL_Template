@@ -8,6 +8,7 @@ namespace CoreSystem {
 	{
 	public:
 		Timer();
+		~Timer() = default;
 
 		void			Update();
 

@@ -1,8 +1,8 @@
 #include "ChoosingScene.h"
 
-ChoosingScene::ChoosingScene()
+ChoosingScene::ChoosingScene(std::shared_ptr<Player> pPlayer)
 	:
-	Scene(Scene::SceneType::ChoosingScene),
+	Scene(pPlayer, Scene::SceneType::ChoosingScene),
 	choiceMenu(std::make_unique<ChoiceMenu>(std::make_unique<BasicMenu>())),
 	choice0("Images/bulbasaur.png", "Bulbasaur", 1, Pokemon::Type::Grass),
 	choice1("Images/charmander.png", "Charmander", 2, Pokemon::Type::Fire),
@@ -21,8 +21,7 @@ ChoosingScene::ChoosingScene()
 void ChoosingScene::Update()
 {
 	int output = -1;
-	choiceMenu->Update(output, pMouse);
-
+	choiceMenu->Update(output);
 	if (output != -1) {
 		pPlayer->AddPokemon(GetChoice(output));
 		bWillChangeScene = true;

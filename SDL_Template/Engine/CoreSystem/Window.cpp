@@ -3,11 +3,6 @@
 
 CoreSystem::Window::Window()
 	:
-	pTimer(Timer::GetInstance()),
-	pKbd(Keyboard::GetInstance()),
-	pMouse(Mouse::GetInstance()),
-	pThreadPool(ThreadPool::GetInstance(30)),
-	pSoundSystem(SoundEngine::SoundSystem::GetInstance()),
 	mbIsMinimized(false)
 {
 	mEvent.type = SDL_FIRSTEVENT;
@@ -29,11 +24,6 @@ CoreSystem::Window::Window()
 
 CoreSystem::Window::~Window()
 {
-	pSoundSystem->Kill();
-	pThreadPool->Kill();
-	pMouse->Kill();
-	pKbd->Kill();
-	pTimer->Kill();
 	SDL_Quit();
 }
 
@@ -48,7 +38,7 @@ bool CoreSystem::Window::ListensToEvents() noexcept
 		{
 			switch (mEvent.window.event) {
 			case SDL_WINDOWEVENT_FOCUS_LOST:
-				pKbd->Flush();
+				Keyboard::GetInstance().Flush();
 				break;
 			case SDL_WINDOWEVENT_MINIMIZED:
 				mbIsMinimized = true;
@@ -66,11 +56,11 @@ bool CoreSystem::Window::ListensToEvents() noexcept
 			break;
 			// *************** BEGIN KEYBOARD EVENTS *************** //
 		case SDL_KEYDOWN:
-			pKbd->OnKeyPressed(mEvent.key.keysym.scancode);
-			pKbd->OnChar(mEvent.key.keysym.sym);
+			Keyboard::GetInstance().OnKeyPressed(mEvent.key.keysym.scancode);
+			Keyboard::GetInstance().OnChar(mEvent.key.keysym.sym);
 			break;
 		case SDL_KEYUP:
-			pKbd->OnKeyReleased(mEvent.key.keysym.scancode);
+			Keyboard::GetInstance().OnKeyReleased(mEvent.key.keysym.scancode);
 			break;
 			// ***************** END KEYBOARD EVENTS *************** //
 
@@ -78,29 +68,29 @@ bool CoreSystem::Window::ListensToEvents() noexcept
 		case SDL_MOUSEBUTTONDOWN:
 		{
 			if (mEvent.button.button == SDL_BUTTON_LEFT)
-				pMouse->OnLeftPressed();
+				Mouse::GetInstance().OnLeftPressed();
 			else if (mEvent.button.button == SDL_BUTTON_RIGHT)
-				pMouse->OnRightPressed();
+				Mouse::GetInstance().OnRightPressed();
 		}
 			break;
 		case SDL_MOUSEBUTTONUP:
 		{
 			if (mEvent.button.button == SDL_BUTTON_LEFT)
-				pMouse->OnLeftReleased();
+				Mouse::GetInstance().OnLeftReleased();
 			else if (mEvent.button.button == SDL_BUTTON_RIGHT)
-				pMouse->OnRightReleased();
+				Mouse::GetInstance().OnRightReleased();
 		}
 			break;
 		case SDL_MOUSEWHEEL:
 		{
 			if (mEvent.wheel.y > 0)
-				pMouse->OnWheelUp();
+				Mouse::GetInstance().OnWheelUp();
 			else if (mEvent.wheel.y < 0)
-				pMouse->OnWheelDown();
+				Mouse::GetInstance().OnWheelDown();
 		}
 			break;
 		case SDL_MOUSEMOTION: 
-			pMouse->OnMouseMove(static_cast<int>(mEvent.button.x), static_cast<int>(mEvent.button.y));
+			Mouse::GetInstance().OnMouseMove(static_cast<int>(mEvent.button.x), static_cast<int>(mEvent.button.y));
 			break;
 			// ****************** END MOUSE EVENTS ***************** //
 

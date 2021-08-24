@@ -5,8 +5,5 @@
 
 class ItemInventoryMenu : public MenuListDecorator {
 public:
-	ItemInventoryMenu(std::unique_ptr<AMenu> decoratedMenu);
-
-private:
-	std::shared_ptr<Player> pPlayer;
+	ItemInventoryMenu(std::unique_ptr<AMenu> decoratedMenu, std::shared_ptr<Player> pPlayer);
 };

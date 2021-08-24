@@ -1,7 +1,5 @@
 #include "NetworkSystem.h"
 Network::NetworkSystem::NetworkSystem(const std::string& ip, Uint16 localPort, Uint16 remotePort)
-	:
-	pWnd(CoreSystem::Window::GetInstance())
 {
 	if (SDLNet_Init() < 0) {
 		throw EngineException("SDL Net Exception caught", __FILE__, "An error has been caught during SDL Net Initialisation.\nMore informations: " + std::string(SDLNet_GetError()), __LINE__);

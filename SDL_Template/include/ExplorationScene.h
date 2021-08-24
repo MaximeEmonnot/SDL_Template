@@ -22,8 +22,7 @@ private:
 		None
 	};
 public:
-	ExplorationScene();
-	~ExplorationScene();
+	ExplorationScene(std::shared_ptr<Player> pPlayer);
 
 	void Update() override;
 	void Draw() override;

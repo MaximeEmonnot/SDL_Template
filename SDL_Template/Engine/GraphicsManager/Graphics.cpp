@@ -2,12 +2,11 @@
 
 GraphicsEngine::Graphics::Graphics()
 {
-	std::shared_ptr<CoreSystem::Window> window = CoreSystem::Window::GetInstance();
-	mpRenderer.reset(SDL_CreateRenderer(window->pGetWindow().get(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC), SDL_DestroyRenderer);
+	mpRenderer.reset(SDL_CreateRenderer(CoreSystem::Window::GetInstance().pGetWindow().get(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC), SDL_DestroyRenderer);
 	if (mpRenderer == NULL) {
 		throw EngineException("SDL Graphics Exception caught", __FILE__, "An error has been caught during SDL Renderer Creation.", __LINE__);
 	}
-	mScreenRect = window->GetScreenRect();
+	mScreenRect = CoreSystem::Window::GetInstance().GetScreenRect();
 	mpTextureTarget.reset(SDL_CreateTexture(mpRenderer.get(), SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, mScreenRect.rect.w, mScreenRect.rect.h), SDL_DestroyTexture);
 	if (mpTextureTarget == NULL) {
 		throw EngineException("SDL Graphics Exception caught", __FILE__, "An error has been caught during SDL Texture Target Creation.\nMore informations :" + std::string(SDL_GetError()), __LINE__);

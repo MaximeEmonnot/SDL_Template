@@ -23,6 +23,4 @@ private:
 	Maths::IRect rect;
 	std::string text;
 	std::function<void(int&)> function;
-	std::shared_ptr<GraphicsEngine::Font> pFont;
-	std::shared_ptr<GraphicsEngine::Graphics> pGfx;
 };

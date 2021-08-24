@@ -4,8 +4,5 @@
 
 class AbilityMenu : public MenuListDecorator {
 public:
-	AbilityMenu(std::unique_ptr<AMenu> decoratedMenu);
-
-private:
-	std::shared_ptr<Player> pPlayer;
+	AbilityMenu(std::unique_ptr<AMenu> decoratedMenu, std::shared_ptr<Player> pPlayer);
 };

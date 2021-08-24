@@ -1,8 +1,8 @@
 #include "TitleScene.h"
 
-TitleScene::TitleScene()
+TitleScene::TitleScene(std::shared_ptr<Player> pPlayer)
 	:
-	Scene(Scene::SceneType::TitleScene),
+	Scene(pPlayer, Scene::SceneType::TitleScene),
 	titleMenu(std::make_unique<TitleMenu>(std::make_unique<BasicMenu>())),
 	title(Maths::IRect(150, 25, 200, 100))
 {
@@ -14,12 +14,11 @@ void TitleScene::Update()
 	newScene = Scene::SceneType::TitleScene;
 	
 	int output = -1;
-	titleMenu->Update(output, pMouse);
-
+	titleMenu->Update(output);
 	switch (output)
 	{
 	case 0:
-		pWnd->ExitGame();
+		CoreSystem::Window::GetInstance().ExitGame();
 		break;
 	case 1:
 		pPlayer->ConnectAs(CLIENT);

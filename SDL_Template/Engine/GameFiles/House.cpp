@@ -1,11 +1,8 @@
 #include "House.h"
 
-House::House()
+House::House(std::shared_ptr<Player> pPlayer)
 	:
-	pGfx(GraphicsEngine::Graphics::GetInstance()),
-	pKbd(CoreSystem::Keyboard::GetInstance()),
-	pTimer(CoreSystem::Timer::GetInstance()),
-	pPlayer(Player::GetInstance(Maths::IRect(384, 267, 32, 44), "json/player.json")),
+	pPlayer(pPlayer),
 	text(Maths::IRect(Maths::IRect(25, 500, 200, 75))),
 	sprite("Images/houseTileSheet.png")
 {
@@ -30,11 +27,11 @@ House::House()
 
 void House::Update(float speed)
 {
-	pNpc->Update(pTimer->DeltaTime());
+	pNpc->Update(CoreSystem::Timer::GetInstance().DeltaTime());
 	pNpc->UpdateAI();
 
 	if (!pPlayer->IsTalking()) {
-		if (pKbd->KeyIsPressed(SDL_SCANCODE_UP)) {
+		if (CoreSystem::Keyboard::GetInstance().KeyIsPressed(SDL_SCANCODE_UP)) {
 			if (!IsObstacle(Maths::IVec2D(0, -18)) &&
 				!IsOccupedByNPC(Maths::IVec2D(0, -18)))
 			{
@@ -42,7 +39,7 @@ void House::Update(float speed)
 				pNpc->Move(0, int(2 * speed));
 			}
 		}
-		if (pKbd->KeyIsPressed(SDL_SCANCODE_RIGHT)) {
+		if (CoreSystem::Keyboard::GetInstance().KeyIsPressed(SDL_SCANCODE_RIGHT)) {
 			if (!IsObstacle(Maths::IVec2D(18, 0)) &&
 				!IsChair(Maths::IVec2D(18, 0)) &&
 				!IsOccupedByNPC(Maths::IVec2D(18, 0))) {
@@ -50,14 +47,14 @@ void House::Update(float speed)
 				pNpc->Move(int(-2 * speed), 0);
 			}
 		}
-		if (pKbd->KeyIsPressed(SDL_SCANCODE_DOWN)) {
+		if (CoreSystem::Keyboard::GetInstance().KeyIsPressed(SDL_SCANCODE_DOWN)) {
 			if (!IsObstacle(Maths::IVec2D(0, 18)) &&
 				!IsOccupedByNPC(Maths::IVec2D(0, 18))) {
 				yOffset += int(2 * speed);
 				pNpc->Move(0, int(-2 * speed));
 			}
 		}
-		if (pKbd->KeyIsPressed(SDL_SCANCODE_LEFT)) {
+		if (CoreSystem::Keyboard::GetInstance().KeyIsPressed(SDL_SCANCODE_LEFT)) {
 			if (!IsObstacle(Maths::IVec2D(-18, 0)) &&
 				!IsChair(Maths::IVec2D(-18, 0)) &&
 				!IsOccupedByNPC(Maths::IVec2D(-18, 0))) {
@@ -66,7 +63,7 @@ void House::Update(float speed)
 			}
 		}
 
-		if (pKbd->KeyIsPressed(SDL_SCANCODE_LCTRL)) {
+		if (CoreSystem::Keyboard::GetInstance().KeyIsPressed(SDL_SCANCODE_LCTRL)) {
 			if (IsOccupedByNPC(pPlayer->GetLookingDirection() * 18)) {
 				pPlayer->Talk();
 				pNpc->Talk(-pPlayer->GetLookingDirection());
@@ -96,12 +93,12 @@ void House::Draw()
 				Maths::IRect srcRect = Maths::IRect((tileType % 6) * 16, (static_cast<int>(tileType / 6)) * 16, 16, 16);
 				int layer = 0;
 				if (tileType == static_cast<int>(House::TileTypes::Table00) || tileType == static_cast<int>(House::TileTypes::Table01)) layer = 5;
-				pGfx->DrawSprite(Maths::IRect(itr->first.x * tileWidth - xOffset + 400, itr->first.y * tileHeight - yOffset + 300, tileWidth, tileHeight),srcRect, sprite, layer);
+				GraphicsEngine::Graphics::GetInstance().DrawSprite(Maths::IRect(itr->first.x * tileWidth - xOffset + 400, itr->first.y * tileHeight - yOffset + 300, tileWidth, tileHeight),srcRect, sprite, layer);
 				if ((static_cast<int>(itr->second) & static_cast<int>(House::TileTypes::FlowerPot)) == static_cast<int>(House::TileTypes::FlowerPot)) {
-					pGfx->DrawSprite(Maths::IRect(itr->first.x * tileWidth - xOffset + 400, itr->first.y * tileHeight - yOffset + 300, tileWidth, tileHeight), Maths::IRect(48, 80, 16, 16), sprite);
+					GraphicsEngine::Graphics::GetInstance().DrawSprite(Maths::IRect(itr->first.x * tileWidth - xOffset + 400, itr->first.y * tileHeight - yOffset + 300, tileWidth, tileHeight), Maths::IRect(48, 80, 16, 16), sprite);
 				}
 				else if ((static_cast<int>(itr->second) & static_cast<int>(House::TileTypes::Flower)) == static_cast<int>(House::TileTypes::Flower)) {
-					pGfx->DrawSprite(Maths::IRect(itr->first.x * tileWidth - xOffset + 400, itr->first.y * tileHeight - yOffset + 300, tileWidth, tileHeight), Maths::IRect(64, 80, 16, 16), sprite, 5);
+					GraphicsEngine::Graphics::GetInstance().DrawSprite(Maths::IRect(itr->first.x * tileWidth - xOffset + 400, itr->first.y * tileHeight - yOffset + 300, tileWidth, tileHeight), Maths::IRect(64, 80, 16, 16), sprite, 5);
 				}
 			}
 		}
@@ -117,7 +114,7 @@ bool House::GoOutside() const
 	House::TileTypes currentTile = GetCurrentTile();
 	if ((currentTile == House::TileTypes::Carpet0 ||
 		currentTile == House::TileTypes::Carpet1) && tiles.find(Maths::IVec2D(static_cast<int>(xOffset / tileWidth), static_cast<int>((yOffset + 18) / tileHeight))) == tiles.end()) {
-		return pKbd->KeyIsPressed(SDL_SCANCODE_DOWN);
+		return CoreSystem::Keyboard::GetInstance().KeyIsPressed(SDL_SCANCODE_DOWN);
 	}
 	return false;
 }

@@ -9,7 +9,7 @@
 #include <map>
 
 
-class Player : public CoreSystem::SingletonMaker<Player>, public Character {
+class Player : public Character {
 private:
 	friend class ExplorationScene;
 private:
@@ -78,15 +78,15 @@ public:
 	void UsePokemon(int index);
 	void OnUseSuccess(bool value);
 
-	bool TEST_CapturePokemon(int index, Pokemon& pkmn);
+	bool CapturePokemon(int index, Pokemon& pkmn);
 
-	void TEST_PickUpItem(std::shared_ptr<Item> item);
-	void TEST_UseItem(int indexItem) {
-		TEST_UseItem(indexItem, int(selectedPokemon - pokemon.begin()));
+	void PickUpItem(std::shared_ptr<Item> item);
+	void UseItem(int indexItem) {
+		UseItem(indexItem, int(selectedPokemon - pokemon.begin()));
 	}
-	void TEST_UseItem(int indexItem, int indexPkmn);
+	void UseItem(int indexItem, int indexPkmn);
 
-	bool TEST_CanUseItem(int index);
+	bool CanUseItem(int index);
 
 	bool IsUsingSpecial() const;
 	bool SpecialIsSuccessful() const;
@@ -103,7 +103,6 @@ public:
 	bool TEST_bInitFromJSON = false;
 
 private:
-	std::shared_ptr<Network::NetworkSystem> pNet;
 	bool bIsHost = false;
 
 	Pokemon::Type usedPkmnType = Pokemon::Type::Normal;
@@ -118,7 +117,6 @@ private:
 	std::vector<Pokemon> pokemon;
 
 	std::map<std::shared_ptr<Item>, int> items;
-	std::shared_ptr<CoreSystem::Keyboard> pKbd;
 	Maths::IVec2D velocity;
 	Maths::IVec2D lookingDirection;
 	float speed = 2.0f;

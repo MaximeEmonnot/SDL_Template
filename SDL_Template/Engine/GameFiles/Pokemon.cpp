@@ -3,7 +3,6 @@
 
 Pokemon::Pokemon(const std::string& spritePath, const std::string& name, int id, Type type)
 	:
-	pGfx(GraphicsEngine::Graphics::GetInstance()),
 	name(name),
 	currentMaxHP(20),
 	hp(20),
@@ -18,7 +17,6 @@ Pokemon::Pokemon(const std::string& spritePath, const std::string& name, int id,
 
 Pokemon& Pokemon::operator=(const Pokemon& rhs)
 {
-	pGfx = GraphicsEngine::Graphics::GetInstance();
 	type = rhs.type;
 	name = rhs.name;
 	sprite = rhs.sprite;
@@ -60,12 +58,12 @@ void Pokemon::InitAbilities(std::map<int, Ability> abilityList)
 
 void Pokemon::DrawFrontSprite(Maths::IRect destRect)
 {
-	pGfx->DrawSprite(destRect, Maths::IRect(0, 0, 56, 56), sprite);
+	GraphicsEngine::Graphics::GetInstance().DrawSprite(destRect, Maths::IRect(0, 0, 56, 56), sprite);
 }
 
 void Pokemon::DrawBackSprite(Maths::IRect destRect)
 {
-	pGfx->DrawSprite(destRect, Maths::IRect(0, 56, 56, 56), sprite);
+	GraphicsEngine::Graphics::GetInstance().DrawSprite(destRect, Maths::IRect(0, 56, 56, 56), sprite);
 }
 
 void Pokemon::Attack(Pokemon& enemy)

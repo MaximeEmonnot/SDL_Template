@@ -11,6 +11,7 @@ namespace GraphicsEngine {
 	class Graphics : public CoreSystem::SingletonMaker<GraphicsEngine::Graphics>{
 	public:
 		Graphics();
+		~Graphics() = default;
 
 		void										BeginRender();
 		void										EndRender();

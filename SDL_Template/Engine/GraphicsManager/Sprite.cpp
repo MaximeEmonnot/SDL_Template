@@ -3,11 +3,10 @@
 
 GraphicsEngine::Sprite::Sprite(const std::string& path)
 {
-    auto gfx = Graphics::GetInstance();
     std::shared_ptr<SDL_Surface> surf(IMG_Load(path.c_str()), SDL_FreeSurface);
     if (surf == nullptr)
         throw EngineException("SDL Sprite Exception", __FILE__, "An error has been caught during SDL Surface initialisation.\nPlease check sprite path.", __LINE__);
-    mpTex.reset(SDL_CreateTextureFromSurface(gfx->GetRenderer().get(), surf.get()), SDL_DestroyTexture);
+    mpTex.reset(SDL_CreateTextureFromSurface(Graphics::GetInstance().GetRenderer().get(), surf.get()), SDL_DestroyTexture);
     mWidth = surf->w, mHeight = surf->h;
 }
 
@@ -16,10 +15,9 @@ GraphicsEngine::Sprite::Sprite(std::shared_ptr<SDL_Surface> surf, int width, int
     mWidth(width),
     mHeight(height)
 {
-    auto gfx = Graphics::GetInstance();
     if (surf == nullptr)
         throw EngineException("SDL Sprite Exception", __FILE__, "An error has been caught during SDL Surface initialisation.\nPlease check sprite path.", __LINE__);
-    mpTex.reset(SDL_CreateTextureFromSurface(gfx->GetRenderer().get(), surf.get()), SDL_DestroyTexture);
+    mpTex.reset(SDL_CreateTextureFromSurface(Graphics::GetInstance().GetRenderer().get(), surf.get()), SDL_DestroyTexture);
 }
 
 GraphicsEngine::Sprite::Sprite(const Sprite& newSurface)

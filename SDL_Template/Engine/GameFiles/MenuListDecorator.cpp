@@ -11,13 +11,13 @@ MenuListDecorator::~MenuListDecorator()
 	buttonList.clear();
 }
 
-void MenuListDecorator::Update(int& output, std::shared_ptr<CoreSystem::Mouse> mouse, CoreSystem::Mouse::EventType e)
+void MenuListDecorator::Update(int& output, CoreSystem::Mouse::EventType e)
 {
-	if (e == CoreSystem::Mouse::EventType::None) e = mouse->Read();
+	if (e == CoreSystem::Mouse::EventType::None) e = CoreSystem::Mouse::GetInstance().Read();
 	if (e == CoreSystem::Mouse::EventType::LPress) {
-		pDecoratedMenu->Update(output, mouse, e);
+		pDecoratedMenu->Update(output, e);
 		for (auto& button : buttonList) {
-			if (button.OnClick(mouse->GetMousePos())) {
+			if (button.OnClick(CoreSystem::Mouse::GetInstance().GetMousePos())) {
 				button.ComputeFunction(output);
 				break;
 			}

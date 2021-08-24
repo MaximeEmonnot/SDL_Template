@@ -1,6 +1,6 @@
 #pragma once
 #include "Graphics.h"
-#include "Window.h"
+#include "Timer.h"
 #include <memory>
 // ***** USER INCLUDES ***** //
 #include "TitleScene.h"
@@ -14,7 +14,6 @@ class Game
 {
 public:
 	Game();
-	~Game();
 
 	void Go();
 	void ComputeCorsairColors();
@@ -26,8 +25,7 @@ private:
 
 	// ***************** END USER FUNCTIONS ************* //
 private:
-	std::shared_ptr<CoreSystem::Window>				mpWnd;
-	std::shared_ptr<GraphicsEngine::Graphics>		mpGfx;
+	std::shared_ptr<Player> pPlayer;
 	// ***************** USER VARIABLES ******************//
 	std::vector<std::shared_ptr<Scene>>				scenes;
 	std::vector<std::shared_ptr<Scene>>::iterator	currentScene;

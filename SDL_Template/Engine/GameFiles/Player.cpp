@@ -3,8 +3,7 @@
 
 Player::Player(Maths::IRect rect, const std::string& animFile)
 	:
-	Character(rect),
-	pKbd(CoreSystem::Keyboard::GetInstance())
+	Character(rect)
 {
 	JSONParser::Reader jsonParse;
 	jsonParse.ReadFile(animFile);
@@ -65,7 +64,6 @@ void Player::InitFromJSON()
 		newPkmn.def = selectedPkmnValue.FindMember("PokemonCharacteristics")->value.GetArray()[3].GetInt();
 		newPkmn.lvl = selectedPkmnValue.FindMember("PokemonCharacteristics")->value.GetArray()[4].GetInt();
 		newPkmn.id = selectedPkmnValue.FindMember("PokemonCharacteristics")->value.GetArray()[5].GetInt();
-		newPkmn.pGfx = GraphicsEngine::Graphics::GetInstance();
 		switch (newPkmn.id) {
 		case 1:
 			newPkmn.type = Pokemon::Type::Grass;
@@ -108,7 +106,6 @@ void Player::InitFromJSON()
 			newPkmn.def = pkmnValue.FindMember("PokemonCharacteristics")->value.GetArray()[3].GetInt();
 			newPkmn.lvl = pkmnValue.FindMember("PokemonCharacteristics")->value.GetArray()[4].GetInt();
 			newPkmn.id = pkmnValue.FindMember("PokemonCharacteristics")->value.GetArray()[5].GetInt();
-			newPkmn.pGfx = GraphicsEngine::Graphics::GetInstance();
 			switch (newPkmn.id) {
 			case 1:
 				newPkmn.type = Pokemon::Type::Grass;
@@ -194,22 +191,22 @@ void Player::SaveToJSON()
 void Player::Move()
 {
 	Maths::IVec2D dir;
-	if (pKbd->KeyIsPressed(SDL_SCANCODE_LEFT)) {
+	if (CoreSystem::Keyboard::GetInstance().KeyIsPressed(SDL_SCANCODE_LEFT)) {
 		dir.x -= 1;
 	}
-	if (pKbd->KeyIsPressed(SDL_SCANCODE_UP)) {
+	if (CoreSystem::Keyboard::GetInstance().KeyIsPressed(SDL_SCANCODE_UP)) {
 		dir.y -= 1;
 	}
-	if (pKbd->KeyIsPressed(SDL_SCANCODE_RIGHT)) {
+	if (CoreSystem::Keyboard::GetInstance().KeyIsPressed(SDL_SCANCODE_RIGHT)) {
 		dir.x += 1;
 	}
-	if (pKbd->KeyIsPressed(SDL_SCANCODE_DOWN)) {
+	if (CoreSystem::Keyboard::GetInstance().KeyIsPressed(SDL_SCANCODE_DOWN)) {
 		dir.y += 1;
 	}
 	
 	//Animation
 	if (locomotion != LocomotionState::Biking && locomotion != LocomotionState::OnWater) {
-		if (pKbd->KeyIsPressed(SDL_SCANCODE_LSHIFT)) locomotion = LocomotionState::Running;
+		if (CoreSystem::Keyboard::GetInstance().KeyIsPressed(SDL_SCANCODE_LSHIFT)) locomotion = LocomotionState::Running;
 		else locomotion = LocomotionState::Walking;
 	}
 
@@ -375,17 +372,12 @@ void Player::Move()
 void Player::ConnectAs(bool bIsClient)
 {	
 	if (bIsClient) {
-		pNet = Network::NetworkSystem::GetInstance("127.0.0.1", 222, 333);
+		Network::NetworkSystem::GetInstance("127.0.0.1", 222, 333);
 	}
 	else {
 		bIsHost = true;
-		pNet = Network::NetworkSystem::GetInstance("127.0.0.1", 333, 222);
+		Network::NetworkSystem::GetInstance("127.0.0.1", 333, 222);
 	}
-}
-
-std::shared_ptr<Network::NetworkSystem> Player::GetNetSystem()
-{
-	return pNet;
 }
 
 void Player::AddPokemon(Pokemon& pkmn)
@@ -416,7 +408,7 @@ Maths::IVec2D Player::GetLookingDirection() const
 
 void Player::DrawPokemon()
 {
-	if (pKbd->KeyIsPressed(SDL_SCANCODE_P)) {
+	if (CoreSystem::Keyboard::GetInstance().KeyIsPressed(SDL_SCANCODE_P)) {
 		selectedPokemon->DrawFrontSprite(Maths::IRect(250, 250, 128, 128));
 	}
 }
@@ -580,7 +572,7 @@ void Player::OnUseSuccess(bool value)
 	bSpecialIsSuccessful = value;
 }
 
-bool Player::TEST_CapturePokemon(int index, Pokemon& pkmn)
+bool Player::CapturePokemon(int index, Pokemon& pkmn)
 {
 	auto itr = std::find_if(items.begin(), items.end(), [&](std::pair<std::shared_ptr<Item>, int> item) {return index == item.first->GetID(); });
 	if (itr != items.end()) {
@@ -598,7 +590,7 @@ bool Player::TEST_CapturePokemon(int index, Pokemon& pkmn)
 	return false;
 }
 
-void Player::TEST_PickUpItem(std::shared_ptr<Item> item)
+void Player::PickUpItem(std::shared_ptr<Item> item)
 {
 	auto itr = std::find_if(items.begin(), items.end(), [&](std::pair<std::shared_ptr<Item>, int> i) {return item->GetID() == i.first->GetID(); });
 	if (itr != items.end()) {
@@ -609,7 +601,7 @@ void Player::TEST_PickUpItem(std::shared_ptr<Item> item)
 	}
 }
 
-void Player::TEST_UseItem(int indexItem, int indexPkmn)
+void Player::UseItem(int indexItem, int indexPkmn)
 {
 	auto itr = std::find_if(items.begin(), items.end(), [&](std::pair<std::shared_ptr<Item>, int> item) {return indexItem == item.first->GetID(); });
 	if (itr != items.end()) {
@@ -629,7 +621,7 @@ void Player::TEST_UseItem(int indexItem, int indexPkmn)
 	}
 }
 
-bool Player::TEST_CanUseItem(int index)
+bool Player::CanUseItem(int index)
 {
 	auto itr = std::find_if(items.begin(), items.end(), [&](std::pair<std::shared_ptr<Item>, int> item) {return index == item.first->GetID(); });
 	if (itr != items.end()) {

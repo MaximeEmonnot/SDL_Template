@@ -1,37 +1,33 @@
 #include "ExplorationScene.h"
 
-ExplorationScene::ExplorationScene()
+ExplorationScene::ExplorationScene(std::shared_ptr<Player> pPlayer)
 	:
-	Scene(Scene::SceneType::ExplorationScene),
+	Scene(pPlayer, Scene::SceneType::ExplorationScene),
+	house(pPlayer),
+	pWorld(std::make_shared<World>(pPlayer)),
 	explorationMenu(std::make_unique<ExplorationMenu>(std::make_unique<BasicMenu>())),
-	itemInventoryMenu(std::make_unique<ItemInventoryMenu>(std::make_unique<BasicMenu>())),
-	pokemonInventoryMenu(std::make_unique<PokemonInventoryMenu>(std::make_unique<BasicMenu>())),
-	pWorld(World::GetInstance()),
+	itemInventoryMenu(std::make_unique<ItemInventoryMenu>(std::make_unique<BasicMenu>(), pPlayer)),
+	pokemonInventoryMenu(std::make_unique<PokemonInventoryMenu>(std::make_unique<BasicMenu>(), pPlayer)),
 	text(Maths::IRect(25, 500, 200, 75))
 {
-}
-
-ExplorationScene::~ExplorationScene()
-{
-	pWorld->Kill();
 }
 
 void ExplorationScene::Update()
 {
 	//Song
 	if (!bIsPlayingSong) {
-		if (pTimer->IsNightTime()) {
-			pSoundSystem->PlaySound(pSoundSystem->ConstructNewSong("music/nightwalk.wav", MUSIC), -1);
+		if (CoreSystem::Timer::GetInstance().IsNightTime()) {
+			SoundEngine::SoundSystem::GetInstance().PlaySound(SoundEngine::SoundSystem::GetInstance().ConstructNewSong("music/nightwalk.wav", MUSIC), -1);
 		}
 		else {
-			pSoundSystem->PlaySound(pSoundSystem->ConstructNewSong("music/daywalk.wav", MUSIC), -1);
+			SoundEngine::SoundSystem::GetInstance().PlaySound(SoundEngine::SoundSystem::GetInstance().ConstructNewSong("music/daywalk.wav", MUSIC), -1);
 		}
 		bIsPlayingSong = true;
 	}
 	else {
-		if (bCurrentDayState != pTimer->IsNightTime()) {
-			pSoundSystem->StopSounds();
-			bCurrentDayState = pTimer->IsNightTime();
+		if (bCurrentDayState != CoreSystem::Timer::GetInstance().IsNightTime()) {
+			SoundEngine::SoundSystem::GetInstance().StopSounds();
+			bCurrentDayState = CoreSystem::Timer::GetInstance().IsNightTime();
 			bIsPlayingSong = false;
 		}
 	}
@@ -43,8 +39,8 @@ void ExplorationScene::Update()
 	//Update menus
 	itemInventoryMenu = nullptr;
 	pokemonInventoryMenu = nullptr;
-	itemInventoryMenu = std::make_unique<ItemInventoryMenu>(std::make_unique<BasicMenu>());
-	pokemonInventoryMenu = std::make_unique<PokemonInventoryMenu>(std::make_unique<BasicMenu>());
+	itemInventoryMenu = std::make_unique<ItemInventoryMenu>(std::make_unique<BasicMenu>(), pPlayer);
+	pokemonInventoryMenu = std::make_unique<PokemonInventoryMenu>(std::make_unique<BasicMenu>(), pPlayer);
 
 	//Init from json
 	if (pPlayer->TEST_bInitFromJSON) {
@@ -53,15 +49,16 @@ void ExplorationScene::Update()
 	}
 
 	//Init online
-	if (pPlayer->pNet != nullptr && !bHasInitOnline)
+	/*
+	if (bHasInitOnline)
 	{
 		bHasInitOnline = true;
 		//Host player online routine
 		if (pPlayer->bIsHost) {
 			//Send
-			pThread->Enqueue([&] {
+			CoreSystem::ThreadPool::GetInstance(30).Enqueue([&] {
 				int64_t packetIndex = 0;
-				while (pWnd->ListensToEvents()) {
+				while (CoreSystem::Window::GetInstance().ListensToEvents()) {
 					long long xPlayerPos = pWorld->GetPlayerPosition().x;
 					long long yPlayerPos = pWorld->GetPlayerPosition().y;
 					Maths::LLVec2D lastTileToUpdate = pWorld->GetLastTileToUpdate();
@@ -104,14 +101,14 @@ void ExplorationScene::Update()
 							lastTileToUpdate.y <<= 8;
 						}
 					}
-					pPlayer->GetNetSystem()->SendPackage(dataOut);
+					Network::NetworkSystem::GetInstance().SendPackage(dataOut);
 				}
 				});
 			//Recieve
-			pThread->Enqueue([&] {
+			CoreSystem::ThreadPool::GetInstance(30).Enqueue([&] {
 				int64_t lastPacketIndex = 0;
-				while (pWnd->ListensToEvents()) {
-					std::vector<Uint8> dataIn = pPlayer->GetNetSystem()->RecievePackage();
+				while (CoreSystem::Window::GetInstance().ListensToEvents()) {
+					std::vector<Uint8> dataIn = Network::NetworkSystem::GetInstance().RecievePackage();
 
 					if (!dataIn.empty()) {
 
@@ -164,9 +161,9 @@ void ExplorationScene::Update()
 		//Guest player online routine
 		else {
 			//Send
-			pThread->Enqueue([&] {
+			CoreSystem::ThreadPool::GetInstance(30).Enqueue([&] {
 				int64_t packetIndex = 0;
-				while (pWnd->ListensToEvents()) {
+				while (CoreSystem::Window::GetInstance().ListensToEvents()) {
 					long long xPlayerPos = pWorld->GetPlayerPosition().x;
 					long long yPlayerPos = pWorld->GetPlayerPosition().y;
 					Maths::LLVec2D lastTileToUpdate = pWorld->GetLastTileToUpdate();
@@ -212,14 +209,14 @@ void ExplorationScene::Update()
 				}
 				});
 			//Recieve
-			pThread->Enqueue([&] {
+			CoreSystem::ThreadPool::GetInstance(30).Enqueue([&] {
 				int64_t lastPacketIndex = 0;
 				std::vector<Uint8> dataSeed = pPlayer->GetNetSystem()->RecievePackage();
 
 				//Set World Seed
 				pWorld->SetWorldSeed(dataSeed.at(0));
 
-				while (pWnd->ListensToEvents()) {
+				while (CoreSystem::Window::GetInstance().ListensToEvents()) {
 					std::vector<Uint8> dataIn = pPlayer->GetNetSystem()->RecievePackage();
 
 					if (!dataIn.empty()) {
@@ -272,10 +269,11 @@ void ExplorationScene::Update()
 				});
 		}
 	}
+	*/
 
 	bWillChangeScene = false;
 
-	pPlayer->Update(pTimer->DeltaTime());
+	pPlayer->Update(CoreSystem::Timer::GetInstance().DeltaTime());
 
 	int output = -1;
 
@@ -335,10 +333,10 @@ void ExplorationScene::Update()
 	}
 		break;
 	case MenuState::ShowingMenu:
-		explorationMenu->Update(output, pMouse);
+		explorationMenu->Update(output);
 		switch (output) {
 		case 0:
-			pWnd->ExitGame();
+			CoreSystem::Window::GetInstance().ExitGame();
 			break;
 		case 1:
 			state = MenuState::ShowingItemInventory;
@@ -363,7 +361,7 @@ void ExplorationScene::Update()
 			bWillChangeScene = true;
 			state = MenuState::None;
 			bIsPlayingSong = false;
-			pSoundSystem->StopSounds();
+			SoundEngine::SoundSystem::GetInstance().StopSounds();
 			newScene = Scene::SceneType::TitleScene;
 			break;
 		default:
@@ -371,9 +369,9 @@ void ExplorationScene::Update()
 		}
 		break;
 	case MenuState::ShowingItemInventory:
-		itemInventoryMenu->Update(output, pMouse);
+		itemInventoryMenu->Update(output);
 		if (output != -1) {
-			if (pPlayer->TEST_CanUseItem(output)) {
+			if (pPlayer->CanUseItem(output)) {
 				chosenItem = output;
 				state = MenuState::HealingPokemon;
 				printf("item clicked!\n");
@@ -384,7 +382,7 @@ void ExplorationScene::Update()
 		}
 		break;
 	case MenuState::ShowingPokemonInventory:
-		pokemonInventoryMenu->Update(output, pMouse);
+		pokemonInventoryMenu->Update(output);
 		if (output != -1) {
 			pPlayer->UsePokemon(output);
 			state = MenuState::None;
@@ -392,9 +390,9 @@ void ExplorationScene::Update()
 		}
 		break;
 	case MenuState::HealingPokemon:
-		pokemonInventoryMenu->Update(output, pMouse);
+		pokemonInventoryMenu->Update(output);
 		if (output != -1) {
-			pPlayer->TEST_UseItem(chosenItem, output);
+			pPlayer->UseItem(chosenItem, output);
 			state = MenuState::None;
 			printf("Pokemon healed !");
 		}
@@ -405,11 +403,11 @@ void ExplorationScene::Update()
 	if (pWorld->PlayerTriggersFight() && !pPlayer->GetPokemon().IsDead()) {
 		bWillChangeScene = true;
 		bIsPlayingSong = false;
-		pSoundSystem->StopSounds();
+		SoundEngine::SoundSystem::GetInstance().StopSounds();
 		newScene = Scene::SceneType::FightingScene;
 	}
 
-	auto e = pKbd->ReadKey();
+	auto e = CoreSystem::Keyboard::GetInstance().ReadKey();
 
 	if (transitionTimer.IsTimerDown() && !pPlayer->IsTalking()) {
 		if (e.keycode == SDL_SCANCODE_ESCAPE && e.type == CoreSystem::Keyboard::Event::Type::Pressed) {
@@ -441,7 +439,7 @@ void ExplorationScene::Draw()
 
 	if(bIsInsideHouse) house.Draw();
 	else {
-		if (pTimer->IsNightTime())
+		if (CoreSystem::Timer::GetInstance().IsNightTime())
 		{
 			pWorld->BlendSpriteTo(GraphicsEngine::Color(64, 64, 128, 128));
 			pPlayer->BlendSpriteTo(GraphicsEngine::Color(64, 64, 128, 128));
@@ -452,10 +450,10 @@ void ExplorationScene::Draw()
 	pPlayer->Draw();
 
 	if (bInTransition) {
-		pGfx->FadeOutScreen(transitionTimer.GetTimer() / 1.5f);
+		GraphicsEngine::Graphics::GetInstance().FadeOutScreen(transitionTimer.GetTimer() / 1.5f);
 	}
 	else if (!transitionTimer.IsTimerDown()) {
-		pGfx->FadeInScreen(transitionTimer.GetTimer() / 1.5f);
+		GraphicsEngine::Graphics::GetInstance().FadeInScreen(transitionTimer.GetTimer() / 1.5f);
 	}
 
 	switch (state) {
@@ -475,9 +473,9 @@ void ExplorationScene::Draw()
 	default:
 		break;
 	}
-	pFont->DrawText(Maths::IVec2D(10, 10), (std::string("X     ") + std::to_string(pWorld->xOffset) + "\n" + std::string("Y     ") + std::to_string(pWorld->yOffset)).c_str(), RED);
+	GraphicsEngine::Font::GetInstance("ttf/arcardeClassic.ttf", 16).DrawText(Maths::IVec2D(10, 10), (std::string("X     ") + std::to_string(pWorld->xOffset) + "\n" + std::string("Y     ") + std::to_string(pWorld->yOffset)).c_str(), RED);
 	
-	pFont->DrawText(Maths::IVec2D(700, 10), (std::string("FPS   : ") + std::to_string(static_cast<int>(1 / pTimer->DeltaTime()))).c_str(), GREEN);
+	GraphicsEngine::Font::GetInstance("ttf/arcardeClassic.ttf", 16).DrawText(Maths::IVec2D(700, 10), (std::string("FPS   : ") + std::to_string(static_cast<int>(1 / CoreSystem::Timer::GetInstance().DeltaTime()))).c_str(), GREEN);
 
 	if (!saveTimer.IsTimerDown()) {
 		text.Draw("Game  saved  !", BLACK, GRAY, WHITE);
@@ -493,5 +491,5 @@ void ExplorationScene::SaveToJSON()
 void ExplorationScene::InitFromJSON()
 {
 	pWorld->InitFromJSON();
-	pPlayer->InitFromJSON();	
+	pPlayer->InitFromJSON();
 }

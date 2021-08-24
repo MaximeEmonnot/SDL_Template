@@ -1,29 +1,23 @@
 #include "Game.h"
 #include <random>
 
-Game::Game():
-	mpWnd(CoreSystem::Window::GetInstance()),
-	mpGfx(GraphicsEngine::Graphics::GetInstance())
+Game::Game()
+	:
+	pPlayer(std::make_shared<Player>(Maths::IRect(384, 267, 32, 44), "json/player.json"))
 {
-	scenes.emplace_back(std::make_shared<TitleScene>());
-	scenes.emplace_back(std::make_shared<ChoosingScene>());
-	scenes.emplace_back(std::make_shared<ExplorationScene>());
-	scenes.emplace_back(std::make_shared<FightingScene>());
+	scenes.emplace_back(std::make_shared<TitleScene>(pPlayer));
+	scenes.emplace_back(std::make_shared<ChoosingScene>(pPlayer));
+	scenes.emplace_back(std::make_shared<ExplorationScene>(pPlayer));
+	scenes.emplace_back(std::make_shared<FightingScene>(pPlayer));
 	currentScene = scenes.begin();
-}
-
-Game::~Game()
-{
-	mpWnd->Kill();
-	mpGfx->Kill();
 }
 
 void Game::Go()
 {
-	mpGfx->BeginRender();
+	GraphicsEngine::Graphics::GetInstance().BeginRender();
 	UpdateFrame();
 	RenderFrame();
-	mpGfx->EndRender();
+	GraphicsEngine::Graphics::GetInstance().EndRender();
 }
 
 void Game::ComputeCorsairColors()
@@ -33,7 +27,7 @@ void Game::ComputeCorsairColors()
 void Game::UpdateFrame()
 {
 	//ONLY CALLED ONCE
-	mpWnd->pTimer->Update();
+	CoreSystem::Timer::GetInstance().Update();
 
 	(*currentScene)->Update();
 

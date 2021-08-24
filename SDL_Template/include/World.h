@@ -11,7 +11,8 @@
 #include "Consumable.h"
 #include "Ball.h"
 
-class World : public CoreSystem::SingletonMaker<World> {
+class World 
+{
 private:
 	friend class ExplorationScene;
 public:
@@ -91,7 +92,8 @@ public:
 		Tile::BiomeType biomeType = Tile::BiomeType::None;
 	};
 public:
-	World();
+	World(std::shared_ptr<Player> pPlayer);
+	~World() = default;
 	
 	void Update(float speed);
 	void Draw();
@@ -137,6 +139,7 @@ private:
 	Maths::IVec2D GetPlayerDirection() const;
 
 private:
+	std::shared_ptr<Player> pPlayer;
 	std::shared_ptr<NPC> pGuest;
 
 	GraphicsEngine::Sprite tileSpriteForest;
@@ -153,11 +156,6 @@ private:
 	bool bTempestOn = false;
 
 	bool bTilesAreWriting = false;
-
-	std::shared_ptr<GraphicsEngine::Graphics> pGfx;
-	std::shared_ptr<CoreSystem::Keyboard> pKbd;
-	std::shared_ptr<CoreSystem::Timer> pTimer;
-	std::shared_ptr<Player> pPlayer;
 
 	const int tileWidth = 32;
 	const int tileHeight = 32;

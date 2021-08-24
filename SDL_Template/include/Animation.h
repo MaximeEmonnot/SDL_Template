@@ -24,7 +24,6 @@ namespace GraphicsEngine {
 	private:
 		void						Advance();
 	private:
-		std::shared_ptr<Graphics>	mpGfx;
 		Sprite&						mrSprite;
 		std::vector<Maths::IRect>	mFrames;
 		float						mCurFrameTime = 0.0f;

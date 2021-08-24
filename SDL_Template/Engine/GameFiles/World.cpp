@@ -213,7 +213,7 @@ bool World::Tile::PlayerTriggersFight(const World& grid)
 	if (groundType == Tile::GroundType::Grass) {
 		std::mt19937 rng(std::random_device{}());
 		std::uniform_int_distribution<int> dist(0, 20);
-		if (grid.pTimer->IsNightTime()) {
+		if (CoreSystem::Timer::GetInstance().IsNightTime()) {
 			return (dist(rng) <= 4);
 		}
 		else {
@@ -315,12 +315,9 @@ int World::rndInt(int min, int max, uint32_t nLehmer) const
 	return (Lehmer32(nLehmer) % (max - min)) + min;
 }
 
-World::World()
+World::World(std::shared_ptr<Player> pPlayer)
 	:
-	pGfx(GraphicsEngine::Graphics::GetInstance()),
-	pKbd(CoreSystem::Keyboard::GetInstance()),
-	pTimer(CoreSystem::Timer::GetInstance()),
-	pPlayer(Player::GetInstance(Maths::IRect(384, 267, 32, 44), "json/player.json")),
+	pPlayer(pPlayer),
 	pGuest(std::make_unique<NPC>(Maths::IRect(-1000, -1000, 32, 44), "json/npc.json")),
 	currentPlayerXPos(400),
 	currentPlayerYPos(300),
@@ -410,9 +407,9 @@ void World::UpdateTiles()
 
 void World::UpdateTempest()
 {
-	tempestForest.Update(pTimer->DeltaTime());
-	tempestDesert.Update(pTimer->DeltaTime());
-	tempestToundra.Update(pTimer->DeltaTime());
+	tempestForest.Update(CoreSystem::Timer::GetInstance().DeltaTime());
+	tempestDesert.Update(CoreSystem::Timer::GetInstance().DeltaTime());
+	tempestToundra.Update(CoreSystem::Timer::GetInstance().DeltaTime());
 }
 
 void World::MakePermutation()
@@ -652,7 +649,7 @@ void World::Update(float speed)
 	UpdateTempest();
 
 	//Update Guest
-	pGuest->Update(pTimer->DeltaTime());
+	pGuest->Update(CoreSystem::Timer::GetInstance().DeltaTime());
 	pGuest->InterpolatePosition();
 
 	//Weather update
@@ -666,7 +663,7 @@ void World::Update(float speed)
 
 	playerDirection = Maths::IVec2D(0, 0);
 
-	if (pKbd->KeyIsPressed(SDL_SCANCODE_UP)) {
+	if (CoreSystem::Keyboard::GetInstance().KeyIsPressed(SDL_SCANCODE_UP)) {
 		if (!TileIsObstacleAt(Maths::LLVec2D(400, 282))) {
 			yOffset -= static_cast<int>(2 * static_cast<double>(speed));
 			if (pGuest != nullptr) {
@@ -676,7 +673,7 @@ void World::Update(float speed)
 			playerDirection.y--;
 		}
 	}
-	if (pKbd->KeyIsPressed(SDL_SCANCODE_RIGHT)) {
+	if (CoreSystem::Keyboard::GetInstance().KeyIsPressed(SDL_SCANCODE_RIGHT)) {
 		if (!TileIsObstacleAt(Maths::LLVec2D(418, 300))) {
 			xOffset += static_cast<int>(2 * static_cast<double>(speed));
 			if (pGuest != nullptr) {
@@ -686,7 +683,7 @@ void World::Update(float speed)
 			playerDirection.x++;
 		}
 	}
-	if (pKbd->KeyIsPressed(SDL_SCANCODE_DOWN)) {
+	if (CoreSystem::Keyboard::GetInstance().KeyIsPressed(SDL_SCANCODE_DOWN)) {
 		if (!TileIsObstacleAt(Maths::LLVec2D(400, 318))) {
 			yOffset += static_cast<int>(2 * static_cast<double>(speed));
 			if (pGuest != nullptr) {
@@ -696,7 +693,7 @@ void World::Update(float speed)
 			playerDirection.y++;
 		}
 	}
-	if (pKbd->KeyIsPressed(SDL_SCANCODE_LEFT)) {
+	if (CoreSystem::Keyboard::GetInstance().KeyIsPressed(SDL_SCANCODE_LEFT)) {
 		if (!TileIsObstacleAt(Maths::LLVec2D(382, 300))) {
 			xOffset -= static_cast<int>(2 * static_cast<double>(speed));
 			if (pGuest != nullptr) {
@@ -710,7 +707,7 @@ void World::Update(float speed)
 	currentPlayerYPos = yOffset + 300;
 
 
-	if (pKbd->KeyIsPressed(SDL_SCANCODE_LCTRL)) {
+	if (CoreSystem::Keyboard::GetInstance().KeyIsPressed(SDL_SCANCODE_LCTRL)) {
 		Maths::LLVec2D lookingAtPos = Maths::LLVec2D(xOffset + 400, yOffset + 300);
 		lookingAtPos += static_cast<Maths::LLVec2D>(pPlayer->GetLookingDirection() * 18);
 		lookingAtPos.x /= tileWidth;
@@ -720,7 +717,7 @@ void World::Update(float speed)
 		if (itr != tiles.end() && itr->second.GetEventType() == Tile::EventType::Item) {
 			auto itemToPick = items.find(lookingAtPos);
 			if (itemToPick != items.end()) {
-				pPlayer->TEST_PickUpItem(itemToPick->second);
+				pPlayer->PickUpItem(itemToPick->second);
 				items.erase(itemToPick);
 				itr->second.ClearEventType();
 			}
@@ -832,19 +829,19 @@ void World::Draw()
 					break;
 				}
 
-				pGfx->DrawSprite(destRect, srcRect, tileSprite, layer);
+				GraphicsEngine::Graphics::GetInstance().DrawSprite(destRect, srcRect, tileSprite, layer);
 
 				layer = 1;
 
 				switch (itr->second.GetEventType()) {
 				case World::Tile::EventType::Item:
-					pGfx->DrawSprite(destRect, Maths::IRect(16, 80, 16, 16), tileSprite, layer);
+					GraphicsEngine::Graphics::GetInstance().DrawSprite(destRect, Maths::IRect(16, 80, 16, 16), tileSprite, layer);
 					break;
 				case World::Tile::EventType::Boulder:
-					pGfx->DrawSprite(destRect, Maths::IRect(32, 80, 16, 16), tileSprite, layer);
+					GraphicsEngine::Graphics::GetInstance().DrawSprite(destRect, Maths::IRect(32, 80, 16, 16), tileSprite, layer);
 					break;
 				case World::Tile::EventType::Tree:
-					pGfx->DrawSprite(destRect, Maths::IRect(48, 80, 16, 16), tileSprite, layer);
+					GraphicsEngine::Graphics::GetInstance().DrawSprite(destRect, Maths::IRect(48, 80, 16, 16), tileSprite, layer);
 					break;
 				default:
 					break;
@@ -893,7 +890,7 @@ bool World::GoInside() const
 
 	auto itr = tiles.find(lookingAtPos);
 	if (itr != tiles.end() && itr->second.GetGroundType() == Tile::GroundType::House13) {
-		return pKbd->KeyIsPressed(SDL_SCANCODE_UP);
+		return CoreSystem::Keyboard::GetInstance().KeyIsPressed(SDL_SCANCODE_UP);
 	}
 	return false;
 }

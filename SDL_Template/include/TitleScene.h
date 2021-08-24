@@ -5,7 +5,7 @@
 class TitleScene : public Scene {
 
 public:
-	TitleScene();
+	TitleScene(std::shared_ptr<Player> pPlayer);
 
 	void Update() override;
 	void Draw() override;

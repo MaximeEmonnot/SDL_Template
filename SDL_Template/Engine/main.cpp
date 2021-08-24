@@ -9,15 +9,15 @@
 int main(int argc, char* argv[])
 {
 	try {
-		std::shared_ptr<CoreSystem::Window> wnd = CoreSystem::Window::GetInstance();
+		CoreSystem::Window::GetInstance();
 		try {
 			Game theGame;
-			if (wnd->pKbd->IsCorsairKeyboard()) {
-				auto gameCCC = [&] { while (wnd->ListensToEvents()) { theGame.ComputeCorsairColors(); } };
-				wnd->pThreadPool->Enqueue(gameCCC);
+			if (CoreSystem::Keyboard::GetInstance().IsCorsairKeyboard()) {
+				auto gameCCC = [&] { while (CoreSystem::Window::GetInstance().ListensToEvents()) { theGame.ComputeCorsairColors(); } };
+				CoreSystem::ThreadPool::GetInstance(30).Enqueue(gameCCC);
 			}
-			while (wnd->ListensToEvents()) {
-				if (!wnd->IsMinimized()) theGame.Go();
+			while (CoreSystem::Window::GetInstance().ListensToEvents()) {
+				if (!CoreSystem::Window::GetInstance().IsMinimized()) theGame.Go();
 			}
 		}
 		catch (const EngineException& e) {
@@ -29,7 +29,6 @@ int main(int argc, char* argv[])
 		catch (...) {
 			SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Unknown error caught", "An unknown error has been caught during Game Routine.", NULL);
 		}
-		wnd->Kill();
 	}
 	catch (const EngineException& e) {
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, e.GetType().c_str(), e.GetMessage().c_str(), NULL);
@@ -41,6 +40,18 @@ int main(int argc, char* argv[])
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Unknown error caught", "An unknown error has been caught during Window Creation.", NULL);
 	}
 
+	//Kill singletons because I don't fucking know, a std::unique_ptr is supposed to destroy itself
+	CoreSystem::Window::Kill();
+	CoreSystem::Keyboard::Kill();
+	CoreSystem::Mouse::Kill();
+	CoreSystem::Timer::Kill();
+	CoreSystem::ThreadPool::Kill();
+	GraphicsEngine::Graphics::Kill();
+	GraphicsEngine::Font::Kill();
+	SoundEngine::SoundSystem::Kill();
+	Network::NetworkSystem::Kill();
+	
+	//Dumping memory leaks
 #if _DEBUG
 	_CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_FILE);
 	_CrtSetReportFile(_CRT_WARN, _CRTDBG_FILE_STDOUT);

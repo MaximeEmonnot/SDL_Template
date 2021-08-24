@@ -7,7 +7,7 @@ namespace GraphicsEngine {
 	{
 	public:
 		Font(const std::string& path, int size);
-		~Font();
+		~Font() = default;
 
 		// Draws text at a given position.
 		void						DrawText(Maths::IVec2D pos, const std::string& text, GraphicsEngine::Color c = { 255, 255, 255, 255 });
@@ -15,7 +15,6 @@ namespace GraphicsEngine {
 			DrawText(Maths::IVec2D(x, y), text, c);
 		}
 	private:
-		std::shared_ptr<Graphics>	pGfx;
 		std::shared_ptr<TTF_Font>	pFont;
 	};
 }

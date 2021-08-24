@@ -7,7 +7,7 @@
 
 class ChoosingScene : public Scene {
 public:
-	ChoosingScene();
+	ChoosingScene(std::shared_ptr<Player> pPlayer);
 
 	void Update() override;
 	void Draw() override;

@@ -25,13 +25,6 @@ namespace CoreSystem {
 
 		bool							IsMinimized() const;
 
-	public:
-		std::shared_ptr<Timer>						pTimer;
-		std::shared_ptr<Mouse>						pMouse;
-		std::shared_ptr<Keyboard>					pKbd;
-		std::shared_ptr<ThreadPool>					pThreadPool;
-		std::shared_ptr<SoundEngine::SoundSystem>	pSoundSystem;
-
 	private:
 		std::shared_ptr<SDL_Window>					mpWindow;
 		SDL_Event									mEvent;

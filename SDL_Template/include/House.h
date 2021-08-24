@@ -47,7 +47,7 @@ public:
 		NPCTile = 256
 	};
 public:
-	House();
+	House(std::shared_ptr<Player> pPlayer);
 
 	void Update(float speed);
 	void Draw();
@@ -61,11 +61,8 @@ private:
 	bool IsOccupedByNPC(Maths::IVec2D nextPos) const;
 private:
 	GraphicsEngine::Sprite sprite;
-	std::shared_ptr<GraphicsEngine::Graphics> pGfx;
-	std::shared_ptr<CoreSystem::Keyboard> pKbd;
-	std::shared_ptr<CoreSystem::Timer> pTimer;
-	std::shared_ptr<Player> pPlayer;
 	std::unique_ptr<NPC> pNpc;
+	std::shared_ptr<Player> pPlayer;
 
 	std::unordered_map<Maths::IVec2D, int, Maths::IVec2D::Hash> tiles;
 

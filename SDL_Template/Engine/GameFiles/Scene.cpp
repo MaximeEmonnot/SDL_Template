@@ -1,23 +1,10 @@
 #include "Scene.h"
 
-Scene::Scene(Scene::SceneType type)
+Scene::Scene(std::shared_ptr<Player> pPlayer, Scene::SceneType type)
 	:
-	pFont(GraphicsEngine::Font::GetInstance("ttf/arcadeClassic.TTF", 16)),
-	pGfx(GraphicsEngine::Graphics::GetInstance()),
-	pMouse(CoreSystem::Mouse::GetInstance()),
-	pKbd(CoreSystem::Keyboard::GetInstance()),
-	pTimer(CoreSystem::Timer::GetInstance()),
-	pWnd(CoreSystem::Window::GetInstance()),
-	pThread(CoreSystem::ThreadPool::GetInstance(30)),
-	pSoundSystem(SoundEngine::SoundSystem::GetInstance()),
-	pPlayer(Player::GetInstance(Maths::IRect(384, 267, 32, 44), "json/player.json")),
+	pPlayer(pPlayer),
 	currentScene(type)
 {
-}
-
-Scene::~Scene()
-{
-	pFont->Kill();
 }
 
 bool Scene::ChangeScene() const
@@ -37,11 +24,11 @@ Scene::SceneType Scene::GetCurrentScene() const
 
 void Scene::ClearKbd()
 {
-	pKbd->ReadChar();
-	pKbd->ReadKey();
+	CoreSystem::Keyboard::GetInstance().ReadChar();
+	CoreSystem::Keyboard::GetInstance().ReadKey();
 }
 
 void Scene::ClearMouse()
 {
-	pMouse->Read();
+	CoreSystem::Mouse::GetInstance().Read();
 }

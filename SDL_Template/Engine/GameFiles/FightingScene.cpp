@@ -2,15 +2,15 @@
 #include <random>
 #include <iostream>
 
-FightingScene::FightingScene()
+FightingScene::FightingScene(std::shared_ptr<Player> pPlayer)
 	:
-	Scene(Scene::SceneType::FightingScene),
+	Scene(pPlayer, Scene::SceneType::FightingScene),
 	actionMenu(std::make_unique<ActionMenu>(std::make_unique<BasicMenu>())),
 	itemTypeMenu(std::make_unique<ItemTypeMenu>(std::make_unique<BasicMenu>())),
-	consumableMenu(std::make_unique<ItemMenu<Consumable>>(std::make_unique<BasicMenu>())),
-	ballMenu(std::make_unique<ItemMenu<Ball>>(std::make_unique<BasicMenu>())),
-	abilityMenu(std::make_unique<AbilityMenu>(std::make_unique<BasicMenu>())),
-	pokemonMenu(std::make_unique<PokemonMenu>(std::make_unique<BasicMenu>())),
+	consumableMenu(std::make_unique<ItemMenu<Consumable>>(std::make_unique<BasicMenu>(), pPlayer)),
+	ballMenu(std::make_unique<ItemMenu<Ball>>(std::make_unique<BasicMenu>(), pPlayer)),
+	abilityMenu(std::make_unique<AbilityMenu>(std::make_unique<BasicMenu>(), pPlayer)),
+	pokemonMenu(std::make_unique<PokemonMenu>(std::make_unique<BasicMenu>(), pPlayer)),
 	enemyPkmnRect(500, 100, 128, 128),
 	playerPkmnRect(200, 200, 128, 128),
 	text(Maths::IRect(25, 500, 200, 75)),
@@ -23,7 +23,6 @@ FightingScene::FightingScene()
 
 FightingScene::~FightingScene()
 {
-	pPlayer->Kill();
 }
 
 void FightingScene::Update()
@@ -36,10 +35,10 @@ void FightingScene::Update()
 	pokemonMenu = nullptr;
 	consumableMenu = nullptr;
 	ballMenu = nullptr;
-	abilityMenu = std::make_unique<AbilityMenu>(std::make_unique<BasicMenu>());
-	pokemonMenu = std::make_unique<PokemonMenu>(std::make_unique<BasicMenu>());
-	consumableMenu = std::make_unique<ItemMenu<Consumable>>(std::make_unique<BasicMenu>());
-	ballMenu = std::make_unique<ItemMenu<Ball>>(std::make_unique<BasicMenu>());
+	abilityMenu = std::make_unique<AbilityMenu>(std::make_unique<BasicMenu>(), pPlayer);
+	pokemonMenu = std::make_unique<PokemonMenu>(std::make_unique<BasicMenu>(), pPlayer);
+	consumableMenu = std::make_unique<ItemMenu<Consumable>>(std::make_unique<BasicMenu>(), pPlayer);
+	ballMenu = std::make_unique<ItemMenu<Ball>>(std::make_unique<BasicMenu>(), pPlayer);
 
 	if (bWillChangeScene) {
 		enemyPokemon = nullptr;
@@ -84,7 +83,7 @@ void FightingScene::Update()
 		}
 		break;
 	case FightingState::ChoosingAction:
-		actionMenu->Update(output, pMouse);
+		actionMenu->Update(output);
 		switch (output)
 		{
 		case 0:
@@ -105,7 +104,7 @@ void FightingScene::Update()
 		}
 		break;
 	case FightingState::ChoosingAbility:
-		abilityMenu->Update(output, pMouse);
+		abilityMenu->Update(output);
 		if (output != -1) {
 			//pPlayer->GetPokemon().SelectedAttack(output) OR defined in PokemonMenu;
 			if (output == 30) {
@@ -119,7 +118,7 @@ void FightingScene::Update()
 		}
 		break;
 	case FightingState::ChoosingBall:
-		ballMenu->Update(output, pMouse);
+		ballMenu->Update(output);
 		if (output != -1) {
 			if (output == 30) {
 				state = FightingState::ChoosingItemType;
@@ -132,20 +131,20 @@ void FightingScene::Update()
 		}
 		break;
 	case FightingState::ChoosingConsumable:
-		consumableMenu->Update(output, pMouse);
+		consumableMenu->Update(output);
 		if (output != -1) {
 			if (output == 30) {
 				state = FightingState::ChoosingItemType;
 			}
 			else {
 				attackTimer.ResetTimer(3.0f);
-				pPlayer->TEST_UseItem(output);
+				pPlayer->UseItem(output);
 				state = FightingState::PlayerHealing;
 			}
 		}
 		break;
 	case FightingState::ChoosingItemType:
-		itemTypeMenu->Update(output, pMouse);
+		itemTypeMenu->Update(output);
 		switch (output) {
 		case 0:
 			state = FightingState::ChoosingConsumable;
@@ -161,7 +160,7 @@ void FightingScene::Update()
 		}
 		break;
 	case FightingState::ChoosingPokemon:
-		pokemonMenu->Update(output, pMouse);
+		pokemonMenu->Update(output);
 		if (output != -1) {
 			if (output == 30) {
 				state = FightingState::ChoosingAction;
@@ -359,7 +358,7 @@ void FightingScene::Capture()
 {
 	attackTimer.Update();
 	if (attackTimer.IsTimerDown()) {
-		if (pPlayer->TEST_CapturePokemon(chosenBall, *enemyPokemon)) {
+		if (pPlayer->CapturePokemon(chosenBall, *enemyPokemon)) {
 			state = FightingState::EnemyCatched;
 			fleeTimer.ResetTimer(2.0f);
 		}

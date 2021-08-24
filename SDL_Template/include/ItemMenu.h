@@ -5,10 +5,9 @@
 template<class T>
 class ItemMenu : public MenuListDecorator {
 public:
-	ItemMenu(std::unique_ptr<AMenu> decoratedMenu)
+	ItemMenu(std::unique_ptr<AMenu> decoratedMenu, std::shared_ptr<Player> pPlayer)
 		:
-		MenuListDecorator(std::move(decoratedMenu)),
-		pPlayer(Player::GetInstance(Maths::IRect(384, 267, 32, 44), "json/player.json"))
+		MenuListDecorator(std::move(decoratedMenu))
 	{
 		std::unordered_map<Maths::IVec2D, std::pair<std::string, std::function<void(int&)>>, Maths::IVec2D::Hash> buttonCharacteristics;
 		int i = 0;
@@ -22,6 +21,4 @@ public:
 		buttonCharacteristics.insert(std::pair<Maths::IVec2D, std::pair<std::string, std::function<void(int&)>>>(Maths::IVec2D(700, 575), std::make_pair<std::string, std::function<void(int&)>>("Back", [&](int& out) {printf("Back!\n"); out = 30; })));
 		InitializeButtons(buttonCharacteristics);
 	}
-private:
-	std::shared_ptr<Player> pPlayer;
 };

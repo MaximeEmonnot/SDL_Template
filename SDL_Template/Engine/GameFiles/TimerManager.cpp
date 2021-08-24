@@ -2,7 +2,7 @@
 
 void TimerManager::Update()
 {
-	timer -= pTimer->DeltaTime();
+	timer -= CoreSystem::Timer::GetInstance().DeltaTime();
 }
 
 bool TimerManager::IsTimerDown() const

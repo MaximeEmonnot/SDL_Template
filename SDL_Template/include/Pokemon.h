@@ -82,7 +82,6 @@ public:
 private:
 	std::vector<Ability> abilities;
 
-	std::shared_ptr<GraphicsEngine::Graphics> pGfx;
 	GraphicsEngine::Sprite sprite;
 
 	Pokemon::Type type;

@@ -1,9 +1,8 @@
 #include "PokemonInventoryMenu.h"
 
-PokemonInventoryMenu::PokemonInventoryMenu(std::unique_ptr<AMenu> decoratedMenu)
+PokemonInventoryMenu::PokemonInventoryMenu(std::unique_ptr<AMenu> decoratedMenu, std::shared_ptr<Player> pPlayer)
 	:
-	MenuListDecorator(std::move (decoratedMenu)),
-	pPlayer(Player::GetInstance(Maths::IRect(384, 267, 32, 44), "json/player.json"))
+	MenuListDecorator(std::move (decoratedMenu))
 {
 	std::unordered_map<Maths::IVec2D, std::pair<std::string, std::function<void(int&)>>, Maths::IVec2D::Hash> buttonCharacteristics;
 	int i = 0;

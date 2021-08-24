@@ -28,7 +28,7 @@ private:
 		EnemyCatched
 	};
 public:
-	FightingScene();
+	FightingScene(std::shared_ptr<Player> pPlayer);
 	~FightingScene();
 
 	void Update() override;

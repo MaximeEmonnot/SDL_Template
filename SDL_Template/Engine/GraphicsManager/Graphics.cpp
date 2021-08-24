@@ -14,10 +14,6 @@ GraphicsEngine::Graphics::Graphics()
 	}
 }
 
-GraphicsEngine::Graphics::~Graphics()
-{
-}
-
 void GraphicsEngine::Graphics::BeginRender()
 {
 	renderQueue.clear();

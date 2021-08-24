@@ -23,7 +23,7 @@ namespace Network {
 
 	public:
 		std::shared_ptr<CoreSystem::Window> pWnd;
-	protected:
+	private:
 		IPaddress ipAdress;
 		UDPsocket udpSock;
 		std::shared_ptr<UDPpacket> pPacketOut;

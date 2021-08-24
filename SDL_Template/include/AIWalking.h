@@ -22,7 +22,7 @@ private:
 	const int tileWidth = 32;
 	const int tileHeight = 32;
 
-	const Maths::IVec2D center = Maths::IVec2D(int(400 / tileWidth), int(300 / tileHeight));
+	const Maths::IVec2D center = Maths::IVec2D(static_cast<int>(400 / tileWidth), static_cast<int>(300 / tileHeight));
 
 	TimerManager timer;
 	std::mt19937 rng;

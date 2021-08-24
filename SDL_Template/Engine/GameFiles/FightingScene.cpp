@@ -23,7 +23,6 @@ FightingScene::FightingScene()
 
 FightingScene::~FightingScene()
 {
-	delete enemyPokemon;
 	pPlayer->Kill();
 }
 
@@ -43,7 +42,6 @@ void FightingScene::Update()
 	ballMenu = std::make_unique<ItemMenu<Ball>>(std::make_unique<BasicMenu>());
 
 	if (bWillChangeScene) {
-		delete enemyPokemon;
 		enemyPokemon = nullptr;
 		enemyPokemon = CreateRandomPokemon();
 		newScene = Scene::SceneType::ExplorationScene;
@@ -242,28 +240,25 @@ void FightingScene::Draw()
 	enemyPkmnStatus.Draw(std::to_string(enemyPokemon->GetHP().x) + " / " + std::to_string(enemyPokemon->GetHP().y) + " HP", BLACK, GRAY, WHITE);
 }
 
-Pokemon* FightingScene::CreateRandomPokemon()
+std::shared_ptr<Pokemon> FightingScene::CreateRandomPokemon()
 {
-	Pokemon* pkmn = new Pokemon();
+	std::shared_ptr<Pokemon> pkmn;
 	std::mt19937 rng(std::random_device{}());
 	std::uniform_int_distribution<int> distPkmn(0, 2);
 	std::uniform_int_distribution<int> distAbilities(0, 100);
 	std::uniform_int_distribution<int> distType(0, 4);
 	switch (distPkmn(rng)) {
 	case 0:
-		delete pkmn;
 		pkmn = nullptr;
-		pkmn = new Pokemon("Images/bulbasaur.png", "Bulbasaur", 1, Pokemon::Type::Grass);
+		pkmn =std::make_shared<Pokemon>("Images/bulbasaur.png", "Bulbasaur", 1, Pokemon::Type::Grass);
 		break;
 	case 1:
-		delete pkmn;
 		pkmn = nullptr;
-		pkmn = new Pokemon("Images/charmander.png", "Charmander", 2, Pokemon::Type::Fire);
+		pkmn = std::make_shared<Pokemon>("Images/charmander.png", "Charmander", 2, Pokemon::Type::Fire);
 		break;
 	case 2:
-		delete pkmn;
 		pkmn = nullptr;
-		pkmn = new Pokemon("Images/squirttle.png", "Squirttle", 3, Pokemon::Type::Water);
+		pkmn = std::make_shared<Pokemon>("Images/squirttle.png", "Squirttle", 3, Pokemon::Type::Water);
 		break;
 	default:
 		break;

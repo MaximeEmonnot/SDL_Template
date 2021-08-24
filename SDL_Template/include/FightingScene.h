@@ -35,7 +35,7 @@ public:
 	void Draw() override;
 
 private:
-	Pokemon* CreateRandomPokemon();
+	std::shared_ptr<Pokemon> CreateRandomPokemon();
 	void InitializeAbilityList();
 	
 	void PlayAnimation(Maths::IRect& rect);
@@ -60,7 +60,7 @@ private:
 
 	FightingState state = FightingState::ChoosingAction;
 
-	Pokemon* enemyPokemon;
+	std::shared_ptr<Pokemon> enemyPokemon;
 	Maths::IRect enemyPkmnRect;
 	Maths::IRect playerPkmnRect;
 

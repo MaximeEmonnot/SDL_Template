@@ -38,6 +38,7 @@ private:
 	int chosenItem = -1;
 
 	bool bHasInitOnline = false;
+	bool TEST_bIsConnected = false;
 
 	bool bIsPlayingSong = false;
 	bool bCurrentDayState = false;

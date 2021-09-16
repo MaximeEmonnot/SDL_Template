@@ -484,6 +484,13 @@ bool World::TileIsObstacleAt(const Maths::LLVec2D& pos)
 	return false;
 }
 
+bool World::TileIsOccupiedByGuest(const Maths::LLVec2D& pos) const
+{
+	Maths::LLVec2D adaptatedPos = Maths::LLVec2D(static_cast<long long>(pos.x / tileWidth), static_cast<long long>(pos.y / tileHeight));
+	Maths::LLVec2D guestAdaptatedPos = Maths::LLVec2D(static_cast<long long>(pGuest->GetRect().GetVec2DFrom().x / tileWidth), static_cast<long long>(pGuest->GetRect().GetVec2DFrom().y / tileHeight));
+	return adaptatedPos == guestAdaptatedPos;
+}
+
 bool World::NextTileIsWater() const
 {
 	Maths::LLVec2D nextTilePos = Maths::LLVec2D(static_cast<long long>((xOffset + 400 + static_cast<long long>(pPlayer->GetLookingDirection().x) * 18) / tileWidth), static_cast<long long>((yOffset + 300 + static_cast<long long>(pPlayer->GetLookingDirection().y) * 22) / tileHeight));
@@ -664,7 +671,7 @@ void World::Update(float speed)
 	playerDirection = Maths::IVec2D(0, 0);
 
 	if (CoreSystem::Keyboard::GetInstance().KeyIsPressed(SDL_SCANCODE_UP)) {
-		if (!TileIsObstacleAt(Maths::LLVec2D(400, 282))) {
+		if (!TileIsObstacleAt(Maths::LLVec2D(400, 282)) && !TileIsOccupiedByGuest(Maths::LLVec2D(400, 282))) {
 			yOffset -= static_cast<int>(2 * static_cast<double>(speed));
 			if (pGuest != nullptr) {
 				pGuest->mRect.rect.y += static_cast<int>(2 * static_cast<double>(speed));
@@ -674,7 +681,7 @@ void World::Update(float speed)
 		}
 	}
 	if (CoreSystem::Keyboard::GetInstance().KeyIsPressed(SDL_SCANCODE_RIGHT)) {
-		if (!TileIsObstacleAt(Maths::LLVec2D(418, 300))) {
+		if (!TileIsObstacleAt(Maths::LLVec2D(418, 300)) && !TileIsOccupiedByGuest(Maths::LLVec2D(418, 300))) {
 			xOffset += static_cast<int>(2 * static_cast<double>(speed));
 			if (pGuest != nullptr) {
 				pGuest->mRect.rect.x -= static_cast<int>(2 * static_cast<double>(speed));
@@ -684,7 +691,7 @@ void World::Update(float speed)
 		}
 	}
 	if (CoreSystem::Keyboard::GetInstance().KeyIsPressed(SDL_SCANCODE_DOWN)) {
-		if (!TileIsObstacleAt(Maths::LLVec2D(400, 318))) {
+		if (!TileIsObstacleAt(Maths::LLVec2D(400, 318)) && !TileIsOccupiedByGuest(Maths::LLVec2D(400, 318))) {
 			yOffset += static_cast<int>(2 * static_cast<double>(speed));
 			if (pGuest != nullptr) {
 				pGuest->mRect.rect.y -= static_cast<int>(2 * static_cast<double>(speed));
@@ -694,7 +701,7 @@ void World::Update(float speed)
 		}
 	}
 	if (CoreSystem::Keyboard::GetInstance().KeyIsPressed(SDL_SCANCODE_LEFT)) {
-		if (!TileIsObstacleAt(Maths::LLVec2D(382, 300))) {
+		if (!TileIsObstacleAt(Maths::LLVec2D(382, 300)) && !TileIsOccupiedByGuest(Maths::LLVec2D(382, 300))) {
 			xOffset -= static_cast<int>(2 * static_cast<double>(speed));
 			if (pGuest != nullptr) {
 				pGuest->mRect.rect.x += static_cast<int>(2 * static_cast<double>(speed));
@@ -705,7 +712,6 @@ void World::Update(float speed)
 	}
 	currentPlayerXPos = xOffset + 400;
 	currentPlayerYPos = yOffset + 300;
-
 
 	if (CoreSystem::Keyboard::GetInstance().KeyIsPressed(SDL_SCANCODE_LCTRL)) {
 		Maths::LLVec2D lookingAtPos = Maths::LLVec2D(xOffset + 400, yOffset + 300);

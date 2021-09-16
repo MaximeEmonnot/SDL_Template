@@ -1,6 +1,7 @@
 #pragma once
 #include "Scene.h"
 #include "Player.h"
+#include "NPC.h"
 
 #include "TImerManager.h"
 
@@ -47,6 +48,8 @@ private:
 	void Flee();
 
 private:
+	std::shared_ptr<NPC> pGuest;
+
 	//Map with abilities and respective probabilities
 	std::map<int, Pokemon::Ability> abilityList;
 

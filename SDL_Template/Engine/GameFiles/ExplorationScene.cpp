@@ -1,4 +1,5 @@
 #include "ExplorationScene.h"
+#include <iostream>
 
 ExplorationScene::ExplorationScene(std::shared_ptr<Player> pPlayer)
 	:
@@ -49,6 +50,7 @@ void ExplorationScene::Update()
 	}
 
 	//Init online
+	/*
 	if (pPlayer->IsOnline() && !bHasInitOnline)
 	{
 		bHasInitOnline = true;
@@ -58,49 +60,52 @@ void ExplorationScene::Update()
 			CoreSystem::ThreadPool::GetInstance(30).Enqueue([&] {
 				int64_t packetIndex = 0;
 				while (CoreSystem::Window::GetInstance().ListensToEvents()) {
-					long long xPlayerPos = pWorld->GetPlayerPosition().x;
-					long long yPlayerPos = pWorld->GetPlayerPosition().y;
-					Maths::LLVec2D lastTileToUpdate = pWorld->GetLastTileToUpdate();
-					std::vector<Uint8> dataOut;
+					if (!TEST_bIsConnected) {
+						long long xPlayerPos = pWorld->GetPlayerPosition().x;
+						long long yPlayerPos = pWorld->GetPlayerPosition().y;
+						Maths::LLVec2D lastTileToUpdate = pWorld->GetLastTileToUpdate();
+						std::vector<Uint8> dataOut;
 
-					//World seed packaging
-					dataOut.push_back(pWorld->GetWorldSeed());
+						//World seed packaging
+						dataOut.push_back(pWorld->GetWorldSeed());
 
-					//PacketIndex data packaging
-					int64_t index = packetIndex;
-					for (int i = 0; i < 8; i++) {
-						dataOut.push_back(static_cast<Uint8>(index >> 56));
-						index <<= 8;
-					}
-
-					//xPlayerPos data packaging
-					for (int i = 0; i < 8; i++) {
-						dataOut.push_back(static_cast<Uint8>(xPlayerPos >> 56));
-						xPlayerPos <<= 8;
-					}
-					//yPlayerPos data packaging
-					for (int i = 0; i < 8; i++) {
-						dataOut.push_back(static_cast<Uint8>(yPlayerPos >> 56));
-						yPlayerPos <<= 8;
-					}
-					//playerAnimation data packaging
-					dataOut.push_back(static_cast<Uint8>(pPlayer->GetAnimation()));
-					//playerLocomotionState data packaging
-					dataOut.push_back(static_cast<Uint8>(pPlayer->GetLocomotionState()));
-
-					//xLastTileToUpdate data packaging
-					if (lastTileToUpdate != Maths::LLVec2D(0, 0)) {
+						//PacketIndex data packaging
+						int64_t index = packetIndex;
 						for (int i = 0; i < 8; i++) {
-							dataOut.push_back(static_cast<Uint8>(lastTileToUpdate.x >> 56));
-							lastTileToUpdate.x <<= 8;
+							dataOut.push_back(static_cast<Uint8>(index >> 56));
+							index <<= 8;
 						}
-						//yLastTileToUpdate data packaging
+
+						//xPlayerPos data packaging
 						for (int i = 0; i < 8; i++) {
-							dataOut.push_back(static_cast<Uint8>(lastTileToUpdate.y >> 56));
-							lastTileToUpdate.y <<= 8;
+							dataOut.push_back(static_cast<Uint8>(xPlayerPos >> 56));
+							xPlayerPos <<= 8;
 						}
+						//yPlayerPos data packaging
+						for (int i = 0; i < 8; i++) {
+							dataOut.push_back(static_cast<Uint8>(yPlayerPos >> 56));
+							yPlayerPos <<= 8;
+						}
+						//playerAnimation data packaging
+						dataOut.push_back(static_cast<Uint8>(pPlayer->GetAnimation()));
+						//playerLocomotionState data packaging
+						dataOut.push_back(static_cast<Uint8>(pPlayer->GetLocomotionState()));
+
+						//xLastTileToUpdate data packaging
+						if (lastTileToUpdate != Maths::LLVec2D(0, 0)) {
+							for (int i = 0; i < 8; i++) {
+								dataOut.push_back(static_cast<Uint8>(lastTileToUpdate.x >> 56));
+								lastTileToUpdate.x <<= 8;
+							}
+							//yLastTileToUpdate data packaging
+							for (int i = 0; i < 8; i++) {
+								dataOut.push_back(static_cast<Uint8>(lastTileToUpdate.y >> 56));
+								lastTileToUpdate.y <<= 8;
+							}
+						}
+						Network::NetworkSystem::GetInstance("127.0.0.1", 333, 222).SendPackage(dataOut);
+						packetIndex++;
 					}
-					Network::NetworkSystem::GetInstance("127.0.0.1", 333, 222).SendPackage(dataOut);
 				}
 				});
 			//Recieve
@@ -109,7 +114,7 @@ void ExplorationScene::Update()
 				while (CoreSystem::Window::GetInstance().ListensToEvents()) {
 					std::vector<Uint8> dataIn = Network::NetworkSystem::GetInstance("127.0.0.1", 333, 222).RecievePackage();
 
-					if (!dataIn.empty()) {
+					if (!TEST_bIsConnected) {
 
 						//PacketIndexReading
 						int64_t index = 0;
@@ -163,48 +168,50 @@ void ExplorationScene::Update()
 			CoreSystem::ThreadPool::GetInstance(30).Enqueue([&] {
 				int64_t packetIndex = 0;
 				while (CoreSystem::Window::GetInstance().ListensToEvents()) {
-					long long xPlayerPos = pWorld->GetPlayerPosition().x;
-					long long yPlayerPos = pWorld->GetPlayerPosition().y;
-					Maths::LLVec2D lastTileToUpdate = pWorld->GetLastTileToUpdate();
-					std::vector<Uint8> dataOut;
+					if (!TEST_bIsConnected) {
+						long long xPlayerPos = pWorld->GetPlayerPosition().x;
+						long long yPlayerPos = pWorld->GetPlayerPosition().y;
+						Maths::LLVec2D lastTileToUpdate = pWorld->GetLastTileToUpdate();
+						std::vector<Uint8> dataOut;
 
-					//PacketIndex data packaging
-					int64_t index = packetIndex;
-					for (int i = 0; i < 8; i++) {
-						dataOut.push_back(static_cast<Uint8>(index >> 56));
-						index <<= 8;
-					}
-
-					//xPlayerPos data packaging
-					for (int i = 0; i < 8; i++) {
-						dataOut.push_back(static_cast<Uint8>(xPlayerPos >> 56));
-						xPlayerPos <<= 8;
-					}
-					//yPlayerPos data packaging
-					for (int i = 0; i < 8; i++) {
-						dataOut.push_back(static_cast<Uint8>(yPlayerPos >> 56));
-						yPlayerPos <<= 8;
-					}
-					//playerAnimation data packaging
-					dataOut.push_back(static_cast<Uint8>(pPlayer->GetAnimation()));
-					//playerLocomotionState data packaging
-					dataOut.push_back(static_cast<Uint8>(pPlayer->GetLocomotionState()));
-
-					if (lastTileToUpdate != Maths::LLVec2D(0, 0)) {
-						//xLastTileToUpdate data packaging
+						//PacketIndex data packaging
+						int64_t index = packetIndex;
 						for (int i = 0; i < 8; i++) {
-							dataOut.push_back(static_cast<Uint8>(lastTileToUpdate.x >> 56));
-							lastTileToUpdate.x <<= 8;
+							dataOut.push_back(static_cast<Uint8>(index >> 56));
+							index <<= 8;
 						}
-						//yLastTileToUpdate data packaging
-						for (int i = 0; i < 8; i++) {
-							dataOut.push_back(static_cast<Uint8>(lastTileToUpdate.y >> 56));
-							lastTileToUpdate.y <<= 8;
-						}
-					}
 
-					Network::NetworkSystem::GetInstance("127.0.0.1", 222, 333).SendPackage(dataOut);
-					packetIndex++;
+						//xPlayerPos data packaging
+						for (int i = 0; i < 8; i++) {
+							dataOut.push_back(static_cast<Uint8>(xPlayerPos >> 56));
+							xPlayerPos <<= 8;
+						}
+						//yPlayerPos data packaging
+						for (int i = 0; i < 8; i++) {
+							dataOut.push_back(static_cast<Uint8>(yPlayerPos >> 56));
+							yPlayerPos <<= 8;
+						}
+						//playerAnimation data packaging
+						dataOut.push_back(static_cast<Uint8>(pPlayer->GetAnimation()));
+						//playerLocomotionState data packaging
+						dataOut.push_back(static_cast<Uint8>(pPlayer->GetLocomotionState()));
+
+						if (lastTileToUpdate != Maths::LLVec2D(0, 0)) {
+							//xLastTileToUpdate data packaging
+							for (int i = 0; i < 8; i++) {
+								dataOut.push_back(static_cast<Uint8>(lastTileToUpdate.x >> 56));
+								lastTileToUpdate.x <<= 8;
+							}
+							//yLastTileToUpdate data packaging
+							for (int i = 0; i < 8; i++) {
+								dataOut.push_back(static_cast<Uint8>(lastTileToUpdate.y >> 56));
+								lastTileToUpdate.y <<= 8;
+							}
+						}
+
+						Network::NetworkSystem::GetInstance("127.0.0.1", 222, 333).SendPackage(dataOut);
+						packetIndex++;
+					}
 				}
 				});
 			//Recieve
@@ -218,7 +225,7 @@ void ExplorationScene::Update()
 				while (CoreSystem::Window::GetInstance().ListensToEvents()) {
 					std::vector<Uint8> dataIn = Network::NetworkSystem::GetInstance("127.0.0.1", 222, 333).RecievePackage();
 
-					if (!dataIn.empty()) {
+					if (!TEST_bIsConnected) {
 						//PacketIndexReading
 						int64_t index = 0;
 						for (size_t i = 1; i < 9; i++) {
@@ -268,10 +275,55 @@ void ExplorationScene::Update()
 				});
 		}
 	}
+	*/
 
 	bWillChangeScene = false;
 
 	pPlayer->Update(CoreSystem::Timer::GetInstance().DeltaTime());
+
+	if (TEST_bIsConnected) {
+		auto key = CoreSystem::Keyboard::GetInstance().ReadKey();
+		if (!pPlayer->bIsHost) {
+			if (key.keycode == SDL_SCANCODE_L && key.type == CoreSystem::Keyboard::Event::Type::Pressed) {
+				std::vector<Uint8> testDataOut;
+				testDataOut.push_back(69);
+				testDataOut.push_back(420);
+				testDataOut.push_back(69);
+				Network::NetworkSystem::GetInstance().SendDataTCP(testDataOut);
+				std::vector<Uint8> testDataIn = Network::NetworkSystem::GetInstance().RecieveDataTCP();
+				for (auto& data : testDataIn) {
+					std::cout << std::to_string(data) << "\n";
+				}
+			}
+		}
+		else {
+			if (key.keycode == SDL_SCANCODE_L && key.type == CoreSystem::Keyboard::Event::Type::Pressed) {
+				std::vector<Uint8> testDataOut;
+				testDataOut.push_back(69);
+				testDataOut.push_back(420);
+				testDataOut.push_back(69);
+				testDataOut.push_back(69);
+				testDataOut.push_back(69);
+				testDataOut.push_back(420);
+				Network::NetworkSystem::GetInstance().SendDataTCP(testDataOut);
+				std::vector<Uint8> testDataIn = Network::NetworkSystem::GetInstance().RecieveDataTCP();
+				for (auto& data : testDataIn) {
+					std::cout << std::to_string(data) << "\n";
+				}
+			}
+		}
+	}
+	else {
+		if (pPlayer->bIsOnline && CoreSystem::Keyboard::GetInstance().KeyIsPressed(SDL_SCANCODE_P)) {
+			TEST_bIsConnected = true;
+			if (pPlayer->bIsHost) {
+				Network::NetworkSystem::GetInstance().TCPWaitForClient();
+			}
+			else {
+				Network::NetworkSystem::GetInstance().TCPJoinHost();
+			}
+		}
+	}
 
 	int output = -1;
 

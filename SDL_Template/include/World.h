@@ -128,6 +128,7 @@ private:
 	void CreateHouseAt(const Maths::LLVec2D& pos);
 
 	bool TileIsObstacleAt(const Maths::LLVec2D& pos);
+	bool TileIsOccupiedByGuest(const Maths::LLVec2D& pos) const;
 	bool NextTileIsWater() const;
 	bool NextTileHas(World::Tile::EventType e_type) const;
 
@@ -137,7 +138,6 @@ private:
 	int GetNeighbourGroundType(const Maths::LLVec2D& pos, World::Tile::GroundType g_type) const;
 
 	Maths::IVec2D GetPlayerDirection() const;
-
 private:
 	std::shared_ptr<Player> pPlayer;
 	std::shared_ptr<NPC> pGuest;
@@ -156,6 +156,7 @@ private:
 	bool bTempestOn = false;
 
 	bool bTilesAreWriting = false;
+
 
 	const int tileWidth = 32;
 	const int tileHeight = 32;

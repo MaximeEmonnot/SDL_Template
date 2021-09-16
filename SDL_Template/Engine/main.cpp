@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Unknown error caught", "An unknown error has been caught during Window Creation.", NULL);
 	}
 
-	//Kill singletons because I don't fucking know, a std::unique_ptr is supposed to destroy itself
+	//Kill singletons because I don't know, a std::unique_ptr is supposed to destroy itself
 	CoreSystem::Window::Kill();
 	CoreSystem::Keyboard::Kill();
 	CoreSystem::Mouse::Kill();
